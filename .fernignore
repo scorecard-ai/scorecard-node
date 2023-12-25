@@ -1,1 +1,7 @@
 # Specify files that shouldn't be modified by Fern
+
+README.md
+
+# For the root function `runTests`
+src/wrapper/
+src/index.ts
