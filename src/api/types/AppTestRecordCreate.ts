@@ -11,7 +11,7 @@ export interface AppTestRecordCreate {
     prompt?: string;
     ideal?: string;
     debugOutput?: string;
-    modelParams?: Record<string, unknown>;
+    modelParams?: Record<string, any>;
     testsetId?: number;
     status?: string;
 }

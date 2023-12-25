@@ -6,5 +6,5 @@ export interface CreateRunParams {
     testsetId: number;
     scoringConfigId?: number;
     status?: string;
-    modelParams?: Record<string, unknown>;
+    modelParams?: Record<string, any>;
 }

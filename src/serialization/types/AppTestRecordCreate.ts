@@ -20,7 +20,7 @@ export const AppTestRecordCreate: core.serialization.ObjectSchema<
     debugOutput: core.serialization.property("debug_output", core.serialization.string().optional()),
     modelParams: core.serialization.property(
         "model_params",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional()
+        core.serialization.record(core.serialization.string(), core.serialization.any()).optional()
     ),
     testsetId: core.serialization.property("testset_id", core.serialization.number().optional()),
     status: core.serialization.string().optional(),
@@ -36,7 +36,7 @@ export declare namespace AppTestRecordCreate {
         prompt?: string | null;
         ideal?: string | null;
         debug_output?: string | null;
-        model_params?: Record<string, unknown> | null;
+        model_params?: Record<string, any> | null;
         testset_id?: number | null;
         status?: string | null;
     }
