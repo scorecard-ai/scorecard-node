@@ -86,6 +86,7 @@ try {
     // handle any sdk related error
   }
 }
+```
 
 ## Beta status
 
