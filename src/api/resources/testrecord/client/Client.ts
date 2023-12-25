@@ -39,7 +39,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.4",
+                "X-Fern-SDK-Version": "0.0.5",
             },
             contentType: "application/json",
             body: await serializers.TestRecordCreate.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
