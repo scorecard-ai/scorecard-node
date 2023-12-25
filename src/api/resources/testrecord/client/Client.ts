@@ -28,10 +28,7 @@ export class Testrecord {
      * createa a new test record.
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async create(
-        request: Scorecard.TestRecordCreate,
-        requestOptions?: Testrecord.RequestOptions
-    ): Promise<unknown> {
+    public async create(request: Scorecard.TestRecordCreate, requestOptions?: Testrecord.RequestOptions): Promise<any> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -42,7 +39,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.1",
+                "X-Fern-SDK-Version": "0.0.4",
             },
             contentType: "application/json",
             body: await serializers.TestRecordCreate.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

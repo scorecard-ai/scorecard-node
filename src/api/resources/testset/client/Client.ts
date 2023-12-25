@@ -28,7 +28,7 @@ export class Testset {
      * Retrieve testset metadata
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async get(testsetId: number, requestOptions?: Testset.RequestOptions): Promise<unknown> {
+    public async get(testsetId: number, requestOptions?: Testset.RequestOptions): Promise<any> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -39,7 +39,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.1",
+                "X-Fern-SDK-Version": "0.0.4",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -88,7 +88,7 @@ export class Testset {
      * Create a new test set
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async create(request: Scorecard.TestSetCreate, requestOptions?: Testset.RequestOptions): Promise<unknown> {
+    public async create(request: Scorecard.TestSetCreate, requestOptions?: Testset.RequestOptions): Promise<any> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -99,7 +99,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.1",
+                "X-Fern-SDK-Version": "0.0.4",
             },
             contentType: "application/json",
             body: await serializers.TestSetCreate.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

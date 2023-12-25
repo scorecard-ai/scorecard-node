@@ -28,7 +28,7 @@ export class Run {
      * retrieve metadata for a run
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<unknown> {
+    public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<any> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -39,7 +39,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.1",
+                "X-Fern-SDK-Version": "0.0.4",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -92,7 +92,7 @@ export class Run {
         runId: number,
         request: Scorecard.RunUpdateRequest,
         requestOptions?: Run.RequestOptions
-    ): Promise<unknown> {
+    ): Promise<any> {
         const { status } = request;
         const _queryParams: Record<string, string | string[]> = {};
         _queryParams["status"] = status;
@@ -106,7 +106,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.1",
+                "X-Fern-SDK-Version": "0.0.4",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -156,7 +156,7 @@ export class Run {
      * Create a new run
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async create(request: Scorecard.CreateRunParams, requestOptions?: Run.RequestOptions): Promise<unknown> {
+    public async create(request: Scorecard.CreateRunParams, requestOptions?: Run.RequestOptions): Promise<any> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -167,7 +167,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.1",
+                "X-Fern-SDK-Version": "0.0.4",
             },
             contentType: "application/json",
             body: await serializers.CreateRunParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

@@ -13,7 +13,7 @@ export const CreateRunParams: core.serialization.Schema<serializers.CreateRunPar
         status: core.serialization.string().optional(),
         modelParams: core.serialization.property(
             "model_params",
-            core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional()
+            core.serialization.record(core.serialization.string(), core.serialization.any()).optional()
         ),
     });
 
@@ -22,6 +22,6 @@ export declare namespace CreateRunParams {
         testset_id: number;
         scoring_config_id?: number | null;
         status?: string | null;
-        model_params?: Record<string, unknown> | null;
+        model_params?: Record<string, any> | null;
     }
 }
