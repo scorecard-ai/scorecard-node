@@ -6,19 +6,9 @@ import * as serializers from "..";
 import * as Scorecard from "../../api";
 import * as core from "../../core";
 
-export const AppTestSetCreate: core.serialization.ObjectSchema<
-    serializers.AppTestSetCreate.Raw,
-    Scorecard.AppTestSetCreate
-> = core.serialization.object({
-    name: core.serialization.string(),
-    description: core.serialization.string().optional(),
-    usingRetrieval: core.serialization.property("using_retrieval", core.serialization.boolean()),
-});
+export const AppTestSetCreate: core.serialization.Schema<serializers.AppTestSetCreate.Raw, Scorecard.AppTestSetCreate> =
+    core.serialization.unknown();
 
 export declare namespace AppTestSetCreate {
-    interface Raw {
-        name: string;
-        description?: string | null;
-        using_retrieval: boolean;
-    }
+    type Raw = unknown;
 }

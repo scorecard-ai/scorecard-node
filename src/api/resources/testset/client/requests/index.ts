@@ -1,1 +1,1 @@
-export { TestSetCreate } from "./TestSetCreate";
+export { TestSetCreateParams } from "./TestSetCreateParams";

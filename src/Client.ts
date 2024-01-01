@@ -6,8 +6,8 @@ import * as environments from "./environments";
 import * as core from "./core";
 import { Testset } from "./api/resources/testset/client/Client";
 import { Testcase } from "./api/resources/testcase/client/Client";
-import { Run } from "./api/resources/run/client/Client";
 import { Testrecord } from "./api/resources/testrecord/client/Client";
+import { Run } from "./api/resources/run/client/Client";
 
 export declare namespace ScorecardClient {
     interface Options {
@@ -36,15 +36,15 @@ export class ScorecardClient {
         return (this._testcase ??= new Testcase(this._options));
     }
 
-    protected _run: Run | undefined;
-
-    public get run(): Run {
-        return (this._run ??= new Run(this._options));
-    }
-
     protected _testrecord: Testrecord | undefined;
 
     public get testrecord(): Testrecord {
         return (this._testrecord ??= new Testrecord(this._options));
+    }
+
+    protected _run: Run | undefined;
+
+    public get run(): Run {
+        return (this._run ??= new Run(this._options));
     }
 }

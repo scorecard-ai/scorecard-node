@@ -5,9 +5,9 @@
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
 import * as Scorecard from "../../..";
+import * as serializers from "../../../../serialization";
 import urlJoin from "url-join";
 import * as errors from "../../../../errors";
-import * as serializers from "../../../../serialization";
 
 export declare namespace Run {
     interface Options {
@@ -25,10 +25,116 @@ export class Run {
     constructor(protected readonly _options: Run.Options) {}
 
     /**
-     * retrieve metadata for a run
+     * create a test run
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<any> {
+    public async create(
+        request: Scorecard.RunCreateParams,
+        requestOptions?: Run.RequestOptions
+    ): Promise<Scorecard.RunExternal> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
+                "v1/run"
+            ),
+            method: "POST",
+            headers: {
+                "X-API-Key": await core.Supplier.get(this._options.apiKey),
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "",
+                "X-Fern-SDK-Version": "0.1.0",
+            },
+            contentType: "application/json",
+            body: await serializers.RunCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+        });
+        if (_response.ok) {
+            return await serializers.RunExternal.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 422:
+                    throw new Scorecard.UnprocessableEntityError(
+                        await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                default:
+                    throw new errors.ScorecardError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.ScorecardError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.ScorecardTimeoutError();
+            case "unknown":
+                throw new errors.ScorecardError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * retrieve a test run
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
+     * @throws {@link Scorecard.UnprocessableEntityError}
+     */
+    public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<Scorecard.RunExternal> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -39,18 +145,54 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.5",
+                "X-Fern-SDK-Version": "0.1.0",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return _response.body;
+            return await serializers.RunExternal.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
                         await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
@@ -86,13 +228,16 @@ export class Run {
 
     /**
      * Update the status of a run.
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
     public async update(
         runId: number,
         request: Scorecard.RunUpdateRequest,
         requestOptions?: Run.RequestOptions
-    ): Promise<any> {
+    ): Promise<Scorecard.RunExternal> {
         const { status } = request;
         const _queryParams: Record<string, string | string[]> = {};
         _queryParams["status"] = status;
@@ -106,7 +251,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.5",
+                "X-Fern-SDK-Version": "0.1.0",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -114,14 +259,20 @@ export class Run {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return _response.body;
+            return await serializers.RunExternal.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 422:
-                    throw new Scorecard.UnprocessableEntityError(
-                        await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -129,57 +280,26 @@ export class Run {
                             breadcrumbsPrefix: ["response"],
                         })
                     );
-                default:
-                    throw new errors.ScorecardError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.ScorecardError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.ScorecardTimeoutError();
-            case "unknown":
-                throw new errors.ScorecardError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * Create a new run
-     * @throws {@link Scorecard.UnprocessableEntityError}
-     */
-    public async create(request: Scorecard.CreateRunParams, requestOptions?: Run.RequestOptions): Promise<any> {
-        const _response = await core.fetcher({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                "v1/run"
-            ),
-            method: "POST",
-            headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.5",
-            },
-            contentType: "application/json",
-            body: await serializers.CreateRunParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-        });
-        if (_response.ok) {
-            return _response.body;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
                         await serializers.HttpValidationError.parseOrThrow(_response.error.body, {

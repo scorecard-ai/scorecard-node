@@ -6,18 +6,22 @@ import * as serializers from "../../../..";
 import * as Scorecard from "../../../../../api";
 import * as core from "../../../../../core";
 
-export const TestCaseCreateInput: core.serialization.Schema<
-    serializers.TestCaseCreateInput.Raw,
-    Scorecard.TestCaseCreateInput
+export const TestRecordCreateParams: core.serialization.Schema<
+    serializers.TestRecordCreateParams.Raw,
+    Scorecard.TestRecordCreateParams
 > = core.serialization.object({
+    testsetId: core.serialization.property("testset_id", core.serialization.number()),
+    testcaseId: core.serialization.property("testcase_id", core.serialization.number()),
     userQuery: core.serialization.property("user_query", core.serialization.string()),
     context: core.serialization.string().optional(),
     response: core.serialization.string().optional(),
     ideal: core.serialization.string().optional(),
 });
 
-export declare namespace TestCaseCreateInput {
+export declare namespace TestRecordCreateParams {
     interface Raw {
+        testset_id: number;
+        testcase_id: number;
         user_query: string;
         context?: string | null;
         response?: string | null;

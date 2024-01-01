@@ -1,1 +1,1 @@
-export { TestCaseCreateInput } from "./TestCaseCreateInput";
+export { TestCaseCreateParams } from "./TestCaseCreateParams";

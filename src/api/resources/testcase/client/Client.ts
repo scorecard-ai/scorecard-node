@@ -6,8 +6,8 @@ import * as environments from "../../../../environments";
 import * as core from "../../../../core";
 import * as Scorecard from "../../..";
 import urlJoin from "url-join";
-import * as errors from "../../../../errors";
 import * as serializers from "../../../../serialization";
+import * as errors from "../../../../errors";
 
 export declare namespace Testcase {
     interface Options {
@@ -25,32 +25,75 @@ export class Testcase {
     constructor(protected readonly _options: Testcase.Options) {}
 
     /**
-     * Retrieve the testcases in a test set.
+     * Retrieve Testcase data
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async getAll(testsetId: number, requestOptions?: Testcase.RequestOptions): Promise<any> {
+    public async get(
+        testcaseId: number,
+        testsetId: number,
+        requestOptions?: Testcase.RequestOptions
+    ): Promise<Scorecard.TestCase> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}/testcase`
+                `v1/testset/${testsetId}/testcase/${testcaseId}`
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.5",
+                "X-Fern-SDK-Version": "0.1.0",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return _response.body;
+            return await serializers.TestCase.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
                         await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
@@ -85,14 +128,17 @@ export class Testcase {
     }
 
     /**
-     * Add a testcase to a test set.
+     * Create a new Testcase
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async add(
+    public async create(
         testsetId: number,
-        request: Scorecard.TestCaseCreateInput,
+        request: Scorecard.TestCaseCreateParams,
         requestOptions?: Testcase.RequestOptions
-    ): Promise<any> {
+    ): Promise<Scorecard.TestCase> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -103,19 +149,55 @@ export class Testcase {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.0.5",
+                "X-Fern-SDK-Version": "0.1.0",
             },
             contentType: "application/json",
-            body: await serializers.TestCaseCreateInput.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: await serializers.TestCaseCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return _response.body;
+            return await serializers.TestCase.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
                         await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
