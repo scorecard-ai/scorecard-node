@@ -1,6 +1,6 @@
 {
     "name": "",
-    "version": "0.1.5-b1",
+    "version": "0.1.5",
     "private": false,
     "repository": "https://github.com/scorecard-ai/scorecard-node",
     "main": "./index.js",
