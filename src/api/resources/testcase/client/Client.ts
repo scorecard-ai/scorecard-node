@@ -5,8 +5,8 @@
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
 import * as Scorecard from "../../..";
-import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
+import urlJoin from "url-join";
 import * as errors from "../../../../errors";
 
 export declare namespace Testcase {
@@ -25,30 +25,31 @@ export class Testcase {
     constructor(protected readonly _options: Testcase.Options) {}
 
     /**
-     * Retrieve Testcase data
+     * Create a new Testcase
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async get(
-        testcaseId: number,
+    public async create(
         testsetId: number,
+        request: Scorecard.TestCaseCreateParams,
         requestOptions?: Testcase.RequestOptions
     ): Promise<Scorecard.TestCase> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}/testcase/${testcaseId}`
+                `v1/testset/${testsetId}/testcase`
             ),
-            method: "GET",
+            method: "POST",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.3",
+                "X-Fern-SDK-Version": "0.1.4",
             },
             contentType: "application/json",
+            body: await serializers.TestCaseCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
@@ -128,31 +129,30 @@ export class Testcase {
     }
 
     /**
-     * Create a new Testcase
+     * Retrieve Testcase data
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      */
-    public async create(
+    public async get(
+        testcaseId: number,
         testsetId: number,
-        request: Scorecard.TestCaseCreateParams,
         requestOptions?: Testcase.RequestOptions
     ): Promise<Scorecard.TestCase> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}/testcase`
+                `v1/testset/${testsetId}/testcase/${testcaseId}`
             ),
-            method: "POST",
+            method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.3",
+                "X-Fern-SDK-Version": "0.1.4",
             },
             contentType: "application/json",
-            body: await serializers.TestCaseCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
