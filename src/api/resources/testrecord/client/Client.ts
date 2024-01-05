@@ -25,7 +25,7 @@ export class Testrecord {
     constructor(protected readonly _options: Testrecord.Options) {}
 
     /**
-     * Retrieve testset metadata
+     * Retrieve Testrecord metadata
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -46,7 +46,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.0",
+                "X-Fern-SDK-Version": "0.1.2",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -128,7 +128,7 @@ export class Testrecord {
     }
 
     /**
-     * Create a new Test Set
+     * Create a new Testrecord
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -149,7 +149,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.0",
+                "X-Fern-SDK-Version": "0.1.2",
             },
             contentType: "application/json",
             body: await serializers.TestRecordCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

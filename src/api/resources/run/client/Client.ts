@@ -25,7 +25,7 @@ export class Run {
     constructor(protected readonly _options: Run.Options) {}
 
     /**
-     * create a test run
+     * Create a new Run
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -45,7 +45,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.0",
+                "X-Fern-SDK-Version": "0.1.2",
             },
             contentType: "application/json",
             body: await serializers.RunCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -128,11 +128,14 @@ export class Run {
     }
 
     /**
-     * retrieve a test run
+     * Retrieve a Run metadata
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.run.get(1)
      */
     public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<Scorecard.RunExternal> {
         const _response = await core.fetcher({
@@ -145,7 +148,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.0",
+                "X-Fern-SDK-Version": "0.1.2",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -232,29 +235,31 @@ export class Run {
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.run.updateStatus(1, {
+     *         status: Scorecard.RunStatus.Pending
+     *     })
      */
-    public async update(
+    public async updateStatus(
         runId: number,
-        request: Scorecard.RunUpdateRequest,
+        request: Scorecard.UpdateStatusParams,
         requestOptions?: Run.RequestOptions
     ): Promise<Scorecard.RunExternal> {
-        const { status } = request;
-        const _queryParams: Record<string, string | string[]> = {};
-        _queryParams["status"] = status;
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/run/${runId}`
+                `v1/run/${runId}/status`
             ),
             method: "PATCH",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.0",
+                "X-Fern-SDK-Version": "0.1.2",
             },
             contentType: "application/json",
-            queryParameters: _queryParams,
+            body: await serializers.UpdateStatusParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });

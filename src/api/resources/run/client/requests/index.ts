@@ -1,2 +1,2 @@
 export { RunCreateParams } from "./RunCreateParams";
-export { RunUpdateRequest } from "./RunUpdateRequest";
+export { UpdateStatusParams } from "./UpdateStatusParams";

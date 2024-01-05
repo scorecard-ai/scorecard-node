@@ -1,8 +1,8 @@
 {
     "name": "",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "private": false,
-    "repository": "https://github.com/fern-scorecard/scorecard-node",
+    "repository": "https://github.com/scorecard-ai/scorecard-node",
     "main": "./index.js",
     "types": "./index.d.ts",
     "scripts": {
