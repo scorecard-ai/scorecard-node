@@ -12,7 +12,7 @@ import * as errors from "../../../../errors";
 export declare namespace Testset {
     interface Options {
         environment?: core.Supplier<environments.ScorecardEnvironment | string>;
-        apiKey: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     interface RequestOptions {
@@ -22,7 +22,7 @@ export declare namespace Testset {
 }
 
 export class Testset {
-    constructor(protected readonly _options: Testset.Options) {}
+    constructor(protected readonly _options: Testset.Options = {}) {}
 
     /**
      * Retrieve testset metadata
@@ -45,7 +45,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.4",
+                "X-Fern-SDK-Version": "0.1.5-b0",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -147,7 +147,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.4",
+                "X-Fern-SDK-Version": "0.1.5-b0",
             },
             contentType: "application/json",
             body: await serializers.TestSetCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -261,7 +261,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.4",
+                "X-Fern-SDK-Version": "0.1.5-b0",
             },
             contentType: "application/json",
             queryParameters: _queryParams,

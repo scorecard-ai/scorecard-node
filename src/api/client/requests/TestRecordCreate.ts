@@ -3,6 +3,7 @@
  */
 
 export interface TestRecordCreate {
+    autoScore?: boolean;
     runId: number;
     testcaseId: number;
     modelResponse: string;
