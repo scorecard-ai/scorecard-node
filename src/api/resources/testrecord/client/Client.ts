@@ -12,7 +12,7 @@ import * as errors from "../../../../errors";
 export declare namespace Testrecord {
     interface Options {
         environment?: core.Supplier<environments.ScorecardEnvironment | string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     interface RequestOptions {
@@ -22,7 +22,7 @@ export declare namespace Testrecord {
 }
 
 export class Testrecord {
-    constructor(protected readonly _options: Testrecord.Options = {}) {}
+    constructor(protected readonly _options: Testrecord.Options) {}
 
     /**
      * Retrieve Testrecord metadata
@@ -46,7 +46,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.5",
+                "X-Fern-SDK-Version": "0.1.6",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -149,7 +149,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.5",
+                "X-Fern-SDK-Version": "0.1.6",
             },
             contentType: "application/json",
             body: await serializers.TestRecordCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
