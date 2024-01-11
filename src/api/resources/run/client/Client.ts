@@ -44,8 +44,8 @@ export class Run {
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.6",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.1.10",
             },
             contentType: "application/json",
             body: await serializers.RunCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -147,8 +147,8 @@ export class Run {
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.6",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.1.10",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -255,8 +255,8 @@ export class Run {
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.6",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.1.10",
             },
             contentType: "application/json",
             body: await serializers.UpdateStatusParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

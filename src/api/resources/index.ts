@@ -1,6 +1,8 @@
-export * as testset from "./testset";
 export * as testcase from "./testcase";
+export * from "./testcase/types";
 export * as testrecord from "./testrecord";
+export * from "./testrecord/types";
+export * as testset from "./testset";
 export * as run from "./run";
 export * from "./testset/client/requests";
 export * from "./testcase/client/requests";

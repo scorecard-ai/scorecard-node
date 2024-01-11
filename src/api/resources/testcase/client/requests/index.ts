@@ -1,1 +1,1 @@
-export { TestCaseCreateParams } from "./TestCaseCreateParams";
+export { TestcaseCreateParams } from "./TestcaseCreateParams";

@@ -6,21 +6,9 @@ import * as serializers from "..";
 import * as Scorecard from "../../api";
 import * as core from "../../core";
 
-export const ScoringParams: core.serialization.ObjectSchema<serializers.ScoringParams.Raw, Scorecard.ScoringParams> =
-    core.serialization.object({
-        modelVersion: core.serialization.property("model_version", core.serialization.string()),
-        runId: core.serialization.property("run_id", core.serialization.number()),
-        testsetId: core.serialization.property("testset_id", core.serialization.number()),
-        token: core.serialization.string(),
-        limitTestcases: core.serialization.property("limit_testcases", core.serialization.number().optional()),
-    });
+export const ScoringParams: core.serialization.Schema<serializers.ScoringParams.Raw, Scorecard.ScoringParams> =
+    core.serialization.unknown();
 
 export declare namespace ScoringParams {
-    interface Raw {
-        model_version: string;
-        run_id: number;
-        testset_id: number;
-        token: string;
-        limit_testcases?: number | null;
-    }
+    type Raw = unknown;
 }

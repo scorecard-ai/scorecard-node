@@ -10,9 +10,7 @@ export interface TestCase {
     testsetId: number;
     userQuery: string;
     context?: string;
-    response?: string;
     ideal?: string;
-    fullPrompt?: string;
-    customInputs?: Scorecard.TestCaseCustomInputs;
-    customLabels?: Scorecard.TestCaseCustomLabels;
+    customInputs?: Record<string, Scorecard.TestCaseCustomInputsValue | undefined>;
+    customLabels?: Record<string, Scorecard.TestCaseCustomLabelsValue | undefined>;
 }

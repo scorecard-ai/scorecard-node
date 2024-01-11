@@ -35,7 +35,7 @@ export class Testrecord {
         testrecordId: number,
         runId: number,
         requestOptions?: Testrecord.RequestOptions
-    ): Promise<Scorecard.TestRecord> {
+    ): Promise<Scorecard.Testrecord> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -45,15 +45,15 @@ export class Testrecord {
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.6",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.1.10",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.TestRecord.parseOrThrow(_response.body, {
+            return await serializers.Testrecord.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -136,9 +136,9 @@ export class Testrecord {
      */
     public async create(
         runId: number,
-        request: Scorecard.TestRecordCreateParams,
+        request: Scorecard.TestrecordCreateParams,
         requestOptions?: Testrecord.RequestOptions
-    ): Promise<Scorecard.TestRecord> {
+    ): Promise<Scorecard.Testrecord> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -148,16 +148,16 @@ export class Testrecord {
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "",
-                "X-Fern-SDK-Version": "0.1.6",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.1.10",
             },
             contentType: "application/json",
-            body: await serializers.TestRecordCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: await serializers.TestrecordCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.TestRecord.parseOrThrow(_response.body, {
+            return await serializers.Testrecord.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,

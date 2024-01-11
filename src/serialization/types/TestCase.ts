@@ -13,16 +13,24 @@ export const TestCase: core.serialization.ObjectSchema<serializers.TestCase.Raw,
         testsetId: core.serialization.property("testset_id", core.serialization.number()),
         userQuery: core.serialization.property("user_query", core.serialization.string()),
         context: core.serialization.string().optional(),
-        response: core.serialization.string().optional(),
         ideal: core.serialization.string().optional(),
-        fullPrompt: core.serialization.property("full_prompt", core.serialization.string().optional()),
         customInputs: core.serialization.property(
             "custom_inputs",
-            core.serialization.lazy(async () => (await import("..")).TestCaseCustomInputs).optional()
+            core.serialization
+                .record(
+                    core.serialization.string(),
+                    core.serialization.lazy(async () => (await import("..")).TestCaseCustomInputsValue).optional()
+                )
+                .optional()
         ),
         customLabels: core.serialization.property(
             "custom_labels",
-            core.serialization.lazy(async () => (await import("..")).TestCaseCustomLabels).optional()
+            core.serialization
+                .record(
+                    core.serialization.string(),
+                    core.serialization.lazy(async () => (await import("..")).TestCaseCustomLabelsValue).optional()
+                )
+                .optional()
         ),
     });
 
@@ -33,10 +41,8 @@ export declare namespace TestCase {
         testset_id: number;
         user_query: string;
         context?: string | null;
-        response?: string | null;
         ideal?: string | null;
-        full_prompt?: string | null;
-        custom_inputs?: serializers.TestCaseCustomInputs.Raw | null;
-        custom_labels?: serializers.TestCaseCustomLabels.Raw | null;
+        custom_inputs?: Record<string, serializers.TestCaseCustomInputsValue.Raw | null | undefined> | null;
+        custom_labels?: Record<string, serializers.TestCaseCustomLabelsValue.Raw | null | undefined> | null;
     }
 }

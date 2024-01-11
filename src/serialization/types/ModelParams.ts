@@ -6,19 +6,9 @@ import * as serializers from "..";
 import * as Scorecard from "../../api";
 import * as core from "../../core";
 
-export const ModelParams: core.serialization.ObjectSchema<serializers.ModelParams.Raw, Scorecard.ModelParams> =
-    core.serialization.object({
-        modelName: core.serialization.property("model_name", core.serialization.string()),
-        temperature: core.serialization.number().optional(),
-        topP: core.serialization.property("top_p", core.serialization.number().optional()),
-        maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
-    });
+export const ModelParams: core.serialization.Schema<serializers.ModelParams.Raw, Scorecard.ModelParams> =
+    core.serialization.unknown();
 
 export declare namespace ModelParams {
-    interface Raw {
-        model_name: string;
-        temperature?: number | null;
-        top_p?: number | null;
-        max_tokens?: number | null;
-    }
+    type Raw = unknown;
 }
