@@ -48,25 +48,35 @@ export class ScorecardClient extends FernClient {
         scoringConfigId,
         modelInvocation,
     }: ScorecardClient.RunTestArgs): Promise<void> {
-        const runId = (await this.run.create({
+        const run = await this.run.create({
             testsetId: inputTestsetId,
             scoringConfigId,
-        })) as number;
-        const testcases = (await this.testset.get(inputTestsetId)) as any;
+        });
+        if (run.id == null) {
+            throw new errors.ScorecardError({
+                message: `Didn't receive run id after creating run for testid=${inputTestsetId}`,
+            });
+        }
 
-        for (const testcase of testcases) {
-            const testcaseId = testcase["id"] as number;
-            const userQuery = testcase["user_query"] as string;
+        const testcases = await this.testset.getTestcases(inputTestsetId);
 
-            console.log(`Running testcase ${testcaseId}...`);
-            console.log(`User query: ${userQuery}...`);
+        for (const testcase of testcases.results) {
+            if (testcase.id == null) {
+                continue;
+            }
 
-            const modelResponse = await modelInvocation(userQuery);
+            console.log(`Running testcase ${testcase.id}...`);
+            console.log(`User query: ${testcase.userQuery}...`);
 
-            this.testrecord.create({
-                runId,
-                testcaseId,
-                modelResponse,
+            const modelResponse = await modelInvocation(testcase.userQuery);
+
+            this.testrecord.create(run.id, {
+                testcaseId: testcase.id,
+                testsetId: inputTestsetId,
+                userQuery: testcase.userQuery,
+                context: testcase.context,
+                ideal: testcase.ideal,
+                response: modelResponse,
             });
         }
 

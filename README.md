@@ -5,9 +5,9 @@
 ## Installation
 
 ```bash
-npm install scorecard
+npm install scorecard-ai
 # or
-yarn add scorecard
+yarn add scorecard-ai
 ```
 
 ## Usage
