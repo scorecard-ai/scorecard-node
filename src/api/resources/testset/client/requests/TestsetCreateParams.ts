@@ -8,5 +8,6 @@ export interface TestsetCreateParams {
     name: string;
     description?: string;
     usingRetrieval: boolean;
+    dummy?: boolean;
     customSchema?: Scorecard.CustomSchemaInput;
 }

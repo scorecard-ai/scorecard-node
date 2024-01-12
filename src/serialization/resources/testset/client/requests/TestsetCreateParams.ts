@@ -13,6 +13,7 @@ export const TestsetCreateParams: core.serialization.Schema<
     name: core.serialization.string(),
     description: core.serialization.string().optional(),
     usingRetrieval: core.serialization.property("using_retrieval", core.serialization.boolean()),
+    dummy: core.serialization.boolean().optional(),
     customSchema: core.serialization.property(
         "custom_schema",
         core.serialization.lazyObject(async () => (await import("../../../..")).CustomSchemaInput).optional()
@@ -24,6 +25,7 @@ export declare namespace TestsetCreateParams {
         name: string;
         description?: string | null;
         using_retrieval: boolean;
+        dummy?: boolean | null;
         custom_schema?: serializers.CustomSchemaInput.Raw | null;
     }
 }
