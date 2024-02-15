@@ -8,3 +8,5 @@ export * from "./testcase/client/requests";
 export * from "./testrecord/client/requests";
 export * as run from "./run";
 export * from "./run/client/requests";
+export * as score from "./score";
+export * from "./score/client/requests";

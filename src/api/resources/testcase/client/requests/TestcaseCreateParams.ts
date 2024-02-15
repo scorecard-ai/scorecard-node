@@ -4,6 +4,12 @@
 
 import * as Scorecard from "../../../..";
 
+/**
+ * @example
+ *     {
+ *         userQuery: "user_query"
+ *     }
+ */
 export interface TestcaseCreateParams {
     userQuery: string;
     context?: string;

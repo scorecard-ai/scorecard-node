@@ -10,9 +10,9 @@ export const TestrecordCreateParams: core.serialization.Schema<
     serializers.TestrecordCreateParams.Raw,
     Scorecard.TestrecordCreateParams
 > = core.serialization.object({
-    testsetId: core.serialization.property("testset_id", core.serialization.number()),
-    testcaseId: core.serialization.property("testcase_id", core.serialization.number()),
-    userQuery: core.serialization.property("user_query", core.serialization.string()),
+    testsetId: core.serialization.property("testset_id", core.serialization.number().optional()),
+    testcaseId: core.serialization.property("testcase_id", core.serialization.number().optional()),
+    userQuery: core.serialization.property("user_query", core.serialization.string().optional()),
     context: core.serialization.string().optional(),
     response: core.serialization.string().optional(),
     ideal: core.serialization.string().optional(),
@@ -49,13 +49,36 @@ export const TestrecordCreateParams: core.serialization.Schema<
             )
             .optional()
     ),
+    prompt: core.serialization.string().optional(),
+    modelParams: core.serialization.property(
+        "model_params",
+        core.serialization
+            .record(
+                core.serialization.string(),
+                core.serialization
+                    .lazy(async () => (await import("../../../..")).TestrecordCreateParamsModelParamsValue)
+                    .optional()
+            )
+            .optional()
+    ),
+    modelDebugInfo: core.serialization.property(
+        "model_debug_info",
+        core.serialization
+            .record(
+                core.serialization.string(),
+                core.serialization
+                    .lazy(async () => (await import("../../../..")).TestrecordCreateParamsModelDebugInfoValue)
+                    .optional()
+            )
+            .optional()
+    ),
 });
 
 export declare namespace TestrecordCreateParams {
     interface Raw {
-        testset_id: number;
-        testcase_id: number;
-        user_query: string;
+        testset_id?: number | null;
+        testcase_id?: number | null;
+        user_query?: string | null;
         context?: string | null;
         response?: string | null;
         ideal?: string | null;
@@ -70,6 +93,12 @@ export declare namespace TestrecordCreateParams {
         custom_labels?: Record<
             string,
             serializers.TestrecordCreateParamsCustomLabelsValue.Raw | null | undefined
+        > | null;
+        prompt?: string | null;
+        model_params?: Record<string, serializers.TestrecordCreateParamsModelParamsValue.Raw | null | undefined> | null;
+        model_debug_info?: Record<
+            string,
+            serializers.TestrecordCreateParamsModelDebugInfoValue.Raw | null | undefined
         > | null;
     }
 }

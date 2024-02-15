@@ -6,11 +6,11 @@ import * as serializers from "..";
 import * as Scorecard from "../../api";
 import * as core from "../../core";
 
-export const LibDtoTypesCreateRunParams: core.serialization.Schema<
-    serializers.LibDtoTypesCreateRunParams.Raw,
-    Scorecard.LibDtoTypesCreateRunParams
+export const CreateGithubWorkflowParams: core.serialization.Schema<
+    serializers.CreateGithubWorkflowParams.Raw,
+    Scorecard.CreateGithubWorkflowParams
 > = core.serialization.unknown();
 
-export declare namespace LibDtoTypesCreateRunParams {
+export declare namespace CreateGithubWorkflowParams {
     type Raw = unknown;
 }

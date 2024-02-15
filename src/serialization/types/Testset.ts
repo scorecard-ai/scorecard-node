@@ -21,7 +21,7 @@ export const Testset: core.serialization.ObjectSchema<serializers.Testset.Raw, S
         projectId: core.serialization.property("project_id", core.serialization.number().optional()),
         customSchema: core.serialization.property(
             "custom_schema",
-            core.serialization.lazyObject(async () => (await import("..")).CustomSchemaOutput).optional()
+            core.serialization.lazyObject(async () => (await import("..")).CustomSchema).optional()
         ),
     });
 
@@ -38,6 +38,6 @@ export declare namespace Testset {
         updated_at?: string | null;
         is_archived?: boolean | null;
         project_id?: number | null;
-        custom_schema?: serializers.CustomSchemaOutput.Raw | null;
+        custom_schema?: serializers.CustomSchema.Raw | null;
     }
 }

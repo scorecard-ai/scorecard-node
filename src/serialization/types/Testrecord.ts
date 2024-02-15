@@ -11,8 +11,9 @@ export const Testrecord: core.serialization.ObjectSchema<serializers.Testrecord.
         id: core.serialization.number().optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         runId: core.serialization.property("run_id", core.serialization.number()),
-        testsetId: core.serialization.property("testset_id", core.serialization.number()),
-        userQuery: core.serialization.property("user_query", core.serialization.string()),
+        testsetId: core.serialization.property("testset_id", core.serialization.number().optional()),
+        testcaseId: core.serialization.property("testcase_id", core.serialization.number().optional()),
+        userQuery: core.serialization.property("user_query", core.serialization.string().optional()),
         context: core.serialization.string().optional(),
         modelResponse: core.serialization.property("model_response", core.serialization.string().optional()),
         ideal: core.serialization.string().optional(),
@@ -44,6 +45,26 @@ export const Testrecord: core.serialization.ObjectSchema<serializers.Testrecord.
                 )
                 .optional()
         ),
+        status: core.serialization.string().optional(),
+        prompt: core.serialization.string().optional(),
+        modelParams: core.serialization.property(
+            "model_params",
+            core.serialization
+                .record(
+                    core.serialization.string(),
+                    core.serialization.lazy(async () => (await import("..")).TestrecordModelParamsValue).optional()
+                )
+                .optional()
+        ),
+        modelDebugInfo: core.serialization.property(
+            "model_debug_info",
+            core.serialization
+                .record(
+                    core.serialization.string(),
+                    core.serialization.lazy(async () => (await import("..")).TestrecordModelDebugInfoValue).optional()
+                )
+                .optional()
+        ),
     });
 
 export declare namespace Testrecord {
@@ -51,8 +72,9 @@ export declare namespace Testrecord {
         id?: number | null;
         created_at?: string | null;
         run_id: number;
-        testset_id: number;
-        user_query: string;
+        testset_id?: number | null;
+        testcase_id?: number | null;
+        user_query?: string | null;
         context?: string | null;
         model_response?: string | null;
         ideal?: string | null;
@@ -60,5 +82,9 @@ export declare namespace Testrecord {
         custom_inputs?: Record<string, serializers.TestrecordCustomInputsValue.Raw | null | undefined> | null;
         custom_labels?: Record<string, serializers.TestrecordCustomLabelsValue.Raw | null | undefined> | null;
         custom_outputs?: Record<string, serializers.TestrecordCustomOutputsValue.Raw | null | undefined> | null;
+        status?: string | null;
+        prompt?: string | null;
+        model_params?: Record<string, serializers.TestrecordModelParamsValue.Raw | null | undefined> | null;
+        model_debug_info?: Record<string, serializers.TestrecordModelDebugInfoValue.Raw | null | undefined> | null;
     }
 }

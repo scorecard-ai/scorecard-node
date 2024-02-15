@@ -13,6 +13,7 @@ export const RunStatus: core.serialization.Schema<serializers.RunStatus.Raw, Sco
         "running_execution",
         "awaiting_scoring",
         "running_scoring",
+        "awaiting_human_scoring",
         "completed",
     ]);
 
@@ -23,5 +24,6 @@ export declare namespace RunStatus {
         | "running_execution"
         | "awaiting_scoring"
         | "running_scoring"
+        | "awaiting_human_scoring"
         | "completed";
 }

@@ -8,6 +8,7 @@ export type RunStatus =
     | "running_execution"
     | "awaiting_scoring"
     | "running_scoring"
+    | "awaiting_human_scoring"
     | "completed";
 
 export const RunStatus = {
@@ -16,5 +17,6 @@ export const RunStatus = {
     RunningExecution: "running_execution",
     AwaitingScoring: "awaiting_scoring",
     RunningScoring: "running_scoring",
+    AwaitingHumanScoring: "awaiting_human_scoring",
     Completed: "completed",
 } as const;

@@ -8,6 +8,7 @@ import { Testset } from "./api/resources/testset/client/Client";
 import { Testcase } from "./api/resources/testcase/client/Client";
 import { Testrecord } from "./api/resources/testrecord/client/Client";
 import { Run } from "./api/resources/run/client/Client";
+import { Score } from "./api/resources/score/client/Client";
 
 export declare namespace ScorecardClient {
     interface Options {
@@ -46,5 +47,11 @@ export class ScorecardClient {
 
     public get run(): Run {
         return (this._run ??= new Run(this._options));
+    }
+
+    protected _score: Score | undefined;
+
+    public get score(): Score {
+        return (this._score ??= new Score(this._options));
     }
 }
