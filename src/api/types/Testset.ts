@@ -16,5 +16,5 @@ export interface Testset {
     updatedAt?: Date;
     isArchived?: boolean;
     projectId?: number;
-    customSchema?: Scorecard.CustomSchemaOutput;
+    customSchema?: Scorecard.CustomSchema;
 }

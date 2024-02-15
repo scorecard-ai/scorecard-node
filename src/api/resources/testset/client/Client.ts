@@ -25,7 +25,7 @@ export class Testset {
     constructor(protected readonly _options: Testset.Options) {}
 
     /**
-     * Retrieve Testset metadata without Testcase data.
+     * Retrieve Testset metadata without Testcase data
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -45,7 +45,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -147,7 +147,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -234,6 +234,11 @@ export class Testset {
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.testset.create({
+     *         name: "name"
+     *     })
      */
     public async create(
         request: Scorecard.TestsetCreateParams,
@@ -249,7 +254,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             body: await serializers.TestsetCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -332,19 +337,19 @@ export class Testset {
     }
 
     /**
-     * Read the schema of a Testset.
+     * Read the schema of a Testset
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.testset.getSchema(1)
+     *     await scorecard.testset.readSchema(1)
      */
-    public async getSchema(
+    public async readSchema(
         testsetId: number,
         requestOptions?: Testset.RequestOptions
-    ): Promise<Scorecard.CustomSchemaOutput> {
+    ): Promise<Scorecard.CustomSchema> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -355,14 +360,14 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.CustomSchemaOutput.parseOrThrow(_response.body, {
+            return await serializers.CustomSchema.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -442,20 +447,23 @@ export class Testset {
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.testset.getTestcases(1, {})
      */
     public async getTestcases(
         testsetId: number,
         request: Scorecard.TestsetGetTestcasesRequest = {},
         requestOptions?: Testset.RequestOptions
     ): Promise<Scorecard.PaginatedTestcaseResponse> {
-        const { page, pageSize } = request;
+        const { offset, limit } = request;
         const _queryParams: Record<string, string | string[]> = {};
-        if (page != null) {
-            _queryParams["page"] = page.toString();
+        if (offset != null) {
+            _queryParams["offset"] = offset.toString();
         }
 
-        if (pageSize != null) {
-            _queryParams["page_size"] = pageSize.toString();
+        if (limit != null) {
+            _queryParams["limit"] = limit.toString();
         }
 
         const _response = await core.fetcher({
@@ -468,7 +476,7 @@ export class Testset {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
