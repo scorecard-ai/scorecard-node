@@ -7,7 +7,7 @@ import * as Scorecard from "..";
 /**
  * Custom schema model with an ordered list of custom variables.
  */
-export interface CustomSchemaInput {
+export interface CustomSchema {
     /** Ordered list of custom variables */
     variables?: Scorecard.CustomVariable[];
 }

@@ -30,6 +30,9 @@ export class Testrecord {
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.testrecord.get(1, 1)
      */
     public async get(
         testrecordId: number,
@@ -46,7 +49,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -133,10 +136,13 @@ export class Testrecord {
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.testrecord.create(1, {})
      */
     public async create(
         runId: number,
-        request: Scorecard.TestrecordCreateParams,
+        request: Scorecard.TestrecordCreateParams = {},
         requestOptions?: Testrecord.RequestOptions
     ): Promise<Scorecard.Testrecord> {
         const _response = await core.fetcher({
@@ -149,7 +155,7 @@ export class Testrecord {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             body: await serializers.TestrecordCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

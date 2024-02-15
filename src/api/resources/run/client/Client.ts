@@ -30,9 +30,20 @@ export class Run {
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await scorecard.run.create({
+     *         testsetId: 1,
+     *         scoringConfigId: 2,
+     *         status: "RUNNING_EXECUTION",
+     *         modelParams: {
+     *             "param1": "value1",
+     *             "param2": "value2"
+     *         }
+     *     })
      */
     public async create(
-        request: Scorecard.RunCreateParams,
+        request: Scorecard.RunCreateParams = {},
         requestOptions?: Run.RequestOptions
     ): Promise<Scorecard.RunExternal> {
         const _response = await core.fetcher({
@@ -45,7 +56,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             body: await serializers.RunCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -148,7 +159,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -256,7 +267,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.10",
+                "X-Fern-SDK-Version": "0.1.12",
             },
             contentType: "application/json",
             body: await serializers.UpdateStatusParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),

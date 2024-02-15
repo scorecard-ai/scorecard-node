@@ -4,9 +4,15 @@
 
 import * as Scorecard from "../../../..";
 
+/**
+ * @example
+ *     {
+ *         name: "name"
+ *     }
+ */
 export interface TestsetCreateParams {
     name: string;
     description?: string;
-    usingRetrieval: boolean;
-    customSchema?: Scorecard.CustomSchemaInput;
+    usingRetrieval?: boolean;
+    customSchema?: Scorecard.CustomSchema;
 }
