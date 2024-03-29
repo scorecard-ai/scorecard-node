@@ -4,4 +4,4 @@
 
 import * as Scorecard from "../../..";
 
-export type TestrecordCreateParamsCustomInputsValue = Scorecard.FileUrl | string;
+export type TestrecordCreateParamsCustomInputsValue = string | Scorecard.FileUrl | Scorecard.JsonObject;

@@ -12,9 +12,9 @@ export const TestCaseCustomLabelsValue: core.serialization.Schema<
 > = core.serialization.undiscriminatedUnion([
     core.serialization.string(),
     core.serialization.lazyObject(async () => (await import("..")).FileUrl),
-    core.serialization.unknown(),
+    core.serialization.lazyObject(async () => (await import("..")).JsonObject),
 ]);
 
 export declare namespace TestCaseCustomLabelsValue {
-    type Raw = string | serializers.FileUrl.Raw | unknown;
+    type Raw = string | serializers.FileUrl.Raw | serializers.JsonObject.Raw;
 }
