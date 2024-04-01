@@ -5,6 +5,7 @@
     "repository": "https://github.com/scorecard-ai/scorecard-node",
     "main": "./index.js",
     "types": "./index.d.ts",
+    "license": "Apache-2.0",
     "scripts": {
         "format": "prettier --write 'src/**/*.ts'",
         "build": "tsc",
