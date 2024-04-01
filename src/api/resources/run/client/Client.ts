@@ -45,7 +45,7 @@ export class Run {
     public async create(
         request: Scorecard.RunCreateParams = {},
         requestOptions?: Run.RequestOptions
-    ): Promise<Scorecard.RunExternal> {
+    ): Promise<Scorecard.Run> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -56,7 +56,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.12",
+                "X-Fern-SDK-Version": "0.2.0",
             },
             contentType: "application/json",
             body: await serializers.RunCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -64,7 +64,7 @@ export class Run {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.RunExternal.parseOrThrow(_response.body, {
+            return await serializers.Run.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -148,7 +148,7 @@ export class Run {
      * @example
      *     await scorecard.run.get(1)
      */
-    public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<Scorecard.RunExternal> {
+    public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<Scorecard.Run> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -159,14 +159,14 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.12",
+                "X-Fern-SDK-Version": "0.2.0",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.RunExternal.parseOrThrow(_response.body, {
+            return await serializers.Run.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -256,7 +256,7 @@ export class Run {
         runId: number,
         request: Scorecard.UpdateStatusParams,
         requestOptions?: Run.RequestOptions
-    ): Promise<Scorecard.RunExternal> {
+    ): Promise<Scorecard.Run> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -267,7 +267,7 @@ export class Run {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.1.12",
+                "X-Fern-SDK-Version": "0.2.0",
             },
             contentType: "application/json",
             body: await serializers.UpdateStatusParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -275,7 +275,7 @@ export class Run {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.RunExternal.parseOrThrow(_response.body, {
+            return await serializers.Run.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,

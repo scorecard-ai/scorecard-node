@@ -13,10 +13,13 @@ export const Grade: core.serialization.ObjectSchema<serializers.Grade.Raw, Score
         testcaseId: core.serialization.property("testcase_id", core.serialization.number().optional()),
         testrecordId: core.serialization.property("testrecord_id", core.serialization.number().optional()),
         metricId: core.serialization.property("metric_id", core.serialization.number().optional()),
+        userId: core.serialization.property("user_id", core.serialization.string().optional()),
         binaryScore: core.serialization.property("binary_score", core.serialization.boolean().optional()),
         intScore: core.serialization.property("int_score", core.serialization.number().optional()),
         reasoning: core.serialization.string().optional(),
         humanEval: core.serialization.property("human_eval", core.serialization.boolean().optional()),
+        status: core.serialization.lazy(async () => (await import("..")).ScoreStatus).optional(),
+        errorMessage: core.serialization.property("error_message", core.serialization.string().optional()),
     }
 );
 
@@ -27,9 +30,12 @@ export declare namespace Grade {
         testcase_id?: number | null;
         testrecord_id?: number | null;
         metric_id?: number | null;
+        user_id?: string | null;
         binary_score?: boolean | null;
         int_score?: number | null;
         reasoning?: string | null;
         human_eval?: boolean | null;
+        status?: serializers.ScoreStatus.Raw | null;
+        error_message?: string | null;
     }
 }

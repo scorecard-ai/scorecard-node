@@ -4,4 +4,4 @@
 
 import * as Scorecard from "../../..";
 
-export type TestcaseCreateParamsCustomLabelsValue = Scorecard.FileUrl | string;
+export type TestcaseCreateParamsCustomLabelsValue = string | Scorecard.FileUrl | Scorecard.JsonObject;

@@ -10,10 +10,11 @@ export const TestcaseCreateParamsCustomInputsValue: core.serialization.Schema<
     serializers.TestcaseCreateParamsCustomInputsValue.Raw,
     Scorecard.TestcaseCreateParamsCustomInputsValue
 > = core.serialization.undiscriminatedUnion([
-    core.serialization.lazyObject(async () => (await import("../../..")).FileUrl),
     core.serialization.string(),
+    core.serialization.lazyObject(async () => (await import("../../..")).FileUrl),
+    core.serialization.lazyObject(async () => (await import("../../..")).JsonObject),
 ]);
 
 export declare namespace TestcaseCreateParamsCustomInputsValue {
-    type Raw = serializers.FileUrl.Raw | string;
+    type Raw = string | serializers.FileUrl.Raw | serializers.JsonObject.Raw;
 }

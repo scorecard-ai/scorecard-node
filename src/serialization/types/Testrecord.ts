@@ -10,7 +10,7 @@ export const Testrecord: core.serialization.ObjectSchema<serializers.Testrecord.
     core.serialization.object({
         id: core.serialization.number().optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
-        runId: core.serialization.property("run_id", core.serialization.number()),
+        runId: core.serialization.property("run_id", core.serialization.number().optional()),
         testsetId: core.serialization.property("testset_id", core.serialization.number().optional()),
         testcaseId: core.serialization.property("testcase_id", core.serialization.number().optional()),
         userQuery: core.serialization.property("user_query", core.serialization.string().optional()),
@@ -71,7 +71,7 @@ export declare namespace Testrecord {
     interface Raw {
         id?: number | null;
         created_at?: string | null;
-        run_id: number;
+        run_id?: number | null;
         testset_id?: number | null;
         testcase_id?: number | null;
         user_query?: string | null;

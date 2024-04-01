@@ -7,7 +7,7 @@ import * as Scorecard from "..";
 export interface Testrecord {
     id?: number;
     createdAt?: Date;
-    runId: number;
+    runId?: number;
     testsetId?: number;
     testcaseId?: number;
     userQuery?: string;
