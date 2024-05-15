@@ -6,12 +6,12 @@
  * @example
  *     {
  *         testsetId: 1,
- *         scoringConfigId: 2,
  *         status: "RUNNING_EXECUTION",
  *         modelParams: {
  *             "param1": "value1",
  *             "param2": "value2"
- *         }
+ *         },
+ *         metrics: [1, 2]
  *     }
  */
 export interface RunCreateParams {
@@ -22,4 +22,5 @@ export interface RunCreateParams {
     source?: string;
     notes?: string;
     promptTemplate?: string;
+    metrics?: number[];
 }

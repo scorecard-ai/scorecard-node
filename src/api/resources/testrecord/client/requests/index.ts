@@ -1,1 +1,1 @@
-export { TestrecordCreateParams } from "./TestrecordCreateParams";
+export { type TestrecordCreateParams } from "./TestrecordCreateParams";

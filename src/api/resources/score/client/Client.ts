@@ -4,10 +4,10 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import * as Scorecard from "../../..";
-import * as serializers from "../../../../serialization";
+import * as Scorecard from "../../../index";
+import * as serializers from "../../../../serialization/index";
 import urlJoin from "url-join";
-import * as errors from "../../../../errors";
+import * as errors from "../../../../errors/index";
 
 export declare namespace Score {
     interface Options {
@@ -26,6 +26,12 @@ export class Score {
 
     /**
      * Create a score
+     *
+     * @param {number} runId
+     * @param {number} testrecordId
+     * @param {Scorecard.ScoreCreateParams} request
+     * @param {Score.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -45,14 +51,16 @@ export class Score {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/run/${runId}/testrecord/${testrecordId}/score`
+                `v1/run/${encodeURIComponent(runId)}/testrecord/${encodeURIComponent(testrecordId)}/score`
             ),
             method: "POST",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             body: await serializers.ScoreCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -136,13 +144,20 @@ export class Score {
 
     /**
      * Update a score
+     *
+     * @param {number} runId
+     * @param {number} testrecordId
+     * @param {number} scoreId
+     * @param {Scorecard.ScoreUpdateParams} request
+     * @param {Score.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.score.update(1, 1, 1, {})
+     *     await scorecard.score.update(1, 1, 1)
      */
     public async update(
         runId: number,
@@ -154,14 +169,18 @@ export class Score {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/run/${runId}/testrecord/${testrecordId}/score/${scoreId}`
+                `v1/run/${encodeURIComponent(runId)}/testrecord/${encodeURIComponent(
+                    testrecordId
+                )}/score/${encodeURIComponent(scoreId)}`
             ),
             method: "PATCH",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             body: await serializers.ScoreUpdateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -241,5 +260,10 @@ export class Score {
                     message: _response.error.errorMessage,
                 });
         }
+    }
+
+    protected async _getCustomAuthorizationHeaders() {
+        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["SCORECARD_API_KEY"];
+        return { "X-API-Key": apiKeyValue };
     }
 }

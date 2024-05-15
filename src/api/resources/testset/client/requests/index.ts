@@ -1,2 +1,2 @@
-export { TestsetCreateParams } from "./TestsetCreateParams";
-export { TestsetGetTestcasesRequest } from "./TestsetGetTestcasesRequest";
+export { type TestsetCreateParams } from "./TestsetCreateParams";
+export { type TestsetGetTestcasesRequest } from "./TestsetGetTestcasesRequest";

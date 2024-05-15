@@ -9,6 +9,9 @@ import { Testcase } from "./api/resources/testcase/client/Client";
 import { Testrecord } from "./api/resources/testrecord/client/Client";
 import { Run } from "./api/resources/run/client/Client";
 import { Score } from "./api/resources/score/client/Client";
+import { RunMetric } from "./api/resources/runMetric/client/Client";
+import { Traces } from "./api/resources/traces/client/Client";
+import { Prompt } from "./api/resources/prompt/client/Client";
 
 export declare namespace ScorecardClient {
     interface Options {
@@ -53,5 +56,23 @@ export class ScorecardClient {
 
     public get score(): Score {
         return (this._score ??= new Score(this._options));
+    }
+
+    protected _runMetric: RunMetric | undefined;
+
+    public get runMetric(): RunMetric {
+        return (this._runMetric ??= new RunMetric(this._options));
+    }
+
+    protected _traces: Traces | undefined;
+
+    public get traces(): Traces {
+        return (this._traces ??= new Traces(this._options));
+    }
+
+    protected _prompt: Prompt | undefined;
+
+    public get prompt(): Prompt {
+        return (this._prompt ??= new Prompt(this._options));
     }
 }
