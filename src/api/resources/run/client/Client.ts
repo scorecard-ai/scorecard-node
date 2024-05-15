@@ -4,10 +4,10 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import * as Scorecard from "../../..";
-import * as serializers from "../../../../serialization";
+import * as Scorecard from "../../../index";
+import * as serializers from "../../../../serialization/index";
 import urlJoin from "url-join";
-import * as errors from "../../../../errors";
+import * as errors from "../../../../errors/index";
 
 export declare namespace Run {
     interface Options {
@@ -26,6 +26,10 @@ export class Run {
 
     /**
      * Create a new Run
+     *
+     * @param {Scorecard.RunCreateParams} request
+     * @param {Run.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -34,12 +38,12 @@ export class Run {
      * @example
      *     await scorecard.run.create({
      *         testsetId: 1,
-     *         scoringConfigId: 2,
      *         status: "RUNNING_EXECUTION",
      *         modelParams: {
      *             "param1": "value1",
      *             "param2": "value2"
-     *         }
+     *         },
+     *         metrics: [1, 2]
      *     })
      */
     public async create(
@@ -53,10 +57,12 @@ export class Run {
             ),
             method: "POST",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             body: await serializers.RunCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -140,6 +146,10 @@ export class Run {
 
     /**
      * Retrieve a Run metadata
+     *
+     * @param {number} runId - The id of the run to retrieve.
+     * @param {Run.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -152,14 +162,16 @@ export class Run {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/run/${runId}`
+                `v1/run/${encodeURIComponent(runId)}`
             ),
             method: "GET",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -242,6 +254,11 @@ export class Run {
 
     /**
      * Update the status of a run.
+     *
+     * @param {number} runId - The id of the run to update.
+     * @param {Scorecard.UpdateStatusParams} request
+     * @param {Run.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -260,14 +277,16 @@ export class Run {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/run/${runId}/status`
+                `v1/run/${encodeURIComponent(runId)}/status`
             ),
             method: "PATCH",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             body: await serializers.UpdateStatusParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -347,5 +366,10 @@ export class Run {
                     message: _response.error.errorMessage,
                 });
         }
+    }
+
+    protected async _getCustomAuthorizationHeaders() {
+        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["SCORECARD_API_KEY"];
+        return { "X-API-Key": apiKeyValue };
     }
 }

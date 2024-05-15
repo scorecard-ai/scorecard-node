@@ -1,2 +1,2 @@
-export { RunCreateParams } from "./RunCreateParams";
-export { UpdateStatusParams } from "./UpdateStatusParams";
+export { type RunCreateParams } from "./RunCreateParams";
+export { type UpdateStatusParams } from "./UpdateStatusParams";

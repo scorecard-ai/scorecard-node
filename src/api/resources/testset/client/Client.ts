@@ -4,10 +4,10 @@
 
 import * as environments from "../../../../environments";
 import * as core from "../../../../core";
-import * as Scorecard from "../../..";
+import * as Scorecard from "../../../index";
 import urlJoin from "url-join";
-import * as serializers from "../../../../serialization";
-import * as errors from "../../../../errors";
+import * as serializers from "../../../../serialization/index";
+import * as errors from "../../../../errors/index";
 
 export declare namespace Testset {
     interface Options {
@@ -26,6 +26,10 @@ export class Testset {
 
     /**
      * Retrieve Testset metadata without Testcase data
+     *
+     * @param {number} testsetId
+     * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -38,14 +42,16 @@ export class Testset {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}`
+                `v1/testset/${encodeURIComponent(testsetId)}`
             ),
             method: "GET",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -128,6 +134,10 @@ export class Testset {
 
     /**
      * Delete a Testset
+     *
+     * @param {number} testsetId
+     * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -140,14 +150,16 @@ export class Testset {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}`
+                `v1/testset/${encodeURIComponent(testsetId)}`
             ),
             method: "DELETE",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -230,6 +242,10 @@ export class Testset {
 
     /**
      * Create a new Testset
+     *
+     * @param {Scorecard.TestsetCreateParams} request
+     * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -251,10 +267,12 @@ export class Testset {
             ),
             method: "POST",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             body: await serializers.TestsetCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -338,6 +356,10 @@ export class Testset {
 
     /**
      * Read the schema of a Testset
+     *
+     * @param {number} testsetId
+     * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
@@ -353,14 +375,16 @@ export class Testset {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}/schema`
+                `v1/testset/${encodeURIComponent(testsetId)}/schema`
             ),
             method: "GET",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -443,13 +467,18 @@ export class Testset {
 
     /**
      * Retrieve all Testcases from a Testset
+     *
+     * @param {number} testsetId
+     * @param {Scorecard.TestsetGetTestcasesRequest} request
+     * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Scorecard.UnauthorizedError}
      * @throws {@link Scorecard.ForbiddenError}
      * @throws {@link Scorecard.NotFoundError}
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.testset.getTestcases(1, {})
+     *     await scorecard.testset.getTestcases(1)
      */
     public async getTestcases(
         testsetId: number,
@@ -457,7 +486,7 @@ export class Testset {
         requestOptions?: Testset.RequestOptions
     ): Promise<Scorecard.PaginatedTestcaseResponse> {
         const { offset, limit } = request;
-        const _queryParams: Record<string, string | string[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (offset != null) {
             _queryParams["offset"] = offset.toString();
         }
@@ -469,14 +498,16 @@ export class Testset {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${testsetId}/testcase`
+                `v1/testset/${encodeURIComponent(testsetId)}/testcase`
             ),
             method: "GET",
             headers: {
-                "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.2.1",
+                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -556,5 +587,10 @@ export class Testset {
                     message: _response.error.errorMessage,
                 });
         }
+    }
+
+    protected async _getCustomAuthorizationHeaders() {
+        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["SCORECARD_API_KEY"];
+        return { "X-API-Key": apiKeyValue };
     }
 }

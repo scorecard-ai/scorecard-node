@@ -1,2 +1,2 @@
-export { ScoreCreateParams } from "./ScoreCreateParams";
-export { ScoreUpdateParams } from "./ScoreUpdateParams";
+export { type ScoreCreateParams } from "./ScoreCreateParams";
+export { type ScoreUpdateParams } from "./ScoreUpdateParams";
