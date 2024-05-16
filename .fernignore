@@ -5,3 +5,4 @@ README.md
 # For the root function `runTests`
 src/wrapper/
 src/index.ts
+src/telemetry.ts
