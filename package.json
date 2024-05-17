@@ -18,7 +18,7 @@
         "@langchain/core": "^0.1.63",
         "@opentelemetry/api": "*",
         "@opentelemetry/exporter-trace-otlp-http": "*",
-        "@opentelemetry/instrumentation": "^0.40.0",
+        "@opentelemetry/instrumentation": ">=0.40.0",
         "@opentelemetry/resources": "*",
         "@opentelemetry/sdk-trace-node": "*",
         "@opentelemetry/semantic-conventions": "*",

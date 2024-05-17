@@ -1,5 +1,3 @@
-const { LangChainInstrumentation } = require('@arizeai/openinference-instrumentation-langchain');
-const { OpenAIInstrumentation } = require('@arizeai/openinference-instrumentation-openai');
 const { trace } = require('@opentelemetry/api');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 const { Resource } = require('@opentelemetry/resources');
@@ -53,10 +51,12 @@ module.exports = {
     provider.register();
 
     if (checkInstalled('@langchain/core')) {
+      const { LangChainInstrumentation } = require('@arizeai/openinference-instrumentation-langchain');
       new LangChainInstrumentation().manuallyInstrument(require('@langchain/core/callbacks/manager'));  
     }
 
     if (checkInstalled('openai')) {
+      const { OpenAIInstrumentation } = require('@arizeai/openinference-instrumentation-openai');
       new OpenAIInstrumentation().manuallyInstrument(require('openai'));
     }
 
