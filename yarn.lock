@@ -10,7 +10,7 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@arizeai/openinference-instrumentation-langchain@latest":
+"@arizeai/openinference-instrumentation-langchain@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@arizeai/openinference-instrumentation-langchain/-/openinference-instrumentation-langchain-0.0.5.tgz#d2f96955c097979fc3252e8ffd25bac194d25f07"
   integrity sha512-iOPRodje4Mrh3dsXOi+WppMEyCsO/BY+xwh/bJegx1WNuqaiJYYf5AU5FoL3TgvynU6BQ0lQHXOlKKirbo2qdA==
@@ -20,7 +20,7 @@
     "@opentelemetry/core" "^1.23.0"
     "@opentelemetry/instrumentation" "^0.46.0"
 
-"@arizeai/openinference-instrumentation-openai@latest":
+"@arizeai/openinference-instrumentation-openai@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@arizeai/openinference-instrumentation-openai/-/openinference-instrumentation-openai-0.2.0.tgz#e79432c2df916ef6c876c9b127926c70d978751d"
   integrity sha512-24fNdqnGxqQJwq6TC5yQeEwHn9boDCCOgceHy5bn5NfZny4LmOYTOyQpomFD+Pni/Ff/HC04dL1kBDKrjV9jfw==
@@ -563,7 +563,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@langchain/core@latest":
+"@langchain/core@^0.1.63":
   version "0.1.63"
   resolved "https://registry.yarnpkg.com/@langchain/core/-/core-0.1.63.tgz#33cc48877739e9fdb5885fbd4b16fd08d1597050"
   integrity sha512-+fjyYi8wy6x1P+Ee1RWfIIEyxd9Ee9jksEwvrggPwwI/p45kIDTdYTblXsM13y4mNWTiACyLSdbwnPaxxdoz+w==

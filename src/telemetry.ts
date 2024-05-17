@@ -5,8 +5,19 @@ const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http')
 const { Resource } = require('@opentelemetry/resources');
 const { BatchSpanProcessor, ConsoleSpanExporter, NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { SEMRESATTRS_SERVICE_NAME } = require('@opentelemetry/semantic-conventions');
-const CallbackManagerModule = require('@langchain/core/callbacks/manager');
-const OpenAI = require('openai');
+
+function checkInstalled(...modules: string[]) {
+  for (let i = 0; i < modules.length; i++) {
+    let module = modules[i];
+    try {
+      require.resolve(module);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 module.exports = {
   setup(name: string, scorecardConfig: {
@@ -41,8 +52,13 @@ module.exports = {
 
     provider.register();
 
-    new LangChainInstrumentation().manuallyInstrument(CallbackManagerModule);  
-    new OpenAIInstrumentation().manuallyInstrument(OpenAI);
+    if (checkInstalled('@langchain/core')) {
+      new LangChainInstrumentation().manuallyInstrument(require('@langchain/core/callbacks/manager'));  
+    }
+
+    if (checkInstalled('openai')) {
+      new OpenAIInstrumentation().manuallyInstrument(require('openai'));
+    }
 
     const tracer = trace.getTracer();
 
