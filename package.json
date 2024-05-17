@@ -18,6 +18,7 @@
         "@langchain/core": "^0.1.63",
         "@opentelemetry/api": "*",
         "@opentelemetry/exporter-trace-otlp-http": "*",
+        "@opentelemetry/instrumentation": "^0.40.0",
         "@opentelemetry/resources": "*",
         "@opentelemetry/sdk-trace-node": "*",
         "@opentelemetry/semantic-conventions": "*",
@@ -37,6 +38,9 @@
             "optional": false
         },
         "@opentelemetry/exporter-trace-otlp-http": {
+            "optional": false
+        },
+        "@opentelemetry/instrumentation": {
             "optional": false
         },
         "@opentelemetry/resources": {
@@ -75,6 +79,7 @@
         "@langchain/core": "^0.1.63",
         "@opentelemetry/api": "latest",
         "@opentelemetry/exporter-trace-otlp-http": "latest",
+        "@opentelemetry/instrumentation": "latest",
         "@opentelemetry/resources": "latest",
         "@opentelemetry/sdk-trace-node": "latest",
         "@opentelemetry/semantic-conventions": "latest",
