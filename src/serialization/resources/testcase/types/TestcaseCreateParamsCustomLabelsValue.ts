@@ -11,11 +11,14 @@ export const TestcaseCreateParamsCustomLabelsValue: core.serialization.Schema<
     serializers.TestcaseCreateParamsCustomLabelsValue.Raw,
     Scorecard.TestcaseCreateParamsCustomLabelsValue
 > = core.serialization.undiscriminatedUnion([
-    core.serialization.string(),
     FileUrl,
     core.serialization.lazyObject(async () => (await import("../../..")).JsonObject),
+    core.serialization.string(),
+    core.serialization.number(),
+    core.serialization.number(),
+    core.serialization.boolean(),
 ]);
 
 export declare namespace TestcaseCreateParamsCustomLabelsValue {
-    type Raw = string | FileUrl.Raw | serializers.JsonObject.Raw;
+    type Raw = FileUrl.Raw | serializers.JsonObject.Raw | string | number | number | boolean;
 }

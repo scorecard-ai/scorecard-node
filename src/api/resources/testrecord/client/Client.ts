@@ -53,7 +53,7 @@ export class Testrecord {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -140,7 +140,7 @@ export class Testrecord {
     /**
      * Create a new Testrecord
      *
-     * @param {number} runId
+     * @param {number} runId - The ID of the Run to create the Testrecord in.
      * @param {Scorecard.TestrecordCreateParams} request
      * @param {Testrecord.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -166,7 +166,7 @@ export class Testrecord {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

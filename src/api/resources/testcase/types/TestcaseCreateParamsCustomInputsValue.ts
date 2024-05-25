@@ -4,4 +4,10 @@
 
 import * as Scorecard from "../../../index";
 
-export type TestcaseCreateParamsCustomInputsValue = string | Scorecard.FileUrl | Scorecard.JsonObject;
+export type TestcaseCreateParamsCustomInputsValue =
+    | Scorecard.FileUrl
+    | Scorecard.JsonObject
+    | string
+    | number
+    | number
+    | boolean;

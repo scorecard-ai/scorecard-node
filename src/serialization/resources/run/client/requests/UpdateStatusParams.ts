@@ -11,11 +11,11 @@ export const UpdateStatusParams: core.serialization.Schema<
     serializers.UpdateStatusParams.Raw,
     Scorecard.UpdateStatusParams
 > = core.serialization.object({
-    status: RunStatus,
+    status: RunStatus.optional(),
 });
 
 export declare namespace UpdateStatusParams {
     interface Raw {
-        status: RunStatus.Raw;
+        status?: RunStatus.Raw | null;
     }
 }

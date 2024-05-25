@@ -58,7 +58,7 @@ await scorecard.testset.get(1);
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The ID of the Testset to retrieve.
 
 </dd>
 
@@ -141,7 +141,7 @@ await scorecard.testset.delete(1);
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The ID of the Testset to delete.
 
 </dd>
 
@@ -309,7 +309,7 @@ await scorecard.testset.readSchema(1);
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The ID of the Testset to retrieve the schema from.
 
 </dd>
 
@@ -392,7 +392,7 @@ await scorecard.testset.getTestcases(1);
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The Testset ID to retrieve testcases from.
 
 </dd>
 
@@ -466,9 +466,7 @@ Create a new Testcase
 <dd>
 
 ```ts
-await scorecard.testcase.create(1, {
-    userQuery: "user_query",
-});
+await scorecard.testcase.create(1);
 ```
 
 </dd>
@@ -489,7 +487,7 @@ await scorecard.testcase.create(1, {
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The ID of the Testset to create the Testcase in.
 
 </dd>
 
@@ -582,7 +580,7 @@ await scorecard.testcase.get(1, 1);
 
 <dd>
 
-**testcaseId: `number`**
+**testcaseId: `number`** — The ID of the Testcase to retrieve.
 
 </dd>
 
@@ -592,7 +590,7 @@ await scorecard.testcase.get(1, 1);
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The ID of the Testset to retrieve the Testcase from.
 
 </dd>
 
@@ -617,7 +615,7 @@ await scorecard.testcase.get(1, 1);
 </dl>
 </details>
 
-<details><summary> <code>scorecard.testcase.<a href="./src/api/resources/testcase/client/Client.ts">delete</a>(testcaseId, testsetId) -> unknown</code> </summary>
+<details><summary> <code>scorecard.testcase.<a href="./src/api/resources/testcase/client/Client.ts">delete</a>(testcaseId, testsetId) -> Scorecard.TestcaseDeletionResponse</code> </summary>
 
 <dl>
 
@@ -675,7 +673,7 @@ await scorecard.testcase.delete(1, 1);
 
 <dd>
 
-**testcaseId: `number`**
+**testcaseId: `number`** — The ID of the Testcase to delete.
 
 </dd>
 
@@ -685,7 +683,7 @@ await scorecard.testcase.delete(1, 1);
 
 <dd>
 
-**testsetId: `number`**
+**testsetId: `number`** — The ID of the Testset to delete the Testcase from.
 
 </dd>
 
@@ -863,7 +861,7 @@ await scorecard.testrecord.create(1);
 
 <dd>
 
-**runId: `number`**
+**runId: `number`** — The ID of the Run to create the Testrecord in.
 
 </dd>
 
@@ -937,15 +935,7 @@ Create a new Run
 <dd>
 
 ```ts
-await scorecard.run.create({
-    testsetId: 1,
-    status: "RUNNING_EXECUTION",
-    modelParams: {
-        param1: "value1",
-        param2: "value2",
-    },
-    metrics: [1, 2],
-});
+await scorecard.run.create();
 ```
 
 </dd>
@@ -1111,9 +1101,7 @@ Update the status of a run.
 <dd>
 
 ```ts
-await scorecard.run.updateStatus(1, {
-    status: Scorecard.RunStatus.Pending,
-});
+await scorecard.run.updateStatus(1);
 ```
 
 </dd>
@@ -1231,7 +1219,7 @@ await scorecard.score.create(1, 1, {
 
 <dd>
 
-**runId: `number`**
+**runId: `number`** — The ID of the run that created the testrecord to be scored.
 
 </dd>
 
@@ -1241,7 +1229,7 @@ await scorecard.score.create(1, 1, {
 
 <dd>
 
-**testrecordId: `number`**
+**testrecordId: `number`** — The ID of the testrecord to be scored.
 
 </dd>
 
@@ -1334,7 +1322,7 @@ await scorecard.score.update(1, 1, 1);
 
 <dd>
 
-**runId: `number`**
+**runId: `number`** — The run ID that created the test record to be scored.
 
 </dd>
 
@@ -1344,7 +1332,7 @@ await scorecard.score.update(1, 1, 1);
 
 <dd>
 
-**testrecordId: `number`**
+**testrecordId: `number`** — The ID of the testrecord whose score will be updated.
 
 </dd>
 
@@ -1354,7 +1342,7 @@ await scorecard.score.update(1, 1, 1);
 
 <dd>
 
-**scoreId: `number`**
+**scoreId: `number`** — The ID of the score to be updated.
 
 </dd>
 
@@ -1577,7 +1565,11 @@ await scorecard.traces.get("trace_id");
 
 <dd>
 
-Create a new prompt
+Two types of prompts can be created - a root prompt or a child prompt (aka Prompt Version in app).
+
+        A root prompt can be created by providing the `name` param, and it will always be tagged as prod.
+
+        A child prompt can be created by providing the `parent_id` param. Note that the `name` param in this case will be ignored as all descendents from a root prompt would share the root's name. `is_prod` can also be provided to configure whether a child should be tagged as prod.
 
 </dd>
 
@@ -1599,7 +1591,8 @@ Create a new prompt
 
 ```ts
 await scorecard.prompt.create({
-    promptTemplate: "You are a virtual assistant",
+    promptTemplate:
+        "<system>\nYou are a helpful assistant. Use the provided context to answer the user's query.\n\nContext: {context}\n</system>\n\n<user>\n{user_query}\n</user>",
     name: "Prompt Name",
     description: "Description of the prompt",
     modelParams: {
@@ -1634,152 +1627,6 @@ await scorecard.prompt.create({
 </dd>
 
 </dl>
-
-<dl>
-
-<dd>
-
-**requestOptions: `Prompt.RequestOptions`**
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-</details>
-
-<details><summary> <code>scorecard.prompt.<a href="./src/api/resources/prompt/client/Client.ts">getRoots</a>() -> Scorecard.Prompt[]</code> </summary>
-
-<dl>
-
-<dd>
-
-#### 📝 Description
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-Retrieve active root prompts for the org
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-```ts
-await scorecard.prompt.getRoots();
-```
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-**requestOptions: `Prompt.RequestOptions`**
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-</details>
-
-<details><summary> <code>scorecard.prompt.<a href="./src/api/resources/prompt/client/Client.ts">getProds</a>() -> Scorecard.Prompt[]</code> </summary>
-
-<dl>
-
-<dd>
-
-#### 📝 Description
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-Retrieve prod prompts for the org
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-```ts
-await scorecard.prompt.getProds();
-```
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-
-<dd>
 
 <dl>
 
@@ -1883,6 +1730,89 @@ await scorecard.prompt.get("id");
 </dl>
 </details>
 
+<details><summary> <code>scorecard.prompt.<a href="./src/api/resources/prompt/client/Client.ts">delete</a>(id) -> unknown</code> </summary>
+
+<dl>
+
+<dd>
+
+#### 📝 Description
+
+<dl>
+
+<dd>
+
+<dl>
+
+<dd>
+
+Delete a root prompt and all of its children.
+
+</dd>
+
+</dl>
+
+</dd>
+
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+
+<dd>
+
+<dl>
+
+<dd>
+
+```ts
+await scorecard.prompt.delete("id");
+```
+
+</dd>
+
+</dl>
+
+</dd>
+
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+
+<dd>
+
+<dl>
+
+<dd>
+
+**id: `string`** — The id of the root prompt to delete.
+
+</dd>
+
+</dl>
+
+<dl>
+
+<dd>
+
+**requestOptions: `Prompt.RequestOptions`**
+
+</dd>
+
+</dl>
+
+</dd>
+
+</dl>
+
+</dd>
+
+</dl>
+</details>
+
 <details><summary> <code>scorecard.prompt.<a href="./src/api/resources/prompt/client/Client.ts">update</a>(id, { ...params }) -> Scorecard.Prompt</code> </summary>
 
 <dl>
@@ -1899,7 +1829,9 @@ await scorecard.prompt.get("id");
 
 <dd>
 
-Update a prompt
+Update a prompt.
+
+        `is_prod` tags the provided prompt as the production prompt within the prompt graph.
 
 </dd>
 
@@ -1921,7 +1853,7 @@ Update a prompt
 
 ```ts
 await scorecard.prompt.update("id", {
-    isArchived: true,
+    isProd: true,
 });
 ```
 
@@ -2037,89 +1969,6 @@ await scorecard.prompt.getByName("name");
 <dd>
 
 **name: `string`** — Name of the prompt.
-
-</dd>
-
-</dl>
-
-<dl>
-
-<dd>
-
-**requestOptions: `Prompt.RequestOptions`**
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-</details>
-
-<details><summary> <code>scorecard.prompt.<a href="./src/api/resources/prompt/client/Client.ts">getGraph</a>(id) -> Scorecard.Prompt[]</code> </summary>
-
-<dl>
-
-<dd>
-
-#### 📝 Description
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-Retrieve all nodes within the same graph as the prompt, sorted by created_at desc
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-```ts
-await scorecard.prompt.getGraph("id");
-```
-
-</dd>
-
-</dl>
-
-</dd>
-
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-
-<dd>
-
-<dl>
-
-<dd>
-
-**id: `string`** — The id of the prompt.
 
 </dd>
 

@@ -24,6 +24,7 @@ export * from "./TestCase";
 export * from "./TestCaseCreate";
 export * from "./TestRecordCreate";
 export * from "./TestSetCreate";
+export * from "./TestcaseDeletionResponse";
 export * from "./TestrecordCustomInputsValue";
 export * from "./TestrecordCustomLabelsValue";
 export * from "./TestrecordCustomOutputsValue";

@@ -27,8 +27,8 @@ export class Score {
     /**
      * Create a score
      *
-     * @param {number} runId
-     * @param {number} testrecordId
+     * @param {number} runId - The ID of the run that created the testrecord to be scored.
+     * @param {number} testrecordId - The ID of the testrecord to be scored.
      * @param {Scorecard.ScoreCreateParams} request
      * @param {Score.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -57,7 +57,7 @@ export class Score {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -145,9 +145,9 @@ export class Score {
     /**
      * Update a score
      *
-     * @param {number} runId
-     * @param {number} testrecordId
-     * @param {number} scoreId
+     * @param {number} runId - The run ID that created the test record to be scored.
+     * @param {number} testrecordId - The ID of the testrecord whose score will be updated.
+     * @param {number} scoreId - The ID of the score to be updated.
      * @param {Scorecard.ScoreUpdateParams} request
      * @param {Score.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -177,7 +177,7 @@ export class Score {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

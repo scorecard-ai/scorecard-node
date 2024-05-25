@@ -7,6 +7,12 @@
  *     {}
  */
 export interface TestsetGetTestcasesRequest {
+    /**
+     * The offset to start from.
+     */
     offset?: number;
+    /**
+     * The number of testcases to return.
+     */
     limit?: number;
 }

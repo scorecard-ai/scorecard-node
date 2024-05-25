@@ -8,5 +8,6 @@ export interface PaginatedTestcaseResponse {
     count: number;
     next?: string;
     previous?: string;
+    /** The list of Testcases retrieved in this page. */
     results: Scorecard.TestCase[];
 }

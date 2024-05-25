@@ -12,7 +12,7 @@ export const TestcaseCreateParams: core.serialization.Schema<
     serializers.TestcaseCreateParams.Raw,
     Scorecard.TestcaseCreateParams
 > = core.serialization.object({
-    userQuery: core.serialization.property("user_query", core.serialization.string()),
+    userQuery: core.serialization.property("user_query", core.serialization.string().optional()),
     context: core.serialization.string().optional(),
     ideal: core.serialization.string().optional(),
     customInputs: core.serialization.property(
@@ -31,7 +31,7 @@ export const TestcaseCreateParams: core.serialization.Schema<
 
 export declare namespace TestcaseCreateParams {
     interface Raw {
-        user_query: string;
+        user_query?: string | null;
         context?: string | null;
         ideal?: string | null;
         custom_inputs?: Record<string, TestcaseCreateParamsCustomInputsValue.Raw | null | undefined> | null;
