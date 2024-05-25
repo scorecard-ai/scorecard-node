@@ -7,7 +7,7 @@ import * as Scorecard from "../../../../index";
 /**
  * @example
  *     {
- *         promptTemplate: "You are a virtual assistant",
+ *         promptTemplate: "<system>\nYou are a helpful assistant. Use the provided context to answer the user's query.\n\nContext: {context}\n</system>\n\n<user>\n{user_query}\n</user>",
  *         name: "Prompt Name",
  *         description: "Description of the prompt",
  *         modelParams: {
@@ -20,7 +20,7 @@ import * as Scorecard from "../../../../index";
  *
  * @example
  *     {
- *         promptTemplate: "You are a virtual assistant",
+ *         promptTemplate: "<system>\nYou are a helpful assistant. Use the provided context to answer the user's query.\n\nContext: {context}\n</system>\n\n<user>\n{user_query}\n</user>",
  *         parentId: "7ac3cbd5-3b99-4e72-97f3-9cd2e749cace",
  *         description: "Description of the prompt",
  *         modelParams: {

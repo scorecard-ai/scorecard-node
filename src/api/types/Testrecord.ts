@@ -14,7 +14,6 @@ export interface Testrecord {
     context?: string;
     modelResponse?: string;
     ideal?: string;
-    fullPrompt?: string;
     customInputs?: Record<string, Scorecard.TestrecordCustomInputsValue | undefined>;
     customLabels?: Record<string, Scorecard.TestrecordCustomLabelsValue | undefined>;
     customOutputs?: Record<string, Scorecard.TestrecordCustomOutputsValue | undefined>;

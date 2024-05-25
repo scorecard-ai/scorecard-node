@@ -27,7 +27,7 @@ export class Testcase {
     /**
      * Create a new Testcase
      *
-     * @param {number} testsetId
+     * @param {number} testsetId - The ID of the Testset to create the Testcase in.
      * @param {Scorecard.TestcaseCreateParams} request
      * @param {Testcase.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -37,13 +37,11 @@ export class Testcase {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.testcase.create(1, {
-     *         userQuery: "user_query"
-     *     })
+     *     await scorecard.testcase.create(1)
      */
     public async create(
         testsetId: number,
-        request: Scorecard.TestcaseCreateParams,
+        request: Scorecard.TestcaseCreateParams = {},
         requestOptions?: Testcase.RequestOptions
     ): Promise<Scorecard.TestCase> {
         const _response = await core.fetcher({
@@ -55,7 +53,7 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -143,8 +141,8 @@ export class Testcase {
     /**
      * Retrieve Testcase data
      *
-     * @param {number} testcaseId
-     * @param {number} testsetId
+     * @param {number} testcaseId - The ID of the Testcase to retrieve.
+     * @param {number} testsetId - The ID of the Testset to retrieve the Testcase from.
      * @param {Testcase.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -169,7 +167,7 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -256,8 +254,8 @@ export class Testcase {
     /**
      * Delete a Testcase
      *
-     * @param {number} testcaseId
-     * @param {number} testsetId
+     * @param {number} testcaseId - The ID of the Testcase to delete.
+     * @param {number} testsetId - The ID of the Testset to delete the Testcase from.
      * @param {Testcase.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -272,7 +270,7 @@ export class Testcase {
         testcaseId: number,
         testsetId: number,
         requestOptions?: Testcase.RequestOptions
-    ): Promise<unknown> {
+    ): Promise<Scorecard.TestcaseDeletionResponse> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -282,7 +280,7 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -292,7 +290,13 @@ export class Testcase {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return _response.body;
+            return await serializers.TestcaseDeletionResponse.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
         }
 
         if (_response.error.reason === "status-code") {

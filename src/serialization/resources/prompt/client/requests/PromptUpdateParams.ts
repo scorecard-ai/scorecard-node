@@ -10,13 +10,11 @@ export const PromptUpdateParams: core.serialization.Schema<
     serializers.PromptUpdateParams.Raw,
     Scorecard.PromptUpdateParams
 > = core.serialization.object({
-    isArchived: core.serialization.property("is_archived", core.serialization.boolean().optional()),
     isProd: core.serialization.property("is_prod", core.serialization.boolean().optional()),
 });
 
 export declare namespace PromptUpdateParams {
     interface Raw {
-        is_archived?: boolean | null;
         is_prod?: boolean | null;
     }
 }

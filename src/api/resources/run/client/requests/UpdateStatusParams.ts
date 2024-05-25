@@ -6,10 +6,8 @@ import * as Scorecard from "../../../../index";
 
 /**
  * @example
- *     {
- *         status: Scorecard.RunStatus.Pending
- *     }
+ *     {}
  */
 export interface UpdateStatusParams {
-    status: Scorecard.RunStatus;
+    status?: Scorecard.RunStatus;
 }

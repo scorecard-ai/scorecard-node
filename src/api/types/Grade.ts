@@ -14,7 +14,9 @@ export interface Grade {
     binaryScore?: boolean;
     intScore?: number;
     reasoning?: string;
+    /** Indicates if a human should assign a grade. */
     humanEval?: boolean;
+    /** The status of the grade. */
     status?: Scorecard.ScoreStatus;
     errorMessage?: string;
     createdAt?: Date;

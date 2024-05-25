@@ -7,7 +7,9 @@ import * as Scorecard from "../index";
 export interface TestCase {
     id?: number;
     createdAt?: Date;
+    /** The ID of the testset the testcase belongs to. */
     testsetId: number;
+    /** The user query for the testcase. */
     userQuery: string;
     context?: string;
     ideal?: string;

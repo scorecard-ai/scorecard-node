@@ -5,10 +5,9 @@
 /**
  * @example
  *     {
- *         isArchived: true
+ *         isProd: true
  *     }
  */
 export interface PromptUpdateParams {
-    isArchived?: boolean;
     isProd?: boolean;
 }

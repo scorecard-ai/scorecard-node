@@ -36,15 +36,7 @@ export class Run {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.run.create({
-     *         testsetId: 1,
-     *         status: "RUNNING_EXECUTION",
-     *         modelParams: {
-     *             "param1": "value1",
-     *             "param2": "value2"
-     *         },
-     *         metrics: [1, 2]
-     *     })
+     *     await scorecard.run.create()
      */
     public async create(
         request: Scorecard.RunCreateParams = {},
@@ -59,7 +51,7 @@ export class Run {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -168,7 +160,7 @@ export class Run {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -265,13 +257,11 @@ export class Run {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.run.updateStatus(1, {
-     *         status: Scorecard.RunStatus.Pending
-     *     })
+     *     await scorecard.run.updateStatus(1)
      */
     public async updateStatus(
         runId: number,
-        request: Scorecard.UpdateStatusParams,
+        request: Scorecard.UpdateStatusParams = {},
         requestOptions?: Run.RequestOptions
     ): Promise<Scorecard.Run> {
         const _response = await core.fetcher({
@@ -283,7 +273,7 @@ export class Run {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -4,4 +4,4 @@
 
 import * as Scorecard from "../index";
 
-export type TestCaseCustomLabelsValue = string | Scorecard.FileUrl | Scorecard.JsonObject;
+export type TestCaseCustomLabelsValue = Scorecard.FileUrl | Scorecard.JsonObject | string | number | number | boolean;

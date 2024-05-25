@@ -6,12 +6,11 @@ import * as Scorecard from "../../../../index";
 
 /**
  * @example
- *     {
- *         userQuery: "user_query"
- *     }
+ *     {}
  */
 export interface TestcaseCreateParams {
-    userQuery: string;
+    /** The user query to be executed. */
+    userQuery?: string;
     context?: string;
     ideal?: string;
     customInputs?: Record<string, Scorecard.TestcaseCreateParamsCustomInputsValue | undefined>;

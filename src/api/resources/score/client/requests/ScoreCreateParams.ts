@@ -9,6 +9,7 @@
  *     }
  */
 export interface ScoreCreateParams {
+    /** The ID of the metric */
     metricId: number;
     intScore?: number;
     binaryScore?: boolean;

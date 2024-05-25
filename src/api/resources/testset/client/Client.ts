@@ -27,7 +27,7 @@ export class Testset {
     /**
      * Retrieve Testset metadata without Testcase data
      *
-     * @param {number} testsetId
+     * @param {number} testsetId - The ID of the Testset to retrieve.
      * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -48,7 +48,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -135,7 +135,7 @@ export class Testset {
     /**
      * Delete a Testset
      *
-     * @param {number} testsetId
+     * @param {number} testsetId - The ID of the Testset to delete.
      * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -156,7 +156,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -269,7 +269,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -357,7 +357,7 @@ export class Testset {
     /**
      * Read the schema of a Testset
      *
-     * @param {number} testsetId
+     * @param {number} testsetId - The ID of the Testset to retrieve the schema from.
      * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -381,7 +381,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -468,7 +468,7 @@ export class Testset {
     /**
      * Retrieve all Testcases from a Testset
      *
-     * @param {number} testsetId
+     * @param {number} testsetId - The Testset ID to retrieve testcases from.
      * @param {Scorecard.TestsetGetTestcasesRequest} request
      * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -504,7 +504,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.3.0",
+                "X-Fern-SDK-Version": "0.4.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

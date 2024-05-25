@@ -22,7 +22,6 @@ export const Testrecord: core.serialization.ObjectSchema<serializers.Testrecord.
         context: core.serialization.string().optional(),
         modelResponse: core.serialization.property("model_response", core.serialization.string().optional()),
         ideal: core.serialization.string().optional(),
-        fullPrompt: core.serialization.property("full_prompt", core.serialization.string().optional()),
         customInputs: core.serialization.property(
             "custom_inputs",
             core.serialization.record(core.serialization.string(), TestrecordCustomInputsValue.optional()).optional()
@@ -58,7 +57,6 @@ export declare namespace Testrecord {
         context?: string | null;
         model_response?: string | null;
         ideal?: string | null;
-        full_prompt?: string | null;
         custom_inputs?: Record<string, TestrecordCustomInputsValue.Raw | null | undefined> | null;
         custom_labels?: Record<string, TestrecordCustomLabelsValue.Raw | null | undefined> | null;
         custom_outputs?: Record<string, TestrecordCustomOutputsValue.Raw | null | undefined> | null;
