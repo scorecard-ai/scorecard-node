@@ -4,14 +4,6 @@ import * as core from "../core";
 import * as errors from "../errors";
 
 export declare namespace ScorecardClient {
-    interface Options {
-        /**
-         * Your Scorecard API Key. Defaults to the environment
-         * variable SCORECARD_API_KEY.
-         */
-        apiKey?: core.Supplier<string>;
-        environment?: core.Supplier<ScorecardEnvironment | string>;
-    }
 
     interface RequestOptions extends FernClient.RequestOptions {}
 
@@ -32,16 +24,6 @@ export declare namespace ScorecardClient {
 }
 
 export class ScorecardClient extends FernClient {
-    constructor(options: ScorecardClient.Options = {}) {
-        const apiKey = options.apiKey ?? process.env["SCORECARD_API_KEY"];
-        if (apiKey !== undefined) {
-            super({...options, apiKey});
-        }
-        
-        throw new errors.ScorecardError({
-            message: "Please pass in your Scorecard API Key or export SCORECARD_API_KEY in your environment.",
-        });
-    }
 
     /**
      * Runs all tests within a testset
