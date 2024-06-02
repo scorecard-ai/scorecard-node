@@ -13,6 +13,7 @@ export declare namespace RunMetric {
     interface Options {
         environment?: core.Supplier<environments.ScorecardEnvironment | string>;
         apiKey: core.Supplier<string>;
+        fetcher?: core.FetchFunction;
     }
 
     interface RequestOptions {
@@ -40,7 +41,7 @@ export class RunMetric {
      *     await scorecard.runMetric.get(1)
      */
     public async get(runId: number, requestOptions?: RunMetric.RequestOptions): Promise<Scorecard.RunMetric[]> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/run_metric/${encodeURIComponent(runId)}`
@@ -49,7 +50,7 @@ export class RunMetric {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

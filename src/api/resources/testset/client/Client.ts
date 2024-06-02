@@ -13,6 +13,7 @@ export declare namespace Testset {
     interface Options {
         environment?: core.Supplier<environments.ScorecardEnvironment | string>;
         apiKey: core.Supplier<string>;
+        fetcher?: core.FetchFunction;
     }
 
     interface RequestOptions {
@@ -40,7 +41,7 @@ export class Testset {
      *     await scorecard.testset.get(1)
      */
     public async get(testsetId: number, requestOptions?: Testset.RequestOptions): Promise<Scorecard.Testset> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/testset/${encodeURIComponent(testsetId)}`
@@ -49,7 +50,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -149,7 +150,7 @@ export class Testset {
      *     await scorecard.testset.delete(1)
      */
     public async delete(testsetId: number, requestOptions?: Testset.RequestOptions): Promise<Scorecard.Testset> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/testset/${encodeURIComponent(testsetId)}`
@@ -158,7 +159,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -263,7 +264,7 @@ export class Testset {
         request: Scorecard.TestsetCreateParams,
         requestOptions?: Testset.RequestOptions
     ): Promise<Scorecard.Testset> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 "v1/testset"
@@ -272,7 +273,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -376,7 +377,7 @@ export class Testset {
         testsetId: number,
         requestOptions?: Testset.RequestOptions
     ): Promise<Scorecard.CustomSchema> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/testset/${encodeURIComponent(testsetId)}/schema`
@@ -385,7 +386,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -500,7 +501,7 @@ export class Testset {
             _queryParams["limit"] = limit.toString();
         }
 
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/testset/${encodeURIComponent(testsetId)}/testcase`
@@ -509,7 +510,7 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

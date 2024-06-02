@@ -13,6 +13,7 @@ export declare namespace Score {
     interface Options {
         environment?: core.Supplier<environments.ScorecardEnvironment | string>;
         apiKey: core.Supplier<string>;
+        fetcher?: core.FetchFunction;
     }
 
     interface RequestOptions {
@@ -49,7 +50,7 @@ export class Score {
         request: Scorecard.ScoreCreateParams,
         requestOptions?: Score.RequestOptions
     ): Promise<Scorecard.Grade> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/run/${encodeURIComponent(runId)}/testrecord/${encodeURIComponent(testrecordId)}/score`
@@ -58,7 +59,7 @@ export class Score {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -168,7 +169,7 @@ export class Score {
         request: Scorecard.ScoreUpdateParams = {},
         requestOptions?: Score.RequestOptions
     ): Promise<Scorecard.Grade> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/run/${encodeURIComponent(runId)}/testrecord/${encodeURIComponent(
@@ -179,7 +180,7 @@ export class Score {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

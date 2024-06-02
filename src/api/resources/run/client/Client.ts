@@ -13,6 +13,7 @@ export declare namespace Run {
     interface Options {
         environment?: core.Supplier<environments.ScorecardEnvironment | string>;
         apiKey: core.Supplier<string>;
+        fetcher?: core.FetchFunction;
     }
 
     interface RequestOptions {
@@ -43,7 +44,7 @@ export class Run {
         request: Scorecard.RunCreateParams = {},
         requestOptions?: Run.RequestOptions
     ): Promise<Scorecard.Run> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 "v1/run"
@@ -52,7 +53,7 @@ export class Run {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -153,7 +154,7 @@ export class Run {
      *     await scorecard.run.get(1)
      */
     public async get(runId: number, requestOptions?: Run.RequestOptions): Promise<Scorecard.Run> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/run/${encodeURIComponent(runId)}`
@@ -162,7 +163,7 @@ export class Run {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -267,7 +268,7 @@ export class Run {
         request: Scorecard.UpdateStatusParams = {},
         requestOptions?: Run.RequestOptions
     ): Promise<Scorecard.Run> {
-        const _response = await core.fetcher({
+        const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
                 `v1/run/${encodeURIComponent(runId)}/status`
@@ -276,7 +277,7 @@ export class Run {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.4.1",
+                "X-Fern-SDK-Version": "0.5.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
