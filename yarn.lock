@@ -604,6 +604,13 @@
   dependencies:
     "@opentelemetry/semantic-conventions" "1.24.1"
 
+"@opentelemetry/core@latest":
+  version "1.25.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/core/-/core-1.25.0.tgz#ad034f5c2669f589bd703bfbbaa38b51f8504053"
+  integrity sha512-n0B3s8rrqGrasTgNkXLKXzN0fXo+6IYP7M5b7AMsrZM33f/y6DS6kJ0Btd7SespASWq8bgL3taLo0oe0vB52IQ==
+  dependencies:
+    "@opentelemetry/semantic-conventions" "1.25.0"
+
 "@opentelemetry/exporter-trace-otlp-http@latest":
   version "0.51.1"
   resolved "https://registry.yarnpkg.com/@opentelemetry/exporter-trace-otlp-http/-/exporter-trace-otlp-http-0.51.1.tgz#10c4706ed0c216e98411e5aa90c88a5c710d56c6"
@@ -721,6 +728,11 @@
   version "1.24.1"
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.24.1.tgz#d4bcebda1cb5146d47a2a53daaa7922f8e084dfb"
   integrity sha512-VkliWlS4/+GHLLW7J/rVBA00uXus1SWvwFvcUDxDwmFxYfg/2VI6ekwdXS28cjI8Qz2ky2BzG8OUHo+WeYIWqw==
+
+"@opentelemetry/semantic-conventions@1.25.0":
+  version "1.25.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.25.0.tgz#390eb4d42a29c66bdc30066af9035645e9bb7270"
+  integrity sha512-M+kkXKRAIAiAP6qYyesfrC5TOmDpDVtsxuGfPcqd9B/iBrac+E14jYwrgm0yZBUIbIP2OnqC3j+UgkXLm1vxUQ==
 
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"

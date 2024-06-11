@@ -24,6 +24,7 @@
         "@arizeai/openinference-instrumentation-openai": "^0.2.0",
         "@langchain/core": "^0.1.63",
         "@opentelemetry/api": "*",
+        "@opentelemetry/core": "*",
         "@opentelemetry/exporter-trace-otlp-http": "*",
         "@opentelemetry/instrumentation": ">=0.40.0",
         "@opentelemetry/resources": "*",
@@ -42,6 +43,9 @@
             "optional": true
         },
         "@opentelemetry/api": {
+            "optional": false
+        },
+        "@opentelemetry/core": {
             "optional": false
         },
         "@opentelemetry/exporter-trace-otlp-http": {
@@ -78,6 +82,7 @@
         "@arizeai/openinference-instrumentation-openai": "^0.2.0",
         "@langchain/core": "^0.1.63",
         "@opentelemetry/api": "latest",
+        "@opentelemetry/core": "latest",
         "@opentelemetry/exporter-trace-otlp-http": "latest",
         "@opentelemetry/instrumentation": "latest",
         "@opentelemetry/resources": "latest",

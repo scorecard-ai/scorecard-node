@@ -1,11 +1,12 @@
+import { context, propagation } from '@opentelemetry/api';
 import { ScorecardClient as FernClient } from "../Client";
-import { ScorecardEnvironment } from "../environments";
-import * as core from "../core";
+import { FetchFunction, fetcher as defaultFetcher } from "../core";
 import * as errors from "../errors";
 
 export declare namespace ScorecardClient {
+    interface Options extends Omit<FernClient.Options, "fetcher"> { }
 
-    interface RequestOptions extends FernClient.RequestOptions {}
+    interface RequestOptions extends FernClient.RequestOptions { }
 
     interface RunTestArgs {
         /**
@@ -24,6 +25,14 @@ export declare namespace ScorecardClient {
 }
 
 export class ScorecardClient extends FernClient {
+    constructor(options: ScorecardClient.Options) {
+        const fetcher: FetchFunction = (args) => {
+            args.headers = args.headers ?? {};
+            propagation.inject(context.active(), args.headers);
+            return defaultFetcher(args);
+        };
+        super({ ...options, fetcher });
+    }
 
     /**
      * Runs all tests within a testset
