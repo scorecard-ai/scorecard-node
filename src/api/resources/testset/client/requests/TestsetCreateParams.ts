@@ -12,7 +12,9 @@ import * as Scorecard from "../../../../index";
  */
 export interface TestsetCreateParams {
     name: string;
+    /** A description for the testset. */
     description?: string;
+    /** Whether or not the testset uses retrieval. */
     usingRetrieval?: boolean;
     customSchema?: Scorecard.CustomSchema;
 }

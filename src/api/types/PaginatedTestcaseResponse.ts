@@ -6,7 +6,9 @@ import * as Scorecard from "../index";
 
 export interface PaginatedTestcaseResponse {
     count: number;
+    /** The URL to fetch the next page of testcases. */
     next?: string;
+    /** The URL to fetch the previous page of testcases. */
     previous?: string;
     /** The list of Testcases retrieved in this page. */
     results: Scorecard.TestCase[];

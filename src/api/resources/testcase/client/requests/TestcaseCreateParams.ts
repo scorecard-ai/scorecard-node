@@ -11,7 +11,9 @@ import * as Scorecard from "../../../../index";
 export interface TestcaseCreateParams {
     /** The user query to be executed. */
     userQuery?: string;
+    /** The context to be used while generating the testcase. */
     context?: string;
+    /** The ideal response to the user query. */
     ideal?: string;
     customInputs?: Record<string, Scorecard.TestcaseCreateParamsCustomInputsValue | undefined>;
     customLabels?: Record<string, Scorecard.TestcaseCreateParamsCustomLabelsValue | undefined>;

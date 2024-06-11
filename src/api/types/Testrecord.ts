@@ -6,19 +6,31 @@ import * as Scorecard from "../index";
 
 export interface Testrecord {
     id?: number;
+    /** The creation date and time of the testrecord. */
     createdAt?: Date;
+    /** The ID of the run the testrecord belongs to. */
     runId?: number;
+    /** The ID of the testset the testrecord belongs to. */
     testsetId?: number;
+    /** The ID of the testcase the testrecord belongs to. */
     testcaseId?: number;
+    /** The user query for the testrecord. */
     userQuery?: string;
+    /** The context for the testrecord. */
     context?: string;
+    /** The actual response of the model for the testrecord. */
     modelResponse?: string;
+    /** The ideal response for the testrecord. */
     ideal?: string;
     customInputs?: Record<string, Scorecard.TestrecordCustomInputsValue | undefined>;
     customLabels?: Record<string, Scorecard.TestrecordCustomLabelsValue | undefined>;
     customOutputs?: Record<string, Scorecard.TestrecordCustomOutputsValue | undefined>;
+    /** The current status of the testrecord. */
     status?: string;
+    /** The prompt used to generate the testrecord. */
     prompt?: string;
+    /** The model parameters used when generating the testrecord. */
     modelParams?: Record<string, Scorecard.TestrecordModelParamsValue | undefined>;
+    /** Debug information produced during the testrecord's generation. */
     modelDebugInfo?: Record<string, Scorecard.TestrecordModelDebugInfoValue | undefined>;
 }

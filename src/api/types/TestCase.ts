@@ -5,13 +5,17 @@
 import * as Scorecard from "../index";
 
 export interface TestCase {
+    /** The ID of the testcase. */
     id?: number;
+    /** The creation date and time of the testcase. */
     createdAt?: Date;
     /** The ID of the testset the testcase belongs to. */
     testsetId: number;
     /** The user query for the testcase. */
     userQuery: string;
+    /** The context for the testcase. */
     context?: string;
+    /** The ideal response for the testcase. */
     ideal?: string;
     customInputs?: Record<string, Scorecard.TestCaseCustomInputsValue | undefined>;
     customLabels?: Record<string, Scorecard.TestCaseCustomLabelsValue | undefined>;
