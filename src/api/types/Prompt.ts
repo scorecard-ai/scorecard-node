@@ -5,7 +5,9 @@
 import * as Scorecard from "../index";
 
 export interface Prompt {
+    /** The organization this resource belongs to. */
     orgId?: string;
+    /** The user this record belongs to. */
     userId?: string;
     id?: string;
     name?: string;

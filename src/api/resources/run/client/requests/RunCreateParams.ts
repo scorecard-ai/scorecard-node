@@ -10,6 +10,7 @@ export interface RunCreateParams {
     testsetId?: number;
     scoringConfigId?: number;
     status?: string;
+    /** Optional. The model parameters to use for this run. */
     modelParams?: Record<string, unknown>;
     source?: string;
     notes?: string;
