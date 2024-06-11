@@ -1,4 +1,5 @@
-const { trace } = require('@opentelemetry/api');
+const { propagation, trace } = require('@opentelemetry/api');
+const { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } = require('@opentelemetry/core');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 const { Resource } = require('@opentelemetry/resources');
 const { BatchSpanProcessor, ConsoleSpanExporter, NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
@@ -38,6 +39,13 @@ module.exports = {
       provider.addSpanProcessor(processor);
     }
 
+    propagation.setGlobalPropagator(new CompositePropagator({
+      propagators: [
+        new W3CTraceContextPropagator(),
+        new W3CBaggagePropagator()
+      ]
+    }));
+
     const url = scorecardConfig.telemetryUrl ? scorecardConfig.telemetryUrl : 'https://telemetry.getscorecard.ai';
     const otlpExporter = new OTLPTraceExporter({
       url: `${url}/v1/traces`,
@@ -52,7 +60,7 @@ module.exports = {
 
     if (checkInstalled('@langchain/core')) {
       const { LangChainInstrumentation } = require('@arizeai/openinference-instrumentation-langchain');
-      new LangChainInstrumentation().manuallyInstrument(require('@langchain/core/callbacks/manager'));  
+      new LangChainInstrumentation().manuallyInstrument(require('@langchain/core/callbacks/manager'));
     }
 
     if (checkInstalled('openai')) {
