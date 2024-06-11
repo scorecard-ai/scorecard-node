@@ -46,7 +46,7 @@
             "optional": false
         },
         "@opentelemetry/core": {
-            "optional": true
+            "optional": false
         },
         "@opentelemetry/exporter-trace-otlp-http": {
             "optional": false
