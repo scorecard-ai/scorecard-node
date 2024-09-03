@@ -6,6 +6,7 @@ import * as serializers from "../../../../index";
 import * as Scorecard from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { CustomSchema } from "../../../../types/CustomSchema";
+import { IngestionMethod } from "../../../../types/IngestionMethod";
 
 export const TestsetCreateParams: core.serialization.Schema<
     serializers.TestsetCreateParams.Raw,
@@ -15,6 +16,9 @@ export const TestsetCreateParams: core.serialization.Schema<
     description: core.serialization.string().optional(),
     usingRetrieval: core.serialization.property("using_retrieval", core.serialization.boolean().optional()),
     customSchema: core.serialization.property("custom_schema", CustomSchema.optional()),
+    projectId: core.serialization.property("project_id", core.serialization.number().optional()),
+    ingestionMethod: core.serialization.property("ingestion_method", IngestionMethod.optional()),
+    published: core.serialization.boolean().optional(),
 });
 
 export declare namespace TestsetCreateParams {
@@ -23,5 +27,8 @@ export declare namespace TestsetCreateParams {
         description?: string | null;
         using_retrieval?: boolean | null;
         custom_schema?: CustomSchema.Raw | null;
+        project_id?: number | null;
+        ingestion_method?: IngestionMethod.Raw | null;
+        published?: boolean | null;
     }
 }

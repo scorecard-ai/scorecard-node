@@ -12,7 +12,7 @@ export const TestCaseCustomInputsValue: core.serialization.Schema<
     Scorecard.TestCaseCustomInputsValue
 > = core.serialization.undiscriminatedUnion([
     FileUrl,
-    core.serialization.lazyObject(async () => (await import("..")).JsonObject),
+    core.serialization.lazyObject(() => serializers.JsonObject),
     core.serialization.string(),
     core.serialization.number(),
     core.serialization.number(),

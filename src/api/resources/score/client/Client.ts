@@ -17,8 +17,11 @@ export declare namespace Score {
     }
 
     interface RequestOptions {
+        /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
+        /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
+        /** A hook to abort the request. */
         abortSignal?: AbortSignal;
     }
 }
@@ -40,7 +43,7 @@ export class Score {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.score.create(1, 1, {
+     *     await client.score.create(1, 1, {
      *         metricId: 1
      *     })
      */
@@ -59,19 +62,21 @@ export class Score {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.5.4",
+                "X-Fern-SDK-Version": "0.6.0",
+                "User-Agent": "scorecard-ai/0.6.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
-            body: await serializers.ScoreCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            requestType: "json",
+            body: serializers.ScoreCreateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return await serializers.Grade.parseOrThrow(_response.body, {
+            return serializers.Grade.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -84,7 +89,7 @@ export class Score {
             switch (_response.error.statusCode) {
                 case 401:
                     throw new Scorecard.UnauthorizedError(
-                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                        serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -94,7 +99,7 @@ export class Score {
                     );
                 case 403:
                     throw new Scorecard.ForbiddenError(
-                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -104,7 +109,7 @@ export class Score {
                     );
                 case 404:
                     throw new Scorecard.NotFoundError(
-                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                        serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -114,7 +119,7 @@ export class Score {
                     );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
-                        await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                        serializers.HttpValidationError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -160,7 +165,7 @@ export class Score {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.score.update(1, 1, 1)
+     *     await client.score.update(1, 1, 1)
      */
     public async update(
         runId: number,
@@ -180,19 +185,21 @@ export class Score {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.5.4",
+                "X-Fern-SDK-Version": "0.6.0",
+                "User-Agent": "scorecard-ai/0.6.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
-            body: await serializers.ScoreUpdateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            requestType: "json",
+            body: serializers.ScoreUpdateParams.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return await serializers.Grade.parseOrThrow(_response.body, {
+            return serializers.Grade.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -205,7 +212,7 @@ export class Score {
             switch (_response.error.statusCode) {
                 case 401:
                     throw new Scorecard.UnauthorizedError(
-                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                        serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -215,7 +222,7 @@ export class Score {
                     );
                 case 403:
                     throw new Scorecard.ForbiddenError(
-                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -225,7 +232,7 @@ export class Score {
                     );
                 case 404:
                     throw new Scorecard.NotFoundError(
-                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                        serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -235,7 +242,7 @@ export class Score {
                     );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
-                        await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                        serializers.HttpValidationError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,

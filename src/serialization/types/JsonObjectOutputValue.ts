@@ -12,9 +12,9 @@ export const JsonObjectOutputValue: core.serialization.Schema<
 > = core.serialization.undiscriminatedUnion([
     core.serialization.record(
         core.serialization.string(),
-        core.serialization.lazyObject(async () => (await import("..")).JsonObject)
+        core.serialization.lazyObject(() => serializers.JsonObject)
     ),
-    core.serialization.list(core.serialization.lazyObject(async () => (await import("..")).JsonObject)),
+    core.serialization.list(core.serialization.lazyObject(() => serializers.JsonObject)),
     core.serialization.string(),
     core.serialization.number(),
     core.serialization.number(),

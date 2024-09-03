@@ -8,7 +8,7 @@ import * as core from "../../core";
 
 export const JsonObject: core.serialization.ObjectSchema<serializers.JsonObject.Raw, Scorecard.JsonObject> =
     core.serialization.object({
-        value: core.serialization.lazy(async () => (await import("..")).JsonObjectOutputValue).optional(),
+        value: core.serialization.lazy(() => serializers.JsonObjectOutputValue).optional(),
     });
 
 export declare namespace JsonObject {

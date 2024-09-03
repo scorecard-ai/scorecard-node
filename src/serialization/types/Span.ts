@@ -9,7 +9,7 @@ import * as core from "../../core";
 export const Span: core.serialization.ObjectSchema<serializers.Span.Raw, Scorecard.Span> = core.serialization.object({
     children: core.serialization.property(
         "Children",
-        core.serialization.list(core.serialization.lazyObject(async () => (await import("..")).Span))
+        core.serialization.list(core.serialization.lazyObject(() => serializers.Span))
     ),
     timestamp: core.serialization.property("Timestamp", core.serialization.date()),
     traceId: core.serialization.property("TraceId", core.serialization.string()),

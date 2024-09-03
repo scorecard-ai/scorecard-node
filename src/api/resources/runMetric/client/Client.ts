@@ -17,8 +17,11 @@ export declare namespace RunMetric {
     }
 
     interface RequestOptions {
+        /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
+        /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
+        /** A hook to abort the request. */
         abortSignal?: AbortSignal;
     }
 }
@@ -38,7 +41,7 @@ export class RunMetric {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await scorecard.runMetric.get(1)
+     *     await client.runMetric.get(1)
      */
     public async get(runId: number, requestOptions?: RunMetric.RequestOptions): Promise<Scorecard.RunMetric[]> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -50,18 +53,20 @@ export class RunMetric {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.5.4",
+                "X-Fern-SDK-Version": "0.6.0",
+                "User-Agent": "scorecard-ai/0.6.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
+            requestType: "json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return await serializers.runMetric.get.Response.parseOrThrow(_response.body, {
+            return serializers.runMetric.get.Response.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -74,7 +79,7 @@ export class RunMetric {
             switch (_response.error.statusCode) {
                 case 401:
                     throw new Scorecard.UnauthorizedError(
-                        await serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                        serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -84,7 +89,7 @@ export class RunMetric {
                     );
                 case 403:
                     throw new Scorecard.ForbiddenError(
-                        await serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -94,7 +99,7 @@ export class RunMetric {
                     );
                 case 404:
                     throw new Scorecard.NotFoundError(
-                        await serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                        serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -104,7 +109,7 @@ export class RunMetric {
                     );
                 case 422:
                     throw new Scorecard.UnprocessableEntityError(
-                        await serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                        serializers.HttpValidationError.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,

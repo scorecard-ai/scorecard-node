@@ -10,8 +10,9 @@ import { Testrecord } from "./api/resources/testrecord/client/Client";
 import { Run } from "./api/resources/run/client/Client";
 import { Score } from "./api/resources/score/client/Client";
 import { RunMetric } from "./api/resources/runMetric/client/Client";
-import { Traces } from "./api/resources/traces/client/Client";
+import { Tracing } from "./api/resources/tracing/client/Client";
 import { Prompt } from "./api/resources/prompt/client/Client";
+import { ScoringConfig } from "./api/resources/scoringConfig/client/Client";
 
 export declare namespace ScorecardClient {
     interface Options {
@@ -21,8 +22,11 @@ export declare namespace ScorecardClient {
     }
 
     interface RequestOptions {
+        /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
+        /** The number of times to retry the request. Defaults to 2. */
         maxRetries?: number;
+        /** A hook to abort the request. */
         abortSignal?: AbortSignal;
     }
 }
@@ -66,15 +70,21 @@ export class ScorecardClient {
         return (this._runMetric ??= new RunMetric(this._options));
     }
 
-    protected _traces: Traces | undefined;
+    protected _tracing: Tracing | undefined;
 
-    public get traces(): Traces {
-        return (this._traces ??= new Traces(this._options));
+    public get tracing(): Tracing {
+        return (this._tracing ??= new Tracing(this._options));
     }
 
     protected _prompt: Prompt | undefined;
 
     public get prompt(): Prompt {
         return (this._prompt ??= new Prompt(this._options));
+    }
+
+    protected _scoringConfig: ScoringConfig | undefined;
+
+    public get scoringConfig(): ScoringConfig {
+        return (this._scoringConfig ??= new ScoringConfig(this._options));
     }
 }

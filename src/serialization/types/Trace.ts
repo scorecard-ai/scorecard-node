@@ -11,6 +11,10 @@ export const Trace: core.serialization.ObjectSchema<serializers.Trace.Raw, Score
         traceId: core.serialization.property("TraceId", core.serialization.string()),
         start: core.serialization.property("Start", core.serialization.date()),
         end: core.serialization.property("End", core.serialization.date()),
+        spans: core.serialization.property(
+            "Spans",
+            core.serialization.list(core.serialization.lazyObject(() => serializers.Span)).optional()
+        ),
     }
 );
 
@@ -19,5 +23,6 @@ export declare namespace Trace {
         TraceId: string;
         Start: string;
         End: string;
+        Spans?: serializers.Span.Raw[] | null;
     }
 }

@@ -13,7 +13,7 @@ export const TestrecordCustomInputsValue: core.serialization.Schema<
 > = core.serialization.undiscriminatedUnion([
     core.serialization.string(),
     FileUrl,
-    core.serialization.lazyObject(async () => (await import("..")).JsonObject),
+    core.serialization.lazyObject(() => serializers.JsonObject),
 ]);
 
 export declare namespace TestrecordCustomInputsValue {

@@ -17,4 +17,10 @@ export interface TestsetCreateParams {
     /** Whether or not the testset uses retrieval. */
     usingRetrieval?: boolean;
     customSchema?: Scorecard.CustomSchema;
+    /** The ID of the project to create the testset in. Omitting this optional argument will create the testset inside your Organization's default project. */
+    projectId?: number;
+    /** The method of ingestion for the testset. */
+    ingestionMethod?: Scorecard.IngestionMethod;
+    /** Whether or not the testset is published. */
+    published?: boolean;
 }
