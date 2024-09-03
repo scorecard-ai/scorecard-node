@@ -17,11 +17,11 @@ The SDK uses fetch and is compatible in multiple environments
 such as Node, Vercel, Cloudflare Workers. 
 
 ```typescript
-import { ScorecardClient } from "scorecard";
+import { ScorecardClient } from "scorecard-ai";
 
-const scorecard = new ScorecardClient(
-  api_key="YOUR_API_KEY" // Defaults to SCORECARD_API_KEY
-)
+const scorecard = new ScorecardClient({
+  apiKey: "YOUR_API_KEY"
+})
 
 const testset = await scorecard.testset.create({
   testsetId=1234, 
@@ -42,11 +42,11 @@ available on both the sync and async client.
 
 ```typescript
 import { callModel } from "../app.ts";
-import { ScorecardClient } from "scorecard";
+import { ScorecardClient } from "scorecard-ai";
 
-const scorecard = new ScorecardClient(
-  apiKey="YOUR_API_KEY"
-)
+const scorecard = new ScorecardClient({
+  apiKey: "YOUR_API_KEY"
+})
 
 client.runTests({
   inputTestsetId: 123,
@@ -76,7 +76,7 @@ All exceptions thrown by the SDK will
 sublcass [ScorecardError](./src/errors/ScorecardError.ts). 
 
 ```typescript
-import { Scorecard, ScorecardError } from "scorecard";
+import { Scorecard, ScorecardError } from "scorecard-ai";
 
 try {
   await client.testset.get({...});
