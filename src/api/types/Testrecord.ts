@@ -33,4 +33,6 @@ export interface Testrecord {
     modelParams?: Record<string, Scorecard.TestrecordModelParamsValue | undefined>;
     /** Debug information produced during the testrecord's generation. */
     modelDebugInfo?: Record<string, Scorecard.TestrecordModelDebugInfoValue | undefined>;
+    /** The error message for the testrecord. */
+    errorMessage?: string;
 }

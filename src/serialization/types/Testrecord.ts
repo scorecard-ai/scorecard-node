@@ -44,6 +44,7 @@ export const Testrecord: core.serialization.ObjectSchema<serializers.Testrecord.
             "model_debug_info",
             core.serialization.record(core.serialization.string(), TestrecordModelDebugInfoValue.optional()).optional()
         ),
+        errorMessage: core.serialization.property("error_message", core.serialization.string().optional()),
     });
 
 export declare namespace Testrecord {
@@ -64,5 +65,6 @@ export declare namespace Testrecord {
         prompt?: string | null;
         model_params?: Record<string, TestrecordModelParamsValue.Raw | null | undefined> | null;
         model_debug_info?: Record<string, TestrecordModelDebugInfoValue.Raw | null | undefined> | null;
+        error_message?: string | null;
     }
 }

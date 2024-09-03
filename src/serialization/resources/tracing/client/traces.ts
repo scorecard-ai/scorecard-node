@@ -5,10 +5,11 @@
 import * as serializers from "../../../index";
 import * as Scorecard from "../../../../api/index";
 import * as core from "../../../../core";
+import { Trace } from "../../../types/Trace";
 
-export const Response: core.serialization.Schema<serializers.traces.get.Response.Raw, Scorecard.Span[]> =
-    core.serialization.list(core.serialization.lazyObject(async () => (await import("../../..")).Span));
+export const Response: core.serialization.Schema<serializers.tracing.traces.Response.Raw, Scorecard.Trace[]> =
+    core.serialization.list(Trace);
 
 export declare namespace Response {
-    type Raw = serializers.Span.Raw[];
+    type Raw = Trace.Raw[];
 }

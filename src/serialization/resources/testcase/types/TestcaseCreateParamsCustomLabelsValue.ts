@@ -12,7 +12,7 @@ export const TestcaseCreateParamsCustomLabelsValue: core.serialization.Schema<
     Scorecard.TestcaseCreateParamsCustomLabelsValue
 > = core.serialization.undiscriminatedUnion([
     FileUrl,
-    core.serialization.lazyObject(async () => (await import("../../..")).JsonObject),
+    core.serialization.lazyObject(() => serializers.JsonObject),
     core.serialization.string(),
     core.serialization.number(),
     core.serialization.number(),
