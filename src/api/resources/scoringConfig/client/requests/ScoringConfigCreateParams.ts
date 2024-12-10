@@ -7,11 +7,13 @@
  *     {
  *         name: "Scoring Config Name",
  *         description: "Description of the scoring config",
- *         metrics: [1, 2, 3]
+ *         metrics: [1, 2, 3],
+ *         projectId: 1
  *     }
  */
 export interface ScoringConfigCreateParams {
     name?: string;
     description?: string;
     metrics?: number[];
+    projectId?: number;
 }

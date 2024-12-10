@@ -24,6 +24,7 @@ export const Prompt: core.serialization.ObjectSchema<serializers.Prompt.Raw, Sco
         parentId: core.serialization.property("parent_id", core.serialization.string().optional()),
         mergeParentId: core.serialization.property("merge_parent_id", core.serialization.string().optional()),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
+        projectId: core.serialization.property("project_id", core.serialization.number().optional()),
     });
 
 export declare namespace Prompt {
@@ -40,5 +41,6 @@ export declare namespace Prompt {
         parent_id?: string | null;
         merge_parent_id?: string | null;
         created_at?: string | null;
+        project_id?: number | null;
     }
 }

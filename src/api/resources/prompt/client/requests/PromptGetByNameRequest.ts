@@ -13,4 +13,8 @@ export interface PromptGetByNameRequest {
      * Name of the prompt.
      */
     name: string;
+    /**
+     * Tag to select by. Defaults to selecting the production version
+     */
+    tag?: string;
 }

@@ -19,4 +19,6 @@ export interface Prompt {
     parentId?: string;
     mergeParentId?: string;
     createdAt?: Date;
+    /** The ID of the project the prompt belongs to. */
+    projectId?: number;
 }

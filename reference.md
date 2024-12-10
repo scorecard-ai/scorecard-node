@@ -2,7 +2,7 @@
 
 ## Testset
 
-<details><summary><code>client.testset.<a href="/src/api/resources/testset/client/Client.ts">get</a>(testsetId) -> Scorecard.Testset</code></summary>
+<details><summary><code>client.testset.<a href="/src/api/resources/testset/client/Client.ts">get</a>({ ...params }) -> Scorecard.TestsetCursorPage</code></summary>
 <dl>
 <dd>
 
@@ -14,7 +14,7 @@
 <dl>
 <dd>
 
-Retrieve Testset metadata without Testcase data
+Retrieve all Testsets with cursor-based pagination
 
 </dd>
 </dl>
@@ -30,7 +30,7 @@ Retrieve Testset metadata without Testcase data
 <dd>
 
 ```typescript
-await client.testset.get(1);
+await client.testset.get();
 ```
 
 </dd>
@@ -46,7 +46,7 @@ await client.testset.get(1);
 <dl>
 <dd>
 
-**testsetId:** `number` — The ID of the Testset to retrieve.
+**request:** `Scorecard.TestsetGetRequest`
 
 </dd>
 </dl>
@@ -692,7 +692,7 @@ await client.testcase.update(1, 1);
 </dl>
 </details>
 
-<details><summary><code>client.testcase.<a href="/src/api/resources/testcase/client/Client.ts">batchCopy</a>(testsetId, { ...params }) -> Scorecard.TestCase</code></summary>
+<details><summary><code>client.testcase.<a href="/src/api/resources/testcase/client/Client.ts">batchCopy</a>(testsetId, { ...params }) -> Scorecard.TestCase[]</code></summary>
 <dl>
 <dd>
 
@@ -1617,7 +1617,7 @@ await client.tracing.span("trace_id", "span_id");
 <dl>
 <dd>
 
-Retrieve a prod prompt by name
+Retrieve a prompt by name, defaulting to the production prompt, unless a tag to select the prompt by is specified
 
 </dd>
 </dl>
@@ -1682,11 +1682,11 @@ await client.prompt.getByName({
 <dl>
 <dd>
 
-Two types of prompts can be created - a root prompt or a child prompt (aka Prompt Version in app).
+Two types of prompts can be created - a root prompt or a child prompt (aka Prompt Version in the app).
 
-        A root prompt can be created by providing the `name` param, and it will always be tagged as prod.
+        A root prompt can be created by providing the `name` param, and it will always be tagged as production.
 
-        A child prompt can be created by providing the `parent_id` param. Note that the `name` param in this case will be ignored as all descendents from a root prompt would share the root's name. `is_prod` can also be provided to configure whether a child should be tagged as prod.
+        A child prompt can be created by providing the `parent_id` param. Note that the `name` param in this case will be ignored as all descendants from a root prompt would share the root's name. `is_prod` can also be provided to configure whether a child should be tagged as production.
 
 </dd>
 </dl>
@@ -1713,6 +1713,8 @@ await client.prompt.create({
         param3: 100,
         param4: true,
     },
+    tag: "1.0",
+    projectId: 1,
 });
 ```
 
@@ -1730,6 +1732,69 @@ await client.prompt.create({
 <dd>
 
 **request:** `Scorecard.PromptCreateParams`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Prompt.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.prompt.<a href="/src/api/resources/prompt/client/Client.ts">listPrompts</a>({ ...params }) -> Scorecard.PromptCursorPage</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all prompts with cursor-based pagination
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.prompt.listPrompts();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Scorecard.PromptListPromptsRequest`
 
 </dd>
 </dl>
@@ -1823,7 +1888,7 @@ await client.prompt.get("id");
 <dl>
 <dd>
 
-Delete a scoring config.
+Delete a root prompt and all of its children.
 
 </dd>
 </dl>
@@ -1855,7 +1920,7 @@ await client.prompt.delete("id");
 <dl>
 <dd>
 
-**id:** `string` — The id of the scoring config to delete.
+**id:** `string` — The id of the root prompt to delete.
 
 </dd>
 </dl>
@@ -1983,6 +2048,7 @@ await client.scoringConfig.create({
     name: "Scoring Config Name",
     description: "Description of the scoring config",
     metrics: [1, 2, 3],
+    projectId: 1,
 });
 ```
 
@@ -2063,6 +2129,69 @@ await client.scoringConfig.get("id");
 <dd>
 
 **id:** `string` — The id of the scoring config to get.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ScoringConfig.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.scoringConfig.<a href="/src/api/resources/scoringConfig/client/Client.ts">delete</a>(id) -> unknown</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a scoring config.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.scoringConfig.delete("id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` — The id of the scoring config to delete.
 
 </dd>
 </dl>

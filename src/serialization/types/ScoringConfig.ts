@@ -17,6 +17,7 @@ export const ScoringConfig: core.serialization.ObjectSchema<serializers.ScoringC
         isArchived: core.serialization.property("is_archived", core.serialization.boolean().optional()),
         metrics: core.serialization.list(core.serialization.number()).optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
+        projectId: core.serialization.property("project_id", core.serialization.number().optional()),
     });
 
 export declare namespace ScoringConfig {
@@ -30,5 +31,6 @@ export declare namespace ScoringConfig {
         is_archived?: boolean | null;
         metrics?: number[] | null;
         created_at?: string | null;
+        project_id?: number | null;
     }
 }

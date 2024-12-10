@@ -13,6 +13,7 @@ export const ScoringConfigCreateParams: core.serialization.Schema<
     name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
     metrics: core.serialization.list(core.serialization.number()).optional(),
+    projectId: core.serialization.property("project_id", core.serialization.number().optional()),
 });
 
 export declare namespace ScoringConfigCreateParams {
@@ -20,5 +21,6 @@ export declare namespace ScoringConfigCreateParams {
         name?: string | null;
         description?: string | null;
         metrics?: number[] | null;
+        project_id?: number | null;
     }
 }

@@ -28,4 +28,6 @@ export interface Testset {
     /** The ID of the project the testset belongs to. */
     projectId?: number;
     customSchema?: Scorecard.CustomSchema;
+    /** Whether or not the testset was created by the playground. */
+    createdByPlayground?: boolean;
 }

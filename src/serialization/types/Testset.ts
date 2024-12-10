@@ -21,6 +21,10 @@ export const Testset: core.serialization.ObjectSchema<serializers.Testset.Raw, S
         isArchived: core.serialization.property("is_archived", core.serialization.boolean().optional()),
         projectId: core.serialization.property("project_id", core.serialization.number().optional()),
         customSchema: core.serialization.property("custom_schema", CustomSchema.optional()),
+        createdByPlayground: core.serialization.property(
+            "created_by_playground",
+            core.serialization.boolean().optional()
+        ),
     });
 
 export declare namespace Testset {
@@ -37,5 +41,6 @@ export declare namespace Testset {
         is_archived?: boolean | null;
         project_id?: number | null;
         custom_schema?: CustomSchema.Raw | null;
+        created_by_playground?: boolean | null;
     }
 }

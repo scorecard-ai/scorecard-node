@@ -30,9 +30,9 @@ export class Testset {
     constructor(protected readonly _options: Testset.Options) {}
 
     /**
-     * Retrieve Testset metadata without Testcase data
+     * Retrieve all Testsets with cursor-based pagination
      *
-     * @param {number} testsetId - The ID of the Testset to retrieve.
+     * @param {Scorecard.TestsetGetRequest} request
      * @param {Testset.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -41,32 +41,46 @@ export class Testset {
      * @throws {@link Scorecard.UnprocessableEntityError}
      *
      * @example
-     *     await client.testset.get(1)
+     *     await client.testset.get()
      */
-    public async get(testsetId: number, requestOptions?: Testset.RequestOptions): Promise<Scorecard.Testset> {
+    public async get(
+        request: Scorecard.TestsetGetRequest = {},
+        requestOptions?: Testset.RequestOptions
+    ): Promise<Scorecard.TestsetCursorPage> {
+        const { cursor, size } = request;
+        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        if (cursor != null) {
+            _queryParams["cursor"] = cursor;
+        }
+
+        if (size != null) {
+            _queryParams["size"] = size.toString();
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/testset/${encodeURIComponent(testsetId)}`
+                "v1/testset"
             ),
             method: "GET",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
             },
             contentType: "application/json",
+            queryParameters: _queryParams,
             requestType: "json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return serializers.Testset.parseOrThrow(_response.body, {
+            return serializers.TestsetCursorPage.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -164,8 +178,8 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -280,8 +294,8 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -397,8 +411,8 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -512,8 +526,8 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -638,8 +652,8 @@ export class Testset {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

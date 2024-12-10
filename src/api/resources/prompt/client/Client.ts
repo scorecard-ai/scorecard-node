@@ -30,7 +30,7 @@ export class Prompt {
     constructor(protected readonly _options: Prompt.Options) {}
 
     /**
-     * Retrieve a prod prompt by name
+     * Retrieve a prompt by name, defaulting to the production prompt, unless a tag to select the prompt by is specified
      *
      * @param {Scorecard.PromptGetByNameRequest} request
      * @param {Prompt.RequestOptions} requestOptions - Request-specific configuration.
@@ -49,9 +49,13 @@ export class Prompt {
         request: Scorecard.PromptGetByNameRequest,
         requestOptions?: Prompt.RequestOptions
     ): Promise<Scorecard.Prompt> {
-        const { name } = request;
+        const { name, tag } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         _queryParams["name"] = name;
+        if (tag != null) {
+            _queryParams["tag"] = tag;
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -61,8 +65,8 @@ export class Prompt {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -150,11 +154,11 @@ export class Prompt {
     }
 
     /**
-     * Two types of prompts can be created - a root prompt or a child prompt (aka Prompt Version in app).
+     * Two types of prompts can be created - a root prompt or a child prompt (aka Prompt Version in the app).
      *
-     *         A root prompt can be created by providing the `name` param, and it will always be tagged as prod.
+     *         A root prompt can be created by providing the `name` param, and it will always be tagged as production.
      *
-     *         A child prompt can be created by providing the `parent_id` param. Note that the `name` param in this case will be ignored as all descendents from a root prompt would share the root's name. `is_prod` can also be provided to configure whether a child should be tagged as prod.
+     *         A child prompt can be created by providing the `parent_id` param. Note that the `name` param in this case will be ignored as all descendants from a root prompt would share the root's name. `is_prod` can also be provided to configure whether a child should be tagged as production.
      *
      * @param {Scorecard.PromptCreateParams} request
      * @param {Prompt.RequestOptions} requestOptions - Request-specific configuration.
@@ -174,7 +178,9 @@ export class Prompt {
      *             "param2": 0.1,
      *             "param3": 100,
      *             "param4": true
-     *         }
+     *         },
+     *         tag: "1.0",
+     *         projectId: 1
      *     })
      *
      * @example
@@ -188,7 +194,9 @@ export class Prompt {
      *             "param3": 100,
      *             "param4": true
      *         },
-     *         isProd: true
+     *         tag: "v1.1",
+     *         isProd: true,
+     *         projectId: 1
      *     })
      */
     public async create(
@@ -204,8 +212,8 @@ export class Prompt {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -219,6 +227,135 @@ export class Prompt {
         });
         if (_response.ok) {
             return serializers.Prompt.parseOrThrow(_response.body, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                skipValidation: true,
+                breadcrumbsPrefix: ["response"],
+            });
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 422:
+                    throw new Scorecard.UnprocessableEntityError(
+                        serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                default:
+                    throw new errors.ScorecardError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.ScorecardError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.ScorecardTimeoutError();
+            case "unknown":
+                throw new errors.ScorecardError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * List all prompts with cursor-based pagination
+     *
+     * @param {Scorecard.PromptListPromptsRequest} request
+     * @param {Prompt.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
+     * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.prompt.listPrompts()
+     */
+    public async listPrompts(
+        request: Scorecard.PromptListPromptsRequest = {},
+        requestOptions?: Prompt.RequestOptions
+    ): Promise<Scorecard.PromptCursorPage> {
+        const { projectId, cursor, size } = request;
+        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        if (projectId != null) {
+            _queryParams["project_id"] = projectId;
+        }
+
+        if (cursor != null) {
+            _queryParams["cursor"] = cursor;
+        }
+
+        if (size != null) {
+            _queryParams["size"] = size.toString();
+        }
+
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
+                "v1/prompt/list"
+            ),
+            method: "GET",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return serializers.PromptCursorPage.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -316,8 +453,8 @@ export class Prompt {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -404,9 +541,9 @@ export class Prompt {
     }
 
     /**
-     * Delete a scoring config.
+     * Delete a root prompt and all of its children.
      *
-     * @param {string} id - The id of the scoring config to delete.
+     * @param {string} id - The id of the root prompt to delete.
      * @param {Prompt.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Scorecard.UnauthorizedError}
@@ -421,14 +558,14 @@ export class Prompt {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
-                `v1/scoring_config/${encodeURIComponent(id)}`
+                `v1/prompt/${encodeURIComponent(id)}`
             ),
             method: "DELETE",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -541,8 +678,8 @@ export class Prompt {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

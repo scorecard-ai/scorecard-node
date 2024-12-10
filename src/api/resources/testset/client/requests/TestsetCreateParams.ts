@@ -23,4 +23,6 @@ export interface TestsetCreateParams {
     ingestionMethod?: Scorecard.IngestionMethod;
     /** Whether or not the testset is published. */
     published?: boolean;
+    /** Whether or not the testset was created by the playground. */
+    createdByPlayground?: boolean;
 }

@@ -19,7 +19,9 @@ export const PromptCreateParams: core.serialization.Schema<
         "model_params",
         core.serialization.record(core.serialization.string(), PromptCreateParamsModelParamsValue.optional()).optional()
     ),
+    tag: core.serialization.string().optional(),
     isProd: core.serialization.property("is_prod", core.serialization.boolean().optional()),
+    projectId: core.serialization.property("project_id", core.serialization.number().optional()),
 });
 
 export declare namespace PromptCreateParams {
@@ -29,6 +31,8 @@ export declare namespace PromptCreateParams {
         parent_id?: string | null;
         description?: string | null;
         model_params?: Record<string, PromptCreateParamsModelParamsValue.Raw | null | undefined> | null;
+        tag?: string | null;
         is_prod?: boolean | null;
+        project_id?: number | null;
     }
 }

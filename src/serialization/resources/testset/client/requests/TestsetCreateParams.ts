@@ -19,6 +19,7 @@ export const TestsetCreateParams: core.serialization.Schema<
     projectId: core.serialization.property("project_id", core.serialization.number().optional()),
     ingestionMethod: core.serialization.property("ingestion_method", IngestionMethod.optional()),
     published: core.serialization.boolean().optional(),
+    createdByPlayground: core.serialization.property("created_by_playground", core.serialization.boolean().optional()),
 });
 
 export declare namespace TestsetCreateParams {
@@ -30,5 +31,6 @@ export declare namespace TestsetCreateParams {
         project_id?: number | null;
         ingestion_method?: IngestionMethod.Raw | null;
         published?: boolean | null;
+        created_by_playground?: boolean | null;
     }
 }

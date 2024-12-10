@@ -14,4 +14,6 @@ export interface ScoringConfig {
     isArchived?: boolean;
     metrics?: number[];
     createdAt?: Date;
+    /** The ID of the project the scoring config belongs to. */
+    projectId?: number;
 }

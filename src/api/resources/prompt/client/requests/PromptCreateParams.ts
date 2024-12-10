@@ -15,7 +15,9 @@ import * as Scorecard from "../../../../index";
  *             "param2": 0.1,
  *             "param3": 100,
  *             "param4": true
- *         }
+ *         },
+ *         tag: "1.0",
+ *         projectId: 1
  *     }
  *
  * @example
@@ -29,7 +31,9 @@ import * as Scorecard from "../../../../index";
  *             "param3": 100,
  *             "param4": true
  *         },
- *         isProd: true
+ *         tag: "v1.1",
+ *         isProd: true,
+ *         projectId: 1
  *     }
  */
 export interface PromptCreateParams {
@@ -38,5 +42,7 @@ export interface PromptCreateParams {
     parentId?: string;
     description?: string;
     modelParams?: Record<string, Scorecard.PromptCreateParamsModelParamsValue | undefined>;
+    tag?: string;
     isProd?: boolean;
+    projectId?: number;
 }

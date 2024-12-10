@@ -53,8 +53,8 @@ export class RunMetric {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

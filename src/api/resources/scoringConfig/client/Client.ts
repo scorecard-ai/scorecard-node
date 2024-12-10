@@ -44,7 +44,8 @@ export class ScoringConfig {
      *     await client.scoringConfig.create({
      *         name: "Scoring Config Name",
      *         description: "Description of the scoring config",
-     *         metrics: [1, 2, 3]
+     *         metrics: [1, 2, 3],
+     *         projectId: 1
      *     })
      */
     public async create(
@@ -60,8 +61,8 @@ export class ScoringConfig {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -172,8 +173,8 @@ export class ScoringConfig {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -192,6 +193,111 @@ export class ScoringConfig {
                 skipValidation: true,
                 breadcrumbsPrefix: ["response"],
             });
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Scorecard.UnauthorizedError(
+                        serializers.UnauthenticatedError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 403:
+                    throw new Scorecard.ForbiddenError(
+                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 404:
+                    throw new Scorecard.NotFoundError(
+                        serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                case 422:
+                    throw new Scorecard.UnprocessableEntityError(
+                        serializers.HttpValidationError.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        })
+                    );
+                default:
+                    throw new errors.ScorecardError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.ScorecardError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.ScorecardTimeoutError();
+            case "unknown":
+                throw new errors.ScorecardError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Delete a scoring config.
+     *
+     * @param {string} id - The id of the scoring config to delete.
+     * @param {ScoringConfig.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Scorecard.UnauthorizedError}
+     * @throws {@link Scorecard.ForbiddenError}
+     * @throws {@link Scorecard.NotFoundError}
+     * @throws {@link Scorecard.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.scoringConfig.delete("id")
+     */
+    public async delete(id: string, requestOptions?: ScoringConfig.RequestOptions): Promise<unknown> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
+                `v1/scoring_config/${encodeURIComponent(id)}`
+            ),
+            method: "DELETE",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "scorecard-ai",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body;
         }
 
         if (_response.error.reason === "status-code") {

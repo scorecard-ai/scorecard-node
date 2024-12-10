@@ -58,8 +58,8 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -175,8 +175,8 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -291,8 +291,8 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -409,8 +409,8 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -516,7 +516,7 @@ export class Testcase {
         testsetId: number,
         request: Scorecard.TestcaseBatchCopyParams = {},
         requestOptions?: Testcase.RequestOptions
-    ): Promise<Scorecard.TestCase> {
+    ): Promise<Scorecard.TestCase[]> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.ScorecardEnvironment.Default,
@@ -526,8 +526,8 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -540,7 +540,7 @@ export class Testcase {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return serializers.TestCase.parseOrThrow(_response.body, {
+            return serializers.testcase.batchCopy.Response.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -643,8 +643,8 @@ export class Testcase {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "scorecard-ai",
-                "X-Fern-SDK-Version": "0.6.0",
-                "User-Agent": "scorecard-ai/0.6.0",
+                "X-Fern-SDK-Version": "0.6.1",
+                "User-Agent": "scorecard-ai/0.6.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
