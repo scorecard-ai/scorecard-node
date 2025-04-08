@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 
-const client = new ScorecardDev({
+const client = new Scorecard({
   bearerToken: 'My Bearer Token',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });

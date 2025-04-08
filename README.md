@@ -1,8 +1,8 @@
-# Scorecard Dev TypeScript API Library
+# Scorecard TypeScript API Library
 
 [![NPM version](https://img.shields.io/npm/v/scorecard-ai.svg)](https://npmjs.org/package/scorecard-ai) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/scorecard-ai)
 
-This library provides convenient access to the Scorecard Dev REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
 The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io). The full API of this library can be found in [api.md](api.md).
 
@@ -23,9 +23,9 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 
-const client = new ScorecardDev({
+const client = new Scorecard({
   bearerToken: process.env['SCORECARD_DEV_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
@@ -45,14 +45,14 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 
-const client = new ScorecardDev({
+const client = new Scorecard({
   bearerToken: process.env['SCORECARD_DEV_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const [projectListResponse]: [ScorecardDev.ProjectListResponse] = await client.projects.list();
+  const [projectListResponse]: [Scorecard.ProjectListResponse] = await client.projects.list();
 }
 
 main();
@@ -70,7 +70,7 @@ a subclass of `APIError` will be thrown:
 ```ts
 async function main() {
   const page = await client.projects.list().catch(async (err) => {
-    if (err instanceof ScorecardDev.APIError) {
+    if (err instanceof Scorecard.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
       console.log(err.headers); // {server: 'nginx', ...}
@@ -107,7 +107,7 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new ScorecardDev({
+const client = new Scorecard({
   maxRetries: 0, // default is 2
 });
 
@@ -124,7 +124,7 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new ScorecardDev({
+const client = new Scorecard({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
@@ -150,7 +150,7 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 
 <!-- prettier-ignore -->
 ```ts
-const client = new ScorecardDev();
+const client = new Scorecard();
 
 const response = await client.projects.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -173,13 +173,13 @@ for await (const projectListResponse of page) {
 
 The log level can be configured in two ways:
 
-1. Via the `SCORECARD_DEV_LOG` environment variable
+1. Via the `SCORECARD_LOG` environment variable
 2. Using the `logLevel` client option (overrides the environment variable if set)
 
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 
-const client = new ScorecardDev({
+const client = new Scorecard({
   logLevel: 'debug', // Show all log messages
 });
 ```
@@ -205,13 +205,13 @@ When providing a custom logger, the `logLevel` option still controls which messa
 below the configured level will not be sent to your logger.
 
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 import pino from 'pino';
 
 const logger = pino();
 
-const client = new ScorecardDev({
-  logger: logger.child({ name: 'ScorecardDev' }),
+const client = new Scorecard({
+  logger: logger.child({ name: 'Scorecard' }),
   logLevel: 'debug', // Send all messages to pino, allowing it to filter
 });
 ```
@@ -275,10 +275,10 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 import fetch from 'my-fetch';
 
-const client = new ScorecardDev({ fetch });
+const client = new Scorecard({ fetch });
 ```
 
 ### Fetch options
@@ -286,9 +286,9 @@ const client = new ScorecardDev({ fetch });
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 
-const client = new ScorecardDev({
+const client = new Scorecard({
   fetchOptions: {
     // `RequestInit` options
   },
@@ -303,11 +303,11 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new ScorecardDev({
+const client = new Scorecard({
   fetchOptions: {
     dispatcher: proxyAgent,
   },
@@ -317,9 +317,9 @@ const client = new ScorecardDev({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import ScorecardDev from 'scorecard-ai';
+import Scorecard from 'scorecard-ai';
 
-const client = new ScorecardDev({
+const client = new Scorecard({
   fetchOptions: {
     proxy: 'http://localhost:8888',
   },
@@ -329,10 +329,10 @@ const client = new ScorecardDev({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import ScorecardDev from 'npm:scorecard-ai';
+import Scorecard from 'npm:scorecard-ai';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new ScorecardDev({
+const client = new Scorecard({
   fetchOptions: {
     client: httpClient,
   },
