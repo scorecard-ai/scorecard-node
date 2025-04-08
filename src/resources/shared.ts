@@ -30,7 +30,7 @@ export interface Testcase {
   /**
    * The JSON data of the testcase, which is validated against the testset's schema.
    */
-  data: Record<string, unknown>;
+  data: Record<string, Record<string, unknown>>;
 
   /**
    * Derived from data based on the testset's fieldMapping. Contains all fields

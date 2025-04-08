@@ -256,7 +256,7 @@ export namespace TestsetCreateTestcasesParams {
     /**
      * The JSON data of the testcase, which is validated against the testset's schema.
      */
-    data: Record<string, unknown>;
+    data: Record<string, Record<string, unknown>>;
   }
 }
 
