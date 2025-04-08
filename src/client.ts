@@ -232,8 +232,8 @@ export class Scorecard {
     return;
   }
 
-  protected authHeaders(opts: FinalRequestOptions): Headers | undefined {
-    return new Headers({ 'X-API-Key': this.apiKey });
+  protected authHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
+    return buildHeaders([{ 'X-API-Key': this.apiKey }]);
   }
 
   /**
