@@ -30,7 +30,7 @@ export interface TestcaseUpdateParams {
   /**
    * The JSON data of the testcase, which is validated against the testset's schema.
    */
-  data: Record<string, Record<string, unknown>>;
+  data: Record<string, unknown>;
 }
 
 export declare namespace Testcases {

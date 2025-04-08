@@ -34,16 +34,7 @@ async function main() {
     description: 'Testset for long context Q&A chatbot.',
     fieldMapping: { inputs: ['string'], labels: ['string'], metadata: ['string'] },
     name: 'Long Context Q&A',
-    schema: {
-      type: 'object',
-      properties: {
-        question: { type: 'string' },
-        idealAnswer: { type: 'string' },
-        provenance: { type: 'string' },
-        geo: { type: 'string' },
-      },
-      fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: [] },
-    },
+    schema: { type: 'bar', properties: 'bar', fieldMapping: 'bar' },
   });
 
   console.log(testset.id);

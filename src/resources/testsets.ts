@@ -162,7 +162,7 @@ export interface TestsetCreateParams {
   /**
    * The JSON schema for each testcase in the testset
    */
-  schema: unknown;
+  schema: Record<string, unknown>;
 }
 
 export namespace TestsetCreateParams {
@@ -208,7 +208,7 @@ export interface TestsetUpdateParams {
   /**
    * The JSON schema for each testcase in the testset
    */
-  schema?: unknown;
+  schema?: Record<string, unknown>;
 }
 
 export namespace TestsetUpdateParams {
@@ -256,7 +256,7 @@ export namespace TestsetCreateTestcasesParams {
     /**
      * The JSON data of the testcase, which is validated against the testset's schema.
      */
-    data: Record<string, Record<string, unknown>>;
+    data: Record<string, unknown>;
   }
 }
 
