@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from 'scorecard/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from 'scorecard-ai/internal/utils/path';
 import { inspect } from 'node:util';
 
 describe('path template tag function', () => {

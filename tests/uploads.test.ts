@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from 'scorecard/internal/to-file';
-import { toFile } from 'scorecard/core/uploads';
+import type { ResponseLike } from 'scorecard-ai/internal/to-file';
+import { toFile } from 'scorecard-ai/core/uploads';
 import { File } from 'node:buffer';
 
 class MyClass {
@@ -97,7 +97,7 @@ describe('missing File error message', () => {
   });
 
   test('is thrown', async () => {
-    const uploads = await import('scorecard/core/uploads');
+    const uploads = await import('scorecard-ai/core/uploads');
     await expect(
       uploads.toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
     ).rejects.toMatchInlineSnapshot(

@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from 'scorecard/internal/uploads';
-import { toFile } from 'scorecard/core/uploads';
+import { multipartFormRequestOptions, createForm } from 'scorecard-ai/internal/uploads';
+import { toFile } from 'scorecard-ai/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import type { Scorecard } from '../client';
+import type { ScorecardDev } from '../client';
 
 export class APIResource {
-  protected _client: Scorecard;
+  protected _client: ScorecardDev;
 
-  constructor(client: Scorecard) {
+  constructor(client: ScorecardDev) {
     this._client = client;
   }
 }

@@ -14,6 +14,8 @@ import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
 import { VERSION } from './version';
 import * as Errors from './core/error';
+import * as Pagination from './core/pagination';
+import { AbstractPage, type PaginatedResponseParams, PaginatedResponseResponse } from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
@@ -21,71 +23,25 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
-  Prompt,
-  PromptCreateParams,
-  PromptDeleteRootResponse,
-  PromptListParams,
-  PromptListResponse,
-  PromptResource,
-  PromptRetrieveByNameParams,
-  PromptUpdateParams,
-} from './resources/prompt';
-import { RunMetric, RunMetricRetrieveResponse } from './resources/run-metric';
-import {
-  ScoringConfig,
-  ScoringConfigCreateParams,
-  ScoringConfigDeleteResponse,
-  ScoringConfigResource,
-} from './resources/scoring-config';
-import {
-  Trace,
-  TraceListResponse,
-  TraceRetrieveSpanParams,
-  TraceRetrieveSpanResponse,
-  Traces,
-} from './resources/traces';
-import { Welcome, WelcomeRetrieveResponse } from './resources/welcome';
+  ProjectListParams,
+  ProjectListResponse,
+  ProjectListResponsesPaginatedResponse,
+  Projects,
+} from './resources/projects';
 import { readEnv } from './internal/utils/env';
 import { formatRequestDetails, loggerFor } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
-import { Run, RunCreateParams, RunResource, RunUpdateStatusParams } from './resources/run/run';
-import {
-  Testset,
-  TestsetCreateParams,
-  TestsetGetSchemaResponse,
-  TestsetListParams,
-  TestsetListResponse,
-  TestsetResource,
-  TestsetUpdateParams,
-} from './resources/testset/testset';
-
-const environments = {
-  production: 'https://api.getscorecard.ai',
-  environment_1: 'http://localhost:8000',
-  environment_2: 'https://api.scorecard.io',
-};
-type Environment = keyof typeof environments;
 
 export interface ClientOptions {
   /**
-   * API key for authentication to access the ScoreCard AI API
+   * Defaults to process.env['SCORECARD_DEV_BEARER_TOKEN'].
    */
-  apiKey?: string | undefined;
-
-  /**
-   * Specifies the environment to use for the API.
-   *
-   * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://api.getscorecard.ai`
-   * - `environment_1` corresponds to `http://localhost:8000`
-   * - `environment_2` corresponds to `https://api.scorecard.io`
-   */
-  environment?: Environment | undefined;
+  bearerToken?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['SCORECARD_BASE_URL'].
+   * Defaults to process.env['SCORECARD_DEV_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -137,7 +93,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['SCORECARD_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['SCORECARD_DEV_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -150,10 +106,10 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Scorecard API.
+ * API Client for interfacing with the Scorecard Dev API.
  */
-export class Scorecard {
-  apiKey: string;
+export class ScorecardDev {
+  bearerToken: string;
 
   baseURL: string;
   maxRetries: number;
@@ -168,11 +124,10 @@ export class Scorecard {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Scorecard API.
+   * API Client for interfacing with the Scorecard Dev API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['SCORECARD_API_KEY'] ?? undefined]
-   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['SCORECARD_BASE_URL'] ?? https://api.getscorecard.ai] - Override the default base URL for the API.
+   * @param {string | undefined} [opts.bearerToken=process.env['SCORECARD_DEV_BEARER_TOKEN'] ?? undefined]
+   * @param {string} [opts.baseURL=process.env['SCORECARD_DEV_BASE_URL'] ?? https://api2.scorecard.io/v2] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -181,38 +136,31 @@ export class Scorecard {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('SCORECARD_BASE_URL'),
-    apiKey = readEnv('SCORECARD_API_KEY'),
+    baseURL = readEnv('SCORECARD_DEV_BASE_URL'),
+    bearerToken = readEnv('SCORECARD_DEV_BEARER_TOKEN'),
     ...opts
   }: ClientOptions = {}) {
-    if (apiKey === undefined) {
-      throw new Errors.ScorecardError(
-        "The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the Scorecard client with an apiKey option, like new Scorecard({ apiKey: 'My API Key' }).",
+    if (bearerToken === undefined) {
+      throw new Errors.ScorecardDevError(
+        "The SCORECARD_DEV_BEARER_TOKEN environment variable is missing or empty; either provide it, or instantiate the ScorecardDev client with an bearerToken option, like new ScorecardDev({ bearerToken: 'My Bearer Token' }).",
       );
     }
 
     const options: ClientOptions = {
-      apiKey,
+      bearerToken,
       ...opts,
-      baseURL,
-      environment: opts.environment ?? 'production',
+      baseURL: baseURL || `https://api2.scorecard.io/v2`,
     };
 
-    if (baseURL && opts.environment) {
-      throw new Errors.ScorecardError(
-        'Ambiguous URL; The `baseURL` option (or SCORECARD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
-      );
-    }
-
-    this.baseURL = options.baseURL || environments[options.environment || 'production'];
-    this.timeout = options.timeout ?? Scorecard.DEFAULT_TIMEOUT /* 1 minute */;
+    this.baseURL = options.baseURL!;
+    this.timeout = options.timeout ?? ScorecardDev.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('SCORECARD_LOG'), "process.env['SCORECARD_LOG']", this) ??
+      parseLogLevel(readEnv('SCORECARD_DEV_LOG'), "process.env['SCORECARD_DEV_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -221,7 +169,7 @@ export class Scorecard {
 
     this._options = options;
 
-    this.apiKey = apiKey;
+    this.bearerToken = bearerToken;
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -233,7 +181,7 @@ export class Scorecard {
   }
 
   protected authHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
-    return buildHeaders([{ 'X-API-Key': this.apiKey }]);
+    return buildHeaders([{ Authorization: `Bearer ${this.bearerToken}` }]);
   }
 
   /**
@@ -249,7 +197,7 @@ export class Scorecard {
         if (value === null) {
           return `${encodeURIComponent(key)}=`;
         }
-        throw new Errors.ScorecardError(
+        throw new Errors.ScorecardDevError(
           `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
         );
       })
@@ -501,6 +449,25 @@ export class Scorecard {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
+  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+    path: string,
+    Page: new (...args: any[]) => PageClass,
+    opts?: RequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    return this.requestAPIList(Page, { method: 'get', path, ...opts });
+  }
+
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
+    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
+    options: FinalRequestOptions,
+  ): Pagination.PagePromise<PageClass, Item> {
+    const request = this.makeRequest(options, null, undefined);
+    return new Pagination.PagePromise<PageClass, Item>(this as any as ScorecardDev, request, Page);
+  }
+
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
@@ -714,10 +681,10 @@ export class Scorecard {
     }
   }
 
-  static Scorecard = this;
+  static ScorecardDev = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static ScorecardError = Errors.ScorecardError;
+  static ScorecardDevError = Errors.ScorecardDevError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -733,68 +700,24 @@ export class Scorecard {
 
   static toFile = Uploads.toFile;
 
-  welcome: API.Welcome = new API.Welcome(this);
-  runMetric: API.RunMetric = new API.RunMetric(this);
-  testset: API.TestsetResource = new API.TestsetResource(this);
-  run: API.RunResource = new API.RunResource(this);
-  traces: API.Traces = new API.Traces(this);
-  prompt: API.PromptResource = new API.PromptResource(this);
-  scoringConfig: API.ScoringConfigResource = new API.ScoringConfigResource(this);
+  projects: API.Projects = new API.Projects(this);
 }
-Scorecard.Welcome = Welcome;
-Scorecard.RunMetric = RunMetric;
-Scorecard.TestsetResource = TestsetResource;
-Scorecard.RunResource = RunResource;
-Scorecard.Traces = Traces;
-Scorecard.PromptResource = PromptResource;
-Scorecard.ScoringConfigResource = ScoringConfigResource;
-export declare namespace Scorecard {
+ScorecardDev.Projects = Projects;
+export declare namespace ScorecardDev {
   export type RequestOptions = Opts.RequestOptions;
 
-  export { Welcome as Welcome, type WelcomeRetrieveResponse as WelcomeRetrieveResponse };
-
-  export { RunMetric as RunMetric, type RunMetricRetrieveResponse as RunMetricRetrieveResponse };
-
+  export import PaginatedResponse = Pagination.PaginatedResponse;
   export {
-    TestsetResource as TestsetResource,
-    type Testset as Testset,
-    type TestsetListResponse as TestsetListResponse,
-    type TestsetGetSchemaResponse as TestsetGetSchemaResponse,
-    type TestsetCreateParams as TestsetCreateParams,
-    type TestsetUpdateParams as TestsetUpdateParams,
-    type TestsetListParams as TestsetListParams,
+    type PaginatedResponseParams as PaginatedResponseParams,
+    type PaginatedResponseResponse as PaginatedResponseResponse,
   };
 
   export {
-    RunResource as RunResource,
-    type Run as Run,
-    type RunCreateParams as RunCreateParams,
-    type RunUpdateStatusParams as RunUpdateStatusParams,
+    Projects as Projects,
+    type ProjectListResponse as ProjectListResponse,
+    type ProjectListResponsesPaginatedResponse as ProjectListResponsesPaginatedResponse,
+    type ProjectListParams as ProjectListParams,
   };
 
-  export {
-    Traces as Traces,
-    type Trace as Trace,
-    type TraceListResponse as TraceListResponse,
-    type TraceRetrieveSpanResponse as TraceRetrieveSpanResponse,
-    type TraceRetrieveSpanParams as TraceRetrieveSpanParams,
-  };
-
-  export {
-    PromptResource as PromptResource,
-    type Prompt as Prompt,
-    type PromptListResponse as PromptListResponse,
-    type PromptDeleteRootResponse as PromptDeleteRootResponse,
-    type PromptCreateParams as PromptCreateParams,
-    type PromptUpdateParams as PromptUpdateParams,
-    type PromptListParams as PromptListParams,
-    type PromptRetrieveByNameParams as PromptRetrieveByNameParams,
-  };
-
-  export {
-    ScoringConfigResource as ScoringConfigResource,
-    type ScoringConfig as ScoringConfig,
-    type ScoringConfigDeleteResponse as ScoringConfigDeleteResponse,
-    type ScoringConfigCreateParams as ScoringConfigCreateParams,
-  };
+  export type APIError = API.APIError;
 }

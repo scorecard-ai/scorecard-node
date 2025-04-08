@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Scorecard } from 'scorecard';
+import { ScorecardDev } from 'scorecard-ai';
 
-const { stringifyQuery } = Scorecard.prototype as any;
+const { stringifyQuery } = ScorecardDev.prototype as any;
 
 describe(stringifyQuery, () => {
   for (const [input, expected] of [

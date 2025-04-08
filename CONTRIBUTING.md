@@ -55,12 +55,12 @@ $ cd scorecard-typescript
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link scorecard
+$ yarn link scorecard-ai
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global scorecard
+$ pnpm link -—global scorecard-ai
 ```
 
 ## Running tests
