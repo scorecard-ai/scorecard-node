@@ -6,4 +6,17 @@ export {
   type ProjectListResponse,
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
-} from './projects';
+} from './projects/projects';
+export {
+  Testcases,
+  type TestcaseRetrieveResponse,
+  type TestcaseUpdateResponse,
+  type TestcaseUpdateParams,
+} from './testcases';
+export {
+  Testsets,
+  type TestsetRetrieveResponse,
+  type TestsetUpdateResponse,
+  type TestsetDeleteResponse,
+  type TestsetUpdateParams,
+} from './testsets/testsets';

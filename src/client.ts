@@ -23,14 +23,27 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
+  TestcaseRetrieveResponse,
+  TestcaseUpdateParams,
+  TestcaseUpdateResponse,
+  Testcases,
+} from './resources/testcases';
+import { readEnv } from './internal/utils/env';
+import { formatRequestDetails, loggerFor } from './internal/utils/log';
+import { isEmptyObj } from './internal/utils/values';
+import {
   ProjectListParams,
   ProjectListResponse,
   ProjectListResponsesPaginatedResponse,
   Projects,
-} from './resources/projects';
-import { readEnv } from './internal/utils/env';
-import { formatRequestDetails, loggerFor } from './internal/utils/log';
-import { isEmptyObj } from './internal/utils/values';
+} from './resources/projects/projects';
+import {
+  TestsetDeleteResponse,
+  TestsetRetrieveResponse,
+  TestsetUpdateParams,
+  TestsetUpdateResponse,
+  Testsets,
+} from './resources/testsets/testsets';
 
 export interface ClientOptions {
   /**
@@ -701,8 +714,12 @@ export class ScorecardDev {
   static toFile = Uploads.toFile;
 
   projects: API.Projects = new API.Projects(this);
+  testsets: API.Testsets = new API.Testsets(this);
+  testcases: API.Testcases = new API.Testcases(this);
 }
 ScorecardDev.Projects = Projects;
+ScorecardDev.Testsets = Testsets;
+ScorecardDev.Testcases = Testcases;
 export declare namespace ScorecardDev {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -717,6 +734,21 @@ export declare namespace ScorecardDev {
     type ProjectListResponse as ProjectListResponse,
     type ProjectListResponsesPaginatedResponse as ProjectListResponsesPaginatedResponse,
     type ProjectListParams as ProjectListParams,
+  };
+
+  export {
+    Testsets as Testsets,
+    type TestsetRetrieveResponse as TestsetRetrieveResponse,
+    type TestsetUpdateResponse as TestsetUpdateResponse,
+    type TestsetDeleteResponse as TestsetDeleteResponse,
+    type TestsetUpdateParams as TestsetUpdateParams,
+  };
+
+  export {
+    Testcases as Testcases,
+    type TestcaseRetrieveResponse as TestcaseRetrieveResponse,
+    type TestcaseUpdateResponse as TestcaseUpdateResponse,
+    type TestcaseUpdateParams as TestcaseUpdateParams,
   };
 
   export type APIError = API.APIError;
