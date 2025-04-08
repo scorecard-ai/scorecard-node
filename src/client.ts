@@ -28,27 +28,23 @@ import {
   ProjectListResponsesPaginatedResponse,
   Projects,
 } from './resources/projects';
+import { TestcaseUpdateParams, Testcases } from './resources/testcases';
 import {
-  TestcaseRetrieveResponse,
-  TestcaseUpdateParams,
-  TestcaseUpdateResponse,
-  Testcases,
-} from './resources/testcases';
+  TestsetCreateParams,
+  TestsetCreateTestcasesParams,
+  TestsetCreateTestcasesResponse,
+  TestsetDeleteResponse,
+  TestsetDeleteTestcasesParams,
+  TestsetDeleteTestcasesResponse,
+  TestsetListParams,
+  TestsetListTestcasesParams,
+  TestsetListTestcasesResponse,
+  TestsetUpdateParams,
+  Testsets,
+} from './resources/testsets';
 import { readEnv } from './internal/utils/env';
 import { formatRequestDetails, loggerFor } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
-import {
-  TestsetCreateParams,
-  TestsetCreateResponse,
-  TestsetDeleteResponse,
-  TestsetListParams,
-  TestsetListResponse,
-  TestsetListResponsesPaginatedResponse,
-  TestsetRetrieveResponse,
-  TestsetUpdateParams,
-  TestsetUpdateResponse,
-  Testsets,
-} from './resources/testsets/testsets';
 
 export interface ClientOptions {
   /**
@@ -743,23 +739,21 @@ export declare namespace Scorecard {
 
   export {
     Testsets as Testsets,
-    type TestsetCreateResponse as TestsetCreateResponse,
-    type TestsetRetrieveResponse as TestsetRetrieveResponse,
-    type TestsetUpdateResponse as TestsetUpdateResponse,
-    type TestsetListResponse as TestsetListResponse,
     type TestsetDeleteResponse as TestsetDeleteResponse,
-    type TestsetListResponsesPaginatedResponse as TestsetListResponsesPaginatedResponse,
+    type TestsetCreateTestcasesResponse as TestsetCreateTestcasesResponse,
+    type TestsetDeleteTestcasesResponse as TestsetDeleteTestcasesResponse,
+    type TestsetListTestcasesResponse as TestsetListTestcasesResponse,
     type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
     type TestsetListParams as TestsetListParams,
+    type TestsetCreateTestcasesParams as TestsetCreateTestcasesParams,
+    type TestsetDeleteTestcasesParams as TestsetDeleteTestcasesParams,
+    type TestsetListTestcasesParams as TestsetListTestcasesParams,
   };
 
-  export {
-    Testcases as Testcases,
-    type TestcaseRetrieveResponse as TestcaseRetrieveResponse,
-    type TestcaseUpdateResponse as TestcaseUpdateResponse,
-    type TestcaseUpdateParams as TestcaseUpdateParams,
-  };
+  export { Testcases as Testcases, type TestcaseUpdateParams as TestcaseUpdateParams };
 
   export type APIError = API.APIError;
+  export type Testcase = API.Testcase;
+  export type Testset = API.Testset;
 }

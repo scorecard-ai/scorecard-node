@@ -7,21 +7,17 @@ export {
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
 } from './projects';
-export {
-  Testcases,
-  type TestcaseRetrieveResponse,
-  type TestcaseUpdateResponse,
-  type TestcaseUpdateParams,
-} from './testcases';
+export { Testcases, type TestcaseUpdateParams } from './testcases';
 export {
   Testsets,
-  type TestsetCreateResponse,
-  type TestsetRetrieveResponse,
-  type TestsetUpdateResponse,
-  type TestsetListResponse,
   type TestsetDeleteResponse,
+  type TestsetCreateTestcasesResponse,
+  type TestsetDeleteTestcasesResponse,
+  type TestsetListTestcasesResponse,
   type TestsetCreateParams,
   type TestsetUpdateParams,
   type TestsetListParams,
-  type TestsetListResponsesPaginatedResponse,
-} from './testsets/testsets';
+  type TestsetCreateTestcasesParams,
+  type TestsetDeleteTestcasesParams,
+  type TestsetListTestcasesParams,
+} from './testsets';
