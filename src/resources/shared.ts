@@ -144,3 +144,5 @@ export namespace Testset {
 }
 
 export type TestsetsPaginatedResponse = PaginatedResponse<Testset>;
+
+export type TestcasesPaginatedResponse = PaginatedResponse<Testcase>;

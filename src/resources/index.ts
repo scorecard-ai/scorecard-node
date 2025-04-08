@@ -13,7 +13,6 @@ export {
   type TestsetDeleteResponse,
   type TestsetCreateTestcasesResponse,
   type TestsetDeleteTestcasesResponse,
-  type TestsetListTestcasesResponse,
   type TestsetCreateParams,
   type TestsetUpdateParams,
   type TestsetListParams,

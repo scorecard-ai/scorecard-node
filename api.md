@@ -23,7 +23,6 @@ Types:
 - <code><a href="./src/resources/testsets.ts">TestsetDeleteResponse</a></code>
 - <code><a href="./src/resources/testsets.ts">TestsetCreateTestcasesResponse</a></code>
 - <code><a href="./src/resources/testsets.ts">TestsetDeleteTestcasesResponse</a></code>
-- <code><a href="./src/resources/testsets.ts">TestsetListTestcasesResponse</a></code>
 
 Methods:
 
@@ -34,7 +33,7 @@ Methods:
 - <code title="post /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">createTestcases</a>(testsetID, { ...params }) -> TestsetCreateTestcasesResponse</code>
 - <code title="delete /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">deleteTestcases</a>(testsetID, { ...params }) -> TestsetDeleteTestcasesResponse</code>
 - <code title="get /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets.ts">get</a>(testsetID) -> Testset</code>
-- <code title="get /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">listTestcases</a>(testsetID, { ...params }) -> TestsetListTestcasesResponse</code>
+- <code title="get /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">listTestcases</a>(testsetID, { ...params }) -> TestcasesPaginatedResponse</code>
 
 # Testcases
 

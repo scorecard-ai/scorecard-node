@@ -2,7 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
-import { TestsetsPaginatedResponse } from './shared';
+import { TestcasesPaginatedResponse, TestsetsPaginatedResponse } from './shared';
 import { APIPromise } from '../core/api-promise';
 import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -96,8 +96,12 @@ export class Testsets extends APIResource {
     testsetID: number,
     query: TestsetListTestcasesParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<TestsetListTestcasesResponse> {
-    return this._client.get(path`/testsets/${testsetID}/testcases`, { query, ...options });
+  ): PagePromise<TestcasesPaginatedResponse, Shared.Testcase> {
+    return this._client.getAPIList(
+      path`/testsets/${testsetID}/testcases`,
+      PaginatedResponse<Shared.Testcase>,
+      { query, ...options },
+    );
   }
 }
 
@@ -136,16 +140,6 @@ export namespace TestsetDeleteTestcasesResponse {
      */
     message: string;
   }
-}
-
-export interface TestsetListTestcasesResponse {
-  data: Array<Shared.Testcase>;
-
-  hasMore: boolean;
-
-  nextCursor: string | null;
-
-  total?: number;
 }
 
 export interface TestsetCreateParams {
@@ -273,26 +267,13 @@ export interface TestsetDeleteTestcasesParams {
   ids: Array<number>;
 }
 
-export interface TestsetListTestcasesParams {
-  /**
-   * Cursor for pagination. Pass the `nextCursor` from the previous response to get
-   * the next page of results.
-   */
-  cursor?: string;
-
-  /**
-   * Maximum number of items to return (1-100). Use with `cursor` for pagination
-   * through large sets.
-   */
-  limit?: number;
-}
+export interface TestsetListTestcasesParams extends PaginatedResponseParams {}
 
 export declare namespace Testsets {
   export {
     type TestsetDeleteResponse as TestsetDeleteResponse,
     type TestsetCreateTestcasesResponse as TestsetCreateTestcasesResponse,
     type TestsetDeleteTestcasesResponse as TestsetDeleteTestcasesResponse,
-    type TestsetListTestcasesResponse as TestsetListTestcasesResponse,
     type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
     type TestsetListParams as TestsetListParams,
@@ -302,4 +283,4 @@ export declare namespace Testsets {
   };
 }
 
-export { type TestsetsPaginatedResponse };
+export { type TestsetsPaginatedResponse, type TestcasesPaginatedResponse };

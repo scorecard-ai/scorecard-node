@@ -38,7 +38,6 @@ import {
   TestsetDeleteTestcasesResponse,
   TestsetListParams,
   TestsetListTestcasesParams,
-  TestsetListTestcasesResponse,
   TestsetUpdateParams,
   Testsets,
 } from './resources/testsets';
@@ -742,7 +741,6 @@ export declare namespace Scorecard {
     type TestsetDeleteResponse as TestsetDeleteResponse,
     type TestsetCreateTestcasesResponse as TestsetCreateTestcasesResponse,
     type TestsetDeleteTestcasesResponse as TestsetDeleteTestcasesResponse,
-    type TestsetListTestcasesResponse as TestsetListTestcasesResponse,
     type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
     type TestsetListParams as TestsetListParams,
