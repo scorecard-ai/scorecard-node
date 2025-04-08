@@ -30,10 +30,23 @@ const client = new Scorecard({
 });
 
 async function main() {
-  const page = await client.projects.list();
-  const projectListResponse = page.data[0];
+  const testset = await client.testsets.create(0, {
+    description: 'Testset for long context Q&A chatbot.',
+    fieldMapping: { inputs: ['string'], labels: ['string'], metadata: ['string'] },
+    name: 'Long Context Q&A',
+    schema: {
+      type: 'object',
+      properties: {
+        question: { type: 'string' },
+        idealAnswer: { type: 'string' },
+        provenance: { type: 'string' },
+        geo: { type: 'string' },
+      },
+      fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: [] },
+    },
+  });
 
-  console.log(projectListResponse.id);
+  console.log(testset.id);
 }
 
 main();
@@ -52,7 +65,7 @@ const client = new Scorecard({
 });
 
 async function main() {
-  const [projectListResponse]: [Scorecard.ProjectListResponse] = await client.projects.list();
+  const testset: Scorecard.Testset = await client.testsets.get(0);
 }
 
 main();
@@ -69,7 +82,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const page = await client.projects.list().catch(async (err) => {
+  const testset = await client.testsets.get(0).catch(async (err) => {
     if (err instanceof Scorecard.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -112,7 +125,7 @@ const client = new Scorecard({
 });
 
 // Or, configure per-request:
-await client.projects.list({
+await client.testsets.get(0, {
   maxRetries: 5,
 });
 ```
@@ -129,7 +142,7 @@ const client = new Scorecard({
 });
 
 // Override per-request:
-await client.projects.list({
+await client.testsets.get(0, {
   timeout: 5 * 1000,
 });
 ```
@@ -152,15 +165,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Scorecard();
 
-const response = await client.projects.list().asResponse();
+const response = await client.testsets.get(0).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: page, response: raw } = await client.projects.list().withResponse();
+const { data: testset, response: raw } = await client.testsets.get(0).withResponse();
 console.log(raw.headers.get('X-My-Header'));
-for await (const projectListResponse of page) {
-  console.log(projectListResponse.id);
-}
+console.log(testset.id);
 ```
 
 ### Logging
