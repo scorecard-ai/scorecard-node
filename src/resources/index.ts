@@ -6,7 +6,7 @@ export {
   type ProjectListResponse,
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
-} from './projects/projects';
+} from './projects';
 export {
   Testcases,
   type TestcaseRetrieveResponse,
@@ -15,8 +15,13 @@ export {
 } from './testcases';
 export {
   Testsets,
+  type TestsetCreateResponse,
   type TestsetRetrieveResponse,
   type TestsetUpdateResponse,
+  type TestsetListResponse,
   type TestsetDeleteResponse,
+  type TestsetCreateParams,
   type TestsetUpdateParams,
+  type TestsetListParams,
+  type TestsetListResponsesPaginatedResponse,
 } from './testsets/testsets';

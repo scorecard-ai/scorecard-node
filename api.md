@@ -8,36 +8,28 @@ Types:
 
 Types:
 
-- <code><a href="./src/resources/projects/projects.ts">ProjectListResponse</a></code>
+- <code><a href="./src/resources/projects.ts">ProjectListResponse</a></code>
 
 Methods:
 
-- <code title="get /projects">client.projects.<a href="./src/resources/projects/projects.ts">list</a>({ ...params }) -> ProjectListResponsesPaginatedResponse</code>
-
-## Testsets
-
-Types:
-
-- <code><a href="./src/resources/projects/testsets.ts">TestsetCreateResponse</a></code>
-- <code><a href="./src/resources/projects/testsets.ts">TestsetListResponse</a></code>
-
-Methods:
-
-- <code title="post /projects/{projectId}/testsets">client.projects.testsets.<a href="./src/resources/projects/testsets.ts">create</a>(projectID, { ...params }) -> TestsetCreateResponse</code>
-- <code title="get /projects/{projectId}/testsets">client.projects.testsets.<a href="./src/resources/projects/testsets.ts">list</a>(projectID, { ...params }) -> TestsetListResponsesPaginatedResponse</code>
+- <code title="get /projects">client.projects.<a href="./src/resources/projects.ts">list</a>({ ...params }) -> ProjectListResponsesPaginatedResponse</code>
 
 # Testsets
 
 Types:
 
+- <code><a href="./src/resources/testsets/testsets.ts">TestsetCreateResponse</a></code>
 - <code><a href="./src/resources/testsets/testsets.ts">TestsetRetrieveResponse</a></code>
 - <code><a href="./src/resources/testsets/testsets.ts">TestsetUpdateResponse</a></code>
+- <code><a href="./src/resources/testsets/testsets.ts">TestsetListResponse</a></code>
 - <code><a href="./src/resources/testsets/testsets.ts">TestsetDeleteResponse</a></code>
 
 Methods:
 
+- <code title="post /projects/{projectId}/testsets">client.testsets.<a href="./src/resources/testsets/testsets.ts">create</a>(projectID, { ...params }) -> TestsetCreateResponse</code>
 - <code title="get /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets/testsets.ts">retrieve</a>(testsetID) -> TestsetRetrieveResponse</code>
 - <code title="patch /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets/testsets.ts">update</a>(testsetID, { ...params }) -> TestsetUpdateResponse</code>
+- <code title="get /projects/{projectId}/testsets">client.testsets.<a href="./src/resources/testsets/testsets.ts">list</a>(projectID, { ...params }) -> TestsetListResponsesPaginatedResponse</code>
 - <code title="delete /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets/testsets.ts">delete</a>(testsetID) -> TestsetDeleteResponse</code>
 
 ## Testcases

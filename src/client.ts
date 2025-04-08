@@ -23,6 +23,12 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
+  ProjectListParams,
+  ProjectListResponse,
+  ProjectListResponsesPaginatedResponse,
+  Projects,
+} from './resources/projects';
+import {
   TestcaseRetrieveResponse,
   TestcaseUpdateParams,
   TestcaseUpdateResponse,
@@ -32,13 +38,12 @@ import { readEnv } from './internal/utils/env';
 import { formatRequestDetails, loggerFor } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 import {
-  ProjectListParams,
-  ProjectListResponse,
-  ProjectListResponsesPaginatedResponse,
-  Projects,
-} from './resources/projects/projects';
-import {
+  TestsetCreateParams,
+  TestsetCreateResponse,
   TestsetDeleteResponse,
+  TestsetListParams,
+  TestsetListResponse,
+  TestsetListResponsesPaginatedResponse,
   TestsetRetrieveResponse,
   TestsetUpdateParams,
   TestsetUpdateResponse,
@@ -738,10 +743,15 @@ export declare namespace Scorecard {
 
   export {
     Testsets as Testsets,
+    type TestsetCreateResponse as TestsetCreateResponse,
     type TestsetRetrieveResponse as TestsetRetrieveResponse,
     type TestsetUpdateResponse as TestsetUpdateResponse,
+    type TestsetListResponse as TestsetListResponse,
     type TestsetDeleteResponse as TestsetDeleteResponse,
+    type TestsetListResponsesPaginatedResponse as TestsetListResponsesPaginatedResponse,
+    type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
+    type TestsetListParams as TestsetListParams,
   };
 
   export {

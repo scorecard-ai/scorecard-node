@@ -12,8 +12,13 @@ export {
 } from './testcases';
 export {
   Testsets,
+  type TestsetCreateResponse,
   type TestsetRetrieveResponse,
   type TestsetUpdateResponse,
+  type TestsetListResponse,
   type TestsetDeleteResponse,
+  type TestsetCreateParams,
   type TestsetUpdateParams,
+  type TestsetListParams,
+  type TestsetListResponsesPaginatedResponse,
 } from './testsets';
