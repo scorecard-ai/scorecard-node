@@ -333,14 +333,14 @@ describe('instantiate client', () => {
 
   test('with environment variable arguments', () => {
     // set options via env var
-    process.env['SCORECARD_DEV_BEARER_TOKEN'] = 'My Bearer Token';
+    process.env['SCORECARD_API_KEY'] = 'My Bearer Token';
     const client = new Scorecard();
     expect(client.bearerToken).toBe('My Bearer Token');
   });
 
   test('with overridden environment variable arguments', () => {
     // set options via env var
-    process.env['SCORECARD_DEV_BEARER_TOKEN'] = 'another My Bearer Token';
+    process.env['SCORECARD_API_KEY'] = 'another My Bearer Token';
     const client = new Scorecard({ bearerToken: 'My Bearer Token' });
     expect(client.bearerToken).toBe('My Bearer Token');
   });
