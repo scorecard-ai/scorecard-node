@@ -28,7 +28,7 @@ import {
   ProjectListResponsesPaginatedResponse,
   Projects,
 } from './resources/projects';
-import { TestcaseUpdateParams, Testcases } from './resources/testcases';
+import { Testcase, TestcaseUpdateParams, Testcases } from './resources/testcases';
 import {
   TestsetCreateParams,
   TestsetCreateTestcasesParams,
@@ -749,9 +749,12 @@ export declare namespace Scorecard {
     type TestsetListTestcasesParams as TestsetListTestcasesParams,
   };
 
-  export { Testcases as Testcases, type TestcaseUpdateParams as TestcaseUpdateParams };
+  export {
+    Testcases as Testcases,
+    type Testcase as Testcase,
+    type TestcaseUpdateParams as TestcaseUpdateParams,
+  };
 
   export type APIError = API.APIError;
-  export type Testcase = API.Testcase;
   export type Testset = API.Testset;
 }

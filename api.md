@@ -3,7 +3,6 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">APIError</a></code>
-- <code><a href="./src/resources/shared.ts">Testcase</a></code>
 - <code><a href="./src/resources/shared.ts">Testset</a></code>
 
 # Projects
@@ -36,6 +35,10 @@ Methods:
 - <code title="get /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">listTestcases</a>(testsetID, { ...params }) -> TestcasesPaginatedResponse</code>
 
 # Testcases
+
+Types:
+
+- <code><a href="./src/resources/testcases.ts">Testcase</a></code>
 
 Methods:
 

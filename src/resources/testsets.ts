@@ -2,7 +2,9 @@
 
 import { APIResource } from '../core/resource';
 import * as Shared from './shared';
-import { TestcasesPaginatedResponse, TestsetsPaginatedResponse } from './shared';
+import { TestsetsPaginatedResponse } from './shared';
+import * as TestcasesAPI from './testcases';
+import { TestcasesPaginatedResponse } from './testcases';
 import { APIPromise } from '../core/api-promise';
 import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -96,10 +98,10 @@ export class Testsets extends APIResource {
     testsetID: number,
     query: TestsetListTestcasesParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<TestcasesPaginatedResponse, Shared.Testcase> {
+  ): PagePromise<TestcasesPaginatedResponse, TestcasesAPI.Testcase> {
     return this._client.getAPIList(
       path`/testsets/${testsetID}/testcases`,
-      PaginatedResponse<Shared.Testcase>,
+      PaginatedResponse<TestcasesAPI.Testcase>,
       { query, ...options },
     );
   }
@@ -113,7 +115,7 @@ export interface TestsetDeleteResponse {
 }
 
 export interface TestsetCreateTestcasesResponse {
-  items: Array<Shared.Testcase>;
+  items: Array<TestcasesAPI.Testcase>;
 }
 
 export interface TestsetDeleteTestcasesResponse {

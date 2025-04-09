@@ -7,7 +7,12 @@ export {
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
 } from './projects';
-export { Testcases, type TestcaseUpdateParams } from './testcases';
+export {
+  Testcases,
+  type Testcase,
+  type TestcaseUpdateParams,
+  type TestcasesPaginatedResponse,
+} from './testcases';
 export {
   Testsets,
   type TestsetDeleteResponse,
