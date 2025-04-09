@@ -54,7 +54,7 @@ export class Testsets extends APIResource {
   }
 
   /**
-   * Delete a testset
+   * Delete testset
    */
   delete(testsetID: number, options?: RequestOptions): APIPromise<TestsetDeleteResponse> {
     return this._client.delete(path`/testsets/${testsetID}`, options);
@@ -83,7 +83,7 @@ export class Testsets extends APIResource {
   }
 
   /**
-   * Get a testset by ID
+   * Get testset by ID
    */
   get(testsetID: number, options?: RequestOptions): APIPromise<Shared.Testset> {
     return this._client.get(path`/testsets/${testsetID}`, options);
