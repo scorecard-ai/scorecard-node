@@ -2,16 +2,52 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
-import { PaginatedResponse } from '../core/pagination';
+import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
 export class Testcases extends APIResource {
   /**
+   * Create multiple testcases in the specified testset.
+   */
+  create(
+    testsetID: number,
+    body: TestcaseCreateParams,
+    options?: RequestOptions,
+  ): APIPromise<TestcaseCreateResponse> {
+    return this._client.post(path`/testsets/${testsetID}/testcases`, { body, ...options });
+  }
+
+  /**
    * Replace the data of an existing testcase while keeping its ID.
    */
   update(testcaseID: number, body: TestcaseUpdateParams, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.put(path`/testcases/${testcaseID}`, { body, ...options });
+  }
+
+  /**
+   * Retrieve a paginated list of testcases belonging to a testset.
+   */
+  list(
+    testsetID: number,
+    query: TestcaseListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<TestcasesPaginatedResponse, Testcase> {
+    return this._client.getAPIList(path`/testsets/${testsetID}/testcases`, PaginatedResponse<Testcase>, {
+      query,
+      ...options,
+    });
+  }
+
+  /**
+   * Delete multiple testcases from the specified testset.
+   */
+  delete(
+    testsetID: number,
+    body: TestcaseDeleteParams,
+    options?: RequestOptions,
+  ): APIPromise<TestcaseDeleteResponse> {
+    return this._client.delete(path`/testsets/${testsetID}/testcases`, { body, ...options });
   }
 
   /**
@@ -81,6 +117,60 @@ export namespace Testcase {
   }
 }
 
+export interface TestcaseCreateResponse {
+  items: Array<Testcase>;
+}
+
+export interface TestcaseDeleteResponse {
+  /**
+   * Number of testcases successfully deleted
+   */
+  deletedCount: number;
+
+  /**
+   * List of errors encountered during deletion, if any
+   */
+  errors: Array<TestcaseDeleteResponse.Error>;
+}
+
+export namespace TestcaseDeleteResponse {
+  export interface Error {
+    /**
+     * ID of the testcase that failed to be deleted
+     */
+    id: number;
+
+    /**
+     * Error message explaining why the deletion failed
+     */
+    message: string;
+  }
+}
+
+export interface TestcaseCreateParams {
+  /**
+   * Testcases to create (max 100)
+   */
+  items: Array<TestcaseCreateParams.Item>;
+}
+
+export namespace TestcaseCreateParams {
+  /**
+   * A test case in the Scorecard system. Contains JSON data that is validated
+   * against the schema defined by its testset. The `inputs` and `labels` fields are
+   * derived from the `data` field based on the testset's `fieldMapping`, and include
+   * all mapped fields, including those with validation errors. Testcases are stored
+   * regardless of validation results, with any validation errors included in the
+   * `validationErrors` field.
+   */
+  export interface Item {
+    /**
+     * The JSON data of the testcase, which is validated against the testset's schema.
+     */
+    data: Record<string, unknown>;
+  }
+}
+
 export interface TestcaseUpdateParams {
   /**
    * The JSON data of the testcase, which is validated against the testset's schema.
@@ -88,6 +178,24 @@ export interface TestcaseUpdateParams {
   data: Record<string, unknown>;
 }
 
+export interface TestcaseListParams extends PaginatedResponseParams {}
+
+export interface TestcaseDeleteParams {
+  /**
+   * IDs of testcases to delete (max 100)
+   */
+  ids: Array<number>;
+}
+
 export declare namespace Testcases {
-  export { type Testcase as Testcase, type TestcaseUpdateParams as TestcaseUpdateParams };
+  export {
+    type Testcase as Testcase,
+    type TestcaseCreateResponse as TestcaseCreateResponse,
+    type TestcaseDeleteResponse as TestcaseDeleteResponse,
+    type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
+    type TestcaseCreateParams as TestcaseCreateParams,
+    type TestcaseUpdateParams as TestcaseUpdateParams,
+    type TestcaseListParams as TestcaseListParams,
+    type TestcaseDeleteParams as TestcaseDeleteParams,
+  };
 }

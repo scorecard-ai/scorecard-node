@@ -3,7 +3,6 @@
 Types:
 
 - <code><a href="./src/resources/shared.ts">APIError</a></code>
-- <code><a href="./src/resources/shared.ts">Testset</a></code>
 
 # Projects
 
@@ -19,9 +18,8 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/testsets.ts">Testset</a></code>
 - <code><a href="./src/resources/testsets.ts">TestsetDeleteResponse</a></code>
-- <code><a href="./src/resources/testsets.ts">TestsetCreateTestcasesResponse</a></code>
-- <code><a href="./src/resources/testsets.ts">TestsetDeleteTestcasesResponse</a></code>
 
 Methods:
 
@@ -29,18 +27,20 @@ Methods:
 - <code title="patch /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets.ts">update</a>(testsetID, { ...params }) -> Testset</code>
 - <code title="get /projects/{projectId}/testsets">client.testsets.<a href="./src/resources/testsets.ts">list</a>(projectID, { ...params }) -> TestsetsPaginatedResponse</code>
 - <code title="delete /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets.ts">delete</a>(testsetID) -> TestsetDeleteResponse</code>
-- <code title="post /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">createTestcases</a>(testsetID, { ...params }) -> TestsetCreateTestcasesResponse</code>
-- <code title="delete /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">deleteTestcases</a>(testsetID, { ...params }) -> TestsetDeleteTestcasesResponse</code>
 - <code title="get /testsets/{testsetId}">client.testsets.<a href="./src/resources/testsets.ts">get</a>(testsetID) -> Testset</code>
-- <code title="get /testsets/{testsetId}/testcases">client.testsets.<a href="./src/resources/testsets.ts">listTestcases</a>(testsetID, { ...params }) -> TestcasesPaginatedResponse</code>
 
 # Testcases
 
 Types:
 
 - <code><a href="./src/resources/testcases.ts">Testcase</a></code>
+- <code><a href="./src/resources/testcases.ts">TestcaseCreateResponse</a></code>
+- <code><a href="./src/resources/testcases.ts">TestcaseDeleteResponse</a></code>
 
 Methods:
 
+- <code title="post /testsets/{testsetId}/testcases">client.testcases.<a href="./src/resources/testcases.ts">create</a>(testsetID, { ...params }) -> TestcaseCreateResponse</code>
 - <code title="put /testcases/{testcaseId}">client.testcases.<a href="./src/resources/testcases.ts">update</a>(testcaseID, { ...params }) -> Testcase</code>
+- <code title="get /testsets/{testsetId}/testcases">client.testcases.<a href="./src/resources/testcases.ts">list</a>(testsetID, { ...params }) -> TestcasesPaginatedResponse</code>
+- <code title="delete /testsets/{testsetId}/testcases">client.testcases.<a href="./src/resources/testcases.ts">delete</a>(testsetID, { ...params }) -> TestcaseDeleteResponse</code>
 - <code title="get /testcases/{testcaseId}">client.testcases.<a href="./src/resources/testcases.ts">get</a>(testcaseID) -> Testcase</code>

@@ -1,10 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as Shared from './shared';
-import { TestsetsPaginatedResponse } from './shared';
-import * as TestcasesAPI from './testcases';
-import { TestcasesPaginatedResponse } from './testcases';
 import { APIPromise } from '../core/api-promise';
 import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
@@ -15,7 +11,7 @@ export class Testsets extends APIResource {
    * Create a new testset for a project. The testset will be created in the project
    * specified in the path.
    */
-  create(projectID: number, body: TestsetCreateParams, options?: RequestOptions): APIPromise<Shared.Testset> {
+  create(projectID: number, body: TestsetCreateParams, options?: RequestOptions): APIPromise<Testset> {
     return this._client.post(path`/projects/${projectID}/testsets`, { body, ...options });
   }
 
@@ -37,7 +33,7 @@ export class Testsets extends APIResource {
     testsetID: number,
     body: TestsetUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<Shared.Testset> {
+  ): APIPromise<Testset> {
     return this._client.patch(path`/testsets/${testsetID}`, { body, ...options });
   }
 
@@ -48,8 +44,8 @@ export class Testsets extends APIResource {
     projectID: number,
     query: TestsetListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<TestsetsPaginatedResponse, Shared.Testset> {
-    return this._client.getAPIList(path`/projects/${projectID}/testsets`, PaginatedResponse<Shared.Testset>, {
+  ): PagePromise<TestsetsPaginatedResponse, Testset> {
+    return this._client.getAPIList(path`/projects/${projectID}/testsets`, PaginatedResponse<Testset>, {
       query,
       ...options,
     });
@@ -63,47 +59,85 @@ export class Testsets extends APIResource {
   }
 
   /**
-   * Create multiple testcases in the specified testset.
-   */
-  createTestcases(
-    testsetID: number,
-    body: TestsetCreateTestcasesParams,
-    options?: RequestOptions,
-  ): APIPromise<TestsetCreateTestcasesResponse> {
-    return this._client.post(path`/testsets/${testsetID}/testcases`, { body, ...options });
-  }
-
-  /**
-   * Delete multiple testcases from the specified testset.
-   */
-  deleteTestcases(
-    testsetID: number,
-    body: TestsetDeleteTestcasesParams,
-    options?: RequestOptions,
-  ): APIPromise<TestsetDeleteTestcasesResponse> {
-    return this._client.delete(path`/testsets/${testsetID}/testcases`, { body, ...options });
-  }
-
-  /**
    * Get testset by ID
    */
-  get(testsetID: number, options?: RequestOptions): APIPromise<Shared.Testset> {
+  get(testsetID: number, options?: RequestOptions): APIPromise<Testset> {
     return this._client.get(path`/testsets/${testsetID}`, options);
   }
+}
+
+export type TestsetsPaginatedResponse = PaginatedResponse<Testset>;
+
+/**
+ * A collection of test cases that share the same schema. Each testset defines the
+ * structure of its test cases through a JSON schema. The `fieldMapping` object
+ * maps top-level keys of the testcase schema to their roles (input/label). Fields
+ * not mentioned in the `fieldMapping` during creation or update are treated as
+ * metadata.
+ *
+ * ## JSON Schema validation constraints supported:
+ *
+ * - **Required fields** - Fields listed in the schema's `required` array must be
+ *   present in testcases
+ * - **Type validation** - Values must match the specified type (string, number,
+ *   boolean, null, integer, object, array)
+ * - **Enum validation** - Values must be one of the options specified in the
+ *   `enum` array
+ * - **Object property validation** - Properties of objects must conform to their
+ *   defined schemas
+ * - **Array item validation** - Items in arrays must conform to the `items` schema
+ * - **Logical composition** - Values must conform to at least one schema in the
+ *   `anyOf` array
+ *
+ * Testcases that fail validation will still be stored, but will include
+ * `validationErrors` detailing the issues. Extra fields in the testcase data that
+ * are not in the schema will be stored but are ignored during validation.
+ */
+export interface Testset {
+  /**
+   * The ID of the testset
+   */
+  id: number;
 
   /**
-   * Retrieve a paginated list of testcases belonging to a testset.
+   * The description of the testset
    */
-  listTestcases(
-    testsetID: number,
-    query: TestsetListTestcasesParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<TestcasesPaginatedResponse, TestcasesAPI.Testcase> {
-    return this._client.getAPIList(
-      path`/testsets/${testsetID}/testcases`,
-      PaginatedResponse<TestcasesAPI.Testcase>,
-      { query, ...options },
-    );
+  description: string;
+
+  /**
+   * Maps top-level keys of the testcase schema to their roles (input/label).
+   * Unmapped fields are treated as metadata.
+   */
+  fieldMapping: Testset.FieldMapping;
+
+  /**
+   * The name of the testset
+   */
+  name: string;
+
+  schema: Record<string, unknown>;
+}
+
+export namespace Testset {
+  /**
+   * Maps top-level keys of the testcase schema to their roles (input/label).
+   * Unmapped fields are treated as metadata.
+   */
+  export interface FieldMapping {
+    /**
+     * Fields that represent inputs to the AI system
+     */
+    inputs: Array<string>;
+
+    /**
+     * Fields that represent expected outputs/labels
+     */
+    labels: Array<string>;
+
+    /**
+     * Fields that are not inputs or labels
+     */
+    metadata: Array<string>;
   }
 }
 
@@ -112,36 +146,6 @@ export interface TestsetDeleteResponse {
    * Whether the deletion was successful
    */
   success: boolean;
-}
-
-export interface TestsetCreateTestcasesResponse {
-  items: Array<TestcasesAPI.Testcase>;
-}
-
-export interface TestsetDeleteTestcasesResponse {
-  /**
-   * Number of testcases successfully deleted
-   */
-  deletedCount: number;
-
-  /**
-   * List of errors encountered during deletion, if any
-   */
-  errors: Array<TestsetDeleteTestcasesResponse.Error>;
-}
-
-export namespace TestsetDeleteTestcasesResponse {
-  export interface Error {
-    /**
-     * ID of the testcase that failed to be deleted
-     */
-    id: number;
-
-    /**
-     * Error message explaining why the deletion failed
-     */
-    message: string;
-  }
 }
 
 export interface TestsetCreateParams {
@@ -238,51 +242,13 @@ export namespace TestsetUpdateParams {
 
 export interface TestsetListParams extends PaginatedResponseParams {}
 
-export interface TestsetCreateTestcasesParams {
-  /**
-   * Testcases to create (max 100)
-   */
-  items: Array<TestsetCreateTestcasesParams.Item>;
-}
-
-export namespace TestsetCreateTestcasesParams {
-  /**
-   * A test case in the Scorecard system. Contains JSON data that is validated
-   * against the schema defined by its testset. The `inputs` and `labels` fields are
-   * derived from the `data` field based on the testset's `fieldMapping`, and include
-   * all mapped fields, including those with validation errors. Testcases are stored
-   * regardless of validation results, with any validation errors included in the
-   * `validationErrors` field.
-   */
-  export interface Item {
-    /**
-     * The JSON data of the testcase, which is validated against the testset's schema.
-     */
-    data: Record<string, unknown>;
-  }
-}
-
-export interface TestsetDeleteTestcasesParams {
-  /**
-   * IDs of testcases to delete (max 100)
-   */
-  ids: Array<number>;
-}
-
-export interface TestsetListTestcasesParams extends PaginatedResponseParams {}
-
 export declare namespace Testsets {
   export {
+    type Testset as Testset,
     type TestsetDeleteResponse as TestsetDeleteResponse,
-    type TestsetCreateTestcasesResponse as TestsetCreateTestcasesResponse,
-    type TestsetDeleteTestcasesResponse as TestsetDeleteTestcasesResponse,
+    type TestsetsPaginatedResponse as TestsetsPaginatedResponse,
     type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
     type TestsetListParams as TestsetListParams,
-    type TestsetCreateTestcasesParams as TestsetCreateTestcasesParams,
-    type TestsetDeleteTestcasesParams as TestsetDeleteTestcasesParams,
-    type TestsetListTestcasesParams as TestsetListTestcasesParams,
   };
 }
-
-export { type TestsetsPaginatedResponse, type TestcasesPaginatedResponse };

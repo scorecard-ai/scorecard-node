@@ -28,18 +28,25 @@ import {
   ProjectListResponsesPaginatedResponse,
   Projects,
 } from './resources/projects';
-import { Testcase, TestcaseUpdateParams, Testcases } from './resources/testcases';
 import {
+  Testcase,
+  TestcaseCreateParams,
+  TestcaseCreateResponse,
+  TestcaseDeleteParams,
+  TestcaseDeleteResponse,
+  TestcaseListParams,
+  TestcaseUpdateParams,
+  Testcases,
+  TestcasesPaginatedResponse,
+} from './resources/testcases';
+import {
+  Testset,
   TestsetCreateParams,
-  TestsetCreateTestcasesParams,
-  TestsetCreateTestcasesResponse,
   TestsetDeleteResponse,
-  TestsetDeleteTestcasesParams,
-  TestsetDeleteTestcasesResponse,
   TestsetListParams,
-  TestsetListTestcasesParams,
   TestsetUpdateParams,
   Testsets,
+  TestsetsPaginatedResponse,
 } from './resources/testsets';
 import { readEnv } from './internal/utils/env';
 import { formatRequestDetails, loggerFor } from './internal/utils/log';
@@ -738,23 +745,25 @@ export declare namespace Scorecard {
 
   export {
     Testsets as Testsets,
+    type Testset as Testset,
     type TestsetDeleteResponse as TestsetDeleteResponse,
-    type TestsetCreateTestcasesResponse as TestsetCreateTestcasesResponse,
-    type TestsetDeleteTestcasesResponse as TestsetDeleteTestcasesResponse,
+    type TestsetsPaginatedResponse as TestsetsPaginatedResponse,
     type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
     type TestsetListParams as TestsetListParams,
-    type TestsetCreateTestcasesParams as TestsetCreateTestcasesParams,
-    type TestsetDeleteTestcasesParams as TestsetDeleteTestcasesParams,
-    type TestsetListTestcasesParams as TestsetListTestcasesParams,
   };
 
   export {
     Testcases as Testcases,
     type Testcase as Testcase,
+    type TestcaseCreateResponse as TestcaseCreateResponse,
+    type TestcaseDeleteResponse as TestcaseDeleteResponse,
+    type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
+    type TestcaseCreateParams as TestcaseCreateParams,
     type TestcaseUpdateParams as TestcaseUpdateParams,
+    type TestcaseListParams as TestcaseListParams,
+    type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 
   export type APIError = API.APIError;
-  export type Testset = API.Testset;
 }
