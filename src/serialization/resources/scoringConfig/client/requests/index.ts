@@ -1,1 +1,0 @@
-export { ScoringConfigCreateParams } from "./ScoringConfigCreateParams";

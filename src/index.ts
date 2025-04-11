@@ -1,4 +1,23 @@
-export * as Scorecard from "./api";
-export { ScorecardClient } from "./wrapper/ScorecardClient";
-export { ScorecardEnvironment } from "./environments";
-export { ScorecardError, ScorecardTimeoutError } from "./errors";
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+export { Scorecard as default } from './client';
+
+export { type Uploadable, toFile } from './core/uploads';
+export { APIPromise } from './core/api-promise';
+export { Scorecard, type ClientOptions } from './client';
+export { PagePromise } from './core/pagination';
+export {
+  ScorecardError,
+  APIError,
+  APIConnectionError,
+  APIConnectionTimeoutError,
+  APIUserAbortError,
+  NotFoundError,
+  ConflictError,
+  RateLimitError,
+  BadRequestError,
+  AuthenticationError,
+  InternalServerError,
+  PermissionDeniedError,
+  UnprocessableEntityError,
+} from './core/error';
