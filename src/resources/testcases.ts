@@ -11,7 +11,7 @@ export class Testcases extends APIResource {
    * Create multiple testcases in the specified testset.
    */
   create(
-    testsetID: number,
+    testsetID: string,
     body: TestcaseCreateParams,
     options?: RequestOptions,
   ): APIPromise<TestcaseCreateResponse> {
@@ -21,7 +21,7 @@ export class Testcases extends APIResource {
   /**
    * Replace the data of an existing testcase while keeping its ID.
    */
-  update(testcaseID: number, body: TestcaseUpdateParams, options?: RequestOptions): APIPromise<Testcase> {
+  update(testcaseID: string, body: TestcaseUpdateParams, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.put(path`/testcases/${testcaseID}`, { body, ...options });
   }
 
@@ -29,7 +29,7 @@ export class Testcases extends APIResource {
    * Retrieve a paginated list of testcases belonging to a testset.
    */
   list(
-    testsetID: number,
+    testsetID: string,
     query: TestcaseListParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<TestcasesPaginatedResponse, Testcase> {
@@ -43,7 +43,7 @@ export class Testcases extends APIResource {
    * Delete multiple testcases from the specified testset.
    */
   delete(
-    testsetID: number,
+    testsetID: string,
     body: TestcaseDeleteParams,
     options?: RequestOptions,
   ): APIPromise<TestcaseDeleteResponse> {
@@ -53,7 +53,7 @@ export class Testcases extends APIResource {
   /**
    * Retrieve a specific testcase by ID.
    */
-  get(testcaseID: number, options?: RequestOptions): APIPromise<Testcase> {
+  get(testcaseID: string, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.get(path`/testcases/${testcaseID}`, options);
   }
 }
@@ -72,7 +72,7 @@ export interface Testcase {
   /**
    * The ID of the testcase
    */
-  id: number;
+  id: string;
 
   /**
    * The JSON data of the testcase, which is validated against the testset's schema.
@@ -94,7 +94,7 @@ export interface Testcase {
   /**
    * The ID of the testset this testcase belongs to
    */
-  testsetId: number;
+  testsetId: string;
 
   /**
    * Validation errors found in the testcase data. If present, the testcase doesn't
@@ -138,7 +138,7 @@ export namespace TestcaseDeleteResponse {
     /**
      * ID of the testcase that failed to be deleted
      */
-    id: number;
+    id: string;
 
     /**
      * Error message explaining why the deletion failed
@@ -184,7 +184,7 @@ export interface TestcaseDeleteParams {
   /**
    * IDs of testcases to delete (max 100)
    */
-  ids: Array<number>;
+  ids: Array<string>;
 }
 
 export declare namespace Testcases {
