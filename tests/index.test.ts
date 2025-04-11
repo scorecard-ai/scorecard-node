@@ -312,13 +312,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['SCORECARD_BASE_URL'] = ''; // empty
       const client = new Scorecard({ bearerToken: 'My Bearer Token' });
-      expect(client.baseURL).toEqual('https://api2.scorecard.io/v2');
+      expect(client.baseURL).toEqual('https://api2.scorecard.io/api/v2');
     });
 
     test('blank env variable', () => {
       process.env['SCORECARD_BASE_URL'] = '  '; // blank
       const client = new Scorecard({ bearerToken: 'My Bearer Token' });
-      expect(client.baseURL).toEqual('https://api2.scorecard.io/v2');
+      expect(client.baseURL).toEqual('https://api2.scorecard.io/api/v2');
     });
   });
 

@@ -147,7 +147,7 @@ export class Scorecard {
    * API Client for interfacing with the Scorecard API.
    *
    * @param {string | undefined} [opts.bearerToken=process.env['SCORECARD_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['SCORECARD_BASE_URL'] ?? https://api2.scorecard.io/v2] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['SCORECARD_BASE_URL'] ?? https://api2.scorecard.io/api/v2] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -169,7 +169,7 @@ export class Scorecard {
     const options: ClientOptions = {
       bearerToken,
       ...opts,
-      baseURL: baseURL || `https://api2.scorecard.io/v2`,
+      baseURL: baseURL || `https://api2.scorecard.io/api/v2`,
     };
 
     this.baseURL = options.baseURL!;
