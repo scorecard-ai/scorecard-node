@@ -320,6 +320,23 @@ describe('instantiate client', () => {
       const client = new Scorecard({ bearerToken: 'My Bearer Token' });
       expect(client.baseURL).toEqual('https://api2.scorecard.io/api/v2');
     });
+
+    test('env variable with environment', () => {
+      process.env['SCORECARD_BASE_URL'] = 'https://example.com/from_env';
+
+      expect(
+        () => new Scorecard({ bearerToken: 'My Bearer Token', environment: 'production' }),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `"Ambiguous URL; The \`baseURL\` option (or SCORECARD_BASE_URL env var) and the \`environment\` option are given. If you want to use the environment you must pass baseURL: null"`,
+      );
+
+      const client = new Scorecard({
+        bearerToken: 'My Bearer Token',
+        baseURL: null,
+        environment: 'production',
+      });
+      expect(client.baseURL).toEqual('https://api2.scorecard.io/api/v2');
+    });
   });
 
   test('maxRetries option is correctly set', () => {

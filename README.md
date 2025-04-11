@@ -27,6 +27,7 @@ import Scorecard from 'scorecard-ai';
 
 const client = new Scorecard({
   bearerToken: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
+  environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
 async function main() {
@@ -53,6 +54,7 @@ import Scorecard from 'scorecard-ai';
 
 const client = new Scorecard({
   bearerToken: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
+  environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
 async function main() {

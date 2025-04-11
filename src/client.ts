@@ -52,11 +52,28 @@ import { readEnv } from './internal/utils/env';
 import { formatRequestDetails, loggerFor } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 
+const environments = {
+  production: 'https://api2.scorecard.io/api/v2',
+  staging: 'https://staging.api2.scorecard.io/api/v2',
+  local: 'http://localhost:3000/api/v2',
+};
+type Environment = keyof typeof environments;
+
 export interface ClientOptions {
   /**
    * Defaults to process.env['SCORECARD_API_KEY'].
    */
   bearerToken?: string | undefined;
+
+  /**
+   * Specifies the environment to use for the API.
+   *
+   * Each environment maps to a different base URL:
+   * - `production` corresponds to `https://api2.scorecard.io/api/v2`
+   * - `staging` corresponds to `https://staging.api2.scorecard.io/api/v2`
+   * - `local` corresponds to `http://localhost:3000/api/v2`
+   */
+  environment?: Environment | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -147,6 +164,7 @@ export class Scorecard {
    * API Client for interfacing with the Scorecard API.
    *
    * @param {string | undefined} [opts.bearerToken=process.env['SCORECARD_API_KEY'] ?? undefined]
+   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['SCORECARD_BASE_URL'] ?? https://api2.scorecard.io/api/v2] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -169,10 +187,17 @@ export class Scorecard {
     const options: ClientOptions = {
       bearerToken,
       ...opts,
-      baseURL: baseURL || `https://api2.scorecard.io/api/v2`,
+      baseURL,
+      environment: opts.environment ?? 'production',
     };
 
-    this.baseURL = options.baseURL!;
+    if (baseURL && opts.environment) {
+      throw new Errors.ScorecardError(
+        'Ambiguous URL; The `baseURL` option (or SCORECARD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      );
+    }
+
+    this.baseURL = options.baseURL || environments[options.environment || 'production'];
     this.timeout = options.timeout ?? Scorecard.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
