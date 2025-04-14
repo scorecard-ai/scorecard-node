@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:scorecard-ai/scorecard-node.git
+npm install git+ssh://git@github.com:stainless-sdks/scorecard-typescript.git
 ```
 
 > [!NOTE]
@@ -31,7 +31,7 @@ const client = new Scorecard({
 });
 
 async function main() {
-  const testset = await client.testsets.create(0, {
+  const testset = await client.testsets.create('projectId', {
     description: 'Testset for long context Q&A chatbot.',
     fieldMapping: { inputs: ['string'], labels: ['string'], metadata: ['string'] },
     jsonSchema: { foo: 'bar' },
@@ -58,7 +58,7 @@ const client = new Scorecard({
 });
 
 async function main() {
-  const testset: Scorecard.Testset = await client.testsets.get(0);
+  const testset: Scorecard.Testset = await client.testsets.get('testsetId');
 }
 
 main();
@@ -75,7 +75,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const testset = await client.testsets.get(0).catch(async (err) => {
+  const testset = await client.testsets.get('testsetId').catch(async (err) => {
     if (err instanceof Scorecard.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -118,7 +118,7 @@ const client = new Scorecard({
 });
 
 // Or, configure per-request:
-await client.testsets.get(0, {
+await client.testsets.get('testsetId', {
   maxRetries: 5,
 });
 ```
@@ -135,7 +135,7 @@ const client = new Scorecard({
 });
 
 // Override per-request:
-await client.testsets.get(0, {
+await client.testsets.get('testsetId', {
   timeout: 5 * 1000,
 });
 ```
@@ -158,11 +158,11 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Scorecard();
 
-const response = await client.testsets.get(0).asResponse();
+const response = await client.testsets.get('testsetId').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: testset, response: raw } = await client.testsets.get(0).withResponse();
+const { data: testset, response: raw } = await client.testsets.get('testsetId').withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(testset.id);
 ```
@@ -355,7 +355,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/scorecard-ai/scorecard-node/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/scorecard-typescript/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 

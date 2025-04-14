@@ -29,7 +29,7 @@ export interface ProjectListResponse {
   /**
    * The ID of the project
    */
-  id: number;
+  id: string;
 
   /**
    * The name of the project

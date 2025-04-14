@@ -11,7 +11,7 @@ export class Testsets extends APIResource {
    * Create a new testset for a project. The testset will be created in the project
    * specified in the path.
    */
-  create(projectID: number, body: TestsetCreateParams, options?: RequestOptions): APIPromise<Testset> {
+  create(projectID: string, body: TestsetCreateParams, options?: RequestOptions): APIPromise<Testset> {
     return this._client.post(path`/projects/${projectID}/testsets`, { body, ...options });
   }
 
@@ -30,7 +30,7 @@ export class Testsets extends APIResource {
    *   schema
    */
   update(
-    testsetID: number,
+    testsetID: string,
     body: TestsetUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<Testset> {
@@ -41,7 +41,7 @@ export class Testsets extends APIResource {
    * Retrieve a paginated list of testsets belonging to a project.
    */
   list(
-    projectID: number,
+    projectID: string,
     query: TestsetListParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<TestsetsPaginatedResponse, Testset> {
@@ -54,14 +54,14 @@ export class Testsets extends APIResource {
   /**
    * Delete testset
    */
-  delete(testsetID: number, options?: RequestOptions): APIPromise<TestsetDeleteResponse> {
+  delete(testsetID: string, options?: RequestOptions): APIPromise<TestsetDeleteResponse> {
     return this._client.delete(path`/testsets/${testsetID}`, options);
   }
 
   /**
    * Get testset by ID
    */
-  get(testsetID: number, options?: RequestOptions): APIPromise<Testset> {
+  get(testsetID: string, options?: RequestOptions): APIPromise<Testset> {
     return this._client.get(path`/testsets/${testsetID}`, options);
   }
 }
@@ -97,7 +97,7 @@ export interface Testset {
   /**
    * The ID of the testset
    */
-  id: number;
+  id: string;
 
   /**
    * The description of the testset
