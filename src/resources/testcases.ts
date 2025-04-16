@@ -75,15 +75,15 @@ export interface Testcase {
   id: string;
 
   /**
-   * The JSON data of the testcase, which is validated against the testset's schema.
-   */
-  data: Record<string, unknown>;
-
-  /**
    * Derived from data based on the testset's fieldMapping. Contains all fields
    * marked as inputs, including those with validation errors.
    */
   inputs: Record<string, unknown>;
+
+  /**
+   * The JSON data of the testcase, which is validated against the testset's schema.
+   */
+  jsonData: Record<string, unknown>;
 
   /**
    * Derived from data based on the testset's fieldMapping. Contains all fields
@@ -167,7 +167,7 @@ export namespace TestcaseCreateParams {
     /**
      * The JSON data of the testcase, which is validated against the testset's schema.
      */
-    data: Record<string, unknown>;
+    jsonData: Record<string, unknown>;
   }
 }
 
@@ -175,7 +175,7 @@ export interface TestcaseUpdateParams {
   /**
    * The JSON data of the testcase, which is validated against the testset's schema.
    */
-  data: Record<string, unknown>;
+  jsonData: Record<string, unknown>;
 }
 
 export interface TestcaseListParams extends PaginatedResponseParams {}
