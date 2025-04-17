@@ -40,17 +40,6 @@ export class Testcases extends APIResource {
   }
 
   /**
-   * Delete multiple testcases from the specified testset.
-   */
-  delete(
-    testsetID: string,
-    body: TestcaseDeleteParams,
-    options?: RequestOptions,
-  ): APIPromise<TestcaseDeleteResponse> {
-    return this._client.delete(path`/testsets/${testsetID}/testcases`, { body, ...options });
-  }
-
-  /**
    * Retrieve a specific testcase by ID.
    */
   get(testcaseID: string, options?: RequestOptions): APIPromise<Testcase> {
@@ -121,32 +110,6 @@ export interface TestcaseCreateResponse {
   items: Array<Testcase>;
 }
 
-export interface TestcaseDeleteResponse {
-  /**
-   * Number of testcases successfully deleted
-   */
-  deletedCount: number;
-
-  /**
-   * List of errors encountered during deletion, if any
-   */
-  errors: Array<TestcaseDeleteResponse.Error>;
-}
-
-export namespace TestcaseDeleteResponse {
-  export interface Error {
-    /**
-     * ID of the testcase that failed to be deleted
-     */
-    id: string;
-
-    /**
-     * Error message explaining why the deletion failed
-     */
-    message: string;
-  }
-}
-
 export interface TestcaseCreateParams {
   /**
    * Testcases to create (max 100)
@@ -180,22 +143,13 @@ export interface TestcaseUpdateParams {
 
 export interface TestcaseListParams extends PaginatedResponseParams {}
 
-export interface TestcaseDeleteParams {
-  /**
-   * IDs of testcases to delete (max 100)
-   */
-  ids: Array<string>;
-}
-
 export declare namespace Testcases {
   export {
     type Testcase as Testcase,
     type TestcaseCreateResponse as TestcaseCreateResponse,
-    type TestcaseDeleteResponse as TestcaseDeleteResponse,
     type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
     type TestcaseCreateParams as TestcaseCreateParams,
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
-    type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 }

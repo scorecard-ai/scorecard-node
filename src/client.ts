@@ -32,8 +32,6 @@ import {
   Testcase,
   TestcaseCreateParams,
   TestcaseCreateResponse,
-  TestcaseDeleteParams,
-  TestcaseDeleteResponse,
   TestcaseListParams,
   TestcaseUpdateParams,
   Testcases,
@@ -782,12 +780,10 @@ export declare namespace Scorecard {
     Testcases as Testcases,
     type Testcase as Testcase,
     type TestcaseCreateResponse as TestcaseCreateResponse,
-    type TestcaseDeleteResponse as TestcaseDeleteResponse,
     type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
     type TestcaseCreateParams as TestcaseCreateParams,
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
-    type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 
   export type APIError = API.APIError;
