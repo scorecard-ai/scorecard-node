@@ -11,9 +11,11 @@ export {
   Testcases,
   type Testcase,
   type TestcaseCreateResponse,
+  type TestcaseDeleteResponse,
   type TestcaseCreateParams,
   type TestcaseUpdateParams,
   type TestcaseListParams,
+  type TestcaseDeleteParams,
   type TestcasesPaginatedResponse,
 } from './testcases';
 export {
