@@ -29,11 +29,26 @@ import {
   Projects,
 } from './resources/projects';
 import {
+  SystemConfig,
+  SystemConfigCreateParams,
+  SystemConfigGetParams,
+  SystemConfigListParams,
+  SystemConfigs,
+  SystemConfigsPaginatedResponse,
+} from './resources/system-configs';
+import {
+  System,
+  SystemCreateParams,
+  SystemDeleteResponse,
+  SystemListParams,
+  SystemUpdateParams,
+  Systems,
+  SystemsPaginatedResponse,
+} from './resources/systems';
+import {
   Testcase,
   TestcaseCreateParams,
   TestcaseCreateResponse,
-  TestcaseDeleteParams,
-  TestcaseDeleteResponse,
   TestcaseListParams,
   TestcaseUpdateParams,
   Testcases,
@@ -748,10 +763,14 @@ export class Scorecard {
   projects: API.Projects = new API.Projects(this);
   testsets: API.Testsets = new API.Testsets(this);
   testcases: API.Testcases = new API.Testcases(this);
+  systems: API.Systems = new API.Systems(this);
+  systemConfigs: API.SystemConfigs = new API.SystemConfigs(this);
 }
 Scorecard.Projects = Projects;
 Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
+Scorecard.Systems = Systems;
+Scorecard.SystemConfigs = SystemConfigs;
 export declare namespace Scorecard {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -782,12 +801,29 @@ export declare namespace Scorecard {
     Testcases as Testcases,
     type Testcase as Testcase,
     type TestcaseCreateResponse as TestcaseCreateResponse,
-    type TestcaseDeleteResponse as TestcaseDeleteResponse,
     type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
     type TestcaseCreateParams as TestcaseCreateParams,
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
-    type TestcaseDeleteParams as TestcaseDeleteParams,
+  };
+
+  export {
+    Systems as Systems,
+    type System as System,
+    type SystemDeleteResponse as SystemDeleteResponse,
+    type SystemsPaginatedResponse as SystemsPaginatedResponse,
+    type SystemCreateParams as SystemCreateParams,
+    type SystemUpdateParams as SystemUpdateParams,
+    type SystemListParams as SystemListParams,
+  };
+
+  export {
+    SystemConfigs as SystemConfigs,
+    type SystemConfig as SystemConfig,
+    type SystemConfigsPaginatedResponse as SystemConfigsPaginatedResponse,
+    type SystemConfigCreateParams as SystemConfigCreateParams,
+    type SystemConfigListParams as SystemConfigListParams,
+    type SystemConfigGetParams as SystemConfigGetParams,
   };
 
   export type APIError = API.APIError;

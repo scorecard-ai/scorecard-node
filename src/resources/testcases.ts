@@ -40,13 +40,6 @@ export class Testcases extends APIResource {
   }
 
   /**
-   * Delete multiple testcases by their IDs.
-   */
-  delete(body: TestcaseDeleteParams, options?: RequestOptions): APIPromise<TestcaseDeleteResponse> {
-    return this._client.post('/testcases/bulk-delete', { body, ...options });
-  }
-
-  /**
    * Retrieve a specific testcase by ID.
    */
   get(testcaseID: string, options?: RequestOptions): APIPromise<Testcase> {
@@ -117,13 +110,6 @@ export interface TestcaseCreateResponse {
   items: Array<Testcase>;
 }
 
-export interface TestcaseDeleteResponse {
-  /**
-   * Whether the deletion was successful
-   */
-  success: boolean;
-}
-
 export interface TestcaseCreateParams {
   /**
    * Testcases to create (max 100)
@@ -157,22 +143,13 @@ export interface TestcaseUpdateParams {
 
 export interface TestcaseListParams extends PaginatedResponseParams {}
 
-export interface TestcaseDeleteParams {
-  /**
-   * IDs of testcases to delete
-   */
-  ids: Array<string>;
-}
-
 export declare namespace Testcases {
   export {
     type Testcase as Testcase,
     type TestcaseCreateResponse as TestcaseCreateResponse,
-    type TestcaseDeleteResponse as TestcaseDeleteResponse,
     type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
     type TestcaseCreateParams as TestcaseCreateParams,
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
-    type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 }
