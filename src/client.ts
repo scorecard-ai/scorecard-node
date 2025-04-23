@@ -23,11 +23,17 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
+  ExecutionRecord,
+  ExecutionRecordCreateParams,
+  ExecutionRecords,
+} from './resources/execution-records';
+import {
   ProjectListParams,
   ProjectListResponse,
   ProjectListResponsesPaginatedResponse,
   Projects,
 } from './resources/projects';
+import { Run, RunCreateParams, Runs } from './resources/runs';
 import {
   SystemConfig,
   SystemConfigCreateParams,
@@ -765,12 +771,16 @@ export class Scorecard {
   projects: API.Projects = new API.Projects(this);
   testsets: API.Testsets = new API.Testsets(this);
   testcases: API.Testcases = new API.Testcases(this);
+  runs: API.Runs = new API.Runs(this);
+  executionRecords: API.ExecutionRecords = new API.ExecutionRecords(this);
   systems: API.Systems = new API.Systems(this);
   systemConfigs: API.SystemConfigs = new API.SystemConfigs(this);
 }
 Scorecard.Projects = Projects;
 Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
+Scorecard.Runs = Runs;
+Scorecard.ExecutionRecords = ExecutionRecords;
 Scorecard.Systems = Systems;
 Scorecard.SystemConfigs = SystemConfigs;
 export declare namespace Scorecard {
@@ -809,6 +819,14 @@ export declare namespace Scorecard {
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
     type TestcaseDeleteParams as TestcaseDeleteParams,
+  };
+
+  export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
+
+  export {
+    ExecutionRecords as ExecutionRecords,
+    type ExecutionRecord as ExecutionRecord,
+    type ExecutionRecordCreateParams as ExecutionRecordCreateParams,
   };
 
   export {

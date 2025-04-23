@@ -11,7 +11,6 @@ describe('resource systems', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
     const responsePromise = client.systems.create('projectId', {
-      id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       configSchema: { type: 'bar', properties: 'bar', required: 'bar' },
       description: 'Production chatbot powered by GPT-4',
       inputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
@@ -30,7 +29,6 @@ describe('resource systems', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
     const response = await client.systems.create('projectId', {
-      id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       configSchema: { type: 'bar', properties: 'bar', required: 'bar' },
       description: 'Production chatbot powered by GPT-4',
       inputSchema: { type: 'bar', properties: 'bar', required: 'bar' },

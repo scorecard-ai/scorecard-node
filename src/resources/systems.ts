@@ -140,11 +140,6 @@ export interface SystemDeleteResponse {
 
 export interface SystemCreateParams {
   /**
-   * The ID of the system
-   */
-  id: string;
-
-  /**
    * The schema of the system's configuration
    */
   configSchema: Record<string, unknown>;

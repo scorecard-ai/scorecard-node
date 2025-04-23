@@ -120,11 +120,6 @@ export namespace SystemConfig {
 
 export interface SystemConfigCreateParams {
   /**
-   * The ID of the system configuration
-   */
-  id: string;
-
-  /**
    * The configuration of the system
    */
   config: Record<string, unknown>;
@@ -133,11 +128,6 @@ export interface SystemConfigCreateParams {
    * The label for the system configuration
    */
   label: string;
-
-  /**
-   * The ID of the system the configuration belongs to
-   */
-  body_systemId: string;
 
   /**
    * Validation errors found in the configuration. If present, the configuration

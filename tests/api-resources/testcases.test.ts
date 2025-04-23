@@ -11,7 +11,11 @@ describe('resource testcases', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
     const responsePromise = client.testcases.create('testsetId', {
-      items: [{ jsonData: { foo: 'bar' } }, { jsonData: { foo: 'bar' } }, { jsonData: { foo: 'bar' } }],
+      items: [
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+      ],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -25,13 +29,19 @@ describe('resource testcases', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
     const response = await client.testcases.create('testsetId', {
-      items: [{ jsonData: { foo: 'bar' } }, { jsonData: { foo: 'bar' } }, { jsonData: { foo: 'bar' } }],
+      items: [
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+      ],
     });
   });
 
   // skipped: tests are disabled for the time being
   test.skip('update: only required params', async () => {
-    const responsePromise = client.testcases.update('testcaseId', { jsonData: { foo: 'bar' } });
+    const responsePromise = client.testcases.update('testcaseId', {
+      jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,7 +53,9 @@ describe('resource testcases', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('update: required and optional params', async () => {
-    const response = await client.testcases.update('testcaseId', { jsonData: { foo: 'bar' } });
+    const response = await client.testcases.update('testcaseId', {
+      jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
+    });
   });
 
   // skipped: tests are disabled for the time being

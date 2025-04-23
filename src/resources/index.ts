@@ -2,11 +2,17 @@
 
 export * from './shared';
 export {
+  ExecutionRecords,
+  type ExecutionRecord,
+  type ExecutionRecordCreateParams,
+} from './execution-records';
+export {
   Projects,
   type ProjectListResponse,
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
 } from './projects';
+export { Runs, type Run, type RunCreateParams } from './runs';
 export {
   SystemConfigs,
   type SystemConfig,

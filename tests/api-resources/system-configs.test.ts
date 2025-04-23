@@ -11,10 +11,8 @@ describe('resource systemConfigs', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
     const responsePromise = client.systemConfigs.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      id: '5fa85f64-5717-4562-b3fc-2c963f66afa7',
       config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
       label: 'Production (Low Temperature)',
-      body_systemId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -28,10 +26,8 @@ describe('resource systemConfigs', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
     const response = await client.systemConfigs.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      id: '5fa85f64-5717-4562-b3fc-2c963f66afa7',
       config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
       label: 'Production (Low Temperature)',
-      body_systemId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       validationErrors: [{ message: 'Required field missing', path: '/data/question' }],
     });
   });

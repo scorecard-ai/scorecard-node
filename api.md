@@ -45,6 +45,26 @@ Methods:
 - <code title="post /testcases/bulk-delete">client.testcases.<a href="./src/resources/testcases.ts">delete</a>({ ...params }) -> TestcaseDeleteResponse</code>
 - <code title="get /testcases/{testcaseId}">client.testcases.<a href="./src/resources/testcases.ts">get</a>(testcaseID) -> Testcase</code>
 
+# Runs
+
+Types:
+
+- <code><a href="./src/resources/runs.ts">Run</a></code>
+
+Methods:
+
+- <code title="post /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">create</a>(projectID, { ...params }) -> Run</code>
+
+# ExecutionRecords
+
+Types:
+
+- <code><a href="./src/resources/execution-records.ts">ExecutionRecord</a></code>
+
+Methods:
+
+- <code title="post /runs/{runId}/executionrecords">client.executionRecords.<a href="./src/resources/execution-records.ts">create</a>(runID, { ...params }) -> ExecutionRecord</code>
+
 # Systems
 
 Types:
