@@ -88,9 +88,9 @@ export interface SystemConfig {
   config: Record<string, unknown>;
 
   /**
-   * The label for the system configuration
+   * The name of the system configuration
    */
-  label: string;
+  name: string;
 
   /**
    * The ID of the system the configuration belongs to
@@ -125,9 +125,9 @@ export interface SystemConfigCreateParams {
   config: Record<string, unknown>;
 
   /**
-   * The label for the system configuration
+   * The name of the system configuration
    */
-  label: string;
+  name: string;
 
   /**
    * Validation errors found in the configuration. If present, the configuration

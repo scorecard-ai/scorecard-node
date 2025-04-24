@@ -12,7 +12,7 @@ describe('resource systemConfigs', () => {
   test.skip('create: only required params', async () => {
     const responsePromise = client.systemConfigs.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
-      label: 'Production (Low Temperature)',
+      name: 'Production (Low Temperature)',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,7 +27,7 @@ describe('resource systemConfigs', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.systemConfigs.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
-      label: 'Production (Low Temperature)',
+      name: 'Production (Low Temperature)',
       validationErrors: [{ message: 'Required field missing', path: '/data/question' }],
     });
   });
