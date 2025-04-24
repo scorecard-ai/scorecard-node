@@ -10,12 +10,7 @@ const client = new Scorecard({
 describe('resource runs', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
-    const responsePromise = client.runs.create('projectId', {
-      metricIds: ['789', '101'],
-      name: 'First Run',
-      systemConfigId: '456',
-      testsetId: '123',
-    });
+    const responsePromise = client.runs.create('projectId', { metricIds: ['789', '101'], testsetId: '123' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -29,9 +24,8 @@ describe('resource runs', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.runs.create('projectId', {
       metricIds: ['789', '101'],
-      name: 'First Run',
-      systemConfigId: '456',
       testsetId: '123',
+      systemConfigId: '456',
     });
   });
 });

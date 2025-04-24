@@ -29,19 +29,14 @@ export interface Run {
   metricIds: Array<string>;
 
   /**
-   * The name of the Run
-   */
-  name: string;
-
-  /**
-   * The ID of the system config this Run is using
-   */
-  systemConfigId: string;
-
-  /**
    * The ID of the Testset this Run is testing
    */
   testsetId: string;
+
+  /**
+   * The ID of the system configuration this Run is using
+   */
+  systemConfigId?: string;
 }
 
 export interface RunCreateParams {
@@ -51,19 +46,14 @@ export interface RunCreateParams {
   metricIds: Array<string>;
 
   /**
-   * The name of the Run
-   */
-  name: string;
-
-  /**
-   * The ID of the system config this Run is using
-   */
-  systemConfigId: string;
-
-  /**
    * The ID of the Testset this Run is testing
    */
   testsetId: string;
+
+  /**
+   * The ID of the system configuration this Run is using
+   */
+  systemConfigId?: string;
 }
 
 export declare namespace Runs {
