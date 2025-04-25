@@ -2,11 +2,34 @@
 
 export * from './shared';
 export {
+  ExecutionRecords,
+  type ExecutionRecord,
+  type ExecutionRecordCreateParams,
+} from './execution-records';
+export {
   Projects,
   type ProjectListResponse,
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
 } from './projects';
+export { Runs, type Run, type RunCreateParams } from './runs';
+export {
+  SystemConfigs,
+  type SystemConfig,
+  type SystemConfigCreateParams,
+  type SystemConfigListParams,
+  type SystemConfigGetParams,
+  type SystemConfigsPaginatedResponse,
+} from './system-configs';
+export {
+  Systems,
+  type System,
+  type SystemDeleteResponse,
+  type SystemCreateParams,
+  type SystemUpdateParams,
+  type SystemListParams,
+  type SystemsPaginatedResponse,
+} from './systems';
 export {
   Testcases,
   type Testcase,

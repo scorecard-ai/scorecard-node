@@ -40,14 +40,10 @@ export class Testcases extends APIResource {
   }
 
   /**
-   * Delete multiple testcases from the specified testset.
+   * Delete multiple testcases by their IDs.
    */
-  delete(
-    testsetID: string,
-    body: TestcaseDeleteParams,
-    options?: RequestOptions,
-  ): APIPromise<TestcaseDeleteResponse> {
-    return this._client.delete(path`/testsets/${testsetID}/testcases`, { body, ...options });
+  delete(body: TestcaseDeleteParams, options?: RequestOptions): APIPromise<TestcaseDeleteResponse> {
+    return this._client.post('/testcases/bulk-delete', { body, ...options });
   }
 
   /**
@@ -75,15 +71,15 @@ export interface Testcase {
   id: string;
 
   /**
-   * The JSON data of the testcase, which is validated against the testset's schema.
-   */
-  data: Record<string, unknown>;
-
-  /**
    * Derived from data based on the testset's fieldMapping. Contains all fields
    * marked as inputs, including those with validation errors.
    */
   inputs: Record<string, unknown>;
+
+  /**
+   * The JSON data of the testcase, which is validated against the testset's schema.
+   */
+  jsonData: Record<string, unknown>;
 
   /**
    * Derived from data based on the testset's fieldMapping. Contains all fields
@@ -123,28 +119,9 @@ export interface TestcaseCreateResponse {
 
 export interface TestcaseDeleteResponse {
   /**
-   * Number of testcases successfully deleted
+   * Whether the deletion was successful
    */
-  deletedCount: number;
-
-  /**
-   * List of errors encountered during deletion, if any
-   */
-  errors: Array<TestcaseDeleteResponse.Error>;
-}
-
-export namespace TestcaseDeleteResponse {
-  export interface Error {
-    /**
-     * ID of the testcase that failed to be deleted
-     */
-    id: string;
-
-    /**
-     * Error message explaining why the deletion failed
-     */
-    message: string;
-  }
+  success: boolean;
 }
 
 export interface TestcaseCreateParams {
@@ -167,7 +144,7 @@ export namespace TestcaseCreateParams {
     /**
      * The JSON data of the testcase, which is validated against the testset's schema.
      */
-    data: Record<string, unknown>;
+    jsonData: Record<string, unknown>;
   }
 }
 
@@ -175,14 +152,14 @@ export interface TestcaseUpdateParams {
   /**
    * The JSON data of the testcase, which is validated against the testset's schema.
    */
-  data: Record<string, unknown>;
+  jsonData: Record<string, unknown>;
 }
 
 export interface TestcaseListParams extends PaginatedResponseParams {}
 
 export interface TestcaseDeleteParams {
   /**
-   * IDs of testcases to delete (max 100)
+   * IDs of testcases to delete
    */
   ids: Array<string>;
 }

@@ -7,14 +7,15 @@ const client = new Scorecard({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource testsets', () => {
+describe('resource systems', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
-    const responsePromise = client.testsets.create('projectId', {
-      description: 'Testset for long context Q&A chatbot.',
-      fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
-      jsonSchema: { type: 'bar', properties: 'bar' },
-      name: 'Long Context Q&A',
+    const responsePromise = client.systems.create('projectId', {
+      configSchema: { type: 'bar', properties: 'bar', required: 'bar' },
+      description: 'Production chatbot powered by GPT-4',
+      inputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
+      name: 'GPT-4 Chatbot',
+      outputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,17 +28,18 @@ describe('resource testsets', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
-    const response = await client.testsets.create('projectId', {
-      description: 'Testset for long context Q&A chatbot.',
-      fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
-      jsonSchema: { type: 'bar', properties: 'bar' },
-      name: 'Long Context Q&A',
+    const response = await client.systems.create('projectId', {
+      configSchema: { type: 'bar', properties: 'bar', required: 'bar' },
+      description: 'Production chatbot powered by GPT-4',
+      inputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
+      name: 'GPT-4 Chatbot',
+      outputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
     });
   });
 
   // skipped: tests are disabled for the time being
   test.skip('update', async () => {
-    const responsePromise = client.testsets.update('testsetId');
+    const responsePromise = client.systems.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -51,13 +53,14 @@ describe('resource testsets', () => {
   test.skip('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.testsets.update(
-        'testsetId',
+      client.systems.update(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
-          description: 'Updated description for the Q&A testset.',
-          fieldMapping: { inputs: ['string'], labels: ['string'], metadata: ['string'] },
-          jsonSchema: { foo: 'bar' },
-          name: 'Updated Q&A Testset',
+          configSchema: { foo: 'bar' },
+          description: 'Updated production chatbot powered by GPT-4 Turbo',
+          inputSchema: { foo: 'bar' },
+          name: 'GPT-4 Turbo Chatbot',
+          outputSchema: { foo: 'bar' },
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -66,7 +69,7 @@ describe('resource testsets', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('list', async () => {
-    const responsePromise = client.testsets.list('projectId');
+    const responsePromise = client.systems.list('projectId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -80,13 +83,13 @@ describe('resource testsets', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.testsets.list('projectId', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }),
+      client.systems.list('projectId', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
   // skipped: tests are disabled for the time being
   test.skip('delete', async () => {
-    const responsePromise = client.testsets.delete('testsetId');
+    const responsePromise = client.systems.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -98,7 +101,7 @@ describe('resource testsets', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('get', async () => {
-    const responsePromise = client.testsets.get('testsetId');
+    const responsePromise = client.systems.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

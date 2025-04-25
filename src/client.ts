@@ -23,11 +23,34 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
+  ExecutionRecord,
+  ExecutionRecordCreateParams,
+  ExecutionRecords,
+} from './resources/execution-records';
+import {
   ProjectListParams,
   ProjectListResponse,
   ProjectListResponsesPaginatedResponse,
   Projects,
 } from './resources/projects';
+import { Run, RunCreateParams, Runs } from './resources/runs';
+import {
+  SystemConfig,
+  SystemConfigCreateParams,
+  SystemConfigGetParams,
+  SystemConfigListParams,
+  SystemConfigs,
+  SystemConfigsPaginatedResponse,
+} from './resources/system-configs';
+import {
+  System,
+  SystemCreateParams,
+  SystemDeleteResponse,
+  SystemListParams,
+  SystemUpdateParams,
+  Systems,
+  SystemsPaginatedResponse,
+} from './resources/systems';
 import {
   Testcase,
   TestcaseCreateParams,
@@ -626,17 +649,17 @@ export class Scorecard {
   }
 
   buildRequest(
-    options: FinalRequestOptions,
+    inputOptions: FinalRequestOptions,
     { retryCount = 0 }: { retryCount?: number } = {},
   ): { req: FinalizedRequestInit; url: string; timeout: number } {
-    options = { ...options };
+    const options = { ...inputOptions };
     const { method, path, query } = options;
 
     const url = this.buildURL(path!, query as Record<string, unknown>);
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
-    const reqHeaders = this.buildHeaders({ options, method, bodyHeaders, retryCount });
+    const reqHeaders = this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
 
     const req: FinalizedRequestInit = {
       method,
@@ -748,10 +771,18 @@ export class Scorecard {
   projects: API.Projects = new API.Projects(this);
   testsets: API.Testsets = new API.Testsets(this);
   testcases: API.Testcases = new API.Testcases(this);
+  runs: API.Runs = new API.Runs(this);
+  executionRecords: API.ExecutionRecords = new API.ExecutionRecords(this);
+  systems: API.Systems = new API.Systems(this);
+  systemConfigs: API.SystemConfigs = new API.SystemConfigs(this);
 }
 Scorecard.Projects = Projects;
 Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
+Scorecard.Runs = Runs;
+Scorecard.ExecutionRecords = ExecutionRecords;
+Scorecard.Systems = Systems;
+Scorecard.SystemConfigs = SystemConfigs;
 export declare namespace Scorecard {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -788,6 +819,33 @@ export declare namespace Scorecard {
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
     type TestcaseDeleteParams as TestcaseDeleteParams,
+  };
+
+  export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
+
+  export {
+    ExecutionRecords as ExecutionRecords,
+    type ExecutionRecord as ExecutionRecord,
+    type ExecutionRecordCreateParams as ExecutionRecordCreateParams,
+  };
+
+  export {
+    Systems as Systems,
+    type System as System,
+    type SystemDeleteResponse as SystemDeleteResponse,
+    type SystemsPaginatedResponse as SystemsPaginatedResponse,
+    type SystemCreateParams as SystemCreateParams,
+    type SystemUpdateParams as SystemUpdateParams,
+    type SystemListParams as SystemListParams,
+  };
+
+  export {
+    SystemConfigs as SystemConfigs,
+    type SystemConfig as SystemConfig,
+    type SystemConfigsPaginatedResponse as SystemConfigsPaginatedResponse,
+    type SystemConfigCreateParams as SystemConfigCreateParams,
+    type SystemConfigListParams as SystemConfigListParams,
+    type SystemConfigGetParams as SystemConfigGetParams,
   };
 
   export type APIError = API.APIError;

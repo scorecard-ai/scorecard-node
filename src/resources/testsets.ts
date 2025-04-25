@@ -111,11 +111,14 @@ export interface Testset {
   fieldMapping: Testset.FieldMapping;
 
   /**
+   * The JSON schema for each testcase in the testset
+   */
+  jsonSchema: Record<string, unknown>;
+
+  /**
    * The name of the testset
    */
   name: string;
-
-  schema: Record<string, unknown>;
 }
 
 export namespace Testset {
@@ -161,14 +164,14 @@ export interface TestsetCreateParams {
   fieldMapping: TestsetCreateParams.FieldMapping;
 
   /**
+   * The JSON schema for each testcase in the testset
+   */
+  jsonSchema: Record<string, unknown>;
+
+  /**
    * The name of the testset
    */
   name: string;
-
-  /**
-   * The JSON schema for each testcase in the testset
-   */
-  schema: Record<string, unknown>;
 }
 
 export namespace TestsetCreateParams {
@@ -207,14 +210,14 @@ export interface TestsetUpdateParams {
   fieldMapping?: TestsetUpdateParams.FieldMapping;
 
   /**
+   * The JSON schema for each testcase in the testset
+   */
+  jsonSchema?: Record<string, unknown>;
+
+  /**
    * The name of the testset
    */
   name?: string;
-
-  /**
-   * The JSON schema for each testcase in the testset
-   */
-  schema?: Record<string, unknown>;
 }
 
 export namespace TestsetUpdateParams {

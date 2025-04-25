@@ -12,9 +12,9 @@ describe('resource testcases', () => {
   test.skip('create: only required params', async () => {
     const responsePromise = client.testcases.create('testsetId', {
       items: [
-        { data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
       ],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -30,9 +30,9 @@ describe('resource testcases', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.testcases.create('testsetId', {
       items: [
-        { data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
       ],
     });
   });
@@ -40,7 +40,7 @@ describe('resource testcases', () => {
   // skipped: tests are disabled for the time being
   test.skip('update: only required params', async () => {
     const responsePromise = client.testcases.update('testcaseId', {
-      data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
+      jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -54,7 +54,7 @@ describe('resource testcases', () => {
   // skipped: tests are disabled for the time being
   test.skip('update: required and optional params', async () => {
     const response = await client.testcases.update('testcaseId', {
-      data: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
+      jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
     });
   });
 
@@ -80,7 +80,7 @@ describe('resource testcases', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('delete: only required params', async () => {
-    const responsePromise = client.testcases.delete('testsetId', { ids: ['string', 'string', 'string'] });
+    const responsePromise = client.testcases.delete({ ids: ['string', 'string', 'string'] });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -92,7 +92,7 @@ describe('resource testcases', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('delete: required and optional params', async () => {
-    const response = await client.testcases.delete('testsetId', { ids: ['string', 'string', 'string'] });
+    const response = await client.testcases.delete({ ids: ['string', 'string', 'string'] });
   });
 
   // skipped: tests are disabled for the time being
