@@ -50,7 +50,7 @@ describe('resource systemConfigs', () => {
     await expect(
       client.systemConfigs.list(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { cursor: '123', limit: 20 },
+        { cursor: 'eyJvZmZzZXQiOjAsInBhZ2VJZCI6ImNvZGUifQ', limit: 20 },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Scorecard.NotFoundError);
