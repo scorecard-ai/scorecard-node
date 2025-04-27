@@ -83,7 +83,11 @@ describe('resource systems', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.systems.list('projectId', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }),
+      client.systems.list(
+        'projectId',
+        { cursor: 'eyJvZmZzZXQiOjAsInBhZ2VJZCI6ImNvZGUifQ', limit: 20 },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
