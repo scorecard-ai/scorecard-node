@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.0-alpha.2 (2025-04-28)
+
+Full Changelog: [v1.0.0-alpha.1...v1.0.0-alpha.2](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.1...v1.0.0-alpha.2)
+
+### Features
+
+* **api:** api update ([26ae98b](https://github.com/scorecard-ai/scorecard-node/commit/26ae98b91538ce727efd7288df80916704539d16))
+* **api:** api update ([9ad189f](https://github.com/scorecard-ai/scorecard-node/commit/9ad189fda560264c0960fc75c9d9c8826c81009c))
+* **api:** manual updates ([6d48d56](https://github.com/scorecard-ai/scorecard-node/commit/6d48d561d0890f007939fb06e866111a24e67be1))
+* **api:** manual updates ([660be58](https://github.com/scorecard-ai/scorecard-node/commit/660be580e34deeb4e0ec6f682c8bd4303bd1dbb1))
+* **api:** manual updates ([351b710](https://github.com/scorecard-ai/scorecard-node/commit/351b710742e4c13ae6ee91be2a742b9c20239bc5))
+
+
+### Bug Fixes
+
+* update README examples ([86a1f18](https://github.com/scorecard-ai/scorecard-node/commit/86a1f188ac1f99612255b67682009256fe388ac1))
+
 ## 1.0.0-alpha.1 (2025-04-25)
 
 Full Changelog: [v1.0.0-alpha.0...v1.0.0-alpha.1](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.0...v1.0.0-alpha.1)
