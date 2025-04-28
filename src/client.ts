@@ -33,7 +33,7 @@ import {
   ProjectListResponsesPaginatedResponse,
   Projects,
 } from './resources/projects';
-import { Run, RunCreateParams, Runs } from './resources/runs';
+import { Run, RunCreateParams, RunUpdateParams, RunUpdateResponse, Runs } from './resources/runs';
 import {
   SystemConfig,
   SystemConfigCreateParams,
@@ -821,7 +821,13 @@ export declare namespace Scorecard {
     type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 
-  export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
+  export {
+    Runs as Runs,
+    type Run as Run,
+    type RunUpdateResponse as RunUpdateResponse,
+    type RunCreateParams as RunCreateParams,
+    type RunUpdateParams as RunUpdateParams,
+  };
 
   export {
     ExecutionRecords as ExecutionRecords,
