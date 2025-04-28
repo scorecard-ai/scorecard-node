@@ -12,7 +12,7 @@ export {
   type ProjectListParams,
   type ProjectListResponsesPaginatedResponse,
 } from './projects';
-export { Runs, type Run, type RunCreateParams } from './runs';
+export { Runs, type Run, type RunUpdateResponse, type RunCreateParams, type RunUpdateParams } from './runs';
 export {
   SystemConfigs,
   type SystemConfig,
