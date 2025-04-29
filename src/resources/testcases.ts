@@ -8,7 +8,7 @@ import { path } from '../internal/utils/path';
 
 export class Testcases extends APIResource {
   /**
-   * Create multiple testcases in the specified testset.
+   * Create multiple Testcases in the specified Testset.
    */
   create(
     testsetID: string,
@@ -19,14 +19,14 @@ export class Testcases extends APIResource {
   }
 
   /**
-   * Replace the data of an existing testcase while keeping its ID.
+   * Replace the data of an existing Testcase while keeping its ID.
    */
   update(testcaseID: string, body: TestcaseUpdateParams, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.put(path`/testcases/${testcaseID}`, { body, ...options });
   }
 
   /**
-   * Retrieve a paginated list of testcases belonging to a testset.
+   * Retrieve a paginated list of Testcases belonging to a Testset.
    */
   list(
     testsetID: string,
@@ -40,14 +40,14 @@ export class Testcases extends APIResource {
   }
 
   /**
-   * Delete multiple testcases by their IDs.
+   * Delete multiple Testcases by their IDs.
    */
   delete(body: TestcaseDeleteParams, options?: RequestOptions): APIPromise<TestcaseDeleteResponse> {
     return this._client.post('/testcases/bulk-delete', { body, ...options });
   }
 
   /**
-   * Retrieve a specific testcase by ID.
+   * Retrieve a specific Testcase by ID.
    */
   get(testcaseID: string, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.get(path`/testcases/${testcaseID}`, options);
@@ -58,43 +58,43 @@ export type TestcasesPaginatedResponse = PaginatedResponse<Testcase>;
 
 /**
  * A test case in the Scorecard system. Contains JSON data that is validated
- * against the schema defined by its testset. The `inputs` and `labels` fields are
- * derived from the `data` field based on the testset's `fieldMapping`, and include
+ * against the schema defined by its Testset. The `inputs` and `labels` fields are
+ * derived from the `data` field based on the Testset's `fieldMapping`, and include
  * all mapped fields, including those with validation errors. Testcases are stored
  * regardless of validation results, with any validation errors included in the
  * `validationErrors` field.
  */
 export interface Testcase {
   /**
-   * The ID of the testcase
+   * The ID of the Testcase.
    */
   id: string;
 
   /**
-   * Derived from data based on the testset's fieldMapping. Contains all fields
+   * Derived from data based on the Testset's fieldMapping. Contains all fields
    * marked as inputs, including those with validation errors.
    */
   inputs: Record<string, unknown>;
 
   /**
-   * The JSON data of the testcase, which is validated against the testset's schema.
+   * The JSON data of the Testcase, which is validated against the Testset's schema.
    */
   jsonData: Record<string, unknown>;
 
   /**
-   * Derived from data based on the testset's fieldMapping. Contains all fields
+   * Derived from data based on the Testset's fieldMapping. Contains all fields
    * marked as labels, including those with validation errors.
    */
   labels: Record<string, unknown>;
 
   /**
-   * The ID of the testset this testcase belongs to
+   * The ID of the Testset this Testcase belongs to.
    */
   testsetId: string;
 
   /**
-   * Validation errors found in the testcase data. If present, the testcase doesn't
-   * fully conform to its testset's schema.
+   * Validation errors found in the Testcase data. If present, the Testcase doesn't
+   * fully conform to its Testset's schema.
    */
   validationErrors?: Array<Testcase.ValidationError>;
 }
@@ -102,12 +102,12 @@ export interface Testcase {
 export namespace Testcase {
   export interface ValidationError {
     /**
-     * Human-readable error description
+     * Human-readable error description.
      */
     message: string;
 
     /**
-     * JSON Pointer to the field with the validation error
+     * JSON Pointer to the field with the validation error.
      */
     path: string;
   }
@@ -119,14 +119,14 @@ export interface TestcaseCreateResponse {
 
 export interface TestcaseDeleteResponse {
   /**
-   * Whether the deletion was successful
+   * Whether the deletion was successful.
    */
   success: boolean;
 }
 
 export interface TestcaseCreateParams {
   /**
-   * Testcases to create (max 100)
+   * Testcases to create (max 100).
    */
   items: Array<TestcaseCreateParams.Item>;
 }
@@ -134,15 +134,15 @@ export interface TestcaseCreateParams {
 export namespace TestcaseCreateParams {
   /**
    * A test case in the Scorecard system. Contains JSON data that is validated
-   * against the schema defined by its testset. The `inputs` and `labels` fields are
-   * derived from the `data` field based on the testset's `fieldMapping`, and include
+   * against the schema defined by its Testset. The `inputs` and `labels` fields are
+   * derived from the `data` field based on the Testset's `fieldMapping`, and include
    * all mapped fields, including those with validation errors. Testcases are stored
    * regardless of validation results, with any validation errors included in the
    * `validationErrors` field.
    */
   export interface Item {
     /**
-     * The JSON data of the testcase, which is validated against the testset's schema.
+     * The JSON data of the Testcase, which is validated against the Testset's schema.
      */
     jsonData: Record<string, unknown>;
   }
@@ -150,7 +150,7 @@ export namespace TestcaseCreateParams {
 
 export interface TestcaseUpdateParams {
   /**
-   * The JSON data of the testcase, which is validated against the testset's schema.
+   * The JSON data of the Testcase, which is validated against the Testset's schema.
    */
   jsonData: Record<string, unknown>;
 }
@@ -159,7 +159,7 @@ export interface TestcaseListParams extends PaginatedResponseParams {}
 
 export interface TestcaseDeleteParams {
   /**
-   * IDs of testcases to delete
+   * IDs of Testcases to delete.
    */
   ids: Array<string>;
 }

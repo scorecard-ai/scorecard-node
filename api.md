@@ -57,15 +57,15 @@ Methods:
 - <code title="post /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">create</a>(projectID, { ...params }) -> Run</code>
 - <code title="patch /runs/{runId}">client.runs.<a href="./src/resources/runs.ts">update</a>(runID, { ...params }) -> RunUpdateResponse</code>
 
-# ExecutionRecords
+# Records
 
 Types:
 
-- <code><a href="./src/resources/execution-records.ts">ExecutionRecord</a></code>
+- <code><a href="./src/resources/records.ts">Record</a></code>
 
 Methods:
 
-- <code title="post /runs/{runId}/executionrecords">client.executionRecords.<a href="./src/resources/execution-records.ts">create</a>(runID, { ...params }) -> ExecutionRecord</code>
+- <code title="post /runs/{runId}/records">client.records.<a href="./src/resources/records.ts">create</a>(runID, { ...params }) -> Record</code>
 
 # Systems
 

@@ -7,10 +7,10 @@ const client = new Scorecard({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource executionRecords', () => {
+describe('resource records', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
-    const responsePromise = client.executionRecords.create('135', {
+    const responsePromise = client.records.create('135', {
       inputs: { question: 'bar' },
       labels: { idealAnswer: 'bar' },
       outputs: { response: 'bar' },
@@ -26,11 +26,11 @@ describe('resource executionRecords', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
-    const response = await client.executionRecords.create('135', {
+    const response = await client.records.create('135', {
       inputs: { question: 'bar' },
       labels: { idealAnswer: 'bar' },
       outputs: { response: 'bar' },
-      testcaseId: '123',
+      testcaseId: '248',
     });
   });
 });

@@ -80,7 +80,7 @@ describe('resource testcases', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('delete: only required params', async () => {
-    const responsePromise = client.testcases.delete({ ids: ['string', 'string', 'string'] });
+    const responsePromise = client.testcases.delete({ ids: ['123', '124', '125'] });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -92,7 +92,7 @@ describe('resource testcases', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('delete: required and optional params', async () => {
-    const response = await client.testcases.delete({ ids: ['string', 'string', 'string'] });
+    const response = await client.testcases.delete({ ids: ['123', '124', '125'] });
   });
 
   // skipped: tests are disabled for the time being

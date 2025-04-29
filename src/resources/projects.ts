@@ -6,8 +6,8 @@ import { RequestOptions } from '../internal/request-options';
 
 export class Projects extends APIResource {
   /**
-   * Retrieve a paginated list of all projects. Projects are ordered by creation
-   * date, with oldest projects first.
+   * Retrieve a paginated list of all Projects. Projects are ordered by creation
+   * date, with oldest Projects first.
    */
   list(
     query: ProjectListParams | null | undefined = {},
@@ -23,16 +23,16 @@ export class Projects extends APIResource {
 export type ProjectListResponsesPaginatedResponse = PaginatedResponse<ProjectListResponse>;
 
 /**
- * A project in the Scorecard system.
+ * A Project in the Scorecard system.
  */
 export interface ProjectListResponse {
   /**
-   * The ID of the project
+   * The ID of the Project.
    */
   id: string;
 
   /**
-   * The name of the project
+   * The name of the Project.
    */
   name: string | null;
 }
