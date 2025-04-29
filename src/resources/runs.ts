@@ -7,14 +7,14 @@ import { path } from '../internal/utils/path';
 
 export class Runs extends APIResource {
   /**
-   * Create a new run.
+   * Create a new Run.
    */
   create(projectID: string, body: RunCreateParams, options?: RequestOptions): APIPromise<Run> {
     return this._client.post(path`/projects/${projectID}/runs`, { body, ...options });
   }
 
   /**
-   * Update the status of a run.
+   * Update the status of a Run.
    */
   update(runID: string, body: RunUpdateParams, options?: RequestOptions): APIPromise<RunUpdateResponse> {
     return this._client.patch(path`/runs/${runID}`, { body, ...options });
@@ -26,17 +26,17 @@ export class Runs extends APIResource {
  */
 export interface Run {
   /**
-   * The ID of the Run
+   * The ID of the Run.
    */
   id: string;
 
   /**
-   * The IDs of the metrics this Run is using
+   * The IDs of the metrics this Run is using.
    */
   metricIds: Array<string>;
 
   /**
-   * The status of the Run
+   * The status of the Run.
    */
   status:
     | 'pending'
@@ -48,24 +48,24 @@ export interface Run {
     | 'completed';
 
   /**
-   * The ID of the Testset this Run is testing
+   * The ID of the Testset this Run is testing.
    */
   testsetId: string;
 
   /**
-   * The ID of the system configuration this Run is using
+   * The ID of the system configuration this Run is using.
    */
   systemConfigId?: string;
 }
 
 export interface RunUpdateResponse {
   /**
-   * The ID of the Run
+   * The ID of the Run.
    */
   id: string;
 
   /**
-   * The status of the Run
+   * The status of the Run.
    */
   status:
     | 'pending'
@@ -79,24 +79,24 @@ export interface RunUpdateResponse {
 
 export interface RunCreateParams {
   /**
-   * The IDs of the metrics this Run is using
+   * The IDs of the metrics this Run is using.
    */
   metricIds: Array<string>;
 
   /**
-   * The ID of the Testset this Run is testing
+   * The ID of the Testset this Run is testing.
    */
   testsetId: string;
 
   /**
-   * The ID of the system configuration this Run is using
+   * The ID of the system configuration this Run is using.
    */
   systemConfigId?: string;
 }
 
 export interface RunUpdateParams {
   /**
-   * The status of the Run
+   * The status of the Run.
    */
   status:
     | 'pending'

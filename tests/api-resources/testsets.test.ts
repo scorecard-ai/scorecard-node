@@ -54,7 +54,7 @@ describe('resource testsets', () => {
       client.testsets.update(
         '246',
         {
-          description: 'Updated description for the Q&A testset.',
+          description: 'Updated description for the Q&A Testset.',
           fieldMapping: { inputs: ['string'], labels: ['string'], metadata: ['string'] },
           jsonSchema: { foo: 'bar' },
           name: 'Updated Q&A Testset',
