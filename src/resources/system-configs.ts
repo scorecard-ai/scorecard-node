@@ -78,22 +78,22 @@ export type SystemConfigsPaginatedResponse = PaginatedResponse<SystemConfig>;
  */
 export interface SystemConfig {
   /**
-   * The ID of the system configuration
+   * The ID of the system configuration.
    */
   id: string;
 
   /**
-   * The configuration of the system
+   * The configuration of the system.
    */
   config: Record<string, unknown>;
 
   /**
-   * The name of the system configuration
+   * The name of the system configuration.
    */
   name: string;
 
   /**
-   * The ID of the system the configuration belongs to
+   * The ID of the system the configuration belongs to.
    */
   systemId: string;
 
@@ -107,12 +107,12 @@ export interface SystemConfig {
 export namespace SystemConfig {
   export interface ValidationError {
     /**
-     * Human-readable error description
+     * Human-readable error description.
      */
     message: string;
 
     /**
-     * JSON Pointer to the field with the validation error
+     * JSON Pointer to the field with the validation error.
      */
     path: string;
   }
@@ -120,12 +120,12 @@ export namespace SystemConfig {
 
 export interface SystemConfigCreateParams {
   /**
-   * The configuration of the system
+   * The configuration of the system.
    */
   config: Record<string, unknown>;
 
   /**
-   * The name of the system configuration
+   * The name of the system configuration.
    */
   name: string;
 
@@ -139,12 +139,12 @@ export interface SystemConfigCreateParams {
 export namespace SystemConfigCreateParams {
   export interface ValidationError {
     /**
-     * Human-readable error description
+     * Human-readable error description.
      */
     message: string;
 
     /**
-     * JSON Pointer to the field with the validation error
+     * JSON Pointer to the field with the validation error.
      */
     path: string;
   }
@@ -154,7 +154,7 @@ export interface SystemConfigListParams extends PaginatedResponseParams {}
 
 export interface SystemConfigGetParams {
   /**
-   * The ID of the system the configuration belongs to
+   * The ID of the system the configuration belongs to.
    */
   systemId: string;
 }

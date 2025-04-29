@@ -88,9 +88,9 @@ export type SystemsPaginatedResponse = PaginatedResponse<System>;
  *
  * It specifies three contracts through schemas:
  *
- * - inputSchema: The structure of data the system accepts
- * - outputSchema: The structure of data the system produces
- * - configSchema: The parameters that modify system behavior
+ * - inputSchema: The structure of data the system accepts.
+ * - outputSchema: The structure of data the system produces.
+ * - configSchema: The parameters that modify system behavior.
  *
  * This abstraction lets you evaluate any system as a black box, focusing on its
  * interface rather than implementation details. It's particularly useful for
@@ -101,93 +101,93 @@ export type SystemsPaginatedResponse = PaginatedResponse<System>;
  */
 export interface System {
   /**
-   * The ID of the system
+   * The ID of the system.
    */
   id: string;
 
   /**
-   * The schema of the system's configuration
+   * The schema of the system's configuration.
    */
   configSchema: Record<string, unknown>;
 
   /**
-   * The description of the system
+   * The description of the system.
    */
   description: string;
 
   /**
-   * The schema of the system's inputs
+   * The schema of the system's inputs.
    */
   inputSchema: Record<string, unknown>;
 
   /**
-   * The name of the system
+   * The name of the system.
    */
   name: string;
 
   /**
-   * The schema of the system's outputs
+   * The schema of the system's outputs.
    */
   outputSchema: Record<string, unknown>;
 }
 
 export interface SystemDeleteResponse {
   /**
-   * Whether the deletion was successful
+   * Whether the deletion was successful.
    */
   success: boolean;
 }
 
 export interface SystemCreateParams {
   /**
-   * The schema of the system's configuration
+   * The schema of the system's configuration.
    */
   configSchema: Record<string, unknown>;
 
   /**
-   * The description of the system
+   * The description of the system.
    */
   description: string;
 
   /**
-   * The schema of the system's inputs
+   * The schema of the system's inputs.
    */
   inputSchema: Record<string, unknown>;
 
   /**
-   * The name of the system
+   * The name of the system.
    */
   name: string;
 
   /**
-   * The schema of the system's outputs
+   * The schema of the system's outputs.
    */
   outputSchema: Record<string, unknown>;
 }
 
 export interface SystemUpdateParams {
   /**
-   * The schema of the system's configuration
+   * The schema of the system's configuration.
    */
   configSchema?: Record<string, unknown>;
 
   /**
-   * The description of the system
+   * The description of the system.
    */
   description?: string;
 
   /**
-   * The schema of the system's inputs
+   * The schema of the system's inputs.
    */
   inputSchema?: Record<string, unknown>;
 
   /**
-   * The name of the system
+   * The name of the system.
    */
   name?: string;
 
   /**
-   * The schema of the system's outputs
+   * The schema of the system's outputs.
    */
   outputSchema?: Record<string, unknown>;
 }
