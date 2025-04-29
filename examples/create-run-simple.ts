@@ -1,8 +1,7 @@
 #!/usr/bin/env -S npx ts-node
 
 import OpenAI from 'openai';
-import Scorecard from 'scorecard-ai';
-import { runAndEvaluate } from 'scorecard-ai/lib/runAndEvaluate';
+import Scorecard, { runAndEvaluate } from 'scorecard-ai';
 
 // Replace these with your own IDs.
 const PROJECT_ID = '310';
