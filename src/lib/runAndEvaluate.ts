@@ -32,7 +32,7 @@ export async function runAndEvaluate<SystemInput extends Object, SystemOutput ex
   const recordPromises: Array<Promise<any>> = [];
   for await (const testcase of scorecard.testcases.list(run.testsetId)) {
     const modelResponse = await system(testcase.inputs as SystemInput);
-    const promise = scorecard.executionRecords.create(run.id, {
+    const promise = scorecard.records.create(run.id, {
       testcaseId: testcase.id,
       inputs: testcase.inputs,
       labels: testcase.labels,

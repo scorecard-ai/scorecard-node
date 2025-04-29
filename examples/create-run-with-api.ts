@@ -52,7 +52,7 @@ async function main() {
   for await (const testcase of scorecard.testcases.list(TESTSET_ID)) {
     const outputs = await runSystem(testcase.inputs as unknown as SystemInput);
     console.log(`Outputs: ${JSON.stringify(outputs)}`);
-    await scorecard.executionRecords.create(run.id, {
+    await scorecard.records.create(run.id, {
       testcaseId: testcase.id,
       inputs: testcase.inputs,
       labels: testcase.labels,
