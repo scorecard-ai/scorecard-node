@@ -1,0 +1,13 @@
+{
+  "name": "scorecard-ai-examples",
+  "version": "1.0.0",
+  "description": "Usage examples for the Scorecard Node.js SDK",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "yarn@1.22.22",
+  "dependencies": {
+    "openai": "^4.96.0",
+    "scorecard-ai": "file:.."
+  }
+}
