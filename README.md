@@ -4,14 +4,14 @@
 
 This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/docs/api-reference/overview). The full API of this library can be found in [api.md](api.md) along with [code examples](https://github.com/scorecard-ai/scorecard-node/tree/main/examples).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
 ```sh
-npm install scorecard-ai
+npm install scorecard-ai@alpha
 ```
 
 ## Usage
@@ -24,7 +24,6 @@ import Scorecard from 'scorecard-ai';
 
 const client = new Scorecard({
   bearerToken: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
-  environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
 async function main() {
@@ -51,7 +50,6 @@ import Scorecard from 'scorecard-ai';
 
 const client = new Scorecard({
   bearerToken: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
-  environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
 async function main() {
