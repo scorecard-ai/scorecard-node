@@ -10,7 +10,7 @@ const client = new Scorecard({
 describe('resource runs', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
-    const responsePromise = client.runs.create('projectId', { metricIds: ['789', '101'], testsetId: '123' });
+    const responsePromise = client.runs.create('314', { metricIds: ['789', '101'], testsetId: '123' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,7 +22,7 @@ describe('resource runs', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
-    const response = await client.runs.create('projectId', {
+    const response = await client.runs.create('314', {
       metricIds: ['789', '101'],
       testsetId: '123',
       systemConfigId: '456',
@@ -31,7 +31,7 @@ describe('resource runs', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('update: only required params', async () => {
-    const responsePromise = client.runs.update('runId', { status: 'awaiting_scoring' });
+    const responsePromise = client.runs.update('135', { status: 'awaiting_scoring' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,6 +43,6 @@ describe('resource runs', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('update: required and optional params', async () => {
-    const response = await client.runs.update('runId', { status: 'awaiting_scoring' });
+    const response = await client.runs.update('135', { status: 'awaiting_scoring' });
   });
 });
