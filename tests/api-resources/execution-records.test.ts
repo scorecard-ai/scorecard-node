@@ -10,7 +10,7 @@ const client = new Scorecard({
 describe('resource executionRecords', () => {
   // skipped: tests are disabled for the time being
   test.skip('create: only required params', async () => {
-    const responsePromise = client.executionRecords.create('runId', {
+    const responsePromise = client.executionRecords.create('135', {
       inputs: { question: 'bar' },
       labels: { idealAnswer: 'bar' },
       outputs: { response: 'bar' },
@@ -26,7 +26,7 @@ describe('resource executionRecords', () => {
 
   // skipped: tests are disabled for the time being
   test.skip('create: required and optional params', async () => {
-    const response = await client.executionRecords.create('runId', {
+    const response = await client.executionRecords.create('135', {
       inputs: { question: 'bar' },
       labels: { idealAnswer: 'bar' },
       outputs: { response: 'bar' },
