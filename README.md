@@ -27,7 +27,7 @@ const client = new Scorecard({
 });
 
 async function main() {
-  const testset = await client.testsets.create('projectId', {
+  const testset = await client.testsets.create('314', {
     description: 'Testset for long context Q&A chatbot.',
     fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
     jsonSchema: { type: 'bar', properties: 'bar' },
@@ -53,7 +53,7 @@ const client = new Scorecard({
 });
 
 async function main() {
-  const testset: Scorecard.Testset = await client.testsets.get('testsetId');
+  const testset: Scorecard.Testset = await client.testsets.get('246');
 }
 
 main();
@@ -70,7 +70,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const testset = await client.testsets.get('testsetId').catch(async (err) => {
+  const testset = await client.testsets.get('246').catch(async (err) => {
     if (err instanceof Scorecard.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -113,7 +113,7 @@ const client = new Scorecard({
 });
 
 // Or, configure per-request:
-await client.testsets.get('testsetId', {
+await client.testsets.get('246', {
   maxRetries: 5,
 });
 ```
@@ -130,7 +130,7 @@ const client = new Scorecard({
 });
 
 // Override per-request:
-await client.testsets.get('testsetId', {
+await client.testsets.get('246', {
   timeout: 5 * 1000,
 });
 ```
@@ -153,11 +153,11 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Scorecard();
 
-const response = await client.testsets.get('testsetId').asResponse();
+const response = await client.testsets.get('246').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: testset, response: raw } = await client.testsets.get('testsetId').withResponse();
+const { data: testset, response: raw } = await client.testsets.get('246').withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(testset.id);
 ```
