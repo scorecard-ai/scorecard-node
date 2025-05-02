@@ -8,8 +8,7 @@ const client = new Scorecard({
 });
 
 describe('resource systemConfigs', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('create: only required params', async () => {
+  test('create: only required params', async () => {
     const responsePromise = client.systemConfigs.create('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
       config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
       name: 'Production (Low Temperature)',
@@ -23,8 +22,7 @@ describe('resource systemConfigs', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('create: required and optional params', async () => {
+  test('create: required and optional params', async () => {
     const response = await client.systemConfigs.create('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
       config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
       name: 'Production (Low Temperature)',
@@ -32,8 +30,7 @@ describe('resource systemConfigs', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list', async () => {
+  test('list', async () => {
     const responsePromise = client.systemConfigs.list('12345678-0a8b-4f66-b6f3-2ddcfa097257');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -44,8 +41,7 @@ describe('resource systemConfigs', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list: request options and params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.systemConfigs.list(
@@ -56,8 +52,7 @@ describe('resource systemConfigs', () => {
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('get: only required params', async () => {
+  test('get: only required params', async () => {
     const responsePromise = client.systemConfigs.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0', {
       systemId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
     });
@@ -70,8 +65,7 @@ describe('resource systemConfigs', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('get: required and optional params', async () => {
+  test('get: required and optional params', async () => {
     const response = await client.systemConfigs.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0', {
       systemId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
     });
