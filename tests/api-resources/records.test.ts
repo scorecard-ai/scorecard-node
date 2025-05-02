@@ -8,8 +8,7 @@ const client = new Scorecard({
 });
 
 describe('resource records', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('create: only required params', async () => {
+  test('create: only required params', async () => {
     const responsePromise = client.records.create('135', {
       inputs: { question: 'bar' },
       labels: { idealAnswer: 'bar' },
@@ -24,8 +23,7 @@ describe('resource records', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('create: required and optional params', async () => {
+  test('create: required and optional params', async () => {
     const response = await client.records.create('135', {
       inputs: { question: 'bar' },
       labels: { idealAnswer: 'bar' },

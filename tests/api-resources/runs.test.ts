@@ -8,8 +8,7 @@ const client = new Scorecard({
 });
 
 describe('resource runs', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('create: only required params', async () => {
+  test('create: only required params', async () => {
     const responsePromise = client.runs.create('314', { metricIds: ['789', '101'], testsetId: '246' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -20,8 +19,7 @@ describe('resource runs', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('create: required and optional params', async () => {
+  test('create: required and optional params', async () => {
     const response = await client.runs.create('314', {
       metricIds: ['789', '101'],
       testsetId: '246',
@@ -29,8 +27,7 @@ describe('resource runs', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('update: only required params', async () => {
+  test('update: only required params', async () => {
     const responsePromise = client.runs.update('135', { status: 'awaiting_scoring' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -41,8 +38,7 @@ describe('resource runs', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('update: required and optional params', async () => {
+  test('update: required and optional params', async () => {
     const response = await client.runs.update('135', { status: 'awaiting_scoring' });
   });
 });

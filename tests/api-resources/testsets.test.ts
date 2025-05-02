@@ -8,8 +8,7 @@ const client = new Scorecard({
 });
 
 describe('resource testsets', () => {
-  // skipped: tests are disabled for the time being
-  test.skip('create: only required params', async () => {
+  test('create: only required params', async () => {
     const responsePromise = client.testsets.create('314', {
       description: 'Testset for long context Q&A chatbot.',
       fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
@@ -25,8 +24,7 @@ describe('resource testsets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('create: required and optional params', async () => {
+  test('create: required and optional params', async () => {
     const response = await client.testsets.create('314', {
       description: 'Testset for long context Q&A chatbot.',
       fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
@@ -35,8 +33,7 @@ describe('resource testsets', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('update', async () => {
+  test('update', async () => {
     const responsePromise = client.testsets.update('246');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,8 +44,7 @@ describe('resource testsets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('update: request options and params are passed correctly', async () => {
+  test('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.testsets.update(
@@ -64,8 +60,7 @@ describe('resource testsets', () => {
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list', async () => {
+  test('list', async () => {
     const responsePromise = client.testsets.list('314');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -76,16 +71,14 @@ describe('resource testsets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('list: request options and params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.testsets.list('314', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('delete', async () => {
+  test('delete', async () => {
     const responsePromise = client.testsets.delete('246');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -96,8 +89,7 @@ describe('resource testsets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
-  test.skip('get', async () => {
+  test('get', async () => {
     const responsePromise = client.testsets.get('246');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
