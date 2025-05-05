@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.0-alpha.5 (2025-05-05)
+
+Full Changelog: [v1.0.0-alpha.4...v1.0.0-alpha.5](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.4...v1.0.0-alpha.5)
+
+### Bug Fixes
+
+* **mcp:** remove ajv dependency so MCP servers are more compatible with Cloudflare Workers ([26ebd14](https://github.com/scorecard-ai/scorecard-node/commit/26ebd140950781f0d5e428dd5dd572fe2c61af67))
+
+
+### Chores
+
+* **internal:** share typescript helpers ([b7723ba](https://github.com/scorecard-ai/scorecard-node/commit/b7723bab0eb095e9be8d616a8ce6a3e5596e5266))
+
 ## 1.0.0-alpha.4 (2025-05-02)
 
 Full Changelog: [v1.0.0-alpha.3...v1.0.0-alpha.4](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.3...v1.0.0-alpha.4)
