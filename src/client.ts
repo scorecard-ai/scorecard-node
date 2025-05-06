@@ -82,7 +82,7 @@ export interface ClientOptions {
   /**
    * Defaults to process.env['SCORECARD_API_KEY'].
    */
-  bearerToken?: string | undefined;
+  apiKey?: string | undefined;
 
   /**
    * Specifies the environment to use for the API.
@@ -165,7 +165,7 @@ export interface ClientOptions {
  * API Client for interfacing with the Scorecard API.
  */
 export class Scorecard {
-  bearerToken: string;
+  apiKey: string;
 
   baseURL: string;
   maxRetries: number;
@@ -182,7 +182,7 @@ export class Scorecard {
   /**
    * API Client for interfacing with the Scorecard API.
    *
-   * @param {string | undefined} [opts.bearerToken=process.env['SCORECARD_API_KEY'] ?? undefined]
+   * @param {string | undefined} [opts.apiKey=process.env['SCORECARD_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['SCORECARD_BASE_URL'] ?? https://api2.scorecard.io/api/v2] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -194,17 +194,17 @@ export class Scorecard {
    */
   constructor({
     baseURL = readEnv('SCORECARD_BASE_URL'),
-    bearerToken = readEnv('SCORECARD_API_KEY'),
+    apiKey = readEnv('SCORECARD_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
-    if (bearerToken === undefined) {
+    if (apiKey === undefined) {
       throw new Errors.ScorecardError(
-        "The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the Scorecard client with an bearerToken option, like new Scorecard({ bearerToken: 'My Bearer Token' }).",
+        "The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the Scorecard client with an apiKey option, like new Scorecard({ apiKey: 'My API Key' }).",
       );
     }
 
     const options: ClientOptions = {
-      bearerToken,
+      apiKey,
       ...opts,
       baseURL,
       environment: opts.environment ?? 'production',
@@ -233,7 +233,7 @@ export class Scorecard {
 
     this._options = options;
 
-    this.bearerToken = bearerToken;
+    this.apiKey = apiKey;
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -245,7 +245,7 @@ export class Scorecard {
   }
 
   protected authHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
-    return buildHeaders([{ Authorization: `Bearer ${this.bearerToken}` }]);
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   /**
