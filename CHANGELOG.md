@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-alpha.6 (2025-05-06)
+
+Full Changelog: [v1.0.0-alpha.5...v1.0.0-alpha.6](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.5...v1.0.0-alpha.6)
+
+### Features
+
+* **api:** api update ([d61535d](https://github.com/scorecard-ai/scorecard-node/commit/d61535d733f708ed0241a76d8b38003e61532204))
+
 ## 1.0.0-alpha.5 (2025-05-05)
 
 Full Changelog: [v1.0.0-alpha.4...v1.0.0-alpha.5](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.4...v1.0.0-alpha.5)
