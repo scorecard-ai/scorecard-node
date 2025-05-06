@@ -3,7 +3,7 @@
 import Scorecard from 'scorecard-ai';
 
 const scorecard = new Scorecard({
-  bearerToken: process.env['SCORECARD_API_KEY'],
+  apiKey: process.env['SCORECARD_API_KEY'],
 });
 
 // Find your Project's ID in the Scorecard UI.

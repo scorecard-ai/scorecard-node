@@ -9,7 +9,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 You can run the MCP Server directly via `npx`:
 
 ```sh
-export SCORECARD_API_KEY="My Bearer Token"
+export SCORECARD_API_KEY="My API Key"
 npx -y scorecard-ai-mcp
 ```
 
@@ -27,7 +27,7 @@ For clients with a configuration JSON, it might look something like this:
       "command": "npx",
       "args": ["-y", "scorecard-ai-mcp", "--client=claude"],
       "env": {
-        "SCORECARD_API_KEY": "My Bearer Token"
+        "SCORECARD_API_KEY": "My API Key"
       }
     }
   }

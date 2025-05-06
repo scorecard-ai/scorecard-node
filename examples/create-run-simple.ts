@@ -14,7 +14,7 @@ const openai = new OpenAI({
 });
 
 const scorecard = new Scorecard({
-  bearerToken: process.env['SCORECARD_API_KEY'],
+  apiKey: process.env['SCORECARD_API_KEY'],
 });
 
 /**
