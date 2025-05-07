@@ -15,16 +15,27 @@ export class Testcases extends APIResource {
    * const testcase = await client.testcases.create('246', {
    *   items: [
    *     {
-   *       jsonData: { ... },
+   *       jsonData: {
+   *         question: 'What is the capital of France?',
+   *         idealAnswer: 'Paris',
+   *         provenance: 'hand_curated',
+   *       },
    *     },
    *     {
-   *       jsonData: { ... },
+   *       jsonData: {
+   *         question:
+   *           'What is the largest planet in our solar system?',
+   *         idealAnswer: 'Jupiter',
+   *         provenance: 'synthetic',
+   *       },
    *     },
    *     {
-   *       jsonData: { ... },
-   *       validationErrors: [
-   *         { path: '/data/idealAnswer', message: 'Expected string, received number' },
-   *       ],
+   *       jsonData: {
+   *         question:
+   *           'How many planets are in our solar system?',
+   *         idealAnswer: 8,
+   *         provenance: 'user_feedback',
+   *       },
    *     },
    *   ],
    * });
