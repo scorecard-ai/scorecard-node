@@ -8,11 +8,12 @@ Types:
 
 Types:
 
-- <code><a href="./src/resources/projects.ts">ProjectListResponse</a></code>
+- <code><a href="./src/resources/projects.ts">Project</a></code>
 
 Methods:
 
-- <code title="get /projects">client.projects.<a href="./src/resources/projects.ts">list</a>({ ...params }) -> ProjectListResponsesPaginatedResponse</code>
+- <code title="post /projects">client.projects.<a href="./src/resources/projects.ts">create</a>({ ...params }) -> Project</code>
+- <code title="get /projects">client.projects.<a href="./src/resources/projects.ts">list</a>({ ...params }) -> ProjectsPaginatedResponse</code>
 
 # Testsets
 

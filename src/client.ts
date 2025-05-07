@@ -23,10 +23,11 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
+  Project,
+  ProjectCreateParams,
   ProjectListParams,
-  ProjectListResponse,
-  ProjectListResponsesPaginatedResponse,
   Projects,
+  ProjectsPaginatedResponse,
 } from './resources/projects';
 import { Record as RecordsAPIRecord, RecordCreateParams, Records } from './resources/records';
 import { Run, RunCreateParams, RunUpdateParams, RunUpdateResponse, Runs } from './resources/runs';
@@ -808,8 +809,9 @@ export declare namespace Scorecard {
 
   export {
     Projects as Projects,
-    type ProjectListResponse as ProjectListResponse,
-    type ProjectListResponsesPaginatedResponse as ProjectListResponsesPaginatedResponse,
+    type Project as Project,
+    type ProjectsPaginatedResponse as ProjectsPaginatedResponse,
+    type ProjectCreateParams as ProjectCreateParams,
     type ProjectListParams as ProjectListParams,
   };
 

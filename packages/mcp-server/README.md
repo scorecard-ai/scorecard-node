@@ -111,7 +111,7 @@ over time, you can manually enable or disable certain capabilities:
 import { server, endpoints, init } from "scorecard-ai-mcp/server";
 
 // import a specific tool
-import listProjects from "scorecard-ai-mcp/tools/projects/list-projects";
+import createProjects from "scorecard-ai-mcp/tools/projects/create-projects";
 
 // initialize the server and all endpoints
 init({ server, endpoints });
@@ -136,7 +136,7 @@ const myCustomEndpoint = {
 };
 
 // initialize the server with your custom endpoints
-init({ server: myServer, endpoints: [listProjects, myCustomEndpoint] });
+init({ server: myServer, endpoints: [createProjects, myCustomEndpoint] });
 ```
 
 ## Available Tools
@@ -145,6 +145,7 @@ The following tools are available in this MCP server.
 
 ### Resource `projects`:
 
+- `create_projects` (`write`): Create a new Project.
 - `list_projects` (`read`): Retrieve a paginated list of all Projects. Projects are ordered by creation date, with oldest Projects first.
 
 ### Resource `testsets`:
