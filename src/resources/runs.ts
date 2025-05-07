@@ -8,6 +8,15 @@ import { path } from '../internal/utils/path';
 export class Runs extends APIResource {
   /**
    * Create a new Run.
+   *
+   * @example
+   * ```ts
+   * const run = await client.runs.create('314', {
+   *   metricIds: ['789', '101'],
+   *   testsetId: '246',
+   *   systemConfigId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
+   * });
+   * ```
    */
   create(projectID: string, body: RunCreateParams, options?: RequestOptions): APIPromise<Run> {
     return this._client.post(path`/projects/${projectID}/runs`, { body, ...options });
@@ -15,6 +24,13 @@ export class Runs extends APIResource {
 
   /**
    * Update the status of a Run.
+   *
+   * @example
+   * ```ts
+   * const run = await client.runs.update('135', {
+   *   status: 'awaiting_scoring',
+   * });
+   * ```
    */
   update(runID: string, body: RunUpdateParams, options?: RequestOptions): APIPromise<RunUpdateResponse> {
     return this._client.patch(path`/runs/${runID}`, { body, ...options });
