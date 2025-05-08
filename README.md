@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/api-reference/overview). The full API of this library can be found in [api.md](api.md) along with [code examples](https://github.com/scorecard-ai/scorecard-node/tree/main/examples).
+The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/api-reference/overview). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
