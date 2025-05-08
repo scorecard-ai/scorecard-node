@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/docs/api-reference/overview). The full API of this library can be found in [api.md](api.md) along with [code examples](https://github.com/scorecard-ai/scorecard-node/tree/main/examples).
+The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/api-reference/overview). The full API of this library can be found in [api.md](api.md) along with [code examples](https://github.com/scorecard-ai/scorecard-node/tree/main/examples).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -28,10 +28,20 @@ const client = new Scorecard({
 
 async function main() {
   const testset = await client.testsets.create('314', {
-    description: 'Testset for long context Q&A chatbot.',
-    fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
-    jsonSchema: { type: 'bar', properties: 'bar' },
     name: 'Long Context Q&A',
+    description: 'Testset for long context Q&A chatbot.',
+    fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: [] },
+    jsonSchema: {
+      type: 'object',
+      properties: {
+        question: {
+          type: 'string',
+        },
+        idealAnswer: {
+          type: 'string',
+        },
+      },
+    },
   });
 
   console.log(testset.id);
