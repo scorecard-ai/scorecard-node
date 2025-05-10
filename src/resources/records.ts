@@ -9,6 +9,16 @@ import { path } from '../internal/utils/path';
 export class Records extends APIResource {
   /**
    * Create a new Record in a Run.
+   *
+   * @example
+   * ```ts
+   * const record = await client.records.create('135', {
+   *   inputs: { question: 'What is the capital of France?' },
+   *   labels: { idealAnswer: 'Paris is the capital of France' },
+   *   outputs: { response: 'The capital of France is Paris.' },
+   *   testcaseId: '248',
+   * });
+   * ```
    */
   create(runID: string, body: RecordCreateParams, options?: RequestOptions): APIPromise<Record> {
     return this._client.post(path`/runs/${runID}/records`, { body, ...options });

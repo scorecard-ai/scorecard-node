@@ -3,6 +3,7 @@
 import Scorecard from 'scorecard-ai';
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 
+import create_projects from './projects/create-projects';
 import list_projects from './projects/list-projects';
 import create_testsets from './testsets/create-testsets';
 import update_testsets from './testsets/update-testsets';
@@ -46,6 +47,7 @@ function addEndpoint(endpoint: Endpoint) {
   endpoints.push(endpoint);
 }
 
+addEndpoint(create_projects);
 addEndpoint(list_projects);
 addEndpoint(create_testsets);
 addEndpoint(update_testsets);
@@ -76,11 +78,7 @@ export type Filter = {
 };
 
 export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
-  if (filters.length === 0) {
-    return endpoints;
-  }
-
-  const allExcludes = filters.every((filter) => filter.op === 'exclude');
+  const allExcludes = filters.length > 0 && filters.every((filter) => filter.op === 'exclude');
   const unmatchedFilters = new Set(filters);
 
   const filtered = endpoints.filter((endpoint: Endpoint) => {

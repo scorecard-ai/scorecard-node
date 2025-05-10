@@ -23,10 +23,11 @@ import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import {
+  Project,
+  ProjectCreateParams,
   ProjectListParams,
-  ProjectListResponse,
-  ProjectListResponsesPaginatedResponse,
   Projects,
+  ProjectsPaginatedResponse,
 } from './resources/projects';
 import { Record as RecordsAPIRecord, RecordCreateParams, Records } from './resources/records';
 import { Run, RunCreateParams, RunUpdateParams, RunUpdateResponse, Runs } from './resources/runs';
@@ -234,6 +235,24 @@ export class Scorecard {
     this._options = options;
 
     this.apiKey = apiKey;
+  }
+
+  /**
+   * Create a new client instance re-using the same options given to the current client with optional overriding.
+   */
+  withOptions(options: Partial<ClientOptions>): this {
+    return new (this.constructor as any as new (props: ClientOptions) => typeof this)({
+      ...this._options,
+      environment: options.environment ? options.environment : undefined,
+      baseURL: options.environment ? undefined : this.baseURL,
+      maxRetries: this.maxRetries,
+      timeout: this.timeout,
+      logger: this.logger,
+      logLevel: this.logLevel,
+      fetchOptions: this.fetchOptions,
+      apiKey: this.apiKey,
+      ...options,
+    });
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -790,8 +809,9 @@ export declare namespace Scorecard {
 
   export {
     Projects as Projects,
-    type ProjectListResponse as ProjectListResponse,
-    type ProjectListResponsesPaginatedResponse as ProjectListResponsesPaginatedResponse,
+    type Project as Project,
+    type ProjectsPaginatedResponse as ProjectsPaginatedResponse,
+    type ProjectCreateParams as ProjectCreateParams,
     type ProjectListParams as ProjectListParams,
   };
 

@@ -9,6 +9,37 @@ import { path } from '../internal/utils/path';
 export class Testcases extends APIResource {
   /**
    * Create multiple Testcases in the specified Testset.
+   *
+   * @example
+   * ```ts
+   * const testcase = await client.testcases.create('246', {
+   *   items: [
+   *     {
+   *       jsonData: {
+   *         question: 'What is the capital of France?',
+   *         idealAnswer: 'Paris',
+   *         provenance: 'hand_curated',
+   *       },
+   *     },
+   *     {
+   *       jsonData: {
+   *         question:
+   *           'What is the largest planet in our solar system?',
+   *         idealAnswer: 'Jupiter',
+   *         provenance: 'synthetic',
+   *       },
+   *     },
+   *     {
+   *       jsonData: {
+   *         question:
+   *           'How many planets are in our solar system?',
+   *         idealAnswer: 8,
+   *         provenance: 'user_feedback',
+   *       },
+   *     },
+   *   ],
+   * });
+   * ```
    */
   create(
     testsetID: string,
@@ -20,6 +51,17 @@ export class Testcases extends APIResource {
 
   /**
    * Replace the data of an existing Testcase while keeping its ID.
+   *
+   * @example
+   * ```ts
+   * const testcase = await client.testcases.update('248', {
+   *   jsonData: {
+   *     question: 'What is the capital of France?',
+   *     idealAnswer: 'Paris is the capital of France',
+   *     provenance: 'hand_curated',
+   *   },
+   * });
+   * ```
    */
   update(testcaseID: string, body: TestcaseUpdateParams, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.put(path`/testcases/${testcaseID}`, { body, ...options });
@@ -27,6 +69,14 @@ export class Testcases extends APIResource {
 
   /**
    * Retrieve a paginated list of Testcases belonging to a Testset.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const testcase of client.testcases.list('246')) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     testsetID: string,
@@ -41,6 +91,13 @@ export class Testcases extends APIResource {
 
   /**
    * Delete multiple Testcases by their IDs.
+   *
+   * @example
+   * ```ts
+   * const testcase = await client.testcases.delete({
+   *   ids: ['123', '124', '125'],
+   * });
+   * ```
    */
   delete(body: TestcaseDeleteParams, options?: RequestOptions): APIPromise<TestcaseDeleteResponse> {
     return this._client.post('/testcases/bulk-delete', { body, ...options });
@@ -48,6 +105,11 @@ export class Testcases extends APIResource {
 
   /**
    * Retrieve a specific Testcase by ID.
+   *
+   * @example
+   * ```ts
+   * const testcase = await client.testcases.get('248');
+   * ```
    */
   get(testcaseID: string, options?: RequestOptions): APIPromise<Testcase> {
     return this._client.get(path`/testcases/${testcaseID}`, options);

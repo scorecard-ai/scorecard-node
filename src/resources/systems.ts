@@ -23,6 +23,45 @@ export class Systems extends APIResource {
    *
    * This separation lets you evaluate any system as a black box, focusing on its
    * interface rather than implementation details.
+   *
+   * @example
+   * ```ts
+   * const system = await client.systems.create('314', {
+   *   configSchema: {
+   *     type: 'object',
+   *     properties: {
+   *       temperature: { type: 'number' },
+   *       maxTokens: { type: 'integer' },
+   *       model: { type: 'string', enum: ['gpt-4', 'gpt-4-turbo'] },
+   *     },
+   *     required: ['model'],
+   *   },
+   *   description: 'Production chatbot powered by GPT-4',
+   *   inputSchema: {
+   *     type: 'object',
+   *     properties: {
+   *       messages: {
+   *         type: 'array',
+   *         items: {
+   *           type: 'object',
+   *           properties: {
+   *             role: { type: 'string', enum: ['system', 'user', 'assistant'] },
+   *             content: { type: 'string' },
+   *           },
+   *           required: ['role', 'content'],
+   *         },
+   *       },
+   *     },
+   *     required: ['messages'],
+   *   },
+   *   name: 'GPT-4 Chatbot',
+   *   outputSchema: {
+   *     type: 'object',
+   *     properties: { response: { type: 'string' } },
+   *     required: ['response'],
+   *   },
+   * });
+   * ```
    */
   create(projectID: string, body: SystemCreateParams, options?: RequestOptions): APIPromise<System> {
     return this._client.post(path`/projects/${projectID}/systems`, { body, ...options });
@@ -41,6 +80,18 @@ export class Systems extends APIResource {
    * - Schema updates won't invalidate existing evaluations or configurations
    * - For significant redesigns, creating a new system definition provides a cleaner
    *   separation
+   *
+   * @example
+   * ```ts
+   * const system = await client.systems.update(
+   *   '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+   *   {
+   *     description:
+   *       'Updated production chatbot powered by GPT-4 Turbo',
+   *     name: 'GPT-4 Turbo Chatbot',
+   *   },
+   * );
+   * ```
    */
   update(
     systemID: string,
@@ -52,6 +103,14 @@ export class Systems extends APIResource {
 
   /**
    * Retrieve a paginated list of all systems. Systems are ordered by creation date.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const system of client.systems.list('314')) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     projectID: string,
@@ -67,6 +126,13 @@ export class Systems extends APIResource {
   /**
    * Delete a system definition by ID. This will not delete associated system
    * configurations.
+   *
+   * @example
+   * ```ts
+   * const system = await client.systems.delete(
+   *   '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+   * );
+   * ```
    */
   delete(systemID: string, options?: RequestOptions): APIPromise<SystemDeleteResponse> {
     return this._client.delete(path`/systems/${systemID}`, options);
@@ -74,6 +140,13 @@ export class Systems extends APIResource {
 
   /**
    * Retrieve a specific system by ID.
+   *
+   * @example
+   * ```ts
+   * const system = await client.systems.get(
+   *   '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+   * );
+   * ```
    */
   get(systemID: string, options?: RequestOptions): APIPromise<System> {
     return this._client.get(path`/systems/${systemID}`, options);

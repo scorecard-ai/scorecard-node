@@ -3,9 +3,10 @@
 export * from './shared';
 export {
   Projects,
-  type ProjectListResponse,
+  type Project,
+  type ProjectCreateParams,
   type ProjectListParams,
-  type ProjectListResponsesPaginatedResponse,
+  type ProjectsPaginatedResponse,
 } from './projects';
 export { Records, type Record, type RecordCreateParams } from './records';
 export { Runs, type Run, type RunUpdateResponse, type RunCreateParams, type RunUpdateParams } from './runs';

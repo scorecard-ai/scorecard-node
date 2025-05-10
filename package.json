@@ -1,6 +1,6 @@
 {
   "name": "scorecard-ai",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "The official TypeScript library for the Scorecard API",
   "author": "Scorecard <team@scorecard.io>",
   "types": "dist/index.d.ts",
@@ -49,10 +49,6 @@
   "resolutions": {
     "synckit": "0.8.8"
   },
-  "browser": {
-    "./internal/shims/getBuiltinModule.mjs": "./internal/shims/nullGetBuiltinModule.mjs",
-    "./internal/shims/getBuiltinModule.js": "./internal/shims/nullGetBuiltinModule.js"
-  },
   "imports": {
     "scorecard-ai": ".",
     "scorecard-ai/*": "./src/*"
@@ -72,5 +68,8 @@
       "import": "./dist/*.mjs",
       "require": "./dist/*.js"
     }
+  },
+  "engines": {
+    "node": ">= 20"
   }
 }

@@ -10,6 +10,28 @@ export class Testsets extends APIResource {
   /**
    * Create a new Testset for a Project. The Testset will be created in the Project
    * specified in the path.
+   *
+   * @example
+   * ```ts
+   * const testset = await client.testsets.create('314', {
+   *   description: 'Testset for long context Q&A chatbot.',
+   *   fieldMapping: {
+   *     inputs: ['question'],
+   *     labels: ['idealAnswer'],
+   *     metadata: [],
+   *   },
+   *   jsonSchema: {
+   *     type: 'object',
+   *     properties: {
+   *       question: { type: 'string' },
+   *       idealAnswer: { type: 'string' },
+   *       provenance: { type: 'string' },
+   *       geo: { type: 'string' },
+   *     },
+   *   },
+   *   name: 'Long Context Q&A',
+   * });
+   * ```
    */
   create(projectID: string, body: TestsetCreateParams, options?: RequestOptions): APIPromise<Testset> {
     return this._client.post(path`/projects/${projectID}/testsets`, { body, ...options });
@@ -28,6 +50,14 @@ export class Testsets extends APIResource {
    *   updated schema
    * - For complete control, provide both schema and fieldMapping when updating the
    *   schema
+   *
+   * @example
+   * ```ts
+   * const testset = await client.testsets.update('246', {
+   *   description: 'Updated description for the Q&A Testset.',
+   *   name: 'Updated Q&A Testset',
+   * });
+   * ```
    */
   update(
     testsetID: string,
@@ -39,6 +69,14 @@ export class Testsets extends APIResource {
 
   /**
    * Retrieve a paginated list of Testsets belonging to a Project.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const testset of client.testsets.list('314')) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     projectID: string,
@@ -53,6 +91,11 @@ export class Testsets extends APIResource {
 
   /**
    * Delete Testset
+   *
+   * @example
+   * ```ts
+   * const testset = await client.testsets.delete('246');
+   * ```
    */
   delete(testsetID: string, options?: RequestOptions): APIPromise<TestsetDeleteResponse> {
     return this._client.delete(path`/testsets/${testsetID}`, options);
@@ -60,6 +103,11 @@ export class Testsets extends APIResource {
 
   /**
    * Get Testset by ID
+   *
+   * @example
+   * ```ts
+   * const testset = await client.testsets.get('246');
+   * ```
    */
   get(testsetID: string, options?: RequestOptions): APIPromise<Testset> {
     return this._client.get(path`/testsets/${testsetID}`, options);

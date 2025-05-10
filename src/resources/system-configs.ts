@@ -23,6 +23,21 @@ export class SystemConfigs extends APIResource {
    * - Validation errors indicate fields that don't match the schema but don't
    *   prevent creation
    * - Having validation errors may affect how some evaluation metrics are calculated
+   *
+   * @example
+   * ```ts
+   * const systemConfig = await client.systemConfigs.create(
+   *   '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+   *   {
+   *     config: {
+   *       temperature: 0.1,
+   *       maxTokens: 1024,
+   *       model: 'gpt-4-turbo',
+   *     },
+   *     name: 'Production (Low Temperature)',
+   *   },
+   * );
+   * ```
    */
   create(
     systemID: string,
@@ -37,6 +52,16 @@ export class SystemConfigs extends APIResource {
    *
    * System configurations provide concrete parameter values for a System Under Test,
    * defining exactly how the system should be configured during an evaluation run.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const systemConfig of client.systemConfigs.list(
+   *   '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+   * )) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     systemID: string,
@@ -51,6 +76,14 @@ export class SystemConfigs extends APIResource {
 
   /**
    * Retrieve a specific system configuration by ID.
+   *
+   * @example
+   * ```ts
+   * const systemConfig = await client.systemConfigs.get(
+   *   '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
+   *   { systemId: '12345678-0a8b-4f66-b6f3-2ddcfa097257' },
+   * );
+   * ```
    */
   get(
     systemConfigID: string,

@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/api-reference/overview). The full API of this library can be found in [api.md](api.md) along with [code examples](https://github.com/scorecard-ai/scorecard-node/tree/main/examples).
+The REST API documentation can be found on [docs.scorecard.io](https://docs.scorecard.io/api-reference/overview). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -369,7 +369,7 @@ TypeScript >= 4.9 is supported.
 The following runtimes are supported:
 
 - Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)
-- Node.js 18 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
+- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
 - Deno v1.28.0 or higher.
 - Bun 1.0 or later.
 - Cloudflare Workers.
