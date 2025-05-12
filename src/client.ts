@@ -31,6 +31,7 @@ import {
 } from './resources/projects';
 import { Record as RecordsAPIRecord, RecordCreateParams, Records } from './resources/records';
 import { Run, RunCreateParams, RunUpdateParams, RunUpdateResponse, Runs } from './resources/runs';
+import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
   SystemConfig,
   SystemConfigCreateParams,
@@ -788,6 +789,7 @@ export class Scorecard {
   testcases: API.Testcases = new API.Testcases(this);
   runs: API.Runs = new API.Runs(this);
   records: API.Records = new API.Records(this);
+  scores: API.Scores = new API.Scores(this);
   systems: API.Systems = new API.Systems(this);
   systemConfigs: API.SystemConfigs = new API.SystemConfigs(this);
 }
@@ -796,6 +798,7 @@ Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
 Scorecard.Runs = Runs;
 Scorecard.Records = Records;
+Scorecard.Scores = Scores;
 Scorecard.Systems = Systems;
 Scorecard.SystemConfigs = SystemConfigs;
 export declare namespace Scorecard {
@@ -850,6 +853,8 @@ export declare namespace Scorecard {
     type RecordsAPIRecord as Record,
     type RecordCreateParams as RecordCreateParams,
   };
+
+  export { Scores as Scores, type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
 
   export {
     Systems as Systems,
