@@ -204,6 +204,10 @@ When updating the schema:
 
 - `create_records` (`write`): Create a new Record in a Run.
 
+### Resource `scores`:
+
+- `upsert_scores` (`write`): Create or update a Score for a given Record and MetricConfig. If a Score with the specified Record ID and MetricConfig ID already exists, it will be updated. Otherwise, a new Score will be created. The score provided should conform to the schema defined by the MetricConfig; otherwise, validation errors will be reported.
+
 ### Resource `systems`:
 
 - `create_systems` (`write`): Create a new system definition that specifies the interface contracts for a component you want to evaluate.

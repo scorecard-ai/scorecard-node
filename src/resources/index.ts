@@ -10,6 +10,7 @@ export {
 } from './projects';
 export { Records, type Record, type RecordCreateParams } from './records';
 export { Runs, type Run, type RunUpdateResponse, type RunCreateParams, type RunUpdateParams } from './runs';
+export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
   SystemConfigs,
   type SystemConfig,
