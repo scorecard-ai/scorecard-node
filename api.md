@@ -68,6 +68,16 @@ Methods:
 
 - <code title="post /runs/{runId}/records">client.records.<a href="./src/resources/records.ts">create</a>(runID, { ...params }) -> Record</code>
 
+# Scores
+
+Types:
+
+- <code><a href="./src/resources/scores.ts">Score</a></code>
+
+Methods:
+
+- <code title="put /records/{recordId}/scores/{metricConfigId}">client.scores.<a href="./src/resources/scores.ts">upsert</a>(metricConfigID, { ...params }) -> Score</code>
+
 # Systems
 
 Types:
