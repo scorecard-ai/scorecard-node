@@ -1,5 +1,38 @@
 # Changelog
 
+## 1.0.0-alpha.7 (2025-05-13)
+
+Full Changelog: [v1.0.0-alpha.6...v1.0.0-alpha.7](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.6...v1.0.0-alpha.7)
+
+### Features
+
+* **api:** api update ([f6b652b](https://github.com/scorecard-ai/scorecard-node/commit/f6b652b87630b2f306a2a4922205ca450b7eedb3))
+* **api:** api update ([0ff85b8](https://github.com/scorecard-ai/scorecard-node/commit/0ff85b8ddc3005e50d04f620d44b0162fbd3fd94))
+* **client:** add withOptions helper ([56e0f9c](https://github.com/scorecard-ai/scorecard-node/commit/56e0f9c32bf0130a7545f60dad6eed441f3866ad))
+* **mcp:** support dynamically discovering and invoking tools for APIs with many endpoints ([22437b5](https://github.com/scorecard-ai/scorecard-node/commit/22437b5067e5f8fd7479034d6280f6fb49362c7f))
+
+
+### Bug Fixes
+
+* **client:** always overwrite when merging headers ([de3b63b](https://github.com/scorecard-ai/scorecard-node/commit/de3b63b99bcca80ac6e54d67ff0467fc5d615f73))
+* **mcp:** explicitly include zod and zod-to-json-schema in package.json ([2f30046](https://github.com/scorecard-ai/scorecard-node/commit/2f3004614cbc35c7749390002af24b5beeae0909))
+
+
+### Chores
+
+* **build:** automatically build subpackages if present ([223b984](https://github.com/scorecard-ai/scorecard-node/commit/223b984ed430956069773e6f2f1a65aa6a609529))
+* **client:** drop support for EOL node versions ([890a4d4](https://github.com/scorecard-ai/scorecard-node/commit/890a4d46be6e11c1b7506823dfc8a46d69083730))
+* **internal:** codegen related update ([b39db5c](https://github.com/scorecard-ai/scorecard-node/commit/b39db5c8e5882fddf583fd622a95939a9548c128))
+* **package:** remove engines ([20fc043](https://github.com/scorecard-ai/scorecard-node/commit/20fc043014fe172060b75cdc5410f7c06350a04b))
+* **tests:** use node 22 for CI tests ([957e055](https://github.com/scorecard-ai/scorecard-node/commit/957e055f59ddba2e375f2ad45a18f561e454e56d))
+
+
+### Documentation
+
+* add examples to tsdocs ([8dfe1fc](https://github.com/scorecard-ai/scorecard-node/commit/8dfe1fce29d01af68f7980b49b6d59c108b246d6))
+* **readme:** Fix example in README ([63d840a](https://github.com/scorecard-ai/scorecard-node/commit/63d840a49f0255bab4250dfb9357ec4486056528))
+* **readme:** Update documentation URL ([33ef359](https://github.com/scorecard-ai/scorecard-node/commit/33ef359a0ae780960bb9d4e0c1e228f90f168f3f))
+
 ## 1.0.0-alpha.6 (2025-05-06)
 
 Full Changelog: [v1.0.0-alpha.5...v1.0.0-alpha.6](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.5...v1.0.0-alpha.6)
