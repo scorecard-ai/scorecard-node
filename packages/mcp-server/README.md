@@ -10,6 +10,7 @@ You can run the MCP Server directly via `npx`:
 
 ```sh
 export SCORECARD_API_KEY="My API Key"
+export SCORECARD_ENVIRONMENT="production"
 npx -y scorecard-ai-mcp@latest
 ```
 
@@ -27,7 +28,8 @@ For clients with a configuration JSON, it might look something like this:
       "command": "npx",
       "args": ["-y", "scorecard-ai-mcp", "--client=claude", "--tools=dynamic"],
       "env": {
-        "SCORECARD_API_KEY": "My API Key"
+        "SCORECARD_API_KEY": "My API Key",
+        "SCORECARD_ENVIRONMENT": "production"
       }
     }
   }
