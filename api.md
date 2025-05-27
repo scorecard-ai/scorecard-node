@@ -51,12 +51,10 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/runs.ts">Run</a></code>
-- <code><a href="./src/resources/runs.ts">RunUpdateResponse</a></code>
 
 Methods:
 
 - <code title="post /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">create</a>(projectID, { ...params }) -> Run</code>
-- <code title="patch /runs/{runId}">client.runs.<a href="./src/resources/runs.ts">update</a>(runID, { ...params }) -> RunUpdateResponse</code>
 
 # Records
 

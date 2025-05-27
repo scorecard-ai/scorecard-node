@@ -10,7 +10,6 @@ You can run the MCP Server directly via `npx`:
 
 ```sh
 export SCORECARD_API_KEY="My API Key"
-export SCORECARD_ENVIRONMENT="production"
 npx -y scorecard-ai-mcp@latest
 ```
 
@@ -28,8 +27,7 @@ For clients with a configuration JSON, it might look something like this:
       "command": "npx",
       "args": ["-y", "scorecard-ai-mcp", "--client=claude", "--tools=dynamic"],
       "env": {
-        "SCORECARD_API_KEY": "My API Key",
-        "SCORECARD_ENVIRONMENT": "production"
+        "SCORECARD_API_KEY": "My API Key"
       }
     }
   }
@@ -179,15 +177,15 @@ The following tools are available in this MCP server.
   If a field is provided, the new content will replace the existing content.
   If a field is not provided, the existing content will remain unchanged.
 
-  When updating the schema:
+When updating the schema:
 
-  - If field mappings are not provided and existing mappings reference fields that no longer exist, those mappings will be automatically removed
-  - To preserve all existing mappings, ensure all referenced fields remain in the updated schema
-  - For complete control, provide both schema and fieldMapping when updating the schema
+- If field mappings are not provided and existing mappings reference fields that no longer exist, those mappings will be automatically removed
+- To preserve all existing mappings, ensure all referenced fields remain in the updated schema
+- For complete control, provide both schema and fieldMapping when updating the schema
 
-- `list_testsets` (`read`): Retrieve a paginated list of Testsets belonging to a Project.
-- `delete_testsets` (`write`): Delete Testset
-- `get_testsets` (`read`): Get Testset by ID
+* `list_testsets` (`read`): Retrieve a paginated list of Testsets belonging to a Project.
+* `delete_testsets` (`write`): Delete Testset
+* `get_testsets` (`read`): Get Testset by ID
 
 ### Resource `testcases`:
 
@@ -200,7 +198,6 @@ The following tools are available in this MCP server.
 ### Resource `runs`:
 
 - `create_runs` (`write`): Create a new Run.
-- `update_runs` (`write`): Update the status of a Run.
 
 ### Resource `records`:
 
@@ -214,44 +211,44 @@ The following tools are available in this MCP server.
 
 - `create_systems` (`write`): Create a new system definition that specifies the interface contracts for a component you want to evaluate.
 
-  A system acts as a template that defines three key contracts through JSON Schemas:
+A system acts as a template that defines three key contracts through JSON Schemas:
 
-  1. Input Schema: What data your system accepts (e.g., user queries, context documents)
-  2. Output Schema: What data your system produces (e.g., responses, confidence scores)
-  3. Config Schema: What parameters can be adjusted (e.g., model selection, temperature)
+1. Input Schema: What data your system accepts (e.g., user queries, context documents)
+2. Output Schema: What data your system produces (e.g., responses, confidence scores)
+3. Config Schema: What parameters can be adjusted (e.g., model selection, temperature)
 
-  This separation lets you evaluate any system as a black box, focusing on its interface rather than implementation details.
+This separation lets you evaluate any system as a black box, focusing on its interface rather than implementation details.
 
 - `update_systems` (`write`): Update an existing system definition. Only the fields provided in the request body will be updated.
   If a field is provided, the new content will replace the existing content.
   If a field is not provided, the existing content will remain unchanged.
 
-  When updating schemas:
+When updating schemas:
 
-  - The system will accept your changes regardless of compatibility with existing configurations
-  - Schema updates won't invalidate existing evaluations or configurations
-  - For significant redesigns, creating a new system definition provides a cleaner separation
+- The system will accept your changes regardless of compatibility with existing configurations
+- Schema updates won't invalidate existing evaluations or configurations
+- For significant redesigns, creating a new system definition provides a cleaner separation
 
-- `list_systems` (`read`): Retrieve a paginated list of all systems. Systems are ordered by creation date.
-- `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system configurations.
-- `get_systems` (`read`): Retrieve a specific system by ID.
+* `list_systems` (`read`): Retrieve a paginated list of all systems. Systems are ordered by creation date.
+* `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system configurations.
+* `get_systems` (`read`): Retrieve a specific system by ID.
 
 ### Resource `system_configs`:
 
 - `create_system_configs` (`write`): Create a new configuration for a system.
 
-  Each configuration contains specific parameter values that match the system's configSchema - things like model parameters, thresholds, or processing options.
-  Once created, configurations cannot be modified, ensuring stable reference points for evaluations.
+Each configuration contains specific parameter values that match the system's configSchema - things like model parameters, thresholds, or processing options.
+Once created, configurations cannot be modified, ensuring stable reference points for evaluations.
 
-  When creating a configuration:
+When creating a configuration:
 
-  - The 'config' object is validated against the parent system's configSchema
-  - Configurations with validation errors are still stored, with errors included in the response
-  - Validation errors indicate fields that don't match the schema but don't prevent creation
-  - Having validation errors may affect how some evaluation metrics are calculated
+- The 'config' object is validated against the parent system's configSchema
+- Configurations with validation errors are still stored, with errors included in the response
+- Validation errors indicate fields that don't match the schema but don't prevent creation
+- Having validation errors may affect how some evaluation metrics are calculated
 
-- `list_system_configs` (`read`): Retrieve a paginated list of configurations for a specific system.
+* `list_system_configs` (`read`): Retrieve a paginated list of configurations for a specific system.
 
-  System configurations provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.
+System configurations provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.
 
 - `get_system_configs` (`read`): Retrieve a specific system configuration by ID.
