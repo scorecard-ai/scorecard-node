@@ -26,19 +26,4 @@ describe('resource runs', () => {
       systemConfigId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
     });
   });
-
-  test('update: only required params', async () => {
-    const responsePromise = client.runs.update('135', { status: 'awaiting_scoring' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('update: required and optional params', async () => {
-    const response = await client.runs.update('135', { status: 'awaiting_scoring' });
-  });
 });

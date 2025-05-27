@@ -68,5 +68,8 @@
       "import": "./dist/*.mjs",
       "require": "./dist/*.js"
     }
+  },
+  "engines": {
+    "node": ">= 20"
   }
 }
