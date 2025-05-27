@@ -148,11 +148,7 @@ export function removeTopLevelUnions(tool: Tool): Tool[] {
   });
 }
 
-function findUsedDefs(
-  schema: JSONSchema,
-  defs: Record<string, JSONSchema>,
-  visited: Set<string> = new Set(),
-): Record<string, JSONSchema> {
+function findUsedDefs(schema: JSONSchema, defs: Record<string, JSONSchema>): Record<string, JSONSchema> {
   const usedDefs: Record<string, JSONSchema> = {};
 
   if (typeof schema !== 'object' || schema === null) {
@@ -164,11 +160,9 @@ function findUsedDefs(
     if (refParts[0] === '#' && refParts[1] === '$defs' && refParts[2]) {
       const defName = refParts[2];
       const def = defs[defName];
-      if (def && !visited.has(schema.$ref)) {
+      if (def) {
         usedDefs[defName] = def;
-        visited.add(schema.$ref);
-        Object.assign(usedDefs, findUsedDefs(def, defs, visited));
-        visited.delete(schema.$ref);
+        Object.assign(usedDefs, findUsedDefs(def, defs));
       }
     }
     return usedDefs;
@@ -176,15 +170,12 @@ function findUsedDefs(
 
   for (const key in schema) {
     if (key !== '$defs' && typeof schema[key] === 'object' && schema[key] !== null) {
-      Object.assign(usedDefs, findUsedDefs(schema[key] as JSONSchema, defs, visited));
+      Object.assign(usedDefs, findUsedDefs(schema[key] as JSONSchema, defs));
     }
   }
 
   return usedDefs;
 }
-
-// Export for testing
-export { findUsedDefs };
 
 /**
  * Inlines all $refs in a schema, eliminating $defs.

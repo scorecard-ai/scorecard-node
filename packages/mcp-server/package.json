@@ -30,9 +30,7 @@
     "scorecard-ai": "file:../../dist/",
     "@modelcontextprotocol/sdk": "^1.6.1",
     "yargs": "^17.7.2",
-    "@cloudflare/cabidela": "^0.2.4",
-    "zod": "^3.24.4",
-    "zod-to-json-schema": "^3.24.5"
+    "@cloudflare/cabidela": "^0.2.4"
   },
   "bin": {
     "mcp-server": "dist/index.js"
