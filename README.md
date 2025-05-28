@@ -30,7 +30,7 @@ const client = new Scorecard({
 async function main() {
   const testset = await client.testsets.create('314', {
     description: 'Testset for long context Q&A chatbot.',
-    fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: ['string'] },
+    fieldMapping: { expected: ['idealAnswer'], inputs: ['question'], metadata: ['string'] },
     jsonSchema: { type: 'bar', properties: 'bar' },
     name: 'Long Context Q&A',
   });

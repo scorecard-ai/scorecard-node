@@ -19,13 +19,13 @@ export const tool: Tool = {
       runId: {
         type: 'string',
       },
+      expected: {
+        type: 'object',
+        description: 'The expected outputs for the Testcase.',
+      },
       inputs: {
         type: 'object',
         description: "The actual inputs sent to the system, which should match the system's input schema.",
-      },
-      labels: {
-        type: 'object',
-        description: 'The expected outputs for the Testcase.',
       },
       outputs: {
         type: 'object',

@@ -10,8 +10,8 @@ const client = new Scorecard({
 describe('resource records', () => {
   test('create: only required params', async () => {
     const responsePromise = client.records.create('135', {
+      expected: { idealAnswer: 'bar' },
       inputs: { question: 'bar' },
-      labels: { idealAnswer: 'bar' },
       outputs: { response: 'bar' },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -25,8 +25,8 @@ describe('resource records', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.records.create('135', {
+      expected: { idealAnswer: 'bar' },
       inputs: { question: 'bar' },
-      labels: { idealAnswer: 'bar' },
       outputs: { response: 'bar' },
       testcaseId: '248',
     });

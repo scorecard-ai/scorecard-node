@@ -13,8 +13,10 @@ export class Records extends APIResource {
    * @example
    * ```ts
    * const record = await client.records.create('135', {
+   *   expected: {
+   *     idealAnswer: 'Paris is the capital of France',
+   *   },
    *   inputs: { question: 'What is the capital of France?' },
-   *   labels: { idealAnswer: 'Paris is the capital of France' },
    *   outputs: { response: 'The capital of France is Paris.' },
    *   testcaseId: '248',
    * });
@@ -35,15 +37,15 @@ export interface Record {
   id: string;
 
   /**
+   * The expected outputs for the Testcase.
+   */
+  expected: BuiltinRecord<string, unknown>;
+
+  /**
    * The actual inputs sent to the system, which should match the system's input
    * schema.
    */
   inputs: BuiltinRecord<string, unknown>;
-
-  /**
-   * The expected outputs for the Testcase.
-   */
-  labels: BuiltinRecord<string, unknown>;
 
   /**
    * The actual outputs from the system.
@@ -63,15 +65,15 @@ export interface Record {
 
 export interface RecordCreateParams {
   /**
+   * The expected outputs for the Testcase.
+   */
+  expected: BuiltinRecord<string, unknown>;
+
+  /**
    * The actual inputs sent to the system, which should match the system's input
    * schema.
    */
   inputs: BuiltinRecord<string, unknown>;
-
-  /**
-   * The expected outputs for the Testcase.
-   */
-  labels: BuiltinRecord<string, unknown>;
 
   /**
    * The actual outputs from the system.
