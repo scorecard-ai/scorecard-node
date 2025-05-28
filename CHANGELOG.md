@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.0.0-alpha.8 (2025-05-28)
+
+Full Changelog: [v1.0.0-alpha.7...v1.0.0-alpha.8](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.7...v1.0.0-alpha.8)
+
+### Features
+
+* **api:** api update ([905c5a8](https://github.com/scorecard-ai/scorecard-node/commit/905c5a8641ca77d5f2aa2641fc3e68fe0c2c7c44))
+* **api:** api update ([190fae8](https://github.com/scorecard-ai/scorecard-node/commit/190fae88b84c78198ccb2cd6ddbb53080719e32f))
+* **mcp:** support initializing the server with an "environment" ([afe4d1a](https://github.com/scorecard-ai/scorecard-node/commit/afe4d1ad6972cceeddcdbd817bcdc1a88f9cf488))
+
+
+### Bug Fixes
+
+* **mcp:** fix cursor schema transformation issue with recursive references ([71c5d94](https://github.com/scorecard-ai/scorecard-node/commit/71c5d943881cf7be9f8ead2627b0a0219a238623))
+* **mcp:** include description in dynamic tool search ([e5fdd16](https://github.com/scorecard-ai/scorecard-node/commit/e5fdd16e7c25a01a89fddaf0c0952babf91ab8d7))
+
+
+### Chores
+
+* **docs:** grammar improvements ([2c0f752](https://github.com/scorecard-ai/scorecard-node/commit/2c0f75238923168e0647cc1bb8b36415d36a8d9e))
+* improve docs for MCP servers ([230c8e8](https://github.com/scorecard-ai/scorecard-node/commit/230c8e898594a2d450660d6f7737a0ef3e4d8ba0))
+* improve publish-npm script --latest tag logic ([cf817be](https://github.com/scorecard-ai/scorecard-node/commit/cf817be6ef6c5230ae018348da9dd59bcbebd04c))
+* **internal:** codegen related update ([075ebd9](https://github.com/scorecard-ai/scorecard-node/commit/075ebd9f706885fd3a2de5b9136ca9a1c3cf9be9))
+
 ## 1.0.0-alpha.7 (2025-05-13)
 
 Full Changelog: [v1.0.0-alpha.6...v1.0.0-alpha.7](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.6...v1.0.0-alpha.7)
