@@ -24,8 +24,6 @@ export const tool: Tool = {
         description: 'Testcases to create (max 100).',
         items: {
           type: 'object',
-          description:
-            "A test case in the Scorecard system. Contains JSON data that is validated against the schema defined by its Testset.\nThe `inputs` and `labels` fields are derived from the `data` field based on the Testset's `fieldMapping`, and include all mapped fields, including those with validation errors.\nTestcases are stored regardless of validation results, with any validation errors included in the `validationErrors` field.",
           properties: {
             jsonData: {
               type: 'object',

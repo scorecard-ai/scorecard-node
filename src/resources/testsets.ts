@@ -17,7 +17,7 @@ export class Testsets extends APIResource {
    *   description: 'Testset for long context Q&A chatbot.',
    *   fieldMapping: {
    *     inputs: ['question'],
-   *     labels: ['idealAnswer'],
+   *     expected: ['idealAnswer'],
    *     metadata: [],
    *   },
    *   jsonSchema: {
@@ -119,9 +119,9 @@ export type TestsetsPaginatedResponse = PaginatedResponse<Testset>;
 /**
  * A collection of Testcases that share the same schema. Each Testset defines the
  * structure of its Testcases through a JSON schema. The `fieldMapping` object maps
- * top-level keys of the Testcase schema to their roles (input/label). Fields not
- * mentioned in the `fieldMapping` during creation or update are treated as
- * metadata.
+ * top-level keys of the Testcase schema to their roles (input/expected output).
+ * Fields not mentioned in the `fieldMapping` during creation or update are treated
+ * as metadata.
  *
  * ## JSON Schema validation constraints supported:
  *
@@ -154,8 +154,8 @@ export interface Testset {
   description: string;
 
   /**
-   * Maps top-level keys of the Testcase schema to their roles (input/label).
-   * Unmapped fields are treated as metadata.
+   * Maps top-level keys of the Testcase schema to their roles (input/expected
+   * output). Unmapped fields are treated as metadata.
    */
   fieldMapping: Testset.FieldMapping;
 
@@ -172,22 +172,22 @@ export interface Testset {
 
 export namespace Testset {
   /**
-   * Maps top-level keys of the Testcase schema to their roles (input/label).
-   * Unmapped fields are treated as metadata.
+   * Maps top-level keys of the Testcase schema to their roles (input/expected
+   * output). Unmapped fields are treated as metadata.
    */
   export interface FieldMapping {
+    /**
+     * Fields that represent expected outputs.
+     */
+    expected: Array<string>;
+
     /**
      * Fields that represent inputs to the AI system.
      */
     inputs: Array<string>;
 
     /**
-     * Fields that represent expected outputs/labels.
-     */
-    labels: Array<string>;
-
-    /**
-     * Fields that are not inputs or labels.
+     * Fields that are not inputs or expected outputs.
      */
     metadata: Array<string>;
   }
@@ -207,8 +207,8 @@ export interface TestsetCreateParams {
   description: string;
 
   /**
-   * Maps top-level keys of the Testcase schema to their roles (input/label).
-   * Unmapped fields are treated as metadata.
+   * Maps top-level keys of the Testcase schema to their roles (input/expected
+   * output). Unmapped fields are treated as metadata.
    */
   fieldMapping: TestsetCreateParams.FieldMapping;
 
@@ -225,22 +225,22 @@ export interface TestsetCreateParams {
 
 export namespace TestsetCreateParams {
   /**
-   * Maps top-level keys of the Testcase schema to their roles (input/label).
-   * Unmapped fields are treated as metadata.
+   * Maps top-level keys of the Testcase schema to their roles (input/expected
+   * output). Unmapped fields are treated as metadata.
    */
   export interface FieldMapping {
+    /**
+     * Fields that represent expected outputs.
+     */
+    expected: Array<string>;
+
     /**
      * Fields that represent inputs to the AI system.
      */
     inputs: Array<string>;
 
     /**
-     * Fields that represent expected outputs/labels.
-     */
-    labels: Array<string>;
-
-    /**
-     * Fields that are not inputs or labels.
+     * Fields that are not inputs or expected outputs.
      */
     metadata: Array<string>;
   }
@@ -253,8 +253,8 @@ export interface TestsetUpdateParams {
   description?: string;
 
   /**
-   * Maps top-level keys of the Testcase schema to their roles (input/label).
-   * Unmapped fields are treated as metadata.
+   * Maps top-level keys of the Testcase schema to their roles (input/expected
+   * output). Unmapped fields are treated as metadata.
    */
   fieldMapping?: TestsetUpdateParams.FieldMapping;
 
@@ -271,22 +271,22 @@ export interface TestsetUpdateParams {
 
 export namespace TestsetUpdateParams {
   /**
-   * Maps top-level keys of the Testcase schema to their roles (input/label).
-   * Unmapped fields are treated as metadata.
+   * Maps top-level keys of the Testcase schema to their roles (input/expected
+   * output). Unmapped fields are treated as metadata.
    */
   export interface FieldMapping {
+    /**
+     * Fields that represent expected outputs.
+     */
+    expected: Array<string>;
+
     /**
      * Fields that represent inputs to the AI system.
      */
     inputs: Array<string>;
 
     /**
-     * Fields that represent expected outputs/labels.
-     */
-    labels: Array<string>;
-
-    /**
-     * Fields that are not inputs or labels.
+     * Fields that are not inputs or expected outputs.
      */
     metadata: Array<string>;
   }
