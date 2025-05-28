@@ -68,8 +68,8 @@ async function createTestset(testsetName: string): Promise<Scorecard.Testsets.Te
     fieldMapping: {
       // Inputs are fields that represent the input to the AI system.
       inputs: ['original', 'recipient', 'tone'],
-      // Labels are fields represent the expected output of the AI system.
-      labels: ['idealRewritten'],
+      // Expected fields are fields that represent the expected output of the AI system.
+      expected: ['idealRewritten'],
       // Metadata fields are used for grouping Testcases, but not seen by the AI system.
       metadata: [],
     },

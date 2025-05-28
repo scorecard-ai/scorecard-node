@@ -55,15 +55,10 @@ async function main() {
     await scorecard.records.create(run.id, {
       testcaseId: testcase.id,
       inputs: testcase.inputs,
-      labels: testcase.labels,
+      expected: testcase.expected,
       outputs: outputs as unknown as Record<string, unknown>,
     });
   }
-
-  // Mark the Run as done with execution and ready for scoring.
-  await scorecard.runs.update(run.id, {
-    status: 'awaiting_scoring',
-  });
 
   const runUrl = `https://app.getscorecard.ai/projects/${PROJECT_ID}/runs/grades/${run.id}`;
   console.log(`Go to ${runUrl} and click "Run Scoring" to grade your Records.`);

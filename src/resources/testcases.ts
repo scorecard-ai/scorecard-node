@@ -120,17 +120,23 @@ export type TestcasesPaginatedResponse = PaginatedResponse<Testcase>;
 
 /**
  * A test case in the Scorecard system. Contains JSON data that is validated
- * against the schema defined by its Testset. The `inputs` and `labels` fields are
- * derived from the `data` field based on the Testset's `fieldMapping`, and include
- * all mapped fields, including those with validation errors. Testcases are stored
- * regardless of validation results, with any validation errors included in the
- * `validationErrors` field.
+ * against the schema defined by its Testset. The `inputs` and `expected` fields
+ * are derived from the `data` field based on the Testset's `fieldMapping`, and
+ * include all mapped fields, including those with validation errors. Testcases are
+ * stored regardless of validation results, with any validation errors included in
+ * the `validationErrors` field.
  */
 export interface Testcase {
   /**
    * The ID of the Testcase.
    */
   id: string;
+
+  /**
+   * Derived from data based on the Testset's fieldMapping. Contains all fields
+   * marked as expected outputs, including those with validation errors.
+   */
+  expected: Record<string, unknown>;
 
   /**
    * Derived from data based on the Testset's fieldMapping. Contains all fields
@@ -142,12 +148,6 @@ export interface Testcase {
    * The JSON data of the Testcase, which is validated against the Testset's schema.
    */
   jsonData: Record<string, unknown>;
-
-  /**
-   * Derived from data based on the Testset's fieldMapping. Contains all fields
-   * marked as labels, including those with validation errors.
-   */
-  labels: Record<string, unknown>;
 
   /**
    * The ID of the Testset this Testcase belongs to.
@@ -194,14 +194,6 @@ export interface TestcaseCreateParams {
 }
 
 export namespace TestcaseCreateParams {
-  /**
-   * A test case in the Scorecard system. Contains JSON data that is validated
-   * against the schema defined by its Testset. The `inputs` and `labels` fields are
-   * derived from the `data` field based on the Testset's `fieldMapping`, and include
-   * all mapped fields, including those with validation errors. Testcases are stored
-   * regardless of validation results, with any validation errors included in the
-   * `validationErrors` field.
-   */
   export interface Item {
     /**
      * The JSON data of the Testcase, which is validated against the Testset's schema.

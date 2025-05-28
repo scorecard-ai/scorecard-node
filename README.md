@@ -30,7 +30,7 @@ async function main() {
   const testset = await client.testsets.create('314', {
     name: 'Long Context Q&A',
     description: 'Testset for long context Q&A chatbot.',
-    fieldMapping: { inputs: ['question'], labels: ['idealAnswer'], metadata: [] },
+    fieldMapping: { inputs: ['question'], expected: ['idealAnswer'], metadata: [] },
     jsonSchema: {
       type: 'object',
       properties: {

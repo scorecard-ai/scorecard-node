@@ -27,8 +27,15 @@ export const tool: Tool = {
       fieldMapping: {
         type: 'object',
         description:
-          'Maps top-level keys of the Testcase schema to their roles (input/label). Unmapped fields are treated as metadata.',
+          'Maps top-level keys of the Testcase schema to their roles (input/expected output). Unmapped fields are treated as metadata.',
         properties: {
+          expected: {
+            type: 'array',
+            description: 'Fields that represent expected outputs.',
+            items: {
+              type: 'string',
+            },
+          },
           inputs: {
             type: 'array',
             description: 'Fields that represent inputs to the AI system.',
@@ -36,22 +43,15 @@ export const tool: Tool = {
               type: 'string',
             },
           },
-          labels: {
-            type: 'array',
-            description: 'Fields that represent expected outputs/labels.',
-            items: {
-              type: 'string',
-            },
-          },
           metadata: {
             type: 'array',
-            description: 'Fields that are not inputs or labels.',
+            description: 'Fields that are not inputs or expected outputs.',
             items: {
               type: 'string',
             },
           },
         },
-        required: ['inputs', 'labels', 'metadata'],
+        required: ['expected', 'inputs', 'metadata'],
       },
       jsonSchema: {
         type: 'object',

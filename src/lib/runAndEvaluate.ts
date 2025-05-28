@@ -35,18 +35,13 @@ export async function runAndEvaluate<SystemInput extends Object, SystemOutput ex
     const promise = scorecard.records.create(run.id, {
       testcaseId: testcase.id,
       inputs: testcase.inputs,
-      labels: testcase.labels,
+      expected: testcase.expected,
       outputs: modelResponse as Record<string, unknown>,
     });
     recordPromises.push(promise);
   }
   // Wait until all the Records are created
   await Promise.all(recordPromises);
-
-  // Mark the Run as done with execution and ready for scoring.
-  await scorecard.runs.update(run.id, {
-    status: 'awaiting_scoring',
-  });
 
   const runUrl = `https://app.getscorecard.ai/projects/${projectId}/runs/grades/${run.id}`;
 
