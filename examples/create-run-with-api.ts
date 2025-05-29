@@ -61,7 +61,7 @@ async function main() {
   }
 
   const runUrl = `https://app.getscorecard.ai/projects/${PROJECT_ID}/runs/grades/${run.id}`;
-  console.log(`Go to ${runUrl} and click "Run Scoring" to grade your Records.`);
+  console.log(`Go to ${runUrl} to view your scorecard.`);
 }
 
 main();
