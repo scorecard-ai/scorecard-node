@@ -1,0 +1,19 @@
+{
+  "name": "systems-demo",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ai-sdk/openai": "^1.3.22",
+    "ai": "^4.3.16",
+    "dotenv": "^16.5.0",
+    "scorecard-ai": "1.0.0-alpha.7"
+  }
+}
