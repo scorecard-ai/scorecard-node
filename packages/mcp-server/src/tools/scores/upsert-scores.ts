@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'scores',
   operation: 'write',
   tags: [],
+  httpMethod: 'put',
+  httpPath: '/records/{recordId}/scores/{metricConfigId}',
+  operationId: 'upsertScore',
 };
 
 export const tool: Tool = {

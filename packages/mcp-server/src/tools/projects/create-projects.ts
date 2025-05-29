@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'projects',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/projects',
+  operationId: 'createProject',
 };
 
 export const tool: Tool = {

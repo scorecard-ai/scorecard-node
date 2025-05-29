@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'testsets',
   operation: 'write',
   tags: [],
+  httpMethod: 'patch',
+  httpPath: '/testsets/{testsetId}',
+  operationId: 'updateTestset',
 };
 
 export const tool: Tool = {
