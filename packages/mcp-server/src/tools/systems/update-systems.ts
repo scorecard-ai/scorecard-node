@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'systems',
   operation: 'write',
   tags: [],
+  httpMethod: 'patch',
+  httpPath: '/systems/{systemId}',
+  operationId: 'updateSystem',
 };
 
 export const tool: Tool = {

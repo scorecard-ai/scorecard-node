@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'system_configs',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/systems/{systemId}/configs',
+  operationId: 'createSystemConfig',
 };
 
 export const tool: Tool = {

@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'systems',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/systems/{systemId}',
+  operationId: 'getSystem',
 };
 
 export const tool: Tool = {
