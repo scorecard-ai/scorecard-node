@@ -7,6 +7,7 @@ import { Scorecard } from '../client';
  * @param projectId The ID of the Project to run the system on.
  * @param testsetId The ID of the Testset to run the system on.
  * @param metricIds The IDs of the Metrics to use for evaluation.
+ * @param systemConfigId The optional ID of the System Configuration to associate with the Run.
  * @param system The system to run on the Testset.
  */
 export async function runAndEvaluate<SystemInput extends Object, SystemOutput extends Object>(
@@ -15,17 +16,24 @@ export async function runAndEvaluate<SystemInput extends Object, SystemOutput ex
     projectId,
     testsetId,
     metricIds,
+    systemConfigId,
     system,
   }: {
     projectId: string;
     testsetId: string;
     metricIds: Array<string>;
+    systemConfigId?: string;
     system: (testcaseInput: SystemInput) => Promise<SystemOutput>;
   },
 ): Promise<Pick<Scorecard.Runs.Run, 'id'> & { url: string }> {
   const run = await scorecard.runs.create(projectId, {
     testsetId,
     metricIds,
+    ...(systemConfigId != null ?
+      {
+        systemConfigId,
+      }
+    : null),
   });
 
   // Run each Testcase sequentially
