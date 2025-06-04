@@ -27,18 +27,14 @@ const client = new Scorecard({
   environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
-async function main() {
-  const testset = await client.testsets.create('314', {
-    description: 'Testset for long context Q&A chatbot.',
-    fieldMapping: { expected: ['idealAnswer'], inputs: ['question'], metadata: ['string'] },
-    jsonSchema: { type: 'bar', properties: 'bar' },
-    name: 'Long Context Q&A',
-  });
+const testset = await client.testsets.create('314', {
+  description: 'Testset for long context Q&A chatbot.',
+  fieldMapping: { expected: ['idealAnswer'], inputs: ['question'], metadata: ['string'] },
+  jsonSchema: { type: 'bar', properties: 'bar' },
+  name: 'Long Context Q&A',
+});
 
-  console.log(testset.id);
-}
-
-main();
+console.log(testset.id);
 ```
 
 ### Request & Response types
@@ -54,11 +50,7 @@ const client = new Scorecard({
   environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
-async function main() {
-  const testset: Scorecard.Testset = await client.testsets.get('246');
-}
-
-main();
+const testset: Scorecard.Testset = await client.testsets.get('246');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -71,19 +63,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const testset = await client.testsets.get('246').catch(async (err) => {
-    if (err instanceof Scorecard.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
-}
-
-main();
+const testset = await client.testsets.get('246').catch(async (err) => {
+  if (err instanceof Scorecard.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
