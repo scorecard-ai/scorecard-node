@@ -29,13 +29,13 @@ export const tool: Tool = {
           type: 'string',
         },
       },
-      testsetId: {
-        type: 'string',
-        description: 'The ID of the Testset this Run is testing.',
-      },
       systemConfigId: {
         type: 'string',
         description: 'The ID of the system configuration this Run is using.',
+      },
+      testsetId: {
+        type: 'string',
+        description: 'The ID of the Testset this Run is testing.',
       },
     },
   },
