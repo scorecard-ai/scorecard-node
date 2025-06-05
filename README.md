@@ -26,28 +26,24 @@ const client = new Scorecard({
   apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const testset = await client.testsets.create('314', {
-    name: 'Long Context Q&A',
-    description: 'Testset for long context Q&A chatbot.',
-    fieldMapping: { inputs: ['question'], expected: ['idealAnswer'], metadata: [] },
-    jsonSchema: {
-      type: 'object',
-      properties: {
-        question: {
-          type: 'string',
-        },
-        idealAnswer: {
-          type: 'string',
-        },
+const testset = await client.testsets.create('314', {
+  name: 'Long Context Q&A',
+  description: 'Testset for long context Q&A chatbot.',
+  fieldMapping: { inputs: ['question'], expected: ['idealAnswer'], metadata: [] },
+  jsonSchema: {
+    type: 'object',
+    properties: {
+      question: {
+        type: 'string',
+      },
+      idealAnswer: {
+        type: 'string',
       },
     },
-  });
+  },
+});
 
-  console.log(testset.id);
-}
-
-main();
+console.log(testset.id);
 ```
 
 ### Request & Response types
@@ -62,11 +58,7 @@ const client = new Scorecard({
   apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const testset: Scorecard.Testset = await client.testsets.get('246');
-}
-
-main();
+const testset: Scorecard.Testset = await client.testsets.get('246');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -79,19 +71,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const testset = await client.testsets.get('246').catch(async (err) => {
-    if (err instanceof Scorecard.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
-}
-
-main();
+const testset = await client.testsets.get('246').catch(async (err) => {
+  if (err instanceof Scorecard.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
