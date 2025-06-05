@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   operation: 'read',
   tags: [],
   httpMethod: 'get',
-  httpPath: '/systems/{systemId}/configs/{systemConfigId}',
+  httpPath: '/systems/configs/{systemConfigId}',
   operationId: 'getSystemConfig',
 };
 
@@ -19,9 +19,6 @@ export const tool: Tool = {
   inputSchema: {
     type: 'object',
     properties: {
-      systemId: {
-        type: 'string',
-      },
       systemConfigId: {
         type: 'string',
       },
@@ -31,7 +28,7 @@ export const tool: Tool = {
 
 export const handler = (client: Scorecard, args: Record<string, unknown> | undefined) => {
   const { systemConfigId, ...body } = args as any;
-  return client.systemConfigs.get(systemConfigId, body);
+  return client.systemConfigs.get(systemConfigId);
 };
 
 export default { metadata, tool, handler };
