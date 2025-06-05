@@ -35,7 +35,6 @@ import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
   SystemConfig,
   SystemConfigCreateParams,
-  SystemConfigGetParams,
   SystemConfigListParams,
   SystemConfigs,
   SystemConfigsPaginatedResponse,
@@ -866,7 +865,6 @@ export declare namespace Scorecard {
     type SystemConfigsPaginatedResponse as SystemConfigsPaginatedResponse,
     type SystemConfigCreateParams as SystemConfigCreateParams,
     type SystemConfigListParams as SystemConfigListParams,
-    type SystemConfigGetParams as SystemConfigGetParams,
   };
 
   export type APIError = API.APIError;

@@ -101,4 +101,4 @@ Methods:
 
 - <code title="post /systems/{systemId}/configs">client.systemConfigs.<a href="./src/resources/system-configs.ts">create</a>(systemID, { ...params }) -> SystemConfig</code>
 - <code title="get /systems/{systemId}/configs">client.systemConfigs.<a href="./src/resources/system-configs.ts">list</a>(systemID, { ...params }) -> SystemConfigsPaginatedResponse</code>
-- <code title="get /systems/{systemId}/configs/{systemConfigId}">client.systemConfigs.<a href="./src/resources/system-configs.ts">get</a>(systemConfigID, { ...params }) -> SystemConfig</code>
+- <code title="get /systems/configs/{systemConfigId}">client.systemConfigs.<a href="./src/resources/system-configs.ts">get</a>(systemConfigID) -> SystemConfig</code>
