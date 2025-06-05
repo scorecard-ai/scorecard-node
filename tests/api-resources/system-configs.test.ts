@@ -52,10 +52,8 @@ describe('resource systemConfigs', () => {
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
-  test('get: only required params', async () => {
-    const responsePromise = client.systemConfigs.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0', {
-      systemId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
-    });
+  test('get', async () => {
+    const responsePromise = client.systemConfigs.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -63,11 +61,5 @@ describe('resource systemConfigs', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('get: required and optional params', async () => {
-    const response = await client.systemConfigs.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0', {
-      systemId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
-    });
   });
 });

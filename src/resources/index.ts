@@ -16,7 +16,6 @@ export {
   type SystemConfig,
   type SystemConfigCreateParams,
   type SystemConfigListParams,
-  type SystemConfigGetParams,
   type SystemConfigsPaginatedResponse,
 } from './system-configs';
 export {
