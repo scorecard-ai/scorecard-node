@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from 'scorecard-ai-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../';
 import Scorecard from 'scorecard-ai';
@@ -34,9 +36,9 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: Scorecard, args: Record<string, unknown> | undefined) => {
+export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
   const body = args as any;
-  return client.projects.list(body);
+  return asTextContentResult(await client.projects.list(body));
 };
 
 export default { metadata, tool, handler };
