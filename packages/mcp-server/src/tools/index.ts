@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Scorecard from 'scorecard-ai';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { Metadata, Endpoint, HandlerFunction } from './types';
+
+export { Metadata, Endpoint, HandlerFunction };
 
 import create_projects from './projects/create-projects';
 import list_projects from './projects/list-projects';
@@ -26,24 +27,6 @@ import get_systems from './systems/get-systems';
 import create_system_configs from './system-configs/create-system-configs';
 import list_system_configs from './system-configs/list-system-configs';
 import get_system_configs from './system-configs/get-system-configs';
-
-export type HandlerFunction = (client: Scorecard, args: Record<string, unknown> | undefined) => Promise<any>;
-
-export type Metadata = {
-  resource: string;
-  operation: 'read' | 'write';
-  tags: string[];
-
-  httpMethod?: string;
-  httpPath?: string;
-  operationId?: string;
-};
-
-export type Endpoint = {
-  metadata: Metadata;
-  tool: Tool;
-  handler: HandlerFunction;
-};
 
 export const endpoints: Endpoint[] = [];
 
