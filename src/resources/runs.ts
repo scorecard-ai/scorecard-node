@@ -13,8 +13,8 @@ export class Runs extends APIResource {
    * ```ts
    * const run = await client.runs.create('314', {
    *   metricIds: ['789', '101'],
-   *   testsetId: '246',
    *   systemConfigId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
+   *   testsetId: '246',
    * });
    * ```
    */
@@ -52,7 +52,7 @@ export interface Run {
   /**
    * The ID of the Testset this Run is testing.
    */
-  testsetId: string;
+  testsetId: string | null;
 
   /**
    * The ID of the system configuration this Run is using.
@@ -67,14 +67,14 @@ export interface RunCreateParams {
   metricIds: Array<string>;
 
   /**
-   * The ID of the Testset this Run is testing.
-   */
-  testsetId: string;
-
-  /**
    * The ID of the system configuration this Run is using.
    */
   systemConfigId?: string;
+
+  /**
+   * The ID of the Testset this Run is testing.
+   */
+  testsetId?: string | null;
 }
 
 export declare namespace Runs {

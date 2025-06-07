@@ -55,7 +55,7 @@ async function main() {
     metricIds: METRIC_IDS,
     system: runSystem,
   });
-  console.log(`Go to ${run.url} and click "Run Scoring" to grade your Records.`);
+  console.log(`Go to ${run.url} to view your Run's scorecard.`);
 }
 
 main();

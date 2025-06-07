@@ -81,17 +81,11 @@ export class SystemConfigs extends APIResource {
    * ```ts
    * const systemConfig = await client.systemConfigs.get(
    *   '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
-   *   { systemId: '12345678-0a8b-4f66-b6f3-2ddcfa097257' },
    * );
    * ```
    */
-  get(
-    systemConfigID: string,
-    params: SystemConfigGetParams,
-    options?: RequestOptions,
-  ): APIPromise<SystemConfig> {
-    const { systemId } = params;
-    return this._client.get(path`/systems/${systemId}/configs/${systemConfigID}`, options);
+  get(systemConfigID: string, options?: RequestOptions): APIPromise<SystemConfig> {
+    return this._client.get(path`/systems/configs/${systemConfigID}`, options);
   }
 }
 
@@ -185,19 +179,11 @@ export namespace SystemConfigCreateParams {
 
 export interface SystemConfigListParams extends PaginatedResponseParams {}
 
-export interface SystemConfigGetParams {
-  /**
-   * The ID of the system the configuration belongs to.
-   */
-  systemId: string;
-}
-
 export declare namespace SystemConfigs {
   export {
     type SystemConfig as SystemConfig,
     type SystemConfigsPaginatedResponse as SystemConfigsPaginatedResponse,
     type SystemConfigCreateParams as SystemConfigCreateParams,
     type SystemConfigListParams as SystemConfigListParams,
-    type SystemConfigGetParams as SystemConfigGetParams,
   };
 }

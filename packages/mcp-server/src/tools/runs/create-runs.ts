@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from 'scorecard-ai-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../';
 import Scorecard from 'scorecard-ai';
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
   resource: 'runs',
   operation: 'write',
   tags: [],
+  httpMethod: 'post',
+  httpPath: '/projects/{projectId}/runs',
+  operationId: 'createRun',
 };
 
 export const tool: Tool = {
@@ -26,21 +31,21 @@ export const tool: Tool = {
           type: 'string',
         },
       },
-      testsetId: {
-        type: 'string',
-        description: 'The ID of the Testset this Run is testing.',
-      },
       systemConfigId: {
         type: 'string',
         description: 'The ID of the system configuration this Run is using.',
+      },
+      testsetId: {
+        type: 'string',
+        description: 'The ID of the Testset this Run is testing.',
       },
     },
   },
 };
 
-export const handler = (client: Scorecard, args: Record<string, unknown> | undefined) => {
+export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
   const { projectId, ...body } = args as any;
-  return client.runs.create(projectId, body);
+  return asTextContentResult(await client.runs.create(projectId, body));
 };
 
 export default { metadata, tool, handler };

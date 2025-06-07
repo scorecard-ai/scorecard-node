@@ -9,7 +9,7 @@ const client = new Scorecard({
 
 describe('resource runs', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.runs.create('314', { metricIds: ['789', '101'], testsetId: '246' });
+    const responsePromise = client.runs.create('314', { metricIds: ['789', '101'] });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,8 +22,8 @@ describe('resource runs', () => {
   test('create: required and optional params', async () => {
     const response = await client.runs.create('314', {
       metricIds: ['789', '101'],
-      testsetId: '246',
       systemConfigId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
+      testsetId: '246',
     });
   });
 });
