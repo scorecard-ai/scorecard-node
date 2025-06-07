@@ -79,6 +79,18 @@ const environments = {
 };
 type Environment = keyof typeof environments;
 
+function baseApiUrlToBaseAppUrl(baseApiUrl: string): string {
+  if (baseApiUrl === environments.production) {
+    return 'https://app.scorecard.io';
+  } else if (baseApiUrl === environments.staging) {
+    return 'https://staging.app.getscorecard.ai';
+  } else if (baseApiUrl === environments.local) {
+    return 'http://localhost:3002';
+  } else {
+    return 'https://staging.app.getscorecard.ai';
+  }
+}
+
 export interface ClientOptions {
   /**
    * Defaults to process.env['SCORECARD_API_KEY'].
@@ -169,6 +181,7 @@ export class Scorecard {
   apiKey: string;
 
   baseURL: string;
+  baseAppURL: string;
   maxRetries: number;
   timeout: number;
   logger: Logger | undefined;
@@ -218,6 +231,7 @@ export class Scorecard {
     }
 
     this.baseURL = options.baseURL || environments[options.environment || 'production'];
+    this.baseAppURL = baseApiUrlToBaseAppUrl(this.baseURL);
     this.timeout = options.timeout ?? Scorecard.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
