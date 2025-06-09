@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.0.0-alpha.9 (2025-06-09)
+
+Full Changelog: [v1.0.0-alpha.8...v1.0.0-alpha.9](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.8...v1.0.0-alpha.9)
+
+### Features
+
+* **api:** Add optional systemConfigId parameter to runAndEvaluate() ([b6e85be](https://github.com/scorecard-ai/scorecard-node/commit/b6e85be53a905db8d11e6689b3cec282b8ce1849))
+* **api:** api update ([cc84c1f](https://github.com/scorecard-ai/scorecard-node/commit/cc84c1f3e481124110878c89926f44d6c486ebf6))
+* **api:** api update ([57e5b5d](https://github.com/scorecard-ai/scorecard-node/commit/57e5b5d63d695844737dc3a854a5e4eccf4e47fd))
+* **api:** api update ([153fc6a](https://github.com/scorecard-ai/scorecard-node/commit/153fc6a455a64df0014d6ff087e833f6cb77912a))
+* **api:** Simplify usage of runAndEvaluate ([67ca33e](https://github.com/scorecard-ai/scorecard-node/commit/67ca33e4936c678c1cdb591a820725a773efe2bf))
+* **mcp:** implement support for binary responses ([55d897d](https://github.com/scorecard-ai/scorecard-node/commit/55d897d789bbb0d216a91ab26613cba80901de78))
+* **mcp:** include http information in tools ([8291d15](https://github.com/scorecard-ai/scorecard-node/commit/8291d156b7c72188783a63a1495f6cd63eb3c9bc))
+
+
+### Bug Fixes
+
+* compat with more runtimes ([4346099](https://github.com/scorecard-ai/scorecard-node/commit/43460997d80f53d73b395105daf4a8a0f41e5055))
+
+
+### Chores
+
+* adjust eslint.config.mjs ignore pattern ([3ab4613](https://github.com/scorecard-ai/scorecard-node/commit/3ab46135ec7a7961f5c20e73b1fd7dd731690321))
+* avoid type error in certain environments ([e79eeaf](https://github.com/scorecard-ai/scorecard-node/commit/e79eeafa2fd7d5bc5614b662b89656e4594df0d8))
+* **deps:** bump eslint-plugin-prettier ([a84f7c6](https://github.com/scorecard-ai/scorecard-node/commit/a84f7c660580e5fd74b446a72eaf119ace665bfe))
+* **docs:** use top-level-await in example snippets ([b71609b](https://github.com/scorecard-ai/scorecard-node/commit/b71609b7827c7cc95a7eb5833846f2d1635c5de9))
+* **internal:** fix readablestream types in node 20 ([8742139](https://github.com/scorecard-ai/scorecard-node/commit/87421393e9decd4dbc9e76972b46d48b7035f021))
+* **internal:** update jest config ([2652de2](https://github.com/scorecard-ai/scorecard-node/commit/2652de2211bbdc924d7450a61fe0aa94dd63b779))
+* **mcp:** remove duplicate assignment ([cb28216](https://github.com/scorecard-ai/scorecard-node/commit/cb282169b15a31c095e07453d45ba1d9900640e4))
+
 ## 1.0.0-alpha.8 (2025-05-28)
 
 Full Changelog: [v1.0.0-alpha.7...v1.0.0-alpha.8](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.7...v1.0.0-alpha.8)
