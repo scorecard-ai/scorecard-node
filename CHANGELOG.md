@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.0 (2025-06-10)
+
+Full Changelog: [v1.0.0-alpha.9...v1.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.9...v1.0.0)
+
+### Features
+
+* **api:** Add trials option to runAndEvaluate ([eeb1bc8](https://github.com/scorecard-ai/scorecard-node/commit/eeb1bc8a88be832ac656fb9b9c4b67d3b460c1f5))
+* **api:** api update ([6fd70fc](https://github.com/scorecard-ai/scorecard-node/commit/6fd70fc020ae6aa9cf31b98461022cc7a44553e2))
+* **api:** api update ([9e4e9b2](https://github.com/scorecard-ai/scorecard-node/commit/9e4e9b2fec99eb891eec329c802706a658738f34))
+* **api:** api update ([4bdef92](https://github.com/scorecard-ai/scorecard-node/commit/4bdef9247921bb162891458bc9b7fd00fdff496e))
+
+
+### Chores
+
+* **api:** Improve variant names in SDK for creating metrics ([d5feb7f](https://github.com/scorecard-ai/scorecard-node/commit/d5feb7f3292689880086101b66359fe629ed6d77))
+
 ## 1.0.0-alpha.9 (2025-06-09)
 
 Full Changelog: [v1.0.0-alpha.8...v1.0.0-alpha.9](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.8...v1.0.0-alpha.9)
