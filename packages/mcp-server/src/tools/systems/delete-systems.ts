@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export const tool: Tool = {
   name: 'delete_systems',
-  description: 'Delete a system definition by ID. This will not delete associated system configurations.',
+  description: 'Delete a system definition by ID. This will not delete associated system versions.',
   inputSchema: {
     type: 'object',
     properties: {

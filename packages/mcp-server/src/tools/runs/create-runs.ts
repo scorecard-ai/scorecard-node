@@ -31,9 +31,9 @@ export const tool: Tool = {
           type: 'string',
         },
       },
-      systemConfigId: {
+      systemVersionId: {
         type: 'string',
-        description: 'The ID of the system configuration this Run is using.',
+        description: 'The ID of the system version this Run is using.',
       },
       testsetId: {
         type: 'string',

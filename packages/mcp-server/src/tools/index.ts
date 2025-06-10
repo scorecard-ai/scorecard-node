@@ -24,9 +24,6 @@ import update_systems from './systems/update-systems';
 import list_systems from './systems/list-systems';
 import delete_systems from './systems/delete-systems';
 import get_systems from './systems/get-systems';
-import create_system_configs from './system-configs/create-system-configs';
-import list_system_configs from './system-configs/list-system-configs';
-import get_system_configs from './system-configs/get-system-configs';
 
 export const endpoints: Endpoint[] = [];
 
@@ -54,9 +51,6 @@ addEndpoint(update_systems);
 addEndpoint(list_systems);
 addEndpoint(delete_systems);
 addEndpoint(get_systems);
-addEndpoint(create_system_configs);
-addEndpoint(list_system_configs);
-addEndpoint(get_system_configs);
 
 export type Filter = {
   type: 'resource' | 'operation' | 'tag' | 'tool';

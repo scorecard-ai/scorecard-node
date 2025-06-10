@@ -26,7 +26,7 @@ For clients with a configuration JSON, it might look something like this:
   "mcpServers": {
     "scorecard_ai_api": {
       "command": "npx",
-      "args": ["-y", "scorecard-ai-mcp", "--client=claude", "--tools=dynamic"],
+      "args": ["-y", "scorecard-ai-mcp", "--client=claude", "--tools=all"],
       "env": {
         "SCORECARD_API_KEY": "My API Key",
         "SCORECARD_ENVIRONMENT": "production"
@@ -232,25 +232,5 @@ The following tools are available in this MCP server.
   - For significant redesigns, creating a new system definition provides a cleaner separation
 
 - `list_systems` (`read`): Retrieve a paginated list of all systems. Systems are ordered by creation date.
-- `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system configurations.
+- `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system versions.
 - `get_systems` (`read`): Retrieve a specific system by ID.
-
-### Resource `system_configs`:
-
-- `create_system_configs` (`write`): Create a new configuration for a system.
-
-  Each configuration contains specific parameter values that match the system's configSchema - things like model parameters, thresholds, or processing options.
-  Once created, configurations cannot be modified, ensuring stable reference points for evaluations.
-
-  When creating a configuration:
-
-  - The 'config' object is validated against the parent system's configSchema
-  - Configurations with validation errors are still stored, with errors included in the response
-  - Validation errors indicate fields that don't match the schema but don't prevent creation
-  - Having validation errors may affect how some evaluation metrics are calculated
-
-- `list_system_configs` (`read`): Retrieve a paginated list of configurations for a specific system.
-
-  System configurations provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.
-
-- `get_system_configs` (`read`): Retrieve a specific system configuration by ID.
