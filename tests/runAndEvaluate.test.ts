@@ -1,6 +1,6 @@
 import Scorecard, { runAndEvaluate } from 'scorecard-ai';
 import type { Testcase } from 'scorecard-ai/resources/testcases';
-import type { SystemConfig } from 'scorecard-ai/resources/system-configs';
+import type { SystemVersion } from 'scorecard-ai/resources/systems';
 
 const client = new Scorecard({
   apiKey: 'My API Key',
@@ -29,14 +29,15 @@ const scorecardTestcases: Testcase[] = testcases.map(
   }),
 );
 
-async function systemWithoutConfig(inputs: { question: string }) {
+async function systemWithoutVersion(inputs: { question: string }) {
   return { inputs, response: 'bar' };
 }
 
-async function systemWithConfig(inputs: { question: string }, systemConfig: SystemConfig) {
+async function systemWithVersion(inputs: { question: string }, systemVersion: SystemVersion) {
+  expect(systemVersion.config).toBeDefined();
   return {
     inputs,
-    config: systemConfig.config,
+    config: systemVersion.config,
     response: 'bar',
   };
 }
@@ -61,61 +62,73 @@ describe.each([{ runInParallel: false }, { runInParallel: true }])(
       jest.restoreAllMocks();
     });
 
-    it(`should run with manual testcases and no system config`, async () => {
+    it('should run with manual testcases and no system version', async () => {
       await runAndEvaluate<{ question: string }, { response: string }>(
         client,
         {
           projectId: '123',
           metricIds: ['123'],
-          system: systemWithoutConfig,
+          system: systemWithoutVersion,
           testcases,
         },
         options,
       );
     });
 
-    it('should run with manual testcases and a system config', async () => {
+    it('should run with manual testcases and a system version', async () => {
       await runAndEvaluate<{ question: string }, { response: string }>(
         client,
         {
           projectId: '123',
           metricIds: ['123'],
-          systemConfigId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
-          system: systemWithConfig,
+          systemVersionId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+          system: systemWithVersion,
           testcases,
         },
         options,
       );
     });
 
-    it('should run with testset and no system config', async () => {
+    it('should run with testset and no system version', async () => {
       await runAndEvaluate<{ question: string }, { response: string }>(
         client,
         {
           projectId: '123',
           metricIds: ['123'],
-          system: systemWithoutConfig,
+          system: systemWithoutVersion,
           testsetId: '123',
         },
         options,
       );
-
-      // clear spy on testcases.list
-      jest.clearAllMocks();
     });
 
-    it('should run with testset and a system config', async () => {
+    it('should run with testset and a system version', async () => {
       await runAndEvaluate<{ question: string }, { response: string }>(
         client,
         {
           projectId: '123',
           metricIds: ['123'],
-          systemConfigId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
-          system: systemWithConfig,
+          systemVersionId: '12345678-0a8b-4f66-b6f3-2ddcfa097257',
+          system: systemWithVersion,
           testsetId: '123',
         },
         options,
       );
+    });
+
+    it.each([undefined, 1, 3])('should run with trials=%s', async (trials) => {
+      const createSpy = jest.spyOn(client.records, 'create');
+      const systemSpy = jest.fn(systemWithoutVersion);
+
+      await runAndEvaluate(
+        client,
+        { projectId: '123', metricIds: ['123'], system: systemSpy, testcases },
+        trials ? { ...options, trials } : options,
+      );
+
+      const expectedCalls = (trials ?? 1) * testcases.length;
+      expect(createSpy).toHaveBeenCalledTimes(expectedCalls);
+      expect(systemSpy).toHaveBeenCalledTimes(expectedCalls);
     });
   },
 );

@@ -1,5 +1,7 @@
 import { Scorecard } from '../client';
-import { SystemConfig, Testcase } from '../resources';
+import { Testcase } from '../resources';
+import { ScorecardError } from '../error';
+import { SystemVersion } from '../resources/systems';
 
 type RunAndEvaluateArgs<SystemInput extends Record<string, any>, SystemOutput extends Record<string, any>> =
   // Project and metrics are always required
@@ -14,17 +16,17 @@ type RunAndEvaluateArgs<SystemInput extends Record<string, any>, SystemOutput ex
      */
     metricIds: Array<string>;
   } & (
-    | // If system config is provided, the system function receives a system config
+    | // If systemVersionId is provided, the system function receives a system version
     {
         /**
-         * The ID of the System Configuration to use for the run.
+         * The ID of the SystemVersion to use for the run.
          */
-        systemConfigId: string;
+        systemVersionId: string;
 
         /**
          * The system function to run on the Testset.
          */
-        system: (testcaseInput: SystemInput, systemConfig: SystemConfig) => Promise<SystemOutput>;
+        system: (testcaseInput: SystemInput, systemVersion: SystemVersion) => Promise<SystemOutput>;
       }
     // Otherwise, the system function receives only the testcase input
     | {
@@ -68,17 +70,17 @@ async function* testcaseIterator<SystemInput extends Record<string, any>>(
   if ('testsetId' in args) {
     for await (const testcase of scorecard.testcases.list(args.testsetId)) {
       yield {
-        ...testcase,
         testcaseId: testcase.id,
         inputs: testcase.inputs as SystemInput,
+        expected: testcase.expected,
       };
     }
   } else {
     for (const testcase of args.testcases) {
       yield {
-        ...testcase,
         testcaseId: 'id' in testcase ? testcase.id : null,
         inputs: testcase.inputs as SystemInput,
+        expected: testcase.expected,
       };
     }
   }
@@ -92,9 +94,10 @@ async function* testcaseIterator<SystemInput extends Record<string, any>>(
  * @param args.testsetId The optional ID of the Testset to run the system on. Either this or `args.testcases` must be provided.
  * @param args.testcases The optional list of Testcases to run the system on. Either this or `args.testsetId` must be provided.
  * @param args.metricIds The IDs of the Metrics to use for evaluation.
- * @param args.systemConfigId The optional ID of the System Configuration to associate with the Run.
+ * @param args.systemVersionId The optional ID of the System Version to associate with the Run.
  * @param args.system The system to run on the Testset.
  * @param options.runInParallel Whether to call `args.system` in parallel. False (sequential) by default.
+ * @param options.trials The number of times to run the system on each Testcase. 1 by default.
  */
 export async function runAndEvaluate<
   SystemInput extends Record<string, any>,
@@ -103,44 +106,66 @@ export async function runAndEvaluate<
   scorecard: Scorecard,
   args: RunAndEvaluateArgs<SystemInput, SystemOutput>,
   options: {
-    runInParallel: boolean;
+    /**
+     * Whether to call `args.system` in parallel. False (sequential) by default.
+     */
+    runInParallel?: boolean;
+    /**
+     * The number of times to run the system on each Testcase. 1 by default.
+     */
+    trials?: number;
   } = {
     runInParallel: false,
+    trials: 1,
   },
-): Promise<Pick<Scorecard.Runs.Run, 'id'> & { url: string }> {
-  const hasSystemConfig = 'systemConfigId' in args;
+): Promise<{
+  /** The ID of the Run. */
+  id: string;
+  /** The URL of the Run. */
+  url: string;
+}> {
+  const runInParallel = options.runInParallel ?? false;
+  const trials = options.trials ?? 1;
+  if (!(Number.isInteger(trials) && trials >= 1)) {
+    throw new ScorecardError('trials must be a positive integer');
+  }
+
+  const hasSystemVersion = 'systemVersionId' in args;
   const hasTestset = 'testsetId' in args;
 
   const runPromise = scorecard.runs.create(args.projectId, {
     testsetId: hasTestset ? args.testsetId : null,
     metricIds: args.metricIds,
-    ...(hasSystemConfig ?
+    ...(hasSystemVersion ?
       {
-        systemConfigId: args.systemConfigId,
+        systemVersionId: args.systemVersionId,
       }
     : null),
   });
-  const systemConfig = hasSystemConfig ? await scorecard.systemConfigs.get(args.systemConfigId) : null;
+  const systemVersion = hasSystemVersion ? await scorecard.systems.versions.get(args.systemVersionId) : null;
   const run = await runPromise;
 
   const recordPromises: Array<Promise<unknown>> = [];
 
   for await (const { testcaseId, inputs, expected } of testcaseIterator(scorecard, args)) {
-    const modelResponsePromise = hasSystemConfig ? args.system(inputs, systemConfig!) : args.system(inputs);
+    for (let i = 0; i < trials; i++) {
+      const modelResponsePromise =
+        hasSystemVersion ? args.system(inputs, systemVersion!) : args.system(inputs);
 
-    function createRecord(outputs: SystemOutput): Promise<unknown> {
-      return scorecard.records.create(run.id, {
-        inputs,
-        expected,
-        outputs,
-        ...(testcaseId != null ? { testcaseId } : null),
-      });
-    }
+      function createRecord(outputs: SystemOutput): Promise<unknown> {
+        return scorecard.records.create(run.id, {
+          inputs,
+          expected,
+          outputs,
+          ...(testcaseId != null ? { testcaseId } : null),
+        });
+      }
 
-    if (options.runInParallel) {
-      recordPromises.push(modelResponsePromise.then(createRecord));
-    } else {
-      recordPromises.push(createRecord(await modelResponsePromise));
+      if (runInParallel) {
+        recordPromises.push(modelResponsePromise.then(createRecord));
+      } else {
+        recordPromises.push(createRecord(await modelResponsePromise));
+      }
     }
   }
   // Wait until all the Records are created
