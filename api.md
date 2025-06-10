@@ -56,6 +56,16 @@ Methods:
 
 - <code title="post /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">create</a>(projectID, { ...params }) -> Run</code>
 
+# Metrics
+
+Types:
+
+- <code><a href="./src/resources/metrics.ts">Metric</a></code>
+
+Methods:
+
+- <code title="post /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">create</a>(projectID, { ...params }) -> Metric</code>
+
 # Records
 
 Types:

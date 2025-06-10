@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export * from './shared';
+export { Metrics, type Metric, type MetricCreateParams } from './metrics';
 export {
   Projects,
   type Project,
