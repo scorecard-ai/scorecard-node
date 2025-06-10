@@ -31,8 +31,8 @@ describe('resource metrics', () => {
       outputType: 'int',
       promptTemplate: 'promptTemplate',
       description: 'description',
+      evalModelName: 'evalModelName',
       guidelines: 'guidelines',
-      modelName: 'modelName',
       passingThreshold: 1,
       temperature: 0,
     });

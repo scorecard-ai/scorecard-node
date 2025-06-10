@@ -38,6 +38,7 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Integer output type.',
             enum: ['int'],
           },
           promptTemplate: {
@@ -49,13 +50,13 @@ export const tool: Tool = {
             type: 'string',
             description: 'The description of the Metric.',
           },
+          evalModelName: {
+            type: 'string',
+            description: 'The AI model to use for evaluation.',
+          },
           guidelines: {
             type: 'string',
             description: 'Guidelines for AI evaluation on how to score the metric.',
-          },
-          modelName: {
-            type: 'string',
-            description: 'The AI model to use for evaluation.',
           },
           passingThreshold: {
             type: 'integer',
@@ -84,6 +85,7 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Integer output type.',
             enum: ['int'],
           },
           description: {
@@ -117,6 +119,7 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Integer output type.',
             enum: ['int'],
           },
           description: {
@@ -150,6 +153,7 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Boolean output type.',
             enum: ['boolean'],
           },
           promptTemplate: {
@@ -161,13 +165,13 @@ export const tool: Tool = {
             type: 'string',
             description: 'The description of the Metric.',
           },
+          evalModelName: {
+            type: 'string',
+            description: 'The AI model to use for evaluation.',
+          },
           guidelines: {
             type: 'string',
             description: 'Guidelines for AI evaluation on how to score the metric.',
-          },
-          modelName: {
-            type: 'string',
-            description: 'The AI model to use for evaluation.',
           },
           temperature: {
             type: 'number',
@@ -192,6 +196,7 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Boolean output type.',
             enum: ['boolean'],
           },
           description: {
@@ -221,6 +226,7 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Boolean output type.',
             enum: ['boolean'],
           },
           description: {
