@@ -19,9 +19,9 @@ export class Metrics extends APIResource {
    *     'Please evaluate if the following response is factually accurate: {{outputs.response}}',
    *   description:
    *     'Evaluates if the response is factually accurate',
+   *   evalModelName: 'gpt-4o',
    *   guidelines:
    *     'Check if the response contains factually correct information',
-   *   modelName: 'gpt-4o',
    *   temperature: 0.1,
    * });
    * ```
@@ -35,18 +35,18 @@ export class Metrics extends APIResource {
  * A Metric defines how to evaluate system outputs against expected results.
  */
 export type Metric =
-  | Metric.UnionMember0
-  | Metric.UnionMember1
-  | Metric.UnionMember2
-  | Metric.UnionMember3
-  | Metric.UnionMember4
-  | Metric.UnionMember5;
+  | Metric.AIIntMetric
+  | Metric.HumanIntMetric
+  | Metric.HeuristicIntMetric
+  | Metric.AIBooleanMetric
+  | Metric.HumanBooleanMetric
+  | Metric.HeuristicBooleanMetric;
 
 export namespace Metric {
   /**
    * A Metric with AI evaluation and integer output.
    */
-  export interface UnionMember0 {
+  export interface AIIntMetric {
     /**
      * The ID of the Metric.
      */
@@ -56,6 +56,11 @@ export namespace Metric {
      * The description of the Metric.
      */
     description: string | null;
+
+    /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName: string;
 
     /**
      * AI-based evaluation type.
@@ -68,15 +73,13 @@ export namespace Metric {
     guidelines: string | null;
 
     /**
-     * The AI model to use for evaluation.
-     */
-    modelName: string;
-
-    /**
      * The name of the Metric.
      */
     name: string;
 
+    /**
+     * Integer output type.
+     */
     outputType: 'int';
 
     /**
@@ -99,7 +102,7 @@ export namespace Metric {
   /**
    * A Metric with human evaluation and integer output.
    */
-  export interface UnionMember1 {
+  export interface HumanIntMetric {
     /**
      * The ID of the Metric.
      */
@@ -120,6 +123,9 @@ export namespace Metric {
      */
     name: string;
 
+    /**
+     * Integer output type.
+     */
     outputType: 'int';
 
     /**
@@ -136,7 +142,7 @@ export namespace Metric {
   /**
    * A Metric with heuristic evaluation and integer output.
    */
-  export interface UnionMember2 {
+  export interface HeuristicIntMetric {
     /**
      * The ID of the Metric.
      */
@@ -157,6 +163,9 @@ export namespace Metric {
      */
     name: string;
 
+    /**
+     * Integer output type.
+     */
     outputType: 'int';
 
     /**
@@ -173,7 +182,7 @@ export namespace Metric {
   /**
    * A Metric with AI evaluation and boolean output.
    */
-  export interface UnionMember3 {
+  export interface AIBooleanMetric {
     /**
      * The ID of the Metric.
      */
@@ -183,6 +192,11 @@ export namespace Metric {
      * The description of the Metric.
      */
     description: string | null;
+
+    /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName: string;
 
     /**
      * AI-based evaluation type.
@@ -195,15 +209,13 @@ export namespace Metric {
     guidelines: string | null;
 
     /**
-     * The AI model to use for evaluation.
-     */
-    modelName: string;
-
-    /**
      * The name of the Metric.
      */
     name: string;
 
+    /**
+     * Boolean output type.
+     */
     outputType: 'boolean';
 
     /**
@@ -221,7 +233,7 @@ export namespace Metric {
   /**
    * A Metric with human evaluation and boolean output.
    */
-  export interface UnionMember4 {
+  export interface HumanBooleanMetric {
     /**
      * The ID of the Metric.
      */
@@ -242,6 +254,9 @@ export namespace Metric {
      */
     name: string;
 
+    /**
+     * Boolean output type.
+     */
     outputType: 'boolean';
 
     /**
@@ -253,7 +268,7 @@ export namespace Metric {
   /**
    * A Metric with heuristic evaluation and boolean output.
    */
-  export interface UnionMember5 {
+  export interface HeuristicBooleanMetric {
     /**
      * The ID of the Metric.
      */
@@ -274,6 +289,9 @@ export namespace Metric {
      */
     name: string;
 
+    /**
+     * Boolean output type.
+     */
     outputType: 'boolean';
 
     /**
@@ -284,15 +302,15 @@ export namespace Metric {
 }
 
 export type MetricCreateParams =
-  | MetricCreateParams.Variant0
-  | MetricCreateParams.Variant1
-  | MetricCreateParams.Variant2
-  | MetricCreateParams.Variant3
-  | MetricCreateParams.Variant4
-  | MetricCreateParams.Variant5;
+  | MetricCreateParams.AIIntMetric
+  | MetricCreateParams.HumanIntMetric
+  | MetricCreateParams.HeuristicIntMetric
+  | MetricCreateParams.AIBooleanMetric
+  | MetricCreateParams.HumanBooleanMetric
+  | MetricCreateParams.HeuristicBooleanMetric;
 
 export declare namespace MetricCreateParams {
-  export interface Variant0 {
+  export interface AIIntMetric {
     /**
      * AI-based evaluation type.
      */
@@ -303,6 +321,9 @@ export declare namespace MetricCreateParams {
      */
     name: string;
 
+    /**
+     * Integer output type.
+     */
     outputType: 'int';
 
     /**
@@ -317,14 +338,14 @@ export declare namespace MetricCreateParams {
     description?: string | null;
 
     /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName?: string;
+
+    /**
      * Guidelines for AI evaluation on how to score the metric.
      */
     guidelines?: string | null;
-
-    /**
-     * The AI model to use for evaluation.
-     */
-    modelName?: string;
 
     /**
      * The threshold for determining pass/fail from integer scores (1-5).
@@ -337,7 +358,7 @@ export declare namespace MetricCreateParams {
     temperature?: number;
   }
 
-  export interface Variant1 {
+  export interface HumanIntMetric {
     /**
      * Human-based evaluation type.
      */
@@ -348,6 +369,9 @@ export declare namespace MetricCreateParams {
      */
     name: string;
 
+    /**
+     * Integer output type.
+     */
     outputType: 'int';
 
     /**
@@ -366,7 +390,7 @@ export declare namespace MetricCreateParams {
     passingThreshold?: number;
   }
 
-  export interface Variant2 {
+  export interface HeuristicIntMetric {
     /**
      * Heuristic-based evaluation type.
      */
@@ -377,6 +401,9 @@ export declare namespace MetricCreateParams {
      */
     name: string;
 
+    /**
+     * Integer output type.
+     */
     outputType: 'int';
 
     /**
@@ -395,7 +422,7 @@ export declare namespace MetricCreateParams {
     passingThreshold?: number;
   }
 
-  export interface Variant3 {
+  export interface AIBooleanMetric {
     /**
      * AI-based evaluation type.
      */
@@ -406,6 +433,9 @@ export declare namespace MetricCreateParams {
      */
     name: string;
 
+    /**
+     * Boolean output type.
+     */
     outputType: 'boolean';
 
     /**
@@ -420,14 +450,14 @@ export declare namespace MetricCreateParams {
     description?: string | null;
 
     /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName?: string;
+
+    /**
      * Guidelines for AI evaluation on how to score the metric.
      */
     guidelines?: string | null;
-
-    /**
-     * The AI model to use for evaluation.
-     */
-    modelName?: string;
 
     /**
      * The temperature for AI evaluation (0-2).
@@ -435,7 +465,7 @@ export declare namespace MetricCreateParams {
     temperature?: number;
   }
 
-  export interface Variant4 {
+  export interface HumanBooleanMetric {
     /**
      * Human-based evaluation type.
      */
@@ -446,6 +476,9 @@ export declare namespace MetricCreateParams {
      */
     name: string;
 
+    /**
+     * Boolean output type.
+     */
     outputType: 'boolean';
 
     /**
@@ -459,7 +492,7 @@ export declare namespace MetricCreateParams {
     guidelines?: string;
   }
 
-  export interface Variant5 {
+  export interface HeuristicBooleanMetric {
     /**
      * Heuristic-based evaluation type.
      */
@@ -470,6 +503,9 @@ export declare namespace MetricCreateParams {
      */
     name: string;
 
+    /**
+     * Boolean output type.
+     */
     outputType: 'boolean';
 
     /**
