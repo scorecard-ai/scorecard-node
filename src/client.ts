@@ -22,6 +22,7 @@ import { APIPromise } from './core/api-promise';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import { Metric, MetricCreateParams, Metrics } from './resources/metrics';
 import {
   Project,
   ProjectCreateParams,
@@ -794,6 +795,7 @@ export class Scorecard {
   testsets: API.Testsets = new API.Testsets(this);
   testcases: API.Testcases = new API.Testcases(this);
   runs: API.Runs = new API.Runs(this);
+  metrics: API.Metrics = new API.Metrics(this);
   records: API.Records = new API.Records(this);
   scores: API.Scores = new API.Scores(this);
   systems: API.Systems = new API.Systems(this);
@@ -802,6 +804,7 @@ Scorecard.Projects = Projects;
 Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
 Scorecard.Runs = Runs;
+Scorecard.Metrics = Metrics;
 Scorecard.Records = Records;
 Scorecard.Scores = Scores;
 Scorecard.Systems = Systems;
@@ -845,6 +848,8 @@ export declare namespace Scorecard {
   };
 
   export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
+
+  export { Metrics as Metrics, type Metric as Metric, type MetricCreateParams as MetricCreateParams };
 
   export {
     Records as Records,

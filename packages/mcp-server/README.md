@@ -201,6 +201,10 @@ The following tools are available in this MCP server.
 
 - `create_runs` (`write`): Create a new Run.
 
+### Resource `metrics`:
+
+- `create_metrics` (`write`): Create a new Metric for evaluating system outputs.
+
 ### Resource `records`:
 
 - `create_records` (`write`): Create a new Record in a Run.
