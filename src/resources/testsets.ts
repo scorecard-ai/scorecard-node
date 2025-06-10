@@ -102,7 +102,7 @@ export class Testsets extends APIResource {
   }
 
   /**
-   * Get Testset by ID
+   * Get Testset
    *
    * @example
    * ```ts

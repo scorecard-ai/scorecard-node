@@ -3,25 +3,25 @@
 import { asTextContentResult } from 'scorecard-ai-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import type { Metadata } from '../';
+import type { Metadata } from '../../';
 import Scorecard from 'scorecard-ai';
 
 export const metadata: Metadata = {
-  resource: 'testsets',
+  resource: 'systems.versions',
   operation: 'read',
   tags: [],
   httpMethod: 'get',
-  httpPath: '/testsets/{testsetId}',
-  operationId: 'getTestset',
+  httpPath: '/systems/configs/{systemVersionId}',
+  operationId: 'getSystemVersion',
 };
 
 export const tool: Tool = {
-  name: 'get_testsets',
-  description: 'Get Testset',
+  name: 'get_systems_versions',
+  description: 'Retrieve a specific system version by ID.',
   inputSchema: {
     type: 'object',
     properties: {
-      testsetId: {
+      systemVersionId: {
         type: 'string',
       },
     },
@@ -29,8 +29,8 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { testsetId, ...body } = args as any;
-  return asTextContentResult(await client.testsets.get(testsetId));
+  const { systemVersionId, ...body } = args as any;
+  return asTextContentResult(await client.systems.versions.get(systemVersionId));
 };
 
 export default { metadata, tool, handler };

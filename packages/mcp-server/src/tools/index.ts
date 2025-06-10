@@ -24,6 +24,9 @@ import update_systems from './systems/update-systems';
 import list_systems from './systems/list-systems';
 import delete_systems from './systems/delete-systems';
 import get_systems from './systems/get-systems';
+import create_systems_versions from './systems/versions/create-systems-versions';
+import list_systems_versions from './systems/versions/list-systems-versions';
+import get_systems_versions from './systems/versions/get-systems-versions';
 
 export const endpoints: Endpoint[] = [];
 
@@ -51,6 +54,9 @@ addEndpoint(update_systems);
 addEndpoint(list_systems);
 addEndpoint(delete_systems);
 addEndpoint(get_systems);
+addEndpoint(create_systems_versions);
+addEndpoint(list_systems_versions);
+addEndpoint(get_systems_versions);
 
 export type Filter = {
   type: 'resource' | 'operation' | 'tag' | 'tool';

@@ -33,15 +33,6 @@ import { Record as RecordsAPIRecord, RecordCreateParams, Records } from './resou
 import { Run, RunCreateParams, Runs } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
-  System,
-  SystemCreateParams,
-  SystemDeleteResponse,
-  SystemListParams,
-  SystemUpdateParams,
-  Systems,
-  SystemsPaginatedResponse,
-} from './resources/systems';
-import {
   Testcase,
   TestcaseCreateParams,
   TestcaseCreateResponse,
@@ -64,6 +55,15 @@ import {
 import { readEnv } from './internal/utils/env';
 import { formatRequestDetails, loggerFor } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
+import {
+  System,
+  SystemCreateParams,
+  SystemDeleteResponse,
+  SystemListParams,
+  SystemUpdateParams,
+  Systems,
+  SystemsPaginatedResponse,
+} from './resources/systems/systems';
 
 const environments = {
   production: 'https://api2.scorecard.io/api/v2',

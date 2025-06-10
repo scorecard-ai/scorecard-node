@@ -19,7 +19,7 @@ export {
   type SystemUpdateParams,
   type SystemListParams,
   type SystemsPaginatedResponse,
-} from './systems';
+} from './systems/systems';
 export {
   Testcases,
   type Testcase,
