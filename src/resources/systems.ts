@@ -125,7 +125,7 @@ export class Systems extends APIResource {
 
   /**
    * Delete a system definition by ID. This will not delete associated system
-   * configurations.
+   * versions.
    *
    * @example
    * ```ts
@@ -169,7 +169,7 @@ export type SystemsPaginatedResponse = PaginatedResponse<System>;
  * interface rather than implementation details. It's particularly useful for
  * systems with variable outputs or complex internal state.
  *
- * Systems are templates - to run evaluations, pair them with a SystemConfig that
+ * Systems are templates - to run evaluations, pair them with a SystemVersion that
  * provides specific parameter values.
  */
 export interface System {

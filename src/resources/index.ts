@@ -12,13 +12,6 @@ export { Records, type Record, type RecordCreateParams } from './records';
 export { Runs, type Run, type RunCreateParams } from './runs';
 export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
-  SystemConfigs,
-  type SystemConfig,
-  type SystemConfigCreateParams,
-  type SystemConfigListParams,
-  type SystemConfigsPaginatedResponse,
-} from './system-configs';
-export {
   Systems,
   type System,
   type SystemDeleteResponse,

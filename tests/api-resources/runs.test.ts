@@ -22,7 +22,7 @@ describe('resource runs', () => {
   test('create: required and optional params', async () => {
     const response = await client.runs.create('314', {
       metricIds: ['789', '101'],
-      systemConfigId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
+      systemVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
       testsetId: '246',
     });
   });
