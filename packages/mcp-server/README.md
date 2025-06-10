@@ -26,7 +26,7 @@ For clients with a configuration JSON, it might look something like this:
   "mcpServers": {
     "scorecard_ai_api": {
       "command": "npx",
-      "args": ["-y", "scorecard-ai-mcp", "--client=claude", "--tools=all"],
+      "args": ["-y", "scorecard-ai-mcp", "--client=claude", "--tools=dynamic"],
       "env": {
         "SCORECARD_API_KEY": "My API Key",
         "SCORECARD_ENVIRONMENT": "production"
@@ -187,7 +187,7 @@ The following tools are available in this MCP server.
 
 - `list_testsets` (`read`): Retrieve a paginated list of Testsets belonging to a Project.
 - `delete_testsets` (`write`): Delete Testset
-- `get_testsets` (`read`): Get Testset by ID
+- `get_testsets` (`read`): Get Testset
 
 ### Resource `testcases`:
 
@@ -234,3 +234,23 @@ The following tools are available in this MCP server.
 - `list_systems` (`read`): Retrieve a paginated list of all systems. Systems are ordered by creation date.
 - `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system versions.
 - `get_systems` (`read`): Retrieve a specific system by ID.
+
+### Resource `systems.versions`:
+
+- `create_systems_versions` (`write`): Create a new version for a system.
+
+  Each version contains specific parameter values that match the system's `configSchema` - things like model parameters, thresholds, or processing options.
+  Once created, versions cannot be modified, ensuring stable reference points for evaluations.
+
+  When creating a system version:
+
+  - The `config` object is validated against the parent system's `configSchema`.
+  - System versions with validation errors are still stored, with errors included in the response.
+  - Validation errors indicate fields that don't match the schema but don't prevent creation.
+  - Having validation errors may affect how some evaluation metrics are calculated.
+
+- `list_systems_versions` (`read`): Retrieve a paginated list of system versions for a specific system.
+
+  System versions provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.
+
+- `get_systems_versions` (`read`): Retrieve a specific system version by ID.
