@@ -20,30 +20,28 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Scorecard from 'scorecard-ai';
+import Scorecard, { runAndEvaluate } from 'scorecard-ai';
+
+async function runSystem(testcaseInput) {
+  // Replace with a call to your LLM system
+  return { response: testcaseInput.original.toUpperCase() };
+}
 
 const client = new Scorecard({
-  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
+  apiKey: process.env['SCORECARD_API_KEY'],
 });
 
-const testset = await client.testsets.create('314', {
-  name: 'Long Context Q&A',
-  description: 'Testset for long context Q&A chatbot.',
-  fieldMapping: { inputs: ['question'], expected: ['idealAnswer'], metadata: [] },
-  jsonSchema: {
-    type: 'object',
-    properties: {
-      question: {
-        type: 'string',
-      },
-      idealAnswer: {
-        type: 'string',
-      },
-    },
-  },
-});
+const run = await runAndEvaluate(
+  client,
+  {
+    projectId: '314', // Scorecard Project
+    testsetId: '246', // Scorecard Testset
+    metricIds: ['789', '101'], // Scorecard Metrics
+    system: runSystem, // Your LLM system
+  }
+);
 
-console.log(testset.id);
+console.log(`Go to ${run.url} to view your Run's scorecard.`);
 ```
 
 ### Request & Response types
@@ -58,7 +56,7 @@ const client = new Scorecard({
   apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
 });
 
-const testset: Scorecard.Testset = await client.testsets.get('246');
+const testset: Scorecard.Testset = await client.testsets.get('314');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -71,7 +69,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const testset = await client.testsets.get('246').catch(async (err) => {
+const testset = await client.testsets.get('314').catch(async (err) => {
   if (err instanceof Scorecard.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -111,7 +109,7 @@ const client = new Scorecard({
 });
 
 // Or, configure per-request:
-await client.testsets.get('246', {
+await client.testsets.get('314', {
   maxRetries: 5,
 });
 ```
@@ -128,7 +126,7 @@ const client = new Scorecard({
 });
 
 // Override per-request:
-await client.testsets.get('246', {
+await client.testsets.get('314', {
   timeout: 5 * 1000,
 });
 ```
@@ -136,6 +134,37 @@ await client.testsets.get('246', {
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
+
+## Auto-pagination
+
+List methods in the Scorecard API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllTestcases(params) {
+  const allTestcases = [];
+  // Automatically fetches more pages as needed.
+  for await (const testcase of client.testcases.list('246', { limit: 30 })) {
+    allTestcases.push(testcase);
+  }
+  return allTestcases;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.testcases.list('246', { limit: 30 });
+for (const testcase of page.data) {
+  console.log(testcase);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
 
 ## Advanced Usage
 
@@ -151,11 +180,11 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Scorecard();
 
-const response = await client.testsets.get('246').asResponse();
+const response = await client.testsets.get('314').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: testset, response: raw } = await client.testsets.get('246').withResponse();
+const { data: testset, response: raw } = await client.testsets.get('314').withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(testset.id);
 ```
