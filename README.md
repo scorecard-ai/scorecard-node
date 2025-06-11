@@ -27,14 +27,9 @@ const client = new Scorecard({
   environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
-const testset = await client.testsets.create('314', {
-  description: 'Testset for long context Q&A chatbot.',
-  fieldMapping: { expected: ['idealAnswer'], inputs: ['question'], metadata: ['string'] },
-  jsonSchema: { type: 'bar', properties: 'bar' },
-  name: 'Long Context Q&A',
-});
+const run = await client.runs.create('314', { metricIds: ['789', '101'], testsetId: '246' });
 
-console.log(testset.id);
+console.log(run.id);
 ```
 
 ### Request & Response types
@@ -50,7 +45,7 @@ const client = new Scorecard({
   environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
-const testset: Scorecard.Testset = await client.testsets.get('246');
+const testset: Scorecard.Testset = await client.testsets.get('314');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -63,7 +58,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const testset = await client.testsets.get('246').catch(async (err) => {
+const testset = await client.testsets.get('314').catch(async (err) => {
   if (err instanceof Scorecard.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -103,7 +98,7 @@ const client = new Scorecard({
 });
 
 // Or, configure per-request:
-await client.testsets.get('246', {
+await client.testsets.get('314', {
   maxRetries: 5,
 });
 ```
@@ -120,7 +115,7 @@ const client = new Scorecard({
 });
 
 // Override per-request:
-await client.testsets.get('246', {
+await client.testsets.get('314', {
   timeout: 5 * 1000,
 });
 ```
@@ -128,6 +123,37 @@ await client.testsets.get('246', {
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
+
+## Auto-pagination
+
+List methods in the Scorecard API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllTestcases(params) {
+  const allTestcases = [];
+  // Automatically fetches more pages as needed.
+  for await (const testcase of client.testcases.list('246', { limit: 30 })) {
+    allTestcases.push(testcase);
+  }
+  return allTestcases;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.testcases.list('246', { limit: 30 });
+for (const testcase of page.data) {
+  console.log(testcase);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
 
 ## Advanced Usage
 
@@ -143,11 +169,11 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Scorecard();
 
-const response = await client.testsets.get('246').asResponse();
+const response = await client.testsets.get('314').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: testset, response: raw } = await client.testsets.get('246').withResponse();
+const { data: testset, response: raw } = await client.testsets.get('314').withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(testset.id);
 ```
