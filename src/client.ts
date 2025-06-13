@@ -22,7 +22,7 @@ import { APIPromise } from './core/api-promise';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
-import { Metric, MetricCreateParams, Metrics } from './resources/metrics';
+import { Metric, MetricCreateParams, MetricUpdateParams, Metrics } from './resources/metrics';
 import {
   Project,
   ProjectCreateParams,
@@ -849,7 +849,12 @@ export declare namespace Scorecard {
 
   export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
 
-  export { Metrics as Metrics, type Metric as Metric, type MetricCreateParams as MetricCreateParams };
+  export {
+    Metrics as Metrics,
+    type Metric as Metric,
+    type MetricCreateParams as MetricCreateParams,
+    type MetricUpdateParams as MetricUpdateParams,
+  };
 
   export {
     Records as Records,
