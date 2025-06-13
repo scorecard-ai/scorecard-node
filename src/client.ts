@@ -258,7 +258,7 @@ export class Scorecard {
   }
 
   protected authHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+    return buildHeaders([{ Authorization: this.apiKey }]);
   }
 
   /**
