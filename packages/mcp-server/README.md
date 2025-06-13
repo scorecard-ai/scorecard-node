@@ -203,7 +203,8 @@ The following tools are available in this MCP server.
 
 ### Resource `metrics`:
 
-- `create_metrics` (`write`): Create a new Metric for evaluating system outputs.
+- `create_metrics` (`write`): Create a new Metric for evaluating system outputs. The structure of a metric depends on the evalType and outputType of the metric.
+- `update_metrics` (`write`): Update an existing Metric. You must specify the evalType and outputType of the metric. The structure of a metric depends on the evalType and outputType of the metric.
 
 ### Resource `records`:
 

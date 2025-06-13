@@ -37,4 +37,29 @@ describe('resource metrics', () => {
       temperature: 0,
     });
   });
+
+  test('update: only required params', async () => {
+    const responsePromise = client.metrics.update('321', { evalType: 'ai', outputType: 'int' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('update: required and optional params', async () => {
+    const response = await client.metrics.update('321', {
+      evalType: 'ai',
+      outputType: 'int',
+      description: 'description',
+      evalModelName: 'evalModelName',
+      guidelines: 'guidelines',
+      name: 'name',
+      passingThreshold: 1,
+      promptTemplate: 'promptTemplate',
+      temperature: 0,
+    });
+  });
 });
