@@ -210,6 +210,8 @@ export class Scorecard {
         "The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the Scorecard client with an apiKey option, like new Scorecard({ apiKey: 'My API Key' }).",
       );
     }
+    // Support both API keys (which start with 'ak_') and legacy JWT bearer tokens
+    apiKey = !apiKey || apiKey.startsWith('ak_') ? apiKey : `Bearer ${apiKey}`;
 
     const options: ClientOptions = {
       apiKey,
