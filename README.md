@@ -45,7 +45,7 @@ const client = new Scorecard({
   environment: 'staging', // or 'production' | 'local'; defaults to 'production'
 });
 
-const testset: Scorecard.Testset = await client.testsets.get('314');
+const testset: Scorecard.Testset = await client.testsets.get('246');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -58,7 +58,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const testset = await client.testsets.get('314').catch(async (err) => {
+const testset = await client.testsets.get('246').catch(async (err) => {
   if (err instanceof Scorecard.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -98,7 +98,7 @@ const client = new Scorecard({
 });
 
 // Or, configure per-request:
-await client.testsets.get('314', {
+await client.testsets.get('246', {
   maxRetries: 5,
 });
 ```
@@ -115,7 +115,7 @@ const client = new Scorecard({
 });
 
 // Override per-request:
-await client.testsets.get('314', {
+await client.testsets.get('246', {
   timeout: 5 * 1000,
 });
 ```
@@ -169,11 +169,11 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Scorecard();
 
-const response = await client.testsets.get('314').asResponse();
+const response = await client.testsets.get('246').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: testset, response: raw } = await client.testsets.get('314').withResponse();
+const { data: testset, response: raw } = await client.testsets.get('246').withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(testset.id);
 ```

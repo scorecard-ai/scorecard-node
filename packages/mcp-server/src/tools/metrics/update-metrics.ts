@@ -10,22 +10,22 @@ export const metadata: Metadata = {
   resource: 'metrics',
   operation: 'write',
   tags: [],
-  httpMethod: 'post',
-  httpPath: '/projects/{projectId}/metrics',
-  operationId: 'createMetric',
+  httpMethod: 'patch',
+  httpPath: '/metrics/{metricId}',
+  operationId: 'updateMetric',
 };
 
 export const tool: Tool = {
-  name: 'create_metrics',
+  name: 'update_metrics',
   description:
-    'Create a new Metric for evaluating system outputs. The structure of a metric depends on the evalType and outputType of the metric.',
+    'Update an existing Metric. You must specify the evalType and outputType of the metric. The structure of a metric depends on the evalType and outputType of the metric.',
   inputSchema: {
     type: 'object',
     anyOf: [
       {
         type: 'object',
         properties: {
-          projectId: {
+          metricId: {
             type: 'string',
           },
           evalType: {
@@ -33,19 +33,10 @@ export const tool: Tool = {
             description: 'AI-based evaluation type.',
             enum: ['ai'],
           },
-          name: {
-            type: 'string',
-            description: 'The name of the Metric.',
-          },
           outputType: {
             type: 'string',
             description: 'Integer output type.',
             enum: ['int'],
-          },
-          promptTemplate: {
-            type: 'string',
-            description:
-              'The complete prompt template for AI evaluation. Should include placeholders for dynamic content.',
           },
           description: {
             type: 'string',
@@ -59,9 +50,18 @@ export const tool: Tool = {
             type: 'string',
             description: 'Guidelines for AI evaluation on how to score the metric.',
           },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
           passingThreshold: {
             type: 'integer',
             description: 'The threshold for determining pass/fail from integer scores (1-5).',
+          },
+          promptTemplate: {
+            type: 'string',
+            description:
+              'The complete prompt template for AI evaluation. Should include placeholders for dynamic content.',
           },
           temperature: {
             type: 'number',
@@ -72,17 +72,13 @@ export const tool: Tool = {
       {
         type: 'object',
         properties: {
-          projectId: {
+          metricId: {
             type: 'string',
           },
           evalType: {
             type: 'string',
             description: 'Human-based evaluation type.',
             enum: ['human'],
-          },
-          name: {
-            type: 'string',
-            description: 'The name of the Metric.',
           },
           outputType: {
             type: 'string',
@@ -97,6 +93,10 @@ export const tool: Tool = {
             type: 'string',
             description: 'Guidelines for human evaluators.',
           },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
           passingThreshold: {
             type: 'integer',
             description: 'The threshold for determining pass/fail from integer scores (1-5).',
@@ -106,17 +106,13 @@ export const tool: Tool = {
       {
         type: 'object',
         properties: {
-          projectId: {
+          metricId: {
             type: 'string',
           },
           evalType: {
             type: 'string',
             description: 'Heuristic-based evaluation type.',
             enum: ['heuristic'],
-          },
-          name: {
-            type: 'string',
-            description: 'The name of the Metric.',
           },
           outputType: {
             type: 'string',
@@ -131,6 +127,10 @@ export const tool: Tool = {
             type: 'string',
             description: 'Optional guidelines for heuristic evaluation logic.',
           },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
           passingThreshold: {
             type: 'integer',
             description: 'The threshold for determining pass/fail from integer scores (1-5).',
@@ -140,7 +140,7 @@ export const tool: Tool = {
       {
         type: 'object',
         properties: {
-          projectId: {
+          metricId: {
             type: 'string',
           },
           evalType: {
@@ -148,19 +148,10 @@ export const tool: Tool = {
             description: 'AI-based evaluation type.',
             enum: ['ai'],
           },
-          name: {
-            type: 'string',
-            description: 'The name of the Metric.',
-          },
           outputType: {
             type: 'string',
             description: 'Boolean output type.',
             enum: ['boolean'],
-          },
-          promptTemplate: {
-            type: 'string',
-            description:
-              'The complete prompt template for AI evaluation. Should include placeholders for dynamic content.',
           },
           description: {
             type: 'string',
@@ -174,6 +165,15 @@ export const tool: Tool = {
             type: 'string',
             description: 'Guidelines for AI evaluation on how to score the metric.',
           },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
+          promptTemplate: {
+            type: 'string',
+            description:
+              'The complete prompt template for AI evaluation. Should include placeholders for dynamic content.',
+          },
           temperature: {
             type: 'number',
             description: 'The temperature for AI evaluation (0-2).',
@@ -183,17 +183,13 @@ export const tool: Tool = {
       {
         type: 'object',
         properties: {
-          projectId: {
+          metricId: {
             type: 'string',
           },
           evalType: {
             type: 'string',
             description: 'Human-based evaluation type.',
             enum: ['human'],
-          },
-          name: {
-            type: 'string',
-            description: 'The name of the Metric.',
           },
           outputType: {
             type: 'string',
@@ -208,22 +204,22 @@ export const tool: Tool = {
             type: 'string',
             description: 'Guidelines for human evaluators.',
           },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
         },
       },
       {
         type: 'object',
         properties: {
-          projectId: {
+          metricId: {
             type: 'string',
           },
           evalType: {
             type: 'string',
             description: 'Heuristic-based evaluation type.',
             enum: ['heuristic'],
-          },
-          name: {
-            type: 'string',
-            description: 'The name of the Metric.',
           },
           outputType: {
             type: 'string',
@@ -237,6 +233,10 @@ export const tool: Tool = {
           guidelines: {
             type: 'string',
             description: 'Optional guidelines for heuristic evaluation logic.',
+          },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
           },
         },
       },
@@ -245,8 +245,8 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { projectId, ...body } = args as any;
-  return asTextContentResult(await client.metrics.create(projectId, body));
+  const { metricId, ...body } = args as any;
+  return asTextContentResult(await client.metrics.update(metricId, body));
 };
 
 export default { metadata, tool, handler };

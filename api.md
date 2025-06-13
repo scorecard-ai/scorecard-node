@@ -65,6 +65,7 @@ Types:
 Methods:
 
 - <code title="post /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">create</a>(projectID, { ...params }) -> Metric</code>
+- <code title="patch /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">update</a>(metricID, { ...params }) -> Metric</code>
 
 # Records
 
