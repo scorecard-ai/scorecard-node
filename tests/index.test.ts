@@ -416,16 +416,16 @@ describe('instantiate client', () => {
 
   test('with environment variable arguments', () => {
     // set options via env var
-    process.env['SCORECARD_API_KEY'] = 'My API Key';
+    process.env['SCORECARD_API_KEY'] = 'ak_My API Key';
     const client = new Scorecard();
-    expect(client.apiKey).toBe('My API Key');
+    expect(client.apiKey).toBe('ak_My API Key');
   });
 
   test('with overridden environment variable arguments', () => {
     // set options via env var
-    process.env['SCORECARD_API_KEY'] = 'another My API Key';
-    const client = new Scorecard({ apiKey: 'My API Key' });
-    expect(client.apiKey).toBe('My API Key');
+    process.env['SCORECARD_API_KEY'] = 'ak_another My API Key';
+    const client = new Scorecard({ apiKey: 'ak_My API Key' });
+    expect(client.apiKey).toBe('ak_My API Key');
   });
 });
 
