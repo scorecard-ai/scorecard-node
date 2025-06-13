@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.1.0 (2025-06-13)
+
+Full Changelog: [v1.0.0...v1.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0...v1.1.0)
+
+### Features
+
+* **api:** api update ([8ce317e](https://github.com/scorecard-ai/scorecard-node/commit/8ce317e5b754b04853c6371919f02aba4a85d125))
+* **api:** api update ([c84cb8f](https://github.com/scorecard-ai/scorecard-node/commit/c84cb8f3bbc399adfa26b0171beda31f2dfc4941))
+* **sdk:** Support Clerk API Keys in SDK ([10ff885](https://github.com/scorecard-ai/scorecard-node/commit/10ff885b8130ad7ce4387e1ff6a61185a3fc2359))
+
+
+### Bug Fixes
+
+* **tests:** Fix API key tests ([7d5809f](https://github.com/scorecard-ai/scorecard-node/commit/7d5809f85f51871b90d80533b1d4c923d98253c5))
+
+
+### Chores
+
+* **auth:** Add backwards-compatibility for bearer token auth ([1aea8fd](https://github.com/scorecard-ai/scorecard-node/commit/1aea8fd2787abb4d682dabbb78d46bbf72859ba2))
+* **mcp:** provides high-level initMcpServer function and exports known clients ([f3857b2](https://github.com/scorecard-ai/scorecard-node/commit/f3857b22ac26f422e0eda1c36828c46e95fc6df5))
+
 ## 1.0.0 (2025-06-10)
 
 Full Changelog: [v1.0.0-alpha.9...v1.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0-alpha.9...v1.0.0)
