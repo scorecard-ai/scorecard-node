@@ -66,11 +66,7 @@ export function init(params: {
   const endpointMap = Object.fromEntries(providedEndpoints.map((endpoint) => [endpoint.tool.name, endpoint]));
 
   const client =
-    params.client ||
-    new Scorecard({
-      environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any,
-      defaultHeaders: { 'X-Stainless-MCP': 'true' },
-    });
+    params.client || new Scorecard({ environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any });
 
   server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
