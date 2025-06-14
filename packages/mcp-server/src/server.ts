@@ -26,7 +26,7 @@ export { endpoints } from './tools';
 export const server = new McpServer(
   {
     name: 'scorecard_ai_api',
-    version: '1.1.0',
+    version: '1.2.0',
   },
   {
     capabilities: {
@@ -66,7 +66,11 @@ export function init(params: {
   const endpointMap = Object.fromEntries(providedEndpoints.map((endpoint) => [endpoint.tool.name, endpoint]));
 
   const client =
-    params.client || new Scorecard({ environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any });
+    params.client ||
+    new Scorecard({
+      environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any,
+      defaultHeaders: { 'X-Stainless-MCP': 'true' },
+    });
 
   server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
