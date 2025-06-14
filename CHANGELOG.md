@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.0 (2025-06-14)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* **mcp:** set X-Stainless-MCP header ([12e61c2](https://github.com/scorecard-ai/scorecard-node/commit/12e61c2e9875a592cc60472deba4d94371bf2c85))
+
+
+### Bug Fixes
+
+* publish script — handle NPM errors correctly ([862309d](https://github.com/scorecard-ai/scorecard-node/commit/862309d31da4807bfc106666e8a10619b775fdf9))
+
+
+### Chores
+
+* **internal:** add pure annotations, make base APIResource abstract ([507c372](https://github.com/scorecard-ai/scorecard-node/commit/507c372bce850ad5af615f05cbf5ef637ffafca2))
+
 ## 1.1.0 (2025-06-13)
 
 Full Changelog: [v1.0.0...v1.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0...v1.1.0)
