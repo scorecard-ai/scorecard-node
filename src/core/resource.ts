@@ -2,7 +2,7 @@
 
 import type { Scorecard } from '../client';
 
-export abstract class APIResource {
+export class APIResource {
   protected _client: Scorecard;
 
   constructor(client: Scorecard) {
