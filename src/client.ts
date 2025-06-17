@@ -5,7 +5,6 @@ import type { HTTPMethod, PromiseOrValue, MergedRequestInit, FinalizedRequestIni
 import { uuid4 } from './internal/utils/uuid';
 import { validatePositiveInteger, isAbsoluteURL, safeJSON } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
-import { type Logger, type LogLevel, parseLogLevel } from './internal/utils/log';
 export type { Logger, LogLevel } from './internal/utils/log';
 import { castToError, isAbortError } from './internal/errors';
 import type { APIResponseProps } from './internal/parse';
@@ -19,9 +18,6 @@ import { AbstractPage, type PaginatedResponseParams, PaginatedResponseResponse }
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { type Fetch } from './internal/builtin-types';
-import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
-import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { Metric, MetricCreateParams, MetricUpdateParams, Metrics } from './resources/metrics';
 import {
   Project,
@@ -30,7 +26,7 @@ import {
   Projects,
   ProjectsPaginatedResponse,
 } from './resources/projects';
-import { Record as RecordsAPIRecord, RecordCreateParams, Records } from './resources/records';
+import { Record, RecordCreateParams, Records } from './resources/records';
 import { Run, RunCreateParams, Runs } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
@@ -53,9 +49,6 @@ import {
   Testsets,
   TestsetsPaginatedResponse,
 } from './resources/testsets';
-import { readEnv } from './internal/utils/env';
-import { formatRequestDetails, loggerFor } from './internal/utils/log';
-import { isEmptyObj } from './internal/utils/values';
 import {
   System,
   SystemCreateParams,
@@ -65,6 +58,18 @@ import {
   Systems,
   SystemsPaginatedResponse,
 } from './resources/systems/systems';
+import { type Fetch, type Record as BuiltinRecord } from './internal/builtin-types';
+import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
+import { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import { readEnv } from './internal/utils/env';
+import {
+  type LogLevel,
+  type Logger,
+  formatRequestDetails,
+  loggerFor,
+  parseLogLevel,
+} from './internal/utils/log';
+import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
   production: 'https://api2.scorecard.io/api/v2',
@@ -139,7 +144,7 @@ export interface ClientOptions {
    * These can be removed in individual requests by explicitly setting the
    * param to `undefined` in request options.
    */
-  defaultQuery?: Record<string, string | undefined> | undefined;
+  defaultQuery?: BuiltinRecord<string, string | undefined> | undefined;
 
   /**
    * Set the log level.
@@ -185,7 +190,7 @@ export class Scorecard {
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
    * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
    * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
-   * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
+   * @param {BuiltinRecord<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
     baseURL = readEnv('SCORECARD_BASE_URL'),
@@ -249,7 +254,7 @@ export class Scorecard {
     });
   }
 
-  protected defaultQuery(): Record<string, string | undefined> | undefined {
+  protected defaultQuery(): BuiltinRecord<string, string | undefined> | undefined {
     return this._options.defaultQuery;
   }
 
@@ -264,7 +269,7 @@ export class Scorecard {
   /**
    * Basic re-implementation of `qs.stringify` for primitive types.
    */
-  protected stringifyQuery(query: Record<string, unknown>): string {
+  protected stringifyQuery(query: BuiltinRecord<string, unknown>): string {
     return Object.entries(query)
       .filter(([_, value]) => typeof value !== 'undefined')
       .map(([key, value]) => {
@@ -298,7 +303,7 @@ export class Scorecard {
     return Errors.APIError.generate(status, error, message, headers);
   }
 
-  buildURL(path: string, query: Record<string, unknown> | null | undefined): string {
+  buildURL(path: string, query: BuiltinRecord<string, unknown> | null | undefined): string {
     const url =
       isAbsoluteURL(path) ?
         new URL(path)
@@ -310,7 +315,7 @@ export class Scorecard {
     }
 
     if (typeof query === 'object' && query && !Array.isArray(query)) {
-      url.search = this.stringifyQuery(query as Record<string, unknown>);
+      url.search = this.stringifyQuery(query as BuiltinRecord<string, unknown>);
     }
 
     return url.toString();
@@ -664,7 +669,7 @@ export class Scorecard {
     const options = { ...inputOptions };
     const { method, path, query } = options;
 
-    const url = this.buildURL(path!, query as Record<string, unknown>);
+    const url = this.buildURL(path!, query as BuiltinRecord<string, unknown>);
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
@@ -842,11 +847,7 @@ export declare namespace Scorecard {
     type MetricUpdateParams as MetricUpdateParams,
   };
 
-  export {
-    Records as Records,
-    type RecordsAPIRecord as Record,
-    type RecordCreateParams as RecordCreateParams,
-  };
+  export { Records as Records, type Record as Record, type RecordCreateParams as RecordCreateParams };
 
   export { Scores as Scores, type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
 
