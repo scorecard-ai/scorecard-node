@@ -1,6 +1,6 @@
 # Scorecard TypeScript API Library
 
-[![NPM version](https://img.shields.io/npm/v/scorecard-ai.svg)](https://npmjs.org/package/scorecard-ai) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/scorecard-ai)
+[![NPM version](<https://img.shields.io/npm/v/scorecard-ai.svg?label=npm%20(stable)>)](https://npmjs.org/package/scorecard-ai) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/scorecard-ai)
 
 This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
