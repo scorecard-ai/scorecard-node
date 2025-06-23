@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install scorecard-ai@alpha
+npm install scorecard-ai
 ```
 
 ## Usage
