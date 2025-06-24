@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.2.0 (2025-06-24)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* **api:** api update ([a882c45](https://github.com/scorecard-ai/scorecard-node/commit/a882c45df73b0dc4854d0922de2202c672f526de))
+* **client:** add support for endpoint-specific base URLs ([b2321da](https://github.com/scorecard-ai/scorecard-node/commit/b2321da0938526fe28f41eea50199463a281a0b9))
+* **mcp:** set X-Stainless-MCP header ([12e61c2](https://github.com/scorecard-ai/scorecard-node/commit/12e61c2e9875a592cc60472deba4d94371bf2c85))
+
+
+### Bug Fixes
+
+* **auth:** Use bearer auth for API keys ([db2f132](https://github.com/scorecard-ai/scorecard-node/commit/db2f13247584f167b984eb5c791df776af636f6e))
+* **client:** explicitly copy fetch in withOptions ([acd9531](https://github.com/scorecard-ai/scorecard-node/commit/acd953180b4c22962464b1ba435132a71e19ded3))
+* publish script — handle NPM errors correctly ([862309d](https://github.com/scorecard-ai/scorecard-node/commit/862309d31da4807bfc106666e8a10619b775fdf9))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([7fc40c6](https://github.com/scorecard-ai/scorecard-node/commit/7fc40c6fdd7839fd045027dc4814c83cba5833eb))
+* **client:** refactor imports ([47ab4a2](https://github.com/scorecard-ai/scorecard-node/commit/47ab4a2f84198fdc9450e325f8580a636a6398c2))
+* **internal:** add pure annotations, make base APIResource abstract ([507c372](https://github.com/scorecard-ai/scorecard-node/commit/507c372bce850ad5af615f05cbf5ef637ffafca2))
+* **internal:** codegen related update ([1d07a29](https://github.com/scorecard-ai/scorecard-node/commit/1d07a298cfc7bbd997ba41c852184f5c34f0e739))
+* **readme:** update badges ([bb0aef2](https://github.com/scorecard-ai/scorecard-node/commit/bb0aef287db5e1f8421153afac49759a82d59c2c))
+* **readme:** use better example snippet for undocumented params ([62d2bf0](https://github.com/scorecard-ai/scorecard-node/commit/62d2bf00cf0147a6ee649c32cdcb25ae06bcedcb))
+
+
+### Refactors
+
+* **types:** replace Record with mapped types ([9aed086](https://github.com/scorecard-ai/scorecard-node/commit/9aed0866ef19e1b068bd960663ade0c4d5763be0))
+
 ## 1.1.0 (2025-06-13)
 
 Full Changelog: [v1.0.0...v1.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.0.0...v1.1.0)
