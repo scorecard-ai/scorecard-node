@@ -109,7 +109,7 @@ export interface SystemVersion {
   /**
    * The configuration of the system version.
    */
-  config: Record<string, unknown>;
+  config: { [key: string]: unknown };
 
   /**
    * The name of the system version.
@@ -146,7 +146,7 @@ export interface VersionCreateParams {
   /**
    * The configuration of the system version.
    */
-  config: Record<string, unknown>;
+  config: { [key: string]: unknown };
 
   /**
    * The name of the system version.
