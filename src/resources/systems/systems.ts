@@ -191,7 +191,7 @@ export interface System {
   /**
    * The schema of the system's configuration.
    */
-  configSchema: Record<string, unknown>;
+  configSchema: { [key: string]: unknown };
 
   /**
    * The description of the system.
@@ -201,7 +201,7 @@ export interface System {
   /**
    * The schema of the system's inputs.
    */
-  inputSchema: Record<string, unknown>;
+  inputSchema: { [key: string]: unknown };
 
   /**
    * The name of the system.
@@ -211,7 +211,7 @@ export interface System {
   /**
    * The schema of the system's outputs.
    */
-  outputSchema: Record<string, unknown>;
+  outputSchema: { [key: string]: unknown };
 }
 
 export interface SystemDeleteResponse {
@@ -225,7 +225,7 @@ export interface SystemCreateParams {
   /**
    * The schema of the system's configuration.
    */
-  configSchema: Record<string, unknown>;
+  configSchema: { [key: string]: unknown };
 
   /**
    * The description of the system.
@@ -235,7 +235,7 @@ export interface SystemCreateParams {
   /**
    * The schema of the system's inputs.
    */
-  inputSchema: Record<string, unknown>;
+  inputSchema: { [key: string]: unknown };
 
   /**
    * The name of the system.
@@ -245,14 +245,14 @@ export interface SystemCreateParams {
   /**
    * The schema of the system's outputs.
    */
-  outputSchema: Record<string, unknown>;
+  outputSchema: { [key: string]: unknown };
 }
 
 export interface SystemUpdateParams {
   /**
    * The schema of the system's configuration.
    */
-  configSchema?: Record<string, unknown>;
+  configSchema?: { [key: string]: unknown };
 
   /**
    * The description of the system.
@@ -262,7 +262,7 @@ export interface SystemUpdateParams {
   /**
    * The schema of the system's inputs.
    */
-  inputSchema?: Record<string, unknown>;
+  inputSchema?: { [key: string]: unknown };
 
   /**
    * The name of the system.
@@ -272,7 +272,7 @@ export interface SystemUpdateParams {
   /**
    * The schema of the system's outputs.
    */
-  outputSchema?: Record<string, unknown>;
+  outputSchema?: { [key: string]: unknown };
 }
 
 export interface SystemListParams extends PaginatedResponseParams {}
