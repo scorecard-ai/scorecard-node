@@ -6,7 +6,7 @@
 export interface APIError {
   code: string;
 
-  details: Record<string, unknown>;
+  details: { [key: string]: unknown };
 
   message: string;
 }
