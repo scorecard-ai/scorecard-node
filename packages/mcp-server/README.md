@@ -216,46 +216,17 @@ The following tools are available in this MCP server.
 
 ### Resource `systems`:
 
-- `create_systems` (`write`): Create a new system definition that specifies the interface contracts for a component you want to evaluate.
-
-  A system acts as a template that defines three key contracts through JSON Schemas:
-
-  1. Input Schema: What data your system accepts (e.g., user queries, context documents)
-  2. Output Schema: What data your system produces (e.g., responses, confidence scores)
-  3. Config Schema: What parameters can be adjusted (e.g., model selection, temperature)
-
-  This separation lets you evaluate any system as a black box, focusing on its interface rather than implementation details.
-
-- `update_systems` (`write`): Update an existing system definition. Only the fields provided in the request body will be updated.
+- `update_systems` (`write`): Update an existing system. Only the fields provided in the request body will be updated.
   If a field is provided, the new content will replace the existing content.
   If a field is not provided, the existing content will remain unchanged.
-
-  When updating schemas:
-
-  - The system will accept your changes regardless of compatibility with existing configurations
-  - Schema updates won't invalidate existing evaluations or configurations
-  - For significant redesigns, creating a new system definition provides a cleaner separation
-
 - `list_systems` (`read`): Retrieve a paginated list of all systems. Systems are ordered by creation date.
 - `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system versions.
 - `get_systems` (`read`): Retrieve a specific system by ID.
+- `upsert_systems` (`write`): Create a new system. If one with the same name in the project exists, it updates it instead.
 
 ### Resource `systems.versions`:
 
-- `create_systems_versions` (`write`): Create a new version for a system.
-
-  Each version contains specific parameter values that match the system's `configSchema` - things like model parameters, thresholds, or processing options.
-  Once created, versions cannot be modified, ensuring stable reference points for evaluations.
-
-  When creating a system version:
-
-  - The `config` object is validated against the parent system's `configSchema`.
-  - System versions with validation errors are still stored, with errors included in the response.
-  - Validation errors indicate fields that don't match the schema but don't prevent creation.
-  - Having validation errors may affect how some evaluation metrics are calculated.
-
-- `list_systems_versions` (`read`): Retrieve a paginated list of system versions for a specific system.
-
-  System versions provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.
-
 - `get_systems_versions` (`read`): Retrieve a specific system version by ID.
+- `upsert_systems_versions` (`write`): Create a new system version if it does not already exist. Does **not** set the created version to be the system's production version.
+
+  If there is already a system version with the same config, its name will be updated.

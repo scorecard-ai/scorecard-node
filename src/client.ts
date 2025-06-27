@@ -51,10 +51,10 @@ import {
 } from './resources/testsets';
 import {
   System,
-  SystemCreateParams,
   SystemDeleteResponse,
   SystemListParams,
   SystemUpdateParams,
+  SystemUpsertParams,
   Systems,
   SystemsPaginatedResponse,
 } from './resources/systems/systems';
@@ -869,9 +869,9 @@ export declare namespace Scorecard {
     type System as System,
     type SystemDeleteResponse as SystemDeleteResponse,
     type SystemsPaginatedResponse as SystemsPaginatedResponse,
-    type SystemCreateParams as SystemCreateParams,
     type SystemUpdateParams as SystemUpdateParams,
     type SystemListParams as SystemListParams,
+    type SystemUpsertParams as SystemUpsertParams,
   };
 
   export type APIError = API.APIError;

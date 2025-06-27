@@ -2,13 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as VersionsAPI from './versions';
-import {
-  SystemVersion,
-  SystemVersionsPaginatedResponse,
-  VersionCreateParams,
-  VersionListParams,
-  Versions,
-} from './versions';
+import { SystemVersion, VersionUpsertParams, Versions } from './versions';
 import { APIPromise } from '../../core/api-promise';
 import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
@@ -18,87 +12,17 @@ export class Systems extends APIResource {
   versions: VersionsAPI.Versions = new VersionsAPI.Versions(this._client);
 
   /**
-   * Create a new system definition that specifies the interface contracts for a
-   * component you want to evaluate.
-   *
-   * A system acts as a template that defines three key contracts through JSON
-   * Schemas:
-   *
-   * 1. Input Schema: What data your system accepts (e.g., user queries, context
-   *    documents)
-   * 2. Output Schema: What data your system produces (e.g., responses, confidence
-   *    scores)
-   * 3. Config Schema: What parameters can be adjusted (e.g., model selection,
-   *    temperature)
-   *
-   * This separation lets you evaluate any system as a black box, focusing on its
-   * interface rather than implementation details.
-   *
-   * @example
-   * ```ts
-   * const system = await client.systems.create('314', {
-   *   configSchema: {
-   *     type: 'object',
-   *     properties: {
-   *       temperature: { type: 'number' },
-   *       maxTokens: { type: 'integer' },
-   *       model: { type: 'string', enum: ['gpt-4', 'gpt-4-turbo'] },
-   *     },
-   *     required: ['model'],
-   *   },
-   *   description: 'Production chatbot powered by GPT-4',
-   *   inputSchema: {
-   *     type: 'object',
-   *     properties: {
-   *       messages: {
-   *         type: 'array',
-   *         items: {
-   *           type: 'object',
-   *           properties: {
-   *             role: { type: 'string', enum: ['system', 'user', 'assistant'] },
-   *             content: { type: 'string' },
-   *           },
-   *           required: ['role', 'content'],
-   *         },
-   *       },
-   *     },
-   *     required: ['messages'],
-   *   },
-   *   name: 'GPT-4 Chatbot',
-   *   outputSchema: {
-   *     type: 'object',
-   *     properties: { response: { type: 'string' } },
-   *     required: ['response'],
-   *   },
-   * });
-   * ```
-   */
-  create(projectID: string, body: SystemCreateParams, options?: RequestOptions): APIPromise<System> {
-    return this._client.post(path`/projects/${projectID}/systems`, { body, ...options });
-  }
-
-  /**
-   * Update an existing system definition. Only the fields provided in the request
-   * body will be updated. If a field is provided, the new content will replace the
-   * existing content. If a field is not provided, the existing content will remain
-   * unchanged.
-   *
-   * When updating schemas:
-   *
-   * - The system will accept your changes regardless of compatibility with existing
-   *   configurations
-   * - Schema updates won't invalidate existing evaluations or configurations
-   * - For significant redesigns, creating a new system definition provides a cleaner
-   *   separation
+   * Update an existing system. Only the fields provided in the request body will be
+   * updated. If a field is provided, the new content will replace the existing
+   * content. If a field is not provided, the existing content will remain unchanged.
    *
    * @example
    * ```ts
    * const system = await client.systems.update(
    *   '12345678-0a8b-4f66-b6f3-2ddcfa097257',
    *   {
-   *     description:
-   *       'Updated production chatbot powered by GPT-4 Turbo',
-   *     name: 'GPT-4 Turbo Chatbot',
+   *     productionVersionId:
+   *       '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3',
    *   },
    * );
    * ```
@@ -161,23 +85,29 @@ export class Systems extends APIResource {
   get(systemID: string, options?: RequestOptions): APIPromise<System> {
     return this._client.get(path`/systems/${systemID}`, options);
   }
+
+  /**
+   * Create a new system. If one with the same name in the project exists, it updates
+   * it instead.
+   *
+   * @example
+   * ```ts
+   * const system = await client.systems.upsert('314', {
+   *   config: { temperature: 0.1, maxTokens: 1024 },
+   *   description: 'Production chatbot powered by GPT-4',
+   *   name: 'GPT-4 Chatbot',
+   * });
+   * ```
+   */
+  upsert(projectID: string, body: SystemUpsertParams, options?: RequestOptions): APIPromise<System> {
+    return this._client.post(path`/projects/${projectID}/systems`, { body, ...options });
+  }
 }
 
 export type SystemsPaginatedResponse = PaginatedResponse<System>;
 
 /**
- * A System Under Test (SUT) defines the interface to a component or service you
- * want to evaluate.
- *
- * It specifies three contracts through schemas:
- *
- * - inputSchema: The structure of data the system accepts.
- * - outputSchema: The structure of data the system produces.
- * - configSchema: The parameters that modify system behavior.
- *
- * This abstraction lets you evaluate any system as a black box, focusing on its
- * interface rather than implementation details. It's particularly useful for
- * systems with variable outputs or complex internal state.
+ * A System Under Test (SUT).
  *
  * Systems are templates - to run evaluations, pair them with a SystemVersion that
  * provides specific parameter values.
@@ -189,29 +119,47 @@ export interface System {
   id: string;
 
   /**
-   * The schema of the system's configuration.
-   */
-  configSchema: { [key: string]: unknown };
-
-  /**
    * The description of the system.
    */
   description: string;
 
   /**
-   * The schema of the system's inputs.
-   */
-  inputSchema: { [key: string]: unknown };
-
-  /**
-   * The name of the system.
+   * The name of the system. Unique within the project.
    */
   name: string;
 
   /**
-   * The schema of the system's outputs.
+   * The production version of the system.
    */
-  outputSchema: { [key: string]: unknown };
+  productionVersion: VersionsAPI.SystemVersion;
+
+  /**
+   * The versions of the system.
+   */
+  versions: Array<System.Version>;
+}
+
+export namespace System {
+  /**
+   * A SystemVersion defines the specific settings for a System Under Test.
+   *
+   * System versions contain parameter values that determine system behavior during
+   * evaluation. They are immutable snapshots - once created, they never change.
+   *
+   * When running evaluations, you reference a specific systemVersionId to establish
+   * which system version to test.
+   */
+  export interface Version {
+    /**
+     * The ID of the system version.
+     */
+    id: string;
+
+    /**
+     * The name of the system version.
+     */
+    name: string;
+  }
 }
 
 export interface SystemDeleteResponse {
@@ -221,38 +169,30 @@ export interface SystemDeleteResponse {
   success: boolean;
 }
 
-export interface SystemCreateParams {
-  /**
-   * The schema of the system's configuration.
-   */
-  configSchema: { [key: string]: unknown };
-
+export interface SystemUpdateParams {
   /**
    * The description of the system.
    */
-  description: string;
+  description?: string;
 
   /**
-   * The schema of the system's inputs.
+   * The name of the system. Unique within the project.
    */
-  inputSchema: { [key: string]: unknown };
+  name?: string;
 
   /**
-   * The name of the system.
+   * The ID of the production version of the system.
    */
-  name: string;
-
-  /**
-   * The schema of the system's outputs.
-   */
-  outputSchema: { [key: string]: unknown };
+  productionVersionId?: string;
 }
 
-export interface SystemUpdateParams {
+export interface SystemListParams extends PaginatedResponseParams {}
+
+export interface SystemUpsertParams {
   /**
-   * The schema of the system's configuration.
+   * The configuration of the system.
    */
-  configSchema?: { [key: string]: unknown };
+  config: Record<string, unknown>;
 
   /**
    * The description of the system.
@@ -260,22 +200,11 @@ export interface SystemUpdateParams {
   description?: string;
 
   /**
-   * The schema of the system's inputs.
-   */
-  inputSchema?: { [key: string]: unknown };
-
-  /**
-   * The name of the system.
+   * The name of the system. Should be unique within the project. Default is "Default
+   * system"
    */
   name?: string;
-
-  /**
-   * The schema of the system's outputs.
-   */
-  outputSchema?: { [key: string]: unknown };
 }
-
-export interface SystemListParams extends PaginatedResponseParams {}
 
 Systems.Versions = Versions;
 
@@ -284,16 +213,14 @@ export declare namespace Systems {
     type System as System,
     type SystemDeleteResponse as SystemDeleteResponse,
     type SystemsPaginatedResponse as SystemsPaginatedResponse,
-    type SystemCreateParams as SystemCreateParams,
     type SystemUpdateParams as SystemUpdateParams,
     type SystemListParams as SystemListParams,
+    type SystemUpsertParams as SystemUpsertParams,
   };
 
   export {
     Versions as Versions,
     type SystemVersion as SystemVersion,
-    type SystemVersionsPaginatedResponse as SystemVersionsPaginatedResponse,
-    type VersionCreateParams as VersionCreateParams,
-    type VersionListParams as VersionListParams,
+    type VersionUpsertParams as VersionUpsertParams,
   };
 }
