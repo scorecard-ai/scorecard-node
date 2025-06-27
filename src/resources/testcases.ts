@@ -136,18 +136,18 @@ export interface Testcase {
    * Derived from data based on the Testset's fieldMapping. Contains all fields
    * marked as expected outputs, including those with validation errors.
    */
-  expected: { [key: string]: unknown };
+  expected: Record<string, unknown>;
 
   /**
    * Derived from data based on the Testset's fieldMapping. Contains all fields
    * marked as inputs, including those with validation errors.
    */
-  inputs: { [key: string]: unknown };
+  inputs: Record<string, unknown>;
 
   /**
    * The JSON data of the Testcase, which is validated against the Testset's schema.
    */
-  jsonData: { [key: string]: unknown };
+  jsonData: Record<string, unknown>;
 
   /**
    * The ID of the Testset this Testcase belongs to.
@@ -198,7 +198,7 @@ export namespace TestcaseCreateParams {
     /**
      * The JSON data of the Testcase, which is validated against the Testset's schema.
      */
-    jsonData: { [key: string]: unknown };
+    jsonData: Record<string, unknown>;
   }
 }
 
@@ -206,7 +206,7 @@ export interface TestcaseUpdateParams {
   /**
    * The JSON data of the Testcase, which is validated against the Testset's schema.
    */
-  jsonData: { [key: string]: unknown };
+  jsonData: Record<string, unknown>;
 }
 
 export interface TestcaseListParams extends PaginatedResponseParams {}

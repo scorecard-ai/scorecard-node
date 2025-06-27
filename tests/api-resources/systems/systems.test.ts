@@ -8,33 +8,6 @@ const client = new Scorecard({
 });
 
 describe('resource systems', () => {
-  test('create: only required params', async () => {
-    const responsePromise = client.systems.create('314', {
-      configSchema: { type: 'bar', properties: 'bar', required: 'bar' },
-      description: 'Production chatbot powered by GPT-4',
-      inputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
-      name: 'GPT-4 Chatbot',
-      outputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('create: required and optional params', async () => {
-    const response = await client.systems.create('314', {
-      configSchema: { type: 'bar', properties: 'bar', required: 'bar' },
-      description: 'Production chatbot powered by GPT-4',
-      inputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
-      name: 'GPT-4 Chatbot',
-      outputSchema: { type: 'bar', properties: 'bar', required: 'bar' },
-    });
-  });
-
   test('update', async () => {
     const responsePromise = client.systems.update('12345678-0a8b-4f66-b6f3-2ddcfa097257');
     const rawResponse = await responsePromise.asResponse();
@@ -52,11 +25,9 @@ describe('resource systems', () => {
       client.systems.update(
         '12345678-0a8b-4f66-b6f3-2ddcfa097257',
         {
-          configSchema: { foo: 'bar' },
-          description: 'Updated production chatbot powered by GPT-4 Turbo',
-          inputSchema: { foo: 'bar' },
-          name: 'GPT-4 Turbo Chatbot',
-          outputSchema: { foo: 'bar' },
+          description: 'description',
+          name: 'name',
+          productionVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -105,5 +76,26 @@ describe('resource systems', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('upsert: only required params', async () => {
+    const responsePromise = client.systems.upsert('314', {
+      config: { temperature: 'bar', maxTokens: 'bar' },
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('upsert: required and optional params', async () => {
+    const response = await client.systems.upsert('314', {
+      config: { temperature: 'bar', maxTokens: 'bar' },
+      description: 'Production chatbot powered by GPT-4',
+      name: 'GPT-4 Chatbot',
+    });
   });
 });

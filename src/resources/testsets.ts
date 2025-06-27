@@ -162,7 +162,7 @@ export interface Testset {
   /**
    * The JSON schema for each Testcase in the Testset.
    */
-  jsonSchema: { [key: string]: unknown };
+  jsonSchema: Record<string, unknown>;
 
   /**
    * The name of the Testset.
@@ -215,7 +215,7 @@ export interface TestsetCreateParams {
   /**
    * The JSON schema for each Testcase in the Testset.
    */
-  jsonSchema: { [key: string]: unknown };
+  jsonSchema: Record<string, unknown>;
 
   /**
    * The name of the Testset.
@@ -261,7 +261,7 @@ export interface TestsetUpdateParams {
   /**
    * The JSON schema for each Testcase in the Testset.
    */
-  jsonSchema?: { [key: string]: unknown };
+  jsonSchema?: Record<string, unknown>;
 
   /**
    * The name of the Testset.

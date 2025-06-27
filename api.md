@@ -96,11 +96,11 @@ Types:
 
 Methods:
 
-- <code title="post /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems/systems.ts">create</a>(projectID, { ...params }) -> System</code>
 - <code title="patch /systems/{systemId}">client.systems.<a href="./src/resources/systems/systems.ts">update</a>(systemID, { ...params }) -> System</code>
 - <code title="get /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems/systems.ts">list</a>(projectID, { ...params }) -> SystemsPaginatedResponse</code>
 - <code title="delete /systems/{systemId}">client.systems.<a href="./src/resources/systems/systems.ts">delete</a>(systemID) -> SystemDeleteResponse</code>
 - <code title="get /systems/{systemId}">client.systems.<a href="./src/resources/systems/systems.ts">get</a>(systemID) -> System</code>
+- <code title="post /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems/systems.ts">upsert</a>(projectID, { ...params }) -> System</code>
 
 ## Versions
 
@@ -110,6 +110,5 @@ Types:
 
 Methods:
 
-- <code title="post /systems/{systemId}/configs">client.systems.versions.<a href="./src/resources/systems/versions.ts">create</a>(systemID, { ...params }) -> SystemVersion</code>
-- <code title="get /systems/{systemId}/configs">client.systems.versions.<a href="./src/resources/systems/versions.ts">list</a>(systemID, { ...params }) -> SystemVersionsPaginatedResponse</code>
-- <code title="get /systems/configs/{systemVersionId}">client.systems.versions.<a href="./src/resources/systems/versions.ts">get</a>(systemVersionID) -> SystemVersion</code>
+- <code title="get /systems/versions/{systemVersionId}">client.systems.versions.<a href="./src/resources/systems/versions.ts">get</a>(systemVersionID) -> SystemVersion</code>
+- <code title="post /systems/{systemId}/versions">client.systems.versions.<a href="./src/resources/systems/versions.ts">upsert</a>(systemID, { ...params }) -> SystemVersion</code>
