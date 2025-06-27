@@ -56,7 +56,7 @@ export interface Score {
    * the output schema defined by the associated MetricConfig. If it doesn't,
    * validation errors will be captured in the `validationErrors` field.
    */
-  score: { [key: string]: unknown };
+  score: Record<string, unknown>;
 
   /**
    * Validation errors found in the Score data. If present, the Score doesn't fully
@@ -90,7 +90,7 @@ export interface ScoreUpsertParams {
    * conform to the output schema defined by the associated MetricConfig. If it
    * doesn't, validation errors will be captured in the `validationErrors` field.
    */
-  score: { [key: string]: unknown };
+  score: Record<string, unknown>;
 }
 
 export declare namespace Scores {

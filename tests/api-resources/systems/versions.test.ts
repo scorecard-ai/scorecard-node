@@ -8,49 +8,6 @@ const client = new Scorecard({
 });
 
 describe('resource versions', () => {
-  test('create: only required params', async () => {
-    const responsePromise = client.systems.versions.create('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
-      config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
-      name: 'Production (Low Temperature)',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('create: required and optional params', async () => {
-    const response = await client.systems.versions.create('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
-      config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
-      name: 'Production (Low Temperature)',
-    });
-  });
-
-  test('list', async () => {
-    const responsePromise = client.systems.versions.list('12345678-0a8b-4f66-b6f3-2ddcfa097257');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('list: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.systems.versions.list(
-        '12345678-0a8b-4f66-b6f3-2ddcfa097257',
-        { cursor: 'eyJvZmZzZXQiOjAsInBhZ2VJZCI6ImNvZGUifQ', limit: 20 },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Scorecard.NotFoundError);
-  });
-
   test('get', async () => {
     const responsePromise = client.systems.versions.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0');
     const rawResponse = await responsePromise.asResponse();
@@ -60,5 +17,25 @@ describe('resource versions', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('upsert: only required params', async () => {
+    const responsePromise = client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
+      config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('upsert: required and optional params', async () => {
+    const response = await client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
+      config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
+      name: 'Test model: Gemini',
+    });
   });
 });

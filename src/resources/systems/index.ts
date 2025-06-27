@@ -4,15 +4,9 @@ export {
   Systems,
   type System,
   type SystemDeleteResponse,
-  type SystemCreateParams,
   type SystemUpdateParams,
   type SystemListParams,
+  type SystemUpsertParams,
   type SystemsPaginatedResponse,
 } from './systems';
-export {
-  Versions,
-  type SystemVersion,
-  type VersionCreateParams,
-  type VersionListParams,
-  type SystemVersionsPaginatedResponse,
-} from './versions';
+export { Versions, type SystemVersion, type VersionUpsertParams } from './versions';

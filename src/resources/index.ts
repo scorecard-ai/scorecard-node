@@ -16,9 +16,9 @@ export {
   Systems,
   type System,
   type SystemDeleteResponse,
-  type SystemCreateParams,
   type SystemUpdateParams,
   type SystemListParams,
+  type SystemUpsertParams,
   type SystemsPaginatedResponse,
 } from './systems/systems';
 export {

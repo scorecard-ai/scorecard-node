@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   operation: 'read',
   tags: [],
   httpMethod: 'get',
-  httpPath: '/systems/configs/{systemVersionId}',
+  httpPath: '/systems/versions/{systemVersionId}',
   operationId: 'getSystemVersion',
 };
 

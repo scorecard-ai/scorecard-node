@@ -21,14 +21,13 @@ import create_metrics from './metrics/create-metrics';
 import update_metrics from './metrics/update-metrics';
 import create_records from './records/create-records';
 import upsert_scores from './scores/upsert-scores';
-import create_systems from './systems/create-systems';
 import update_systems from './systems/update-systems';
 import list_systems from './systems/list-systems';
 import delete_systems from './systems/delete-systems';
 import get_systems from './systems/get-systems';
-import create_systems_versions from './systems/versions/create-systems-versions';
-import list_systems_versions from './systems/versions/list-systems-versions';
+import upsert_systems from './systems/upsert-systems';
 import get_systems_versions from './systems/versions/get-systems-versions';
+import upsert_systems_versions from './systems/versions/upsert-systems-versions';
 
 export const endpoints: Endpoint[] = [];
 
@@ -53,14 +52,13 @@ addEndpoint(create_metrics);
 addEndpoint(update_metrics);
 addEndpoint(create_records);
 addEndpoint(upsert_scores);
-addEndpoint(create_systems);
 addEndpoint(update_systems);
 addEndpoint(list_systems);
 addEndpoint(delete_systems);
 addEndpoint(get_systems);
-addEndpoint(create_systems_versions);
-addEndpoint(list_systems_versions);
+addEndpoint(upsert_systems);
 addEndpoint(get_systems_versions);
+addEndpoint(upsert_systems_versions);
 
 export type Filter = {
   type: 'resource' | 'operation' | 'tag' | 'tool';

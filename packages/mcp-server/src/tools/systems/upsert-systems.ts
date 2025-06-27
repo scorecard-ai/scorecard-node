@@ -10,20 +10,23 @@ export const metadata: Metadata = {
   resource: 'systems',
   operation: 'write',
   tags: [],
-  httpMethod: 'patch',
-  httpPath: '/systems/{systemId}',
-  operationId: 'updateSystem',
+  httpMethod: 'post',
+  httpPath: '/projects/{projectId}/systems',
+  operationId: 'upsertSystem',
 };
 
 export const tool: Tool = {
-  name: 'update_systems',
-  description:
-    'Update an existing system. Only the fields provided in the request body will be updated.\nIf a field is provided, the new content will replace the existing content.\nIf a field is not provided, the existing content will remain unchanged.',
+  name: 'upsert_systems',
+  description: 'Create a new system. If one with the same name in the project exists, it updates it instead.',
   inputSchema: {
     type: 'object',
     properties: {
-      systemId: {
+      projectId: {
         type: 'string',
+      },
+      config: {
+        type: 'object',
+        description: 'The configuration of the system.',
       },
       description: {
         type: 'string',
@@ -31,19 +34,16 @@ export const tool: Tool = {
       },
       name: {
         type: 'string',
-        description: 'The name of the system. Unique within the project.',
-      },
-      productionVersionId: {
-        type: 'string',
-        description: 'The ID of the production version of the system.',
+        description:
+          'The name of the system. Should be unique within the project. Default is "Default system"',
       },
     },
   },
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { systemId, ...body } = args as any;
-  return asTextContentResult(await client.systems.update(systemId, body));
+  const { projectId, ...body } = args as any;
+  return asTextContentResult(await client.systems.upsert(projectId, body));
 };
 
 export default { metadata, tool, handler };
