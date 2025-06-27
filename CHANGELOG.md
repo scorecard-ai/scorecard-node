@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.0.0-alpha.1 (2025-06-27)
+
+Full Changelog: [v1.2.0...v2.0.0-alpha.1](https://github.com/scorecard-ai/scorecard-node/compare/v1.2.0...v2.0.0-alpha.1)
+
+### ⚠ BREAKING CHANGES
+
+* **systems:** Make systems easier to use in the SDK
+
+### Features
+
+* **systems:** Make systems easier to use in the SDK ([8cbfd9c](https://github.com/scorecard-ai/scorecard-node/commit/8cbfd9ccf7265f68567b221d52c66516be4c54f4))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([0e0fae0](https://github.com/scorecard-ai/scorecard-node/commit/0e0fae04c2ac06cbdca915926531ea1373211942))
+* **client:** get fetchOptions type more reliably ([ee33f92](https://github.com/scorecard-ai/scorecard-node/commit/ee33f92c86ecebab26c6e56f595395b7fc7d49a6))
+
 ## 1.2.0 (2025-06-24)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v1.1.0...v1.2.0)
