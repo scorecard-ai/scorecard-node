@@ -2,7 +2,6 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
-import { type Record as BuiltinRecord } from '../internal/builtin-types';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -39,18 +38,18 @@ export interface Record {
   /**
    * The expected outputs for the Testcase.
    */
-  expected: BuiltinRecord<string, unknown>;
+  expected: { [key: string]: unknown };
 
   /**
    * The actual inputs sent to the system, which should match the system's input
    * schema.
    */
-  inputs: BuiltinRecord<string, unknown>;
+  inputs: { [key: string]: unknown };
 
   /**
    * The actual outputs from the system.
    */
-  outputs: BuiltinRecord<string, unknown>;
+  outputs: { [key: string]: unknown };
 
   /**
    * The ID of the Run containing this Record.
@@ -67,18 +66,18 @@ export interface RecordCreateParams {
   /**
    * The expected outputs for the Testcase.
    */
-  expected: BuiltinRecord<string, unknown>;
+  expected: { [key: string]: unknown };
 
   /**
    * The actual inputs sent to the system, which should match the system's input
    * schema.
    */
-  inputs: BuiltinRecord<string, unknown>;
+  inputs: { [key: string]: unknown };
 
   /**
    * The actual outputs from the system.
    */
-  outputs: BuiltinRecord<string, unknown>;
+  outputs: { [key: string]: unknown };
 
   /**
    * The ID of the Testcase.
