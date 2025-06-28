@@ -65,7 +65,7 @@ export interface SystemVersion {
   /**
    * The configuration of the system version.
    */
-  config: Record<string, unknown>;
+  config: { [key: string]: unknown };
 
   /**
    * The name of the system version.
@@ -82,7 +82,7 @@ export interface VersionUpsertParams {
   /**
    * The configuration of the system version.
    */
-  config: Record<string, unknown>;
+  config: { [key: string]: unknown };
 
   /**
    * The name of the system version. If creating a new system version and the name
