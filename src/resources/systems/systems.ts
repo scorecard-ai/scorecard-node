@@ -192,7 +192,7 @@ export interface SystemUpsertParams {
   /**
    * The configuration of the system.
    */
-  config: Record<string, unknown>;
+  config: { [key: string]: unknown };
 
   /**
    * The description of the system.
