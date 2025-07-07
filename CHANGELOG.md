@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.0 (2025-07-07)
+
+Full Changelog: [v2.0.0-alpha.1...v2.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.0.0-alpha.1...v2.0.0)
+
+### Bug Fixes
+
+* handle docker image not existing yet ([426dbae](https://github.com/scorecard-ai/scorecard-node/commit/426dbae9bb6748bdf52a1440682e764a831af2f0))
+
+
+### Chores
+
+* add docs to RequestOptions type ([22f2664](https://github.com/scorecard-ai/scorecard-node/commit/22f2664cb28bb63319de8f87550f864f837eb697))
+* **ci:** only run for pushes and fork pull requests ([032e48f](https://github.com/scorecard-ai/scorecard-node/commit/032e48fc1a89bbcf5fad8dd51cc9fe0d80f54b36))
+* **client:** improve path param validation ([2f114c6](https://github.com/scorecard-ai/scorecard-node/commit/2f114c6f69039afd1b51d93adf678288b8e31334))
+
 ## 2.0.0-alpha.1 (2025-06-27)
 
 Full Changelog: [v1.2.0...v2.0.0-alpha.1](https://github.com/scorecard-ai/scorecard-node/compare/v1.2.0...v2.0.0-alpha.1)
