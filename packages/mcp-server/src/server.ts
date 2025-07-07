@@ -26,7 +26,7 @@ export { endpoints } from './tools';
 export const server = new McpServer(
   {
     name: 'scorecard_ai_api',
-    version: '2.0.0-alpha.1',
+    version: '2.0.0',
   },
   {
     capabilities: {
