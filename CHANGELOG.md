@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.1.0 (2025-07-11)
+
+Full Changelog: [v2.0.0...v2.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.0.0...v2.1.0)
+
+### Features
+
+* **mcp:** support filtering tool results by a jq expression ([412ab6d](https://github.com/scorecard-ai/scorecard-node/commit/412ab6d7f3b4bfdfd062031df1d6a9c201ffedb1))
+
+
+### Bug Fixes
+
+* **mcp:** relax input type for asTextContextResult ([1772682](https://github.com/scorecard-ai/scorecard-node/commit/17726825c3e733a30bfe0b09bc90740c0aff25e0))
+
+
+### Chores
+
+* make some internal functions async ([02ff51d](https://github.com/scorecard-ai/scorecard-node/commit/02ff51d937f3157f9ad5a73444a51eb1100d635d))
+
 ## 2.0.0 (2025-07-07)
 
 Full Changelog: [v2.0.0-alpha.1...v2.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.0.0-alpha.1...v2.0.0)
