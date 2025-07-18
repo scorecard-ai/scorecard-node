@@ -67,6 +67,7 @@ export const tool: Tool = {
             description: 'The temperature for AI evaluation (0-2).',
           },
         },
+        required: ['metricId', 'evalType', 'outputType'],
       },
       {
         type: 'object',
@@ -101,6 +102,7 @@ export const tool: Tool = {
             description: 'The threshold for determining pass/fail from integer scores (1-5).',
           },
         },
+        required: ['metricId', 'evalType', 'outputType'],
       },
       {
         type: 'object',
@@ -135,6 +137,7 @@ export const tool: Tool = {
             description: 'The threshold for determining pass/fail from integer scores (1-5).',
           },
         },
+        required: ['metricId', 'evalType', 'outputType'],
       },
       {
         type: 'object',
@@ -178,6 +181,7 @@ export const tool: Tool = {
             description: 'The temperature for AI evaluation (0-2).',
           },
         },
+        required: ['metricId', 'evalType', 'outputType'],
       },
       {
         type: 'object',
@@ -208,6 +212,7 @@ export const tool: Tool = {
             description: 'The name of the Metric.',
           },
         },
+        required: ['metricId', 'evalType', 'outputType'],
       },
       {
         type: 'object',
@@ -238,6 +243,7 @@ export const tool: Tool = {
             description: 'The name of the Metric.',
           },
         },
+        required: ['metricId', 'evalType', 'outputType'],
       },
     ],
   },
