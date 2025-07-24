@@ -34,6 +34,9 @@ export const tool: Tool = {
     },
     required: ['testsetId'],
   },
+  annotations: {
+    idempotentHint: true,
+  },
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {

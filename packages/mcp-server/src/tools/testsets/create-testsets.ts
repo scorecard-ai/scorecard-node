@@ -75,6 +75,7 @@ export const tool: Tool = {
     },
     required: ['projectId', 'description', 'fieldMapping', 'jsonSchema', 'name'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {

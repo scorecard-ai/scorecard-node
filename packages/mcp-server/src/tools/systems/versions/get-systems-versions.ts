@@ -34,6 +34,9 @@ export const tool: Tool = {
     },
     required: ['systemVersionId'],
   },
+  annotations: {
+    readOnlyHint: true,
+  },
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
