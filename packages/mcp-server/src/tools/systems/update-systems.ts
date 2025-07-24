@@ -46,6 +46,7 @@ export const tool: Tool = {
     },
     required: ['systemId'],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {

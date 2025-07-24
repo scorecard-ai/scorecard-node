@@ -42,6 +42,9 @@ export const tool: Tool = {
     },
     required: ['recordId', 'metricConfigId', 'score'],
   },
+  annotations: {
+    idempotentHint: true,
+  },
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
