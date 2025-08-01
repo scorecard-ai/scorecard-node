@@ -79,8 +79,8 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { projectId, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(args, await client.testsets.create(projectId, body)));
+  const { projectId, jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.testsets.create(projectId, body)));
 };
 
 export default { metadata, tool, handler };
