@@ -40,8 +40,10 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { systemVersionId, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(args, await client.systems.versions.get(systemVersionId)));
+  const { systemVersionId, jq_filter, ...body } = args as any;
+  return asTextContentResult(
+    await maybeFilter(jq_filter, await client.systems.versions.get(systemVersionId)),
+  );
 };
 
 export default { metadata, tool, handler };

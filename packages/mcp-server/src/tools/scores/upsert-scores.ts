@@ -48,8 +48,8 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { metricConfigId, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(args, await client.scores.upsert(metricConfigId, body)));
+  const { metricConfigId, jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.scores.upsert(metricConfigId, body)));
 };
 
 export default { metadata, tool, handler };
