@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export const tool: Tool = {
   name: 'create_records',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nCreate a new Record in a Run.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/record',\n  $defs: {\n    record: {\n      type: 'object',\n      description: 'A record of a system execution in the Scorecard system.',\n      properties: {\n        id: {\n          type: 'string',\n          description: 'The ID of the Record.'\n        },\n        expected: {\n          type: 'object',\n          description: 'The expected outputs for the Testcase.'\n        },\n        inputs: {\n          type: 'object',\n          description: 'The actual inputs sent to the system, which should match the system\\'s input schema.'\n        },\n        outputs: {\n          type: 'object',\n          description: 'The actual outputs from the system.'\n        },\n        runId: {\n          type: 'string',\n          description: 'The ID of the Run containing this Record.'\n        },\n        testcaseId: {\n          type: 'string',\n          description: 'The ID of the Testcase.'\n        }\n      },\n      required: [        'id',\n        'expected',\n        'inputs',\n        'outputs',\n        'runId'\n      ]\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nCreate a new Record in a Run.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/record',\n  $defs: {\n    record: {\n      type: 'object',\n      description: 'A record of a system execution in the Scorecard system.',\n      properties: {\n        id: {\n          type: 'string',\n          description: 'The ID of the Record.'\n        },\n        expected: {\n          type: 'object',\n          description: 'The expected outputs for the Testcase.',\n          additionalProperties: true\n        },\n        inputs: {\n          type: 'object',\n          description: 'The actual inputs sent to the system, which should match the system\\'s input schema.',\n          additionalProperties: true\n        },\n        outputs: {\n          type: 'object',\n          description: 'The actual outputs from the system.',\n          additionalProperties: true\n        },\n        runId: {\n          type: 'string',\n          description: 'The ID of the Run containing this Record.'\n        },\n        testcaseId: {\n          type: 'string',\n          description: 'The ID of the Testcase.'\n        }\n      },\n      required: [        'id',\n        'expected',\n        'inputs',\n        'outputs',\n        'runId'\n      ]\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {
@@ -28,14 +28,17 @@ export const tool: Tool = {
       expected: {
         type: 'object',
         description: 'The expected outputs for the Testcase.',
+        additionalProperties: true,
       },
       inputs: {
         type: 'object',
         description: "The actual inputs sent to the system, which should match the system's input schema.",
+        additionalProperties: true,
       },
       outputs: {
         type: 'object',
         description: 'The actual outputs from the system.',
+        additionalProperties: true,
       },
       testcaseId: {
         type: 'string',
