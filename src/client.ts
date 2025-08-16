@@ -823,6 +823,7 @@ export class Scorecard {
   scores: API.Scores = new API.Scores(this);
   systems: API.Systems = new API.Systems(this);
 }
+
 Scorecard.Projects = Projects;
 Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
@@ -831,6 +832,7 @@ Scorecard.Metrics = Metrics;
 Scorecard.Records = Records;
 Scorecard.Scores = Scores;
 Scorecard.Systems = Systems;
+
 export declare namespace Scorecard {
   export type RequestOptions = Opts.RequestOptions;
 
