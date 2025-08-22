@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { type ClientOptions } from 'scorecard-ai/client';
+import { ClientOptions } from 'scorecard-ai';
 
 export type WorkerInput = {
   opts: ClientOptions;
