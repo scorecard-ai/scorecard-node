@@ -1,5 +1,69 @@
 # Changelog
 
+## 2.1.0 (2025-09-09)
+
+Full Changelog: [v2.0.0...v2.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.0.0...v2.1.0)
+
+### Features
+
+* **mcp:** add code execution tool ([984a944](https://github.com/scorecard-ai/scorecard-node/commit/984a944cd37665bd5de5efcbb32507783801aa33))
+* **mcp:** add logging when environment variable is set ([57b9f1e](https://github.com/scorecard-ai/scorecard-node/commit/57b9f1eca43360c35046670ff5ac8f66bed5dd9f))
+* **mcp:** add option to infer mcp client ([9e10887](https://github.com/scorecard-ai/scorecard-node/commit/9e108873d7c176b069d4599649b556c513e53c88))
+* **mcp:** add unix socket option for remote MCP ([69680ff](https://github.com/scorecard-ai/scorecard-node/commit/69680ffbaf9becb9dc6eb52e5c9f835455b30656))
+* **mcp:** allow setting logging level ([61ac570](https://github.com/scorecard-ai/scorecard-node/commit/61ac570acec27f329c6658eb9df6e18d4dd60aca))
+* **mcp:** expose client options in `streamableHTTPApp` ([b7164d3](https://github.com/scorecard-ai/scorecard-node/commit/b7164d31366e126c3a89e270de095e36bf35d652))
+* **mcp:** parse query string as mcp client options in mcp server ([f5d691f](https://github.com/scorecard-ai/scorecard-node/commit/f5d691f9ac7fba2fe8ebe956c61683c12b2a5ea2))
+* **mcp:** remote server with passthru auth ([98fb290](https://github.com/scorecard-ai/scorecard-node/commit/98fb290e74b55e5bbed6d7de6ecc8676a1d0de05))
+* **mcp:** support filtering tool results by a jq expression ([412ab6d](https://github.com/scorecard-ai/scorecard-node/commit/412ab6d7f3b4bfdfd062031df1d6a9c201ffedb1))
+
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([e7dfece](https://github.com/scorecard-ai/scorecard-node/commit/e7dfece2b5a23b1301a0ab4abf030f565fc8f65b))
+* **mcp:** avoid sending `jq_filter` to base API ([3187de5](https://github.com/scorecard-ai/scorecard-node/commit/3187de5c166fec343330a1d13982e944959e3f7d))
+* **mcp:** fix bug in header handling ([938d9a7](https://github.com/scorecard-ai/scorecard-node/commit/938d9a7e5ca3f5535f8370a92626dc0bc2cfe761))
+* **mcp:** fix query options parsing ([600c5cb](https://github.com/scorecard-ai/scorecard-node/commit/600c5cb21573ea54a130cdf16dfa05a43a623eee))
+* **mcp:** fix tool description of jq_filter ([eed4a36](https://github.com/scorecard-ai/scorecard-node/commit/eed4a3642490280b4f0ed66765068d6a8b4a3cae))
+* **mcp:** generate additionalProperties=true for map schemas to avoid validation issues ([7c32c93](https://github.com/scorecard-ai/scorecard-node/commit/7c32c93d2ac0ca1655f2f25c05144df52b1edaf4))
+* **mcp:** include required section for top-level properties and support naming transformations ([e92a53f](https://github.com/scorecard-ai/scorecard-node/commit/e92a53f625defff0f42f47195948cb624994bcf3))
+* **mcp:** relax input type for asTextContextResult ([1772682](https://github.com/scorecard-ai/scorecard-node/commit/17726825c3e733a30bfe0b09bc90740c0aff25e0))
+* **mcp:** reverse validJson capability option and limit scope ([c2bbc68](https://github.com/scorecard-ai/scorecard-node/commit/c2bbc6899f84af7fbd3d028fc829fc27c606524f))
+* **mcp:** support jq filtering on cloudflare workers ([5327b6e](https://github.com/scorecard-ai/scorecard-node/commit/5327b6e065ea004027e82bdacc59e24751445c0b))
+
+
+### Chores
+
+* add package to package.json ([3fa753e](https://github.com/scorecard-ai/scorecard-node/commit/3fa753ee0030f584245c5650266462d939e51977))
+* ci build action ([e98041a](https://github.com/scorecard-ai/scorecard-node/commit/e98041a18029089aefb533a9c98174c74c98162f))
+* **client:** qualify global Blob ([4467437](https://github.com/scorecard-ai/scorecard-node/commit/4467437018f9459c45de168fe14ef4470f3e44f0))
+* **deps:** update dependency @types/node to v20.17.58 ([97f96a0](https://github.com/scorecard-ai/scorecard-node/commit/97f96a0e606fc56a0356a8d1765b22b75d1260c7))
+* **internal:** codegen related update ([4fbe83b](https://github.com/scorecard-ai/scorecard-node/commit/4fbe83b76af1513c79509f1c64012702f0c3e0d5))
+* **internal:** codegen related update ([a633c9c](https://github.com/scorecard-ai/scorecard-node/commit/a633c9c3e7e5064a77c77bfe6db833a488e535b3))
+* **internal:** codegen related update ([e1161e3](https://github.com/scorecard-ai/scorecard-node/commit/e1161e3fa928d5baf7ee5516a47b5f7614fba981))
+* **internal:** codegen related update ([fb4417e](https://github.com/scorecard-ai/scorecard-node/commit/fb4417e4984c6106f886a875f627ed86323e81b3))
+* **internal:** codegen related update ([3417b36](https://github.com/scorecard-ai/scorecard-node/commit/3417b36ea9f0372b18d07a313ee1987c634c4fd1))
+* **internal:** codegen related update ([af90a13](https://github.com/scorecard-ai/scorecard-node/commit/af90a13fa3767c7a82b3abb8c4591427a6399212))
+* **internal:** formatting change ([0490e53](https://github.com/scorecard-ai/scorecard-node/commit/0490e536c81221afcbbbe97c86d7a59284d82cc9))
+* **internal:** make mcp-server publishing public by defaut ([ae5027f](https://github.com/scorecard-ai/scorecard-node/commit/ae5027fbb5bd47c66361f79f3e277bb472e2d0e6))
+* **internal:** move publish config ([6c8e24e](https://github.com/scorecard-ai/scorecard-node/commit/6c8e24e7928e9dd3c4680bd7446a99905e71f2fb))
+* **internal:** refactor array check ([7941f3a](https://github.com/scorecard-ai/scorecard-node/commit/7941f3a613751212f8b80c9afaf8423348a194f0))
+* **internal:** remove redundant imports config ([fc79b14](https://github.com/scorecard-ai/scorecard-node/commit/fc79b146fc0cf588a69289a7f9f97c5219c4d50e))
+* **internal:** update comment in script ([adb20b2](https://github.com/scorecard-ai/scorecard-node/commit/adb20b2337b65185466f3c4b157a3c5cc5672ca7))
+* **internal:** update global Error reference ([100d773](https://github.com/scorecard-ai/scorecard-node/commit/100d773157c30ac3764ee44094e83490a1bb71b4))
+* make some internal functions async ([02ff51d](https://github.com/scorecard-ai/scorecard-node/commit/02ff51d937f3157f9ad5a73444a51eb1100d635d))
+* **mcp:** add cors to oauth metadata route ([5932210](https://github.com/scorecard-ai/scorecard-node/commit/5932210b5f1b785945a2fd673f8580a4a060c8c1))
+* **mcp:** document remote server in README.md ([639d8a1](https://github.com/scorecard-ai/scorecard-node/commit/639d8a154096dd4b72a5cfedf3b66fef8c8a6381))
+* **mcp:** formatting ([47791fa](https://github.com/scorecard-ai/scorecard-node/commit/47791fa5c88d6107634e4ad3902d66d60490cef0))
+* **mcp:** minor cleanup of types and package.json ([9ade481](https://github.com/scorecard-ai/scorecard-node/commit/9ade481c648d92830338f0533ea0c6cdd258b79c))
+* **mcp:** refactor streamable http transport ([c216faf](https://github.com/scorecard-ai/scorecard-node/commit/c216faf71c0d27b80a86e20ee008f7439d20763f))
+* **mcp:** rework imports in tools ([b9526ef](https://github.com/scorecard-ai/scorecard-node/commit/b9526ef86a14525d95a5fca90ae6d211b1c6c303))
+* **mcp:** update package.json ([94735ae](https://github.com/scorecard-ai/scorecard-node/commit/94735aed137900511116abb88093aec4dc234615))
+* **mcp:** update README ([4096a6e](https://github.com/scorecard-ai/scorecard-node/commit/4096a6e04881d8c6ae5bb00f8d0892f66f69fdea))
+* **mcp:** update types ([91964fb](https://github.com/scorecard-ai/scorecard-node/commit/91964fb56f33313b09743a1ddcdc3fd53208d6df))
+* **ts:** reorder package.json imports ([52cc0b3](https://github.com/scorecard-ai/scorecard-node/commit/52cc0b3da97f65a789b358e446eaef139c95962e))
+* update @stainless-api/prism-cli to v5.15.0 ([8552758](https://github.com/scorecard-ai/scorecard-node/commit/855275895d471b4e1ad15265dc0b2213e7eb9bd4))
+* update CI script ([3fb85a9](https://github.com/scorecard-ai/scorecard-node/commit/3fb85a90e2a940a8df8bf8884283e81d4bc58d39))
+
 ## 2.0.0 (2025-07-07)
 
 Full Changelog: [v2.0.0-alpha.1...v2.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.0.0-alpha.1...v2.0.0)
