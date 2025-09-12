@@ -1,0 +1,37 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.scorecard/mcp",
+  "description": "MCP server providing access to the Scorecard API to evaluate and optimize LLM systems.",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/scorecard-ai/scorecard-node",
+    "source": "github"
+  },
+  "version": "2.1.1",
+  "packages": [
+    {
+      "registry_type": "npm",
+      "registry_base_url": "https://registry.npmjs.org",
+      "identifier": "scorecard-ai-mcp",
+      "version": "2.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environment_variables": [
+        {
+          "description": "Scorecard API key for authentication. Get your API key from https://app.scorecard.io/settings",
+          "is_required": true,
+          "format": "string",
+          "is_secret": true,
+          "name": "SCORECARD_API_KEY"
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.scorecard.io/mcp"
+    }
+  ]
+}
