@@ -33,7 +33,7 @@ export const newMcpServer = () =>
   new McpServer(
     {
       name: 'scorecard_ai_api',
-      version: '2.1.0',
+      version: '2.1.1',
     },
     { capabilities: { tools: {}, logging: {} } },
   );

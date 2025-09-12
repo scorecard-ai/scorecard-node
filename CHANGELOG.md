@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.1 (2025-09-12)
+
+Full Changelog: [v2.1.0...v2.1.1](https://github.com/scorecard-ai/scorecard-node/compare/v2.1.0...v2.1.1)
+
+### Bug Fixes
+
+* **mcp:** fix uploading dxt release assets ([8a288b5](https://github.com/scorecard-ai/scorecard-node/commit/8a288b5cd886103bb3da2b5ccefb5d882f33b637))
+
+
+### Chores
+
+* Add server.json for MCP registry ([8bffdd4](https://github.com/scorecard-ai/scorecard-node/commit/8bffdd43055115253375b45a68060b6206fcd005))
+* **mcp:** upload dxt as release asset ([5429689](https://github.com/scorecard-ai/scorecard-node/commit/5429689e34c8f1db4f460fcd793081d8ee928c83))
+
 ## 2.1.0 (2025-09-09)
 
 Full Changelog: [v2.0.0...v2.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.0.0...v2.1.0)
