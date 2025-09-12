@@ -1,6 +1,6 @@
 {
   "name": "scorecard-ai",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "The official TypeScript library for the Scorecard API",
   "author": "Scorecard <team@scorecard.io>",
   "types": "dist/index.d.ts",
