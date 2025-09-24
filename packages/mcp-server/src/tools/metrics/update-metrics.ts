@@ -152,6 +152,124 @@ export const tool: Tool = {
           },
           outputType: {
             type: 'string',
+            description: 'Float output type (0-1).',
+            enum: ['float'],
+          },
+          description: {
+            type: 'string',
+            description: 'The description of the Metric.',
+          },
+          evalModelName: {
+            type: 'string',
+            description: 'The AI model to use for evaluation.',
+          },
+          guidelines: {
+            type: 'string',
+            description: 'Guidelines for AI evaluation on how to score the metric.',
+          },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
+          passingThreshold: {
+            type: 'number',
+            description: 'Threshold for determining pass/fail from float scores (0.0-1.0).',
+          },
+          promptTemplate: {
+            type: 'string',
+            description:
+              'The complete prompt template for AI evaluation. Should include placeholders for dynamic content.',
+          },
+          temperature: {
+            type: 'number',
+            description: 'The temperature for AI evaluation (0-2).',
+          },
+        },
+        required: ['metricId', 'evalType', 'outputType'],
+      },
+      {
+        type: 'object',
+        properties: {
+          metricId: {
+            type: 'string',
+          },
+          evalType: {
+            type: 'string',
+            description: 'Human-based evaluation type.',
+            enum: ['human'],
+          },
+          outputType: {
+            type: 'string',
+            description: 'Float output type (0-1).',
+            enum: ['float'],
+          },
+          description: {
+            type: 'string',
+            description: 'The description of the Metric.',
+          },
+          guidelines: {
+            type: 'string',
+            description: 'Guidelines for human evaluators.',
+          },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
+          passingThreshold: {
+            type: 'number',
+            description: 'Threshold for determining pass/fail from float scores (0.0-1.0).',
+          },
+        },
+        required: ['metricId', 'evalType', 'outputType'],
+      },
+      {
+        type: 'object',
+        properties: {
+          metricId: {
+            type: 'string',
+          },
+          evalType: {
+            type: 'string',
+            description: 'Heuristic-based evaluation type.',
+            enum: ['heuristic'],
+          },
+          outputType: {
+            type: 'string',
+            description: 'Float output type (0-1).',
+            enum: ['float'],
+          },
+          description: {
+            type: 'string',
+            description: 'The description of the Metric.',
+          },
+          guidelines: {
+            type: 'string',
+            description: 'Optional guidelines for heuristic evaluation logic.',
+          },
+          name: {
+            type: 'string',
+            description: 'The name of the Metric.',
+          },
+          passingThreshold: {
+            type: 'number',
+            description: 'Threshold for determining pass/fail from float scores (0.0-1.0).',
+          },
+        },
+        required: ['metricId', 'evalType', 'outputType'],
+      },
+      {
+        type: 'object',
+        properties: {
+          metricId: {
+            type: 'string',
+          },
+          evalType: {
+            type: 'string',
+            description: 'AI-based evaluation type.',
+            enum: ['ai'],
+          },
+          outputType: {
+            type: 'string',
             description: 'Boolean output type.',
             enum: ['boolean'],
           },
