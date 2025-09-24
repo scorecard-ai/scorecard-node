@@ -58,6 +58,9 @@ export type Metric =
   | Metric.AIIntMetric
   | Metric.HumanIntMetric
   | Metric.HeuristicIntMetric
+  | Metric.AIFloatMetric
+  | Metric.HumanFloatMetric
+  | Metric.HeuristicFloatMetric
   | Metric.AIBooleanMetric
   | Metric.HumanBooleanMetric
   | Metric.HeuristicBooleanMetric;
@@ -200,6 +203,142 @@ export namespace Metric {
   }
 
   /**
+   * A Metric with AI evaluation and float output.
+   */
+  export interface AIFloatMetric {
+    /**
+     * The ID of the Metric.
+     */
+    id: string;
+
+    /**
+     * The description of the Metric.
+     */
+    description: string | null;
+
+    /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName: string;
+
+    /**
+     * AI-based evaluation type.
+     */
+    evalType: 'ai';
+
+    /**
+     * Guidelines for AI evaluation on how to score the metric.
+     */
+    guidelines: string | null;
+
+    /**
+     * The name of the Metric.
+     */
+    name: string;
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold: number;
+
+    /**
+     * The complete prompt template for AI evaluation. Should include placeholders for
+     * dynamic content.
+     */
+    promptTemplate: string;
+
+    /**
+     * The temperature for AI evaluation (0-2).
+     */
+    temperature: number;
+  }
+
+  /**
+   * A Metric with human evaluation and float output.
+   */
+  export interface HumanFloatMetric {
+    /**
+     * The ID of the Metric.
+     */
+    id: string;
+
+    /**
+     * The description of the Metric.
+     */
+    description: string | null;
+
+    /**
+     * Human-based evaluation type.
+     */
+    evalType: 'human';
+
+    /**
+     * The name of the Metric.
+     */
+    name: string;
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold: number;
+
+    /**
+     * Guidelines for human evaluators.
+     */
+    guidelines?: string;
+  }
+
+  /**
+   * A Metric with heuristic evaluation and float output.
+   */
+  export interface HeuristicFloatMetric {
+    /**
+     * The ID of the Metric.
+     */
+    id: string;
+
+    /**
+     * The description of the Metric.
+     */
+    description: string | null;
+
+    /**
+     * Heuristic-based evaluation type.
+     */
+    evalType: 'heuristic';
+
+    /**
+     * The name of the Metric.
+     */
+    name: string;
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold: number;
+
+    /**
+     * Optional guidelines for heuristic evaluation logic.
+     */
+    guidelines?: string;
+  }
+
+  /**
    * A Metric with AI evaluation and boolean output.
    */
   export interface AIBooleanMetric {
@@ -325,6 +464,9 @@ export type MetricCreateParams =
   | MetricCreateParams.AIIntMetric
   | MetricCreateParams.HumanIntMetric
   | MetricCreateParams.HeuristicIntMetric
+  | MetricCreateParams.AIFloatMetric
+  | MetricCreateParams.HumanFloatMetric
+  | MetricCreateParams.HeuristicFloatMetric
   | MetricCreateParams.AIBooleanMetric
   | MetricCreateParams.HumanBooleanMetric
   | MetricCreateParams.HeuristicBooleanMetric;
@@ -442,6 +584,118 @@ export declare namespace MetricCreateParams {
     passingThreshold?: number;
   }
 
+  export interface AIFloatMetric {
+    /**
+     * AI-based evaluation type.
+     */
+    evalType: 'ai';
+
+    /**
+     * The name of the Metric.
+     */
+    name: string;
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * The complete prompt template for AI evaluation. Should include placeholders for
+     * dynamic content.
+     */
+    promptTemplate: string;
+
+    /**
+     * The description of the Metric.
+     */
+    description?: string | null;
+
+    /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName?: string;
+
+    /**
+     * Guidelines for AI evaluation on how to score the metric.
+     */
+    guidelines?: string | null;
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold?: number;
+
+    /**
+     * The temperature for AI evaluation (0-2).
+     */
+    temperature?: number;
+  }
+
+  export interface HumanFloatMetric {
+    /**
+     * Human-based evaluation type.
+     */
+    evalType: 'human';
+
+    /**
+     * The name of the Metric.
+     */
+    name: string;
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * The description of the Metric.
+     */
+    description?: string | null;
+
+    /**
+     * Guidelines for human evaluators.
+     */
+    guidelines?: string;
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold?: number;
+  }
+
+  export interface HeuristicFloatMetric {
+    /**
+     * Heuristic-based evaluation type.
+     */
+    evalType: 'heuristic';
+
+    /**
+     * The name of the Metric.
+     */
+    name: string;
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * The description of the Metric.
+     */
+    description?: string | null;
+
+    /**
+     * Optional guidelines for heuristic evaluation logic.
+     */
+    guidelines?: string;
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold?: number;
+  }
+
   export interface AIBooleanMetric {
     /**
      * AI-based evaluation type.
@@ -544,6 +798,9 @@ export type MetricUpdateParams =
   | MetricUpdateParams.AIIntMetric
   | MetricUpdateParams.HumanIntMetric
   | MetricUpdateParams.HeuristicIntMetric
+  | MetricUpdateParams.AIFloatMetric
+  | MetricUpdateParams.HumanFloatMetric
+  | MetricUpdateParams.HeuristicFloatMetric
   | MetricUpdateParams.AIBooleanMetric
   | MetricUpdateParams.HumanBooleanMetric
   | MetricUpdateParams.HeuristicBooleanMetric;
@@ -657,6 +914,118 @@ export declare namespace MetricUpdateParams {
 
     /**
      * The threshold for determining pass/fail from integer scores (1-5).
+     */
+    passingThreshold?: number;
+  }
+
+  export interface AIFloatMetric {
+    /**
+     * AI-based evaluation type.
+     */
+    evalType: 'ai';
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * The description of the Metric.
+     */
+    description?: string | null;
+
+    /**
+     * The AI model to use for evaluation.
+     */
+    evalModelName?: string;
+
+    /**
+     * Guidelines for AI evaluation on how to score the metric.
+     */
+    guidelines?: string | null;
+
+    /**
+     * The name of the Metric.
+     */
+    name?: string;
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold?: number;
+
+    /**
+     * The complete prompt template for AI evaluation. Should include placeholders for
+     * dynamic content.
+     */
+    promptTemplate?: string;
+
+    /**
+     * The temperature for AI evaluation (0-2).
+     */
+    temperature?: number;
+  }
+
+  export interface HumanFloatMetric {
+    /**
+     * Human-based evaluation type.
+     */
+    evalType: 'human';
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * The description of the Metric.
+     */
+    description?: string | null;
+
+    /**
+     * Guidelines for human evaluators.
+     */
+    guidelines?: string;
+
+    /**
+     * The name of the Metric.
+     */
+    name?: string;
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
+     */
+    passingThreshold?: number;
+  }
+
+  export interface HeuristicFloatMetric {
+    /**
+     * Heuristic-based evaluation type.
+     */
+    evalType: 'heuristic';
+
+    /**
+     * Float output type (0-1).
+     */
+    outputType: 'float';
+
+    /**
+     * The description of the Metric.
+     */
+    description?: string | null;
+
+    /**
+     * Optional guidelines for heuristic evaluation logic.
+     */
+    guidelines?: string;
+
+    /**
+     * The name of the Metric.
+     */
+    name?: string;
+
+    /**
+     * Threshold for determining pass/fail from float scores (0.0-1.0).
      */
     passingThreshold?: number;
   }
