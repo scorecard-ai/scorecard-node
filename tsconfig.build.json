@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "scorecard-ai/*": ["dist/src/*"],
-      "scorecard-ai": ["dist/src/index.ts"]
+      "scorecard-ai/*": ["./dist/src/*"],
+      "scorecard-ai": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,

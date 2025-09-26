@@ -7,10 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "scorecard-ai/*": ["src/*"],
-      "scorecard-ai": ["src/index.ts"]
+      "scorecard-ai/*": ["./src/*"],
+      "scorecard-ai": ["./src/index.ts"]
     },
     "noEmit": true,
 
