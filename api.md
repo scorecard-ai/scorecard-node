@@ -55,6 +55,8 @@ Types:
 Methods:
 
 - <code title="post /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">create</a>(projectID, { ...params }) -> Run</code>
+- <code title="get /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">list</a>(projectID, { ...params }) -> RunsPaginatedResponse</code>
+- <code title="get /runs/{runId}">client.runs.<a href="./src/resources/runs.ts">get</a>(runID) -> Run</code>
 
 # Metrics
 

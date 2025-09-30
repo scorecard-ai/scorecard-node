@@ -26,4 +26,33 @@ describe('resource runs', () => {
       testsetId: '246',
     });
   });
+
+  test('list', async () => {
+    const responsePromise = client.runs.list('314');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.runs.list('314', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Scorecard.NotFoundError);
+  });
+
+  test('get', async () => {
+    const responsePromise = client.runs.get('135');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
 });

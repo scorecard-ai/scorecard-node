@@ -239,6 +239,8 @@ The following tools are available in this MCP server.
 ### Resource `runs`:
 
 - `create_runs` (`write`): Create a new Run.
+- `list_runs` (`read`): Retrieve a paginated list of all Runs for a Project. Runs are ordered by creation date, most recent first.
+- `get_runs` (`read`): Retrieve a specific Run by ID.
 
 ### Resource `metrics`:
 
