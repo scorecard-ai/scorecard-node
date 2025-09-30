@@ -27,7 +27,7 @@ import {
   ProjectsPaginatedResponse,
 } from './resources/projects';
 import { Record, RecordCreateParams, Records } from './resources/records';
-import { Run, RunCreateParams, Runs } from './resources/runs';
+import { Run, RunCreateParams, RunListParams, Runs, RunsPaginatedResponse } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
   Testcase,
@@ -858,7 +858,13 @@ export declare namespace Scorecard {
     type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 
-  export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
+  export {
+    Runs as Runs,
+    type Run as Run,
+    type RunsPaginatedResponse as RunsPaginatedResponse,
+    type RunCreateParams as RunCreateParams,
+    type RunListParams as RunListParams,
+  };
 
   export {
     Metrics as Metrics,

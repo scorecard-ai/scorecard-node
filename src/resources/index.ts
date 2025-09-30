@@ -10,7 +10,7 @@ export {
   type ProjectsPaginatedResponse,
 } from './projects';
 export { Records, type Record, type RecordCreateParams } from './records';
-export { Runs, type Run, type RunCreateParams } from './runs';
+export { Runs, type Run, type RunCreateParams, type RunListParams, type RunsPaginatedResponse } from './runs';
 export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
   Systems,
