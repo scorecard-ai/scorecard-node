@@ -130,7 +130,7 @@ export const tool: Tool = {
           },
           guidelines: {
             type: 'string',
-            description: 'Optional guidelines for heuristic evaluation logic.',
+            description: 'Guidelines for heuristic evaluation logic.',
           },
           passingThreshold: {
             type: 'integer',
@@ -248,7 +248,7 @@ export const tool: Tool = {
           },
           guidelines: {
             type: 'string',
-            description: 'Optional guidelines for heuristic evaluation logic.',
+            description: 'Guidelines for heuristic evaluation logic.',
           },
           passingThreshold: {
             type: 'number',
@@ -358,7 +358,7 @@ export const tool: Tool = {
           },
           guidelines: {
             type: 'string',
-            description: 'Optional guidelines for heuristic evaluation logic.',
+            description: 'Guidelines for heuristic evaluation logic.',
           },
         },
         required: ['projectId', 'evalType', 'name', 'outputType'],

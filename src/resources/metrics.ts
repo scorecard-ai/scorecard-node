@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -49,7 +50,44 @@ export class Metrics extends APIResource {
   update(metricID: string, body: MetricUpdateParams, options?: RequestOptions): APIPromise<Metric> {
     return this._client.patch(path`/metrics/${metricID}`, { body, ...options });
   }
+
+  /**
+   * List Metrics configured for the specified Project. Metrics are returned in
+   * reverse chronological order.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const metric of client.metrics.list('314')) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    projectID: string,
+    query: MetricListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MetricsPaginatedResponse, Metric> {
+    return this._client.getAPIList(path`/projects/${projectID}/metrics`, PaginatedResponse<Metric>, {
+      query,
+      ...options,
+    });
+  }
+
+  /**
+   * Retrieve a specific Metric by ID.
+   *
+   * @example
+   * ```ts
+   * const metric = await client.metrics.get('321');
+   * ```
+   */
+  get(metricID: string, options?: RequestOptions): APIPromise<Metric> {
+    return this._client.get(path`/metrics/${metricID}`, options);
+  }
 }
+
+export type MetricsPaginatedResponse = PaginatedResponse<Metric>;
 
 /**
  * A Metric defines how to evaluate system outputs against expected results.
@@ -93,7 +131,7 @@ export namespace Metric {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines: string | null;
+    guidelines: string;
 
     /**
      * The name of the Metric.
@@ -142,6 +180,11 @@ export namespace Metric {
     evalType: 'human';
 
     /**
+     * Guidelines for human evaluators.
+     */
+    guidelines: string;
+
+    /**
      * The name of the Metric.
      */
     name: string;
@@ -155,11 +198,6 @@ export namespace Metric {
      * The threshold for determining pass/fail from integer scores (1-5).
      */
     passingThreshold: number;
-
-    /**
-     * Guidelines for human evaluators.
-     */
-    guidelines?: string;
   }
 
   /**
@@ -182,6 +220,11 @@ export namespace Metric {
     evalType: 'heuristic';
 
     /**
+     * Guidelines for heuristic evaluation logic.
+     */
+    guidelines: string;
+
+    /**
      * The name of the Metric.
      */
     name: string;
@@ -195,11 +238,6 @@ export namespace Metric {
      * The threshold for determining pass/fail from integer scores (1-5).
      */
     passingThreshold: number;
-
-    /**
-     * Optional guidelines for heuristic evaluation logic.
-     */
-    guidelines?: string;
   }
 
   /**
@@ -229,7 +267,7 @@ export namespace Metric {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines: string | null;
+    guidelines: string;
 
     /**
      * The name of the Metric.
@@ -278,6 +316,11 @@ export namespace Metric {
     evalType: 'human';
 
     /**
+     * Guidelines for human evaluators.
+     */
+    guidelines: string;
+
+    /**
      * The name of the Metric.
      */
     name: string;
@@ -291,11 +334,6 @@ export namespace Metric {
      * Threshold for determining pass/fail from float scores (0.0-1.0).
      */
     passingThreshold: number;
-
-    /**
-     * Guidelines for human evaluators.
-     */
-    guidelines?: string;
   }
 
   /**
@@ -318,6 +356,11 @@ export namespace Metric {
     evalType: 'heuristic';
 
     /**
+     * Guidelines for heuristic evaluation logic.
+     */
+    guidelines: string;
+
+    /**
      * The name of the Metric.
      */
     name: string;
@@ -331,11 +374,6 @@ export namespace Metric {
      * Threshold for determining pass/fail from float scores (0.0-1.0).
      */
     passingThreshold: number;
-
-    /**
-     * Optional guidelines for heuristic evaluation logic.
-     */
-    guidelines?: string;
   }
 
   /**
@@ -365,7 +403,7 @@ export namespace Metric {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines: string | null;
+    guidelines: string;
 
     /**
      * The name of the Metric.
@@ -409,6 +447,11 @@ export namespace Metric {
     evalType: 'human';
 
     /**
+     * Guidelines for human evaluators.
+     */
+    guidelines: string;
+
+    /**
      * The name of the Metric.
      */
     name: string;
@@ -417,11 +460,6 @@ export namespace Metric {
      * Boolean output type.
      */
     outputType: 'boolean';
-
-    /**
-     * Guidelines for human evaluators.
-     */
-    guidelines?: string;
   }
 
   /**
@@ -444,6 +482,11 @@ export namespace Metric {
     evalType: 'heuristic';
 
     /**
+     * Guidelines for heuristic evaluation logic.
+     */
+    guidelines: string;
+
+    /**
      * The name of the Metric.
      */
     name: string;
@@ -452,11 +495,6 @@ export namespace Metric {
      * Boolean output type.
      */
     outputType: 'boolean';
-
-    /**
-     * Optional guidelines for heuristic evaluation logic.
-     */
-    guidelines?: string;
   }
 }
 
@@ -507,7 +545,7 @@ export declare namespace MetricCreateParams {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines?: string | null;
+    guidelines?: string;
 
     /**
      * The threshold for determining pass/fail from integer scores (1-5).
@@ -574,7 +612,7 @@ export declare namespace MetricCreateParams {
     description?: string | null;
 
     /**
-     * Optional guidelines for heuristic evaluation logic.
+     * Guidelines for heuristic evaluation logic.
      */
     guidelines?: string;
 
@@ -619,7 +657,7 @@ export declare namespace MetricCreateParams {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines?: string | null;
+    guidelines?: string;
 
     /**
      * Threshold for determining pass/fail from float scores (0.0-1.0).
@@ -686,7 +724,7 @@ export declare namespace MetricCreateParams {
     description?: string | null;
 
     /**
-     * Optional guidelines for heuristic evaluation logic.
+     * Guidelines for heuristic evaluation logic.
      */
     guidelines?: string;
 
@@ -731,7 +769,7 @@ export declare namespace MetricCreateParams {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines?: string | null;
+    guidelines?: string;
 
     /**
      * The temperature for AI evaluation (0-2).
@@ -788,7 +826,7 @@ export declare namespace MetricCreateParams {
     description?: string | null;
 
     /**
-     * Optional guidelines for heuristic evaluation logic.
+     * Guidelines for heuristic evaluation logic.
      */
     guidelines?: string;
   }
@@ -830,7 +868,7 @@ export declare namespace MetricUpdateParams {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines?: string | null;
+    guidelines?: string;
 
     /**
      * The name of the Metric.
@@ -903,7 +941,7 @@ export declare namespace MetricUpdateParams {
     description?: string | null;
 
     /**
-     * Optional guidelines for heuristic evaluation logic.
+     * Guidelines for heuristic evaluation logic.
      */
     guidelines?: string;
 
@@ -942,7 +980,7 @@ export declare namespace MetricUpdateParams {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines?: string | null;
+    guidelines?: string;
 
     /**
      * The name of the Metric.
@@ -1015,7 +1053,7 @@ export declare namespace MetricUpdateParams {
     description?: string | null;
 
     /**
-     * Optional guidelines for heuristic evaluation logic.
+     * Guidelines for heuristic evaluation logic.
      */
     guidelines?: string;
 
@@ -1054,7 +1092,7 @@ export declare namespace MetricUpdateParams {
     /**
      * Guidelines for AI evaluation on how to score the metric.
      */
-    guidelines?: string | null;
+    guidelines?: string;
 
     /**
      * The name of the Metric.
@@ -1117,7 +1155,7 @@ export declare namespace MetricUpdateParams {
     description?: string | null;
 
     /**
-     * Optional guidelines for heuristic evaluation logic.
+     * Guidelines for heuristic evaluation logic.
      */
     guidelines?: string;
 
@@ -1128,10 +1166,14 @@ export declare namespace MetricUpdateParams {
   }
 }
 
+export interface MetricListParams extends PaginatedResponseParams {}
+
 export declare namespace Metrics {
   export {
     type Metric as Metric,
+    type MetricsPaginatedResponse as MetricsPaginatedResponse,
     type MetricCreateParams as MetricCreateParams,
     type MetricUpdateParams as MetricUpdateParams,
+    type MetricListParams as MetricListParams,
   };
 }
