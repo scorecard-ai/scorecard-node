@@ -68,6 +68,8 @@ Methods:
 
 - <code title="post /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">create</a>(projectID, { ...params }) -> Metric</code>
 - <code title="patch /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">update</a>(metricID, { ...params }) -> Metric</code>
+- <code title="get /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">list</a>(projectID, { ...params }) -> MetricsPaginatedResponse</code>
+- <code title="get /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">get</a>(metricID) -> Metric</code>
 
 # Records
 

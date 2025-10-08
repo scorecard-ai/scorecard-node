@@ -126,7 +126,7 @@ export const tool: Tool = {
           },
           guidelines: {
             type: 'string',
-            description: 'Optional guidelines for heuristic evaluation logic.',
+            description: 'Guidelines for heuristic evaluation logic.',
           },
           name: {
             type: 'string',
@@ -244,7 +244,7 @@ export const tool: Tool = {
           },
           guidelines: {
             type: 'string',
-            description: 'Optional guidelines for heuristic evaluation logic.',
+            description: 'Guidelines for heuristic evaluation logic.',
           },
           name: {
             type: 'string',
@@ -354,7 +354,7 @@ export const tool: Tool = {
           },
           guidelines: {
             type: 'string',
-            description: 'Optional guidelines for heuristic evaluation logic.',
+            description: 'Guidelines for heuristic evaluation logic.',
           },
           name: {
             type: 'string',
