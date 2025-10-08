@@ -18,7 +18,14 @@ import { AbstractPage, type PaginatedResponseParams, PaginatedResponseResponse }
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Metric, MetricCreateParams, MetricUpdateParams, Metrics } from './resources/metrics';
+import {
+  Metric,
+  MetricCreateParams,
+  MetricListParams,
+  MetricUpdateParams,
+  Metrics,
+  MetricsPaginatedResponse,
+} from './resources/metrics';
 import {
   Project,
   ProjectCreateParams,
@@ -869,8 +876,10 @@ export declare namespace Scorecard {
   export {
     Metrics as Metrics,
     type Metric as Metric,
+    type MetricsPaginatedResponse as MetricsPaginatedResponse,
     type MetricCreateParams as MetricCreateParams,
     type MetricUpdateParams as MetricUpdateParams,
+    type MetricListParams as MetricListParams,
   };
 
   export { Records as Records, type Record as Record, type RecordCreateParams as RecordCreateParams };
