@@ -1,5 +1,49 @@
 # Changelog
 
+## 2.2.0 (2025-10-10)
+
+Full Changelog: [v2.1.1...v2.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.1.1...v2.2.0)
+
+### Features
+
+* **api:** api update ([2941de8](https://github.com/scorecard-ai/scorecard-node/commit/2941de87bd74904a46203346e7c9c198ef420d82))
+* **api:** api update ([e5d64e1](https://github.com/scorecard-ai/scorecard-node/commit/e5d64e1fbbf683e03b3addc6c8ca3797af971707))
+* **api:** api update ([86074e9](https://github.com/scorecard-ai/scorecard-node/commit/86074e92420460d0be8ccec33b72d5e8c76cd78e))
+* **api:** api update ([6f36777](https://github.com/scorecard-ai/scorecard-node/commit/6f36777a3453083b274f9f9d7f3a7b92df56a53d))
+* **mcp:** add docs search tool ([128fe09](https://github.com/scorecard-ai/scorecard-node/commit/128fe094fd9c7c1f8d752da2bfb5559dc6ed8195))
+* **mcp:** add option for including docs tools ([ce1562b](https://github.com/scorecard-ai/scorecard-node/commit/ce1562bad99f2fa7156c77518c993b3bbfb540de))
+* **mcp:** enable experimental docs search tool ([87fa22d](https://github.com/scorecard-ai/scorecard-node/commit/87fa22d1c0756459916f302c02d7e9505cfff1a4))
+
+
+### Bug Fixes
+
+* **ci:** set permissions for DXT publish action ([bcc505d](https://github.com/scorecard-ai/scorecard-node/commit/bcc505d3dd91ee756eb16e7789868c76c8a0d7d6))
+* **mcp:** fix cli argument parsing logic ([78d3bc2](https://github.com/scorecard-ai/scorecard-node/commit/78d3bc2246a23eedf7714173f24834e7312c1e55))
+* **mcp:** resolve a linting issue in server code ([47f8fc1](https://github.com/scorecard-ai/scorecard-node/commit/47f8fc162675233065c93c82018b0e9c2b07f27f))
+
+
+### Performance Improvements
+
+* faster formatting ([162877e](https://github.com/scorecard-ai/scorecard-node/commit/162877edb55321a21e29f38528e54faa68f279c3))
+
+
+### Chores
+
+* **codegen:** internal codegen update ([ba01054](https://github.com/scorecard-ai/scorecard-node/commit/ba010547ef14826c719477a97a5c8e929f7d1c03))
+* do not install brew dependencies in ./scripts/bootstrap by default ([15a6bcc](https://github.com/scorecard-ai/scorecard-node/commit/15a6bcc92733aadb13a9035afc631fe6038121ef))
+* extract some types in mcp docs ([5c22a49](https://github.com/scorecard-ai/scorecard-node/commit/5c22a49bc96245028aff1f0563913c4fa6d2e30d))
+* **internal:** codegen related update ([391c649](https://github.com/scorecard-ai/scorecard-node/commit/391c649c02fda67cafd1bf792238602dc38c6ea8))
+* **internal:** fix incremental formatting in some cases ([a0c253c](https://github.com/scorecard-ai/scorecard-node/commit/a0c253ca6e08f2e896392ac00248e807226d439f))
+* **internal:** gitignore .mcpb files ([a68e9e2](https://github.com/scorecard-ai/scorecard-node/commit/a68e9e240c66f18a99f3667beb302d9a655045fc))
+* **internal:** ignore .eslintcache ([4a8b4ad](https://github.com/scorecard-ai/scorecard-node/commit/4a8b4adb28d2199880d6001d63f54861a966bc66))
+* **internal:** remove .eslintcache ([34e9d5d](https://github.com/scorecard-ai/scorecard-node/commit/34e9d5db9a8361b2dd6af76f6c1bfed253da91fd))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([09e0042](https://github.com/scorecard-ai/scorecard-node/commit/09e0042b339def906d2fec0e660e5e56bd934843))
+* **internal:** use npm pack for build uploads ([294e90e](https://github.com/scorecard-ai/scorecard-node/commit/294e90e28fc718699114b8b509747619905782f7))
+* **jsdoc:** fix [@link](https://github.com/link) annotations to refer only to parts of the package‘s public interface ([cb39e99](https://github.com/scorecard-ai/scorecard-node/commit/cb39e99e842114a189377cfcbccc9455099285c1))
+* **mcp:** allow pointing `docs_search` tool at other URLs ([84cde28](https://github.com/scorecard-ai/scorecard-node/commit/84cde28ea4f158fde8c97eaf259ad02bbc98138a))
+* **mcp:** rename dxt to mcpb ([e2effef](https://github.com/scorecard-ai/scorecard-node/commit/e2effeff4fa50d26f47d1a58a268e4e5eae3159d))
+* update lockfile ([077d5a1](https://github.com/scorecard-ai/scorecard-node/commit/077d5a1700eaa676662aa7904ffdda29d97e2305))
+
 ## 2.1.1 (2025-09-12)
 
 Full Changelog: [v2.1.0...v2.1.1](https://github.com/scorecard-ai/scorecard-node/compare/v2.1.0...v2.1.1)
