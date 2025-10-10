@@ -33,7 +33,14 @@ import {
   Projects,
   ProjectsPaginatedResponse,
 } from './resources/projects';
-import { Record, RecordCreateParams, Records } from './resources/records';
+import {
+  Record,
+  RecordCreateParams,
+  RecordListParams,
+  RecordListResponse,
+  RecordListResponsesPaginatedResponse,
+  Records,
+} from './resources/records';
 import { Run, RunCreateParams, RunListParams, Runs, RunsPaginatedResponse } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
@@ -882,7 +889,14 @@ export declare namespace Scorecard {
     type MetricListParams as MetricListParams,
   };
 
-  export { Records as Records, type Record as Record, type RecordCreateParams as RecordCreateParams };
+  export {
+    Records as Records,
+    type Record as Record,
+    type RecordListResponse as RecordListResponse,
+    type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
+    type RecordCreateParams as RecordCreateParams,
+    type RecordListParams as RecordListParams,
+  };
 
   export { Scores as Scores, type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
 
