@@ -16,7 +16,14 @@ export {
   type ProjectListParams,
   type ProjectsPaginatedResponse,
 } from './projects';
-export { Records, type Record, type RecordCreateParams } from './records';
+export {
+  Records,
+  type Record,
+  type RecordListResponse,
+  type RecordCreateParams,
+  type RecordListParams,
+  type RecordListResponsesPaginatedResponse,
+} from './records';
 export { Runs, type Run, type RunCreateParams, type RunListParams, type RunsPaginatedResponse } from './runs';
 export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
