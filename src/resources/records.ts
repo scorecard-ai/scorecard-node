@@ -51,6 +51,18 @@ export class Records extends APIResource {
       ...options,
     });
   }
+
+  /**
+   * Delete a specific Record by ID.
+   *
+   * @example
+   * ```ts
+   * const record = await client.records.delete('777');
+   * ```
+   */
+  delete(recordID: string, options?: RequestOptions): APIPromise<RecordDeleteResponse> {
+    return this._client.delete(path`/records/${recordID}`, options);
+  }
 }
 
 export type RecordListResponsesPaginatedResponse = PaginatedResponse<RecordListResponse>;
@@ -101,6 +113,13 @@ export interface RecordListResponse extends Record {
   scores: Array<ScoresAPI.Score>;
 }
 
+export interface RecordDeleteResponse {
+  /**
+   * Whether the deletion was successful.
+   */
+  success: boolean;
+}
+
 export interface RecordCreateParams {
   /**
    * The expected outputs for the Testcase.
@@ -130,6 +149,7 @@ export declare namespace Records {
   export {
     type Record as Record,
     type RecordListResponse as RecordListResponse,
+    type RecordDeleteResponse as RecordDeleteResponse,
     type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
     type RecordCreateParams as RecordCreateParams,
     type RecordListParams as RecordListParams,
