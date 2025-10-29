@@ -253,6 +253,7 @@ The following tools are available in this MCP server.
 
 - `create_records` (`write`): Create a new Record in a Run.
 - `list_records` (`read`): Retrieve a paginated list of Records for a Run, including all scores for each record.
+- `delete_records` (`write`): Delete a specific Record by ID.
 
 ### Resource `scores`:
 

@@ -20,6 +20,7 @@ export {
   Records,
   type Record,
   type RecordListResponse,
+  type RecordDeleteResponse,
   type RecordCreateParams,
   type RecordListParams,
   type RecordListResponsesPaginatedResponse,

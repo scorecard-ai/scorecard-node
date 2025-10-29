@@ -36,6 +36,7 @@ import {
 import {
   Record,
   RecordCreateParams,
+  RecordDeleteResponse,
   RecordListParams,
   RecordListResponse,
   RecordListResponsesPaginatedResponse,
@@ -907,6 +908,7 @@ export declare namespace Scorecard {
     Records as Records,
     type Record as Record,
     type RecordListResponse as RecordListResponse,
+    type RecordDeleteResponse as RecordDeleteResponse,
     type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
     type RecordCreateParams as RecordCreateParams,
     type RecordListParams as RecordListParams,
