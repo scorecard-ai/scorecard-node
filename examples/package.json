@@ -7,6 +7,8 @@
   "private": true,
   "packageManager": "yarn@1.22.22",
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.58",
+    "ai": "^5.0.82",
     "openai": "^4.96.0",
     "scorecard-ai": "file:.."
   }
