@@ -128,6 +128,45 @@ over time, you can manually enable or disable certain capabilities:
 --resource=cards,accounts --operation=read --tag=kyc --no-tool=create_cards
 ```
 
+## Running remotely
+
+Launching the client with `--transport=http` launches the server as a remote server using Streamable HTTP transport. The `--port` setting can choose the port it will run on, and the `--socket` setting allows it to run on a Unix socket.
+
+Authorization can be provided via the `Authorization` header using the Bearer scheme.
+
+Additionally, authorization can be provided via the following headers:
+| Header | Equivalent client option | Security scheme |
+| --------------------- | ------------------------ | --------------- |
+| `x-scorecard-api-key` | `apiKey` | ApiKeyAuth |
+
+A configuration JSON for this server might look like this, assuming the server is hosted at `http://localhost:3000`:
+
+```json
+{
+  "mcpServers": {
+    "scorecard_ai_api": {
+      "url": "http://localhost:3000",
+      "headers": {
+        "Authorization": "Bearer <auth value>"
+      }
+    }
+  }
+}
+```
+
+The command-line arguments for filtering tools and specifying clients can also be used as query parameters in the URL.
+For example, to exclude specific tools while including others, use the URL:
+
+```
+http://localhost:3000?resource=cards&resource=accounts&no_tool=create_cards
+```
+
+Or, to configure for the Cursor client, with a custom max tool name length, use the URL:
+
+```
+http://localhost:3000?client=cursor&capability=tool-name-length%3D40
+```
+
 ## Importing the tools and server individually
 
 ```js
@@ -187,7 +226,7 @@ The following tools are available in this MCP server.
 
 - `list_testsets` (`read`): Retrieve a paginated list of Testsets belonging to a Project.
 - `delete_testsets` (`write`): Delete Testset
-- `get_testsets` (`read`): Get Testset by ID
+- `get_testsets` (`read`): Get Testset
 
 ### Resource `testcases`:
 
@@ -200,10 +239,20 @@ The following tools are available in this MCP server.
 ### Resource `runs`:
 
 - `create_runs` (`write`): Create a new Run.
+- `list_runs` (`read`): Retrieve a paginated list of all Runs for a Project. Runs are ordered by creation date, most recent first.
+- `get_runs` (`read`): Retrieve a specific Run by ID.
+
+### Resource `metrics`:
+
+- `create_metrics` (`write`): Create a new Metric for evaluating system outputs. The structure of a metric depends on the evalType and outputType of the metric.
+- `update_metrics` (`write`): Update an existing Metric. You must specify the evalType and outputType of the metric. The structure of a metric depends on the evalType and outputType of the metric.
+- `list_metrics` (`read`): List Metrics configured for the specified Project. Metrics are returned in reverse chronological order.
+- `get_metrics` (`read`): Retrieve a specific Metric by ID.
 
 ### Resource `records`:
 
 - `create_records` (`write`): Create a new Record in a Run.
+- `list_records` (`read`): Retrieve a paginated list of Records for a Run, including all scores for each record.
 
 ### Resource `scores`:
 
@@ -211,46 +260,17 @@ The following tools are available in this MCP server.
 
 ### Resource `systems`:
 
-- `create_systems` (`write`): Create a new system definition that specifies the interface contracts for a component you want to evaluate.
-
-  A system acts as a template that defines three key contracts through JSON Schemas:
-
-  1. Input Schema: What data your system accepts (e.g., user queries, context documents)
-  2. Output Schema: What data your system produces (e.g., responses, confidence scores)
-  3. Config Schema: What parameters can be adjusted (e.g., model selection, temperature)
-
-  This separation lets you evaluate any system as a black box, focusing on its interface rather than implementation details.
-
-- `update_systems` (`write`): Update an existing system definition. Only the fields provided in the request body will be updated.
+- `update_systems` (`write`): Update an existing system. Only the fields provided in the request body will be updated.
   If a field is provided, the new content will replace the existing content.
   If a field is not provided, the existing content will remain unchanged.
-
-  When updating schemas:
-
-  - The system will accept your changes regardless of compatibility with existing configurations
-  - Schema updates won't invalidate existing evaluations or configurations
-  - For significant redesigns, creating a new system definition provides a cleaner separation
-
 - `list_systems` (`read`): Retrieve a paginated list of all systems. Systems are ordered by creation date.
-- `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system configurations.
+- `delete_systems` (`write`): Delete a system definition by ID. This will not delete associated system versions.
 - `get_systems` (`read`): Retrieve a specific system by ID.
+- `upsert_systems` (`write`): Create a new system. If one with the same name in the project exists, it updates it instead.
 
-### Resource `system_configs`:
+### Resource `systems.versions`:
 
-- `create_system_configs` (`write`): Create a new configuration for a system.
+- `get_systems_versions` (`read`): Retrieve a specific system version by ID.
+- `upsert_systems_versions` (`write`): Create a new system version if it does not already exist. Does **not** set the created version to be the system's production version.
 
-  Each configuration contains specific parameter values that match the system's configSchema - things like model parameters, thresholds, or processing options.
-  Once created, configurations cannot be modified, ensuring stable reference points for evaluations.
-
-  When creating a configuration:
-
-  - The 'config' object is validated against the parent system's configSchema
-  - Configurations with validation errors are still stored, with errors included in the response
-  - Validation errors indicate fields that don't match the schema but don't prevent creation
-  - Having validation errors may affect how some evaluation metrics are calculated
-
-- `list_system_configs` (`read`): Retrieve a paginated list of configurations for a specific system.
-
-  System configurations provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.
-
-- `get_system_configs` (`read`): Retrieve a specific system configuration by ID.
+  If there is already a system version with the same config, its name will be updated.

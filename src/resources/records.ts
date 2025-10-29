@@ -1,8 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as ScoresAPI from './scores';
 import { APIPromise } from '../core/api-promise';
-import { type Record as BuiltinRecord } from '../internal/builtin-types';
+import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -25,7 +26,34 @@ export class Records extends APIResource {
   create(runID: string, body: RecordCreateParams, options?: RequestOptions): APIPromise<Record> {
     return this._client.post(path`/runs/${runID}/records`, { body, ...options });
   }
+
+  /**
+   * Retrieve a paginated list of Records for a Run, including all scores for each
+   * record.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const recordListResponse of client.records.list(
+   *   '135',
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    runID: string,
+    query: RecordListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<RecordListResponsesPaginatedResponse, RecordListResponse> {
+    return this._client.getAPIList(path`/runs/${runID}/records`, PaginatedResponse<RecordListResponse>, {
+      query,
+      ...options,
+    });
+  }
 }
+
+export type RecordListResponsesPaginatedResponse = PaginatedResponse<RecordListResponse>;
 
 /**
  * A record of a system execution in the Scorecard system.
@@ -39,18 +67,18 @@ export interface Record {
   /**
    * The expected outputs for the Testcase.
    */
-  expected: BuiltinRecord<string, unknown>;
+  expected: { [key: string]: unknown };
 
   /**
    * The actual inputs sent to the system, which should match the system's input
    * schema.
    */
-  inputs: BuiltinRecord<string, unknown>;
+  inputs: { [key: string]: unknown };
 
   /**
    * The actual outputs from the system.
    */
-  outputs: BuiltinRecord<string, unknown>;
+  outputs: { [key: string]: unknown };
 
   /**
    * The ID of the Run containing this Record.
@@ -63,22 +91,32 @@ export interface Record {
   testcaseId?: string;
 }
 
+/**
+ * A record with all its associated scores.
+ */
+export interface RecordListResponse extends Record {
+  /**
+   * All scores associated with this record.
+   */
+  scores: Array<ScoresAPI.Score>;
+}
+
 export interface RecordCreateParams {
   /**
    * The expected outputs for the Testcase.
    */
-  expected: BuiltinRecord<string, unknown>;
+  expected: { [key: string]: unknown };
 
   /**
    * The actual inputs sent to the system, which should match the system's input
    * schema.
    */
-  inputs: BuiltinRecord<string, unknown>;
+  inputs: { [key: string]: unknown };
 
   /**
    * The actual outputs from the system.
    */
-  outputs: BuiltinRecord<string, unknown>;
+  outputs: { [key: string]: unknown };
 
   /**
    * The ID of the Testcase.
@@ -86,6 +124,14 @@ export interface RecordCreateParams {
   testcaseId?: string;
 }
 
+export interface RecordListParams extends PaginatedResponseParams {}
+
 export declare namespace Records {
-  export { type Record as Record, type RecordCreateParams as RecordCreateParams };
+  export {
+    type Record as Record,
+    type RecordListResponse as RecordListResponse,
+    type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
+    type RecordCreateParams as RecordCreateParams,
+    type RecordListParams as RecordListParams,
+  };
 }

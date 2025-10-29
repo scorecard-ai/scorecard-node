@@ -5,7 +5,6 @@ import type { HTTPMethod, PromiseOrValue, MergedRequestInit, FinalizedRequestIni
 import { uuid4 } from './internal/utils/uuid';
 import { validatePositiveInteger, isAbsoluteURL, safeJSON } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
-import { type Logger, type LogLevel, parseLogLevel } from './internal/utils/log';
 export type { Logger, LogLevel } from './internal/utils/log';
 import { castToError, isAbortError } from './internal/errors';
 import type { APIResponseProps } from './internal/parse';
@@ -19,9 +18,14 @@ import { AbstractPage, type PaginatedResponseParams, PaginatedResponseResponse }
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { type Fetch } from './internal/builtin-types';
-import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
-import { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import {
+  Metric,
+  MetricCreateParams,
+  MetricListParams,
+  MetricUpdateParams,
+  Metrics,
+  MetricsPaginatedResponse,
+} from './resources/metrics';
 import {
   Project,
   ProjectCreateParams,
@@ -29,26 +33,16 @@ import {
   Projects,
   ProjectsPaginatedResponse,
 } from './resources/projects';
-import { Record as RecordsAPIRecord, RecordCreateParams, Records } from './resources/records';
-import { Run, RunCreateParams, Runs } from './resources/runs';
+import {
+  Record,
+  RecordCreateParams,
+  RecordListParams,
+  RecordListResponse,
+  RecordListResponsesPaginatedResponse,
+  Records,
+} from './resources/records';
+import { Run, RunCreateParams, RunListParams, Runs, RunsPaginatedResponse } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
-import {
-  SystemConfig,
-  SystemConfigCreateParams,
-  SystemConfigGetParams,
-  SystemConfigListParams,
-  SystemConfigs,
-  SystemConfigsPaginatedResponse,
-} from './resources/system-configs';
-import {
-  System,
-  SystemCreateParams,
-  SystemDeleteResponse,
-  SystemListParams,
-  SystemUpdateParams,
-  Systems,
-  SystemsPaginatedResponse,
-} from './resources/systems';
 import {
   Testcase,
   TestcaseCreateParams,
@@ -69,8 +63,26 @@ import {
   Testsets,
   TestsetsPaginatedResponse,
 } from './resources/testsets';
+import {
+  System,
+  SystemDeleteResponse,
+  SystemListParams,
+  SystemUpdateParams,
+  SystemUpsertParams,
+  Systems,
+  SystemsPaginatedResponse,
+} from './resources/systems/systems';
+import { type Fetch, type Record as BuiltinRecord } from './internal/builtin-types';
+import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
+import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
-import { formatRequestDetails, loggerFor } from './internal/utils/log';
+import {
+  type LogLevel,
+  type Logger,
+  formatRequestDetails,
+  loggerFor,
+  parseLogLevel,
+} from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
@@ -79,6 +91,18 @@ const environments = {
   local: 'http://localhost:3000/api/v2',
 };
 type Environment = keyof typeof environments;
+
+function baseApiUrlToBaseAppUrl(baseApiUrl: string): string {
+  if (baseApiUrl === environments.production) {
+    return 'https://app.scorecard.io';
+  } else if (baseApiUrl === environments.staging) {
+    return 'https://staging.app.getscorecard.ai';
+  } else if (baseApiUrl === environments.local) {
+    return 'http://localhost:3002';
+  } else {
+    return 'https://staging.app.getscorecard.ai';
+  }
+}
 
 export interface ClientOptions {
   /**
@@ -109,6 +133,8 @@ export interface ClientOptions {
    *
    * Note that request timeouts are retried by default, so in a worst-case scenario you may wait
    * much longer than this timeout before the promise succeeds or fails.
+   *
+   * @unit milliseconds
    */
   timeout?: number | undefined;
   /**
@@ -146,7 +172,7 @@ export interface ClientOptions {
    * These can be removed in individual requests by explicitly setting the
    * param to `undefined` in request options.
    */
-  defaultQuery?: Record<string, string | undefined> | undefined;
+  defaultQuery?: BuiltinRecord<string, string | undefined> | undefined;
 
   /**
    * Set the log level.
@@ -170,6 +196,7 @@ export class Scorecard {
   apiKey: string;
 
   baseURL: string;
+  baseAppURL: string;
   maxRetries: number;
   timeout: number;
   logger: Logger | undefined;
@@ -192,7 +219,7 @@ export class Scorecard {
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
    * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
    * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
-   * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
+   * @param {BuiltinRecord<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
     baseURL = readEnv('SCORECARD_BASE_URL'),
@@ -219,6 +246,7 @@ export class Scorecard {
     }
 
     this.baseURL = options.baseURL || environments[options.environment || 'production'];
+    this.baseAppURL = baseApiUrlToBaseAppUrl(this.baseURL);
     this.timeout = options.timeout ?? Scorecard.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
@@ -242,7 +270,7 @@ export class Scorecard {
    * Create a new client instance re-using the same options given to the current client with optional overriding.
    */
   withOptions(options: Partial<ClientOptions>): this {
-    return new (this.constructor as any as new (props: ClientOptions) => typeof this)({
+    const client = new (this.constructor as any as new (props: ClientOptions) => typeof this)({
       ...this._options,
       environment: options.environment ? options.environment : undefined,
       baseURL: options.environment ? undefined : this.baseURL,
@@ -250,13 +278,22 @@ export class Scorecard {
       timeout: this.timeout,
       logger: this.logger,
       logLevel: this.logLevel,
+      fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
       ...options,
     });
+    return client;
   }
 
-  protected defaultQuery(): Record<string, string | undefined> | undefined {
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== environments[this._options.environment || 'production'];
+  }
+
+  protected defaultQuery(): BuiltinRecord<string, string | undefined> | undefined {
     return this._options.defaultQuery;
   }
 
@@ -264,14 +301,14 @@ export class Scorecard {
     return;
   }
 
-  protected authHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   /**
    * Basic re-implementation of `qs.stringify` for primitive types.
    */
-  protected stringifyQuery(query: Record<string, unknown>): string {
+  protected stringifyQuery(query: BuiltinRecord<string, unknown>): string {
     return Object.entries(query)
       .filter(([_, value]) => typeof value !== 'undefined')
       .map(([key, value]) => {
@@ -305,11 +342,16 @@ export class Scorecard {
     return Errors.APIError.generate(status, error, message, headers);
   }
 
-  buildURL(path: string, query: Record<string, unknown> | null | undefined): string {
+  buildURL(
+    path: string,
+    query: BuiltinRecord<string, unknown> | null | undefined,
+    defaultBaseURL?: string | undefined,
+  ): string {
+    const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
     const url =
       isAbsoluteURL(path) ?
         new URL(path)
-      : new URL(this.baseURL + (this.baseURL.endsWith('/') && path.startsWith('/') ? path.slice(1) : path));
+      : new URL(baseURL + (baseURL.endsWith('/') && path.startsWith('/') ? path.slice(1) : path));
 
     const defaultQuery = this.defaultQuery();
     if (!isEmptyObj(defaultQuery)) {
@@ -317,7 +359,7 @@ export class Scorecard {
     }
 
     if (typeof query === 'object' && query && !Array.isArray(query)) {
-      url.search = this.stringifyQuery(query as Record<string, unknown>);
+      url.search = this.stringifyQuery(query as BuiltinRecord<string, unknown>);
     }
 
     return url.toString();
@@ -391,7 +433,9 @@ export class Scorecard {
 
     await this.prepareOptions(options);
 
-    const { req, url, timeout } = this.buildRequest(options, { retryCount: maxRetries - retriesRemaining });
+    const { req, url, timeout } = await this.buildRequest(options, {
+      retryCount: maxRetries - retriesRemaining,
+    });
 
     await this.prepareRequest(req, { url, options });
 
@@ -419,7 +463,7 @@ export class Scorecard {
     const response = await this.fetchWithTimeout(url, req, timeout, controller).catch(castToError);
     const headersTime = Date.now();
 
-    if (response instanceof Error) {
+    if (response instanceof globalThis.Error) {
       const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
       if (options.signal?.aborted) {
         throw new Errors.APIUserAbortError();
@@ -469,7 +513,7 @@ export class Scorecard {
     } with status ${response.status} in ${headersTime - startTime}ms`;
 
     if (!response.ok) {
-      const shouldRetry = this.shouldRetry(response);
+      const shouldRetry = await this.shouldRetry(response);
       if (retriesRemaining && shouldRetry) {
         const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
 
@@ -587,7 +631,7 @@ export class Scorecard {
     }
   }
 
-  private shouldRetry(response: Response): boolean {
+  private async shouldRetry(response: Response): Promise<boolean> {
     // Note this is not a standard header.
     const shouldRetryHeader = response.headers.get('x-should-retry');
 
@@ -664,18 +708,18 @@ export class Scorecard {
     return sleepSeconds * jitter * 1000;
   }
 
-  buildRequest(
+  async buildRequest(
     inputOptions: FinalRequestOptions,
     { retryCount = 0 }: { retryCount?: number } = {},
-  ): { req: FinalizedRequestInit; url: string; timeout: number } {
+  ): Promise<{ req: FinalizedRequestInit; url: string; timeout: number }> {
     const options = { ...inputOptions };
-    const { method, path, query } = options;
+    const { method, path, query, defaultBaseURL } = options;
 
-    const url = this.buildURL(path!, query as Record<string, unknown>);
+    const url = this.buildURL(path!, query as BuiltinRecord<string, unknown>, defaultBaseURL);
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
-    const reqHeaders = this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
+    const reqHeaders = await this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
 
     const req: FinalizedRequestInit = {
       method,
@@ -691,7 +735,7 @@ export class Scorecard {
     return { req, url, timeout: options.timeout };
   }
 
-  private buildHeaders({
+  private async buildHeaders({
     options,
     method,
     bodyHeaders,
@@ -701,7 +745,7 @@ export class Scorecard {
     method: HTTPMethod;
     bodyHeaders: HeadersLike;
     retryCount: number;
-  }): Headers {
+  }): Promise<Headers> {
     let idempotencyHeaders: HeadersLike = {};
     if (this.idempotencyHeader && method !== 'get') {
       if (!options.idempotencyKey) options.idempotencyKey = this.defaultIdempotencyKey();
@@ -717,7 +761,7 @@ export class Scorecard {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      this.authHeaders(options),
+      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -745,7 +789,7 @@ export class Scorecard {
         // Preserve legacy string encoding behavior for now
         headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
-      body instanceof Blob ||
+      ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
       body instanceof FormData ||
       // `URLSearchParams` -> `application/x-www-form-urlencoded`
@@ -788,19 +832,21 @@ export class Scorecard {
   testsets: API.Testsets = new API.Testsets(this);
   testcases: API.Testcases = new API.Testcases(this);
   runs: API.Runs = new API.Runs(this);
+  metrics: API.Metrics = new API.Metrics(this);
   records: API.Records = new API.Records(this);
   scores: API.Scores = new API.Scores(this);
   systems: API.Systems = new API.Systems(this);
-  systemConfigs: API.SystemConfigs = new API.SystemConfigs(this);
 }
+
 Scorecard.Projects = Projects;
 Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
 Scorecard.Runs = Runs;
+Scorecard.Metrics = Metrics;
 Scorecard.Records = Records;
 Scorecard.Scores = Scores;
 Scorecard.Systems = Systems;
-Scorecard.SystemConfigs = SystemConfigs;
+
 export declare namespace Scorecard {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -840,12 +886,30 @@ export declare namespace Scorecard {
     type TestcaseDeleteParams as TestcaseDeleteParams,
   };
 
-  export { Runs as Runs, type Run as Run, type RunCreateParams as RunCreateParams };
+  export {
+    Runs as Runs,
+    type Run as Run,
+    type RunsPaginatedResponse as RunsPaginatedResponse,
+    type RunCreateParams as RunCreateParams,
+    type RunListParams as RunListParams,
+  };
+
+  export {
+    Metrics as Metrics,
+    type Metric as Metric,
+    type MetricsPaginatedResponse as MetricsPaginatedResponse,
+    type MetricCreateParams as MetricCreateParams,
+    type MetricUpdateParams as MetricUpdateParams,
+    type MetricListParams as MetricListParams,
+  };
 
   export {
     Records as Records,
-    type RecordsAPIRecord as Record,
+    type Record as Record,
+    type RecordListResponse as RecordListResponse,
+    type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
     type RecordCreateParams as RecordCreateParams,
+    type RecordListParams as RecordListParams,
   };
 
   export { Scores as Scores, type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
@@ -855,18 +919,9 @@ export declare namespace Scorecard {
     type System as System,
     type SystemDeleteResponse as SystemDeleteResponse,
     type SystemsPaginatedResponse as SystemsPaginatedResponse,
-    type SystemCreateParams as SystemCreateParams,
     type SystemUpdateParams as SystemUpdateParams,
     type SystemListParams as SystemListParams,
-  };
-
-  export {
-    SystemConfigs as SystemConfigs,
-    type SystemConfig as SystemConfig,
-    type SystemConfigsPaginatedResponse as SystemConfigsPaginatedResponse,
-    type SystemConfigCreateParams as SystemConfigCreateParams,
-    type SystemConfigListParams as SystemConfigListParams,
-    type SystemConfigGetParams as SystemConfigGetParams,
+    type SystemUpsertParams as SystemUpsertParams,
   };
 
   export type APIError = API.APIError;

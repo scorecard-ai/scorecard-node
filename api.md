@@ -55,16 +55,33 @@ Types:
 Methods:
 
 - <code title="post /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">create</a>(projectID, { ...params }) -> Run</code>
+- <code title="get /projects/{projectId}/runs">client.runs.<a href="./src/resources/runs.ts">list</a>(projectID, { ...params }) -> RunsPaginatedResponse</code>
+- <code title="get /runs/{runId}">client.runs.<a href="./src/resources/runs.ts">get</a>(runID) -> Run</code>
+
+# Metrics
+
+Types:
+
+- <code><a href="./src/resources/metrics.ts">Metric</a></code>
+
+Methods:
+
+- <code title="post /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">create</a>(projectID, { ...params }) -> Metric</code>
+- <code title="patch /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">update</a>(metricID, { ...params }) -> Metric</code>
+- <code title="get /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">list</a>(projectID, { ...params }) -> MetricsPaginatedResponse</code>
+- <code title="get /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">get</a>(metricID) -> Metric</code>
 
 # Records
 
 Types:
 
 - <code><a href="./src/resources/records.ts">Record</a></code>
+- <code><a href="./src/resources/records.ts">RecordListResponse</a></code>
 
 Methods:
 
 - <code title="post /runs/{runId}/records">client.records.<a href="./src/resources/records.ts">create</a>(runID, { ...params }) -> Record</code>
+- <code title="get /runs/{runId}/records">client.records.<a href="./src/resources/records.ts">list</a>(runID, { ...params }) -> RecordListResponsesPaginatedResponse</code>
 
 # Scores
 
@@ -80,25 +97,24 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/systems.ts">System</a></code>
-- <code><a href="./src/resources/systems.ts">SystemDeleteResponse</a></code>
+- <code><a href="./src/resources/systems/systems.ts">System</a></code>
+- <code><a href="./src/resources/systems/systems.ts">SystemDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems.ts">create</a>(projectID, { ...params }) -> System</code>
-- <code title="patch /systems/{systemId}">client.systems.<a href="./src/resources/systems.ts">update</a>(systemID, { ...params }) -> System</code>
-- <code title="get /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems.ts">list</a>(projectID, { ...params }) -> SystemsPaginatedResponse</code>
-- <code title="delete /systems/{systemId}">client.systems.<a href="./src/resources/systems.ts">delete</a>(systemID) -> SystemDeleteResponse</code>
-- <code title="get /systems/{systemId}">client.systems.<a href="./src/resources/systems.ts">get</a>(systemID) -> System</code>
+- <code title="patch /systems/{systemId}">client.systems.<a href="./src/resources/systems/systems.ts">update</a>(systemID, { ...params }) -> System</code>
+- <code title="get /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems/systems.ts">list</a>(projectID, { ...params }) -> SystemsPaginatedResponse</code>
+- <code title="delete /systems/{systemId}">client.systems.<a href="./src/resources/systems/systems.ts">delete</a>(systemID) -> SystemDeleteResponse</code>
+- <code title="get /systems/{systemId}">client.systems.<a href="./src/resources/systems/systems.ts">get</a>(systemID) -> System</code>
+- <code title="post /projects/{projectId}/systems">client.systems.<a href="./src/resources/systems/systems.ts">upsert</a>(projectID, { ...params }) -> System</code>
 
-# SystemConfigs
+## Versions
 
 Types:
 
-- <code><a href="./src/resources/system-configs.ts">SystemConfig</a></code>
+- <code><a href="./src/resources/systems/versions.ts">SystemVersion</a></code>
 
 Methods:
 
-- <code title="post /systems/{systemId}/configs">client.systemConfigs.<a href="./src/resources/system-configs.ts">create</a>(systemID, { ...params }) -> SystemConfig</code>
-- <code title="get /systems/{systemId}/configs">client.systemConfigs.<a href="./src/resources/system-configs.ts">list</a>(systemID, { ...params }) -> SystemConfigsPaginatedResponse</code>
-- <code title="get /systems/{systemId}/configs/{systemConfigId}">client.systemConfigs.<a href="./src/resources/system-configs.ts">get</a>(systemConfigID, { ...params }) -> SystemConfig</code>
+- <code title="get /systems/versions/{systemVersionId}">client.systems.versions.<a href="./src/resources/systems/versions.ts">get</a>(systemVersionID) -> SystemVersion</code>
+- <code title="post /systems/{systemId}/versions">client.systems.versions.<a href="./src/resources/systems/versions.ts">upsert</a>(systemID, { ...params }) -> SystemVersion</code>

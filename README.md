@@ -1,6 +1,6 @@
 # Scorecard TypeScript API Library
 
-[![NPM version](https://img.shields.io/npm/v/scorecard-ai.svg)](https://npmjs.org/package/scorecard-ai) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/scorecard-ai)
+[![NPM version](<https://img.shields.io/npm/v/scorecard-ai.svg?label=npm%20(stable)>)](https://npmjs.org/package/scorecard-ai) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/scorecard-ai)
 
 This library provides convenient access to the Scorecard REST API from server-side TypeScript or JavaScript.
 
@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install scorecard-ai@alpha
+npm install scorecard-ai
 ```
 
 ## Usage
@@ -20,34 +20,28 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Scorecard from 'scorecard-ai';
+import Scorecard, { runAndEvaluate } from 'scorecard-ai';
 
-const client = new Scorecard({
-  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
-});
-
-async function main() {
-  const testset = await client.testsets.create('314', {
-    name: 'Long Context Q&A',
-    description: 'Testset for long context Q&A chatbot.',
-    fieldMapping: { inputs: ['question'], expected: ['idealAnswer'], metadata: [] },
-    jsonSchema: {
-      type: 'object',
-      properties: {
-        question: {
-          type: 'string',
-        },
-        idealAnswer: {
-          type: 'string',
-        },
-      },
-    },
-  });
-
-  console.log(testset.id);
+async function runSystem(testcaseInput) {
+  // Replace with a call to your LLM system
+  return { response: testcaseInput.original.toUpperCase() };
 }
 
-main();
+const client = new Scorecard({
+  apiKey: process.env['SCORECARD_API_KEY'],
+});
+
+const run = await runAndEvaluate(
+  client,
+  {
+    projectId: '314', // Scorecard Project
+    testsetId: '246', // Scorecard Testset
+    metricIds: ['789', '101'], // Scorecard Metrics
+    system: runSystem, // Your LLM system
+  }
+);
+
+console.log(`Go to ${run.url} to view your Run's scorecard.`);
 ```
 
 ### Request & Response types
@@ -62,11 +56,7 @@ const client = new Scorecard({
   apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const testset: Scorecard.Testset = await client.testsets.get('246');
-}
-
-main();
+const testset: Scorecard.Testset = await client.testsets.get('246');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -79,19 +69,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const testset = await client.testsets.get('246').catch(async (err) => {
-    if (err instanceof Scorecard.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
-}
-
-main();
+const testset = await client.testsets.get('246').catch(async (err) => {
+  if (err instanceof Scorecard.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
@@ -148,6 +134,37 @@ await client.testsets.get('246', {
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
+
+## Auto-pagination
+
+List methods in the Scorecard API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllTestcases(params) {
+  const allTestcases = [];
+  // Automatically fetches more pages as needed.
+  for await (const testcase of client.testcases.list('246', { limit: 30 })) {
+    allTestcases.push(testcase);
+  }
+  return allTestcases;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.testcases.list('246', { limit: 30 });
+for (const testcase of page.data) {
+  console.log(testcase);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
 
 ## Advanced Usage
 
@@ -249,9 +266,8 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.foo.create({
-  foo: 'my_param',
-  bar: 12,
+client.runs.create({
+  // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
 });

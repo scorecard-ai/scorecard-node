@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Scorecard from 'scorecard-ai';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { Metadata, Endpoint, HandlerFunction } from './types';
+
+export { Metadata, Endpoint, HandlerFunction };
 
 import create_projects from './projects/create-projects';
 import list_projects from './projects/list-projects';
@@ -16,30 +17,22 @@ import list_testcases from './testcases/list-testcases';
 import delete_testcases from './testcases/delete-testcases';
 import get_testcases from './testcases/get-testcases';
 import create_runs from './runs/create-runs';
+import list_runs from './runs/list-runs';
+import get_runs from './runs/get-runs';
+import create_metrics from './metrics/create-metrics';
+import update_metrics from './metrics/update-metrics';
+import list_metrics from './metrics/list-metrics';
+import get_metrics from './metrics/get-metrics';
 import create_records from './records/create-records';
+import list_records from './records/list-records';
 import upsert_scores from './scores/upsert-scores';
-import create_systems from './systems/create-systems';
 import update_systems from './systems/update-systems';
 import list_systems from './systems/list-systems';
 import delete_systems from './systems/delete-systems';
 import get_systems from './systems/get-systems';
-import create_system_configs from './system-configs/create-system-configs';
-import list_system_configs from './system-configs/list-system-configs';
-import get_system_configs from './system-configs/get-system-configs';
-
-export type HandlerFunction = (client: Scorecard, args: Record<string, unknown> | undefined) => Promise<any>;
-
-export type Metadata = {
-  resource: string;
-  operation: 'read' | 'write';
-  tags: string[];
-};
-
-export type Endpoint = {
-  metadata: Metadata;
-  tool: Tool;
-  handler: HandlerFunction;
-};
+import upsert_systems from './systems/upsert-systems';
+import get_systems_versions from './systems/versions/get-systems-versions';
+import upsert_systems_versions from './systems/versions/upsert-systems-versions';
 
 export const endpoints: Endpoint[] = [];
 
@@ -60,16 +53,22 @@ addEndpoint(list_testcases);
 addEndpoint(delete_testcases);
 addEndpoint(get_testcases);
 addEndpoint(create_runs);
+addEndpoint(list_runs);
+addEndpoint(get_runs);
+addEndpoint(create_metrics);
+addEndpoint(update_metrics);
+addEndpoint(list_metrics);
+addEndpoint(get_metrics);
 addEndpoint(create_records);
+addEndpoint(list_records);
 addEndpoint(upsert_scores);
-addEndpoint(create_systems);
 addEndpoint(update_systems);
 addEndpoint(list_systems);
 addEndpoint(delete_systems);
 addEndpoint(get_systems);
-addEndpoint(create_system_configs);
-addEndpoint(list_system_configs);
-addEndpoint(get_system_configs);
+addEndpoint(upsert_systems);
+addEndpoint(get_systems_versions);
+addEndpoint(upsert_systems_versions);
 
 export type Filter = {
   type: 'resource' | 'operation' | 'tag' | 'tool';
@@ -95,9 +94,10 @@ export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
   });
 
   // Check if any filters didn't match
-  if (unmatchedFilters.size > 0) {
+  const unmatched = Array.from(unmatchedFilters).filter((f) => f.type === 'tool' || f.type === 'resource');
+  if (unmatched.length > 0) {
     throw new Error(
-      `The following filters did not match any endpoints: ${[...unmatchedFilters]
+      `The following filters did not match any endpoints: ${unmatched
         .map((f) => `${f.type}=${f.value}`)
         .join(', ')}`,
     );

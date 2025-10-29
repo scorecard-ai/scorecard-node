@@ -1,7 +1,10 @@
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { init, selectTools, server } from './server';
+#!/usr/bin/env node
+
+import { selectTools } from './server';
 import { Endpoint, endpoints } from './tools';
-import { ParsedOptions, parseOptions } from './options';
+import { McpOptions, parseCLIOptions } from './options';
+import { launchStdioServer } from './stdio';
+import { launchStreamableHTTPServer } from './http';
 
 async function main() {
   const options = parseOptionsOrError();
@@ -11,18 +14,21 @@ async function main() {
     return;
   }
 
-  const includedTools = selectToolsOrError(endpoints, options);
+  const selectedTools = await selectToolsOrError(endpoints, options);
 
   console.error(
-    `MCP Server starting with ${includedTools.length} tools:`,
-    includedTools.map((e) => e.tool.name),
+    `MCP Server starting with ${selectedTools.length} tools:`,
+    selectedTools.map((e) => e.tool.name),
   );
 
-  init({ server, endpoints: includedTools });
-
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error('MCP Server running on stdio');
+  switch (options.transport) {
+    case 'stdio':
+      await launchStdioServer(options);
+      break;
+    case 'http':
+      await launchStreamableHTTPServer(options, options.port ?? options.socket);
+      break;
+  }
 }
 
 if (require.main === module) {
@@ -34,16 +40,16 @@ if (require.main === module) {
 
 function parseOptionsOrError() {
   try {
-    return parseOptions();
+    return parseCLIOptions();
   } catch (error) {
     console.error('Error parsing options:', error);
     process.exit(1);
   }
 }
 
-function selectToolsOrError(endpoints: Endpoint[], options: ParsedOptions) {
+async function selectToolsOrError(endpoints: Endpoint[], options: McpOptions): Promise<Endpoint[]> {
   try {
-    const includedTools = selectTools(endpoints, options);
+    const includedTools = await selectTools(endpoints, options);
     if (includedTools.length === 0) {
       console.error('No tools match the provided filters.');
       process.exit(1);

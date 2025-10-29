@@ -2,32 +2,39 @@
 
 export * from './shared';
 export {
+  Metrics,
+  type Metric,
+  type MetricCreateParams,
+  type MetricUpdateParams,
+  type MetricListParams,
+  type MetricsPaginatedResponse,
+} from './metrics';
+export {
   Projects,
   type Project,
   type ProjectCreateParams,
   type ProjectListParams,
   type ProjectsPaginatedResponse,
 } from './projects';
-export { Records, type Record, type RecordCreateParams } from './records';
-export { Runs, type Run, type RunCreateParams } from './runs';
-export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
-  SystemConfigs,
-  type SystemConfig,
-  type SystemConfigCreateParams,
-  type SystemConfigListParams,
-  type SystemConfigGetParams,
-  type SystemConfigsPaginatedResponse,
-} from './system-configs';
+  Records,
+  type Record,
+  type RecordListResponse,
+  type RecordCreateParams,
+  type RecordListParams,
+  type RecordListResponsesPaginatedResponse,
+} from './records';
+export { Runs, type Run, type RunCreateParams, type RunListParams, type RunsPaginatedResponse } from './runs';
+export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
   Systems,
   type System,
   type SystemDeleteResponse,
-  type SystemCreateParams,
   type SystemUpdateParams,
   type SystemListParams,
+  type SystemUpsertParams,
   type SystemsPaginatedResponse,
-} from './systems';
+} from './systems/systems';
 export {
   Testcases,
   type Testcase,

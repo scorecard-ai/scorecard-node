@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "scorecard-ai-mcp/*": ["dist/src/*"],
-      "scorecard-ai-mcp": ["dist/src/index.ts"]
+      "scorecard-ai-mcp/*": ["./dist/src/*"],
+      "scorecard-ai-mcp": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,

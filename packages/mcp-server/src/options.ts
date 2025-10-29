@@ -1,55 +1,26 @@
+import qs from 'qs';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import z from 'zod';
 import { endpoints, Filter } from './tools';
-import { ClientCapabilities } from './compat';
+import { ClientCapabilities, knownClients, ClientType } from './compat';
 
-type ClientType = 'openai-agents' | 'claude' | 'claude-code' | 'cursor';
-
-// Client presets for compatibility
-// Note that these could change over time as models get better, so this is
-// a best effort.
-const CLIENT_PRESETS: Record<ClientType, ClientCapabilities> = {
-  'openai-agents': {
-    topLevelUnions: false,
-    validJson: true,
-    refs: true,
-    unions: true,
-    formats: true,
-    toolNameLength: undefined,
-  },
-  claude: {
-    topLevelUnions: true,
-    validJson: false,
-    refs: true,
-    unions: true,
-    formats: true,
-    toolNameLength: undefined,
-  },
-  'claude-code': {
-    topLevelUnions: false,
-    validJson: true,
-    refs: true,
-    unions: true,
-    formats: true,
-    toolNameLength: undefined,
-  },
-  cursor: {
-    topLevelUnions: false,
-    validJson: true,
-    refs: false,
-    unions: false,
-    formats: false,
-    toolNameLength: 50,
-  },
+export type CLIOptions = McpOptions & {
+  list: boolean;
+  transport: 'stdio' | 'http';
+  port: number | undefined;
+  socket: string | undefined;
 };
 
-export interface ParsedOptions {
-  includeDynamicTools: boolean | undefined;
-  includeAllTools: boolean | undefined;
-  filters: Filter[];
-  capabilities: ClientCapabilities;
-  list: boolean;
-}
+export type McpOptions = {
+  client?: ClientType | undefined;
+  includeDynamicTools?: boolean | undefined;
+  includeAllTools?: boolean | undefined;
+  includeCodeTools?: boolean | undefined;
+  includeDocsTools?: boolean | undefined;
+  filters?: Filter[] | undefined;
+  capabilities?: Partial<ClientCapabilities> | undefined;
+};
 
 const CAPABILITY_CHOICES = [
   'top-level-unions',
@@ -80,18 +51,18 @@ function parseCapabilityValue(cap: string): { name: Capability; value?: number }
   return { name: cap as Capability };
 }
 
-export function parseOptions(): ParsedOptions {
+export function parseCLIOptions(): CLIOptions {
   const opts = yargs(hideBin(process.argv))
     .option('tools', {
       type: 'string',
       array: true,
-      choices: ['dynamic', 'all'],
+      choices: ['dynamic', 'all', 'code', 'docs'],
       description: 'Use dynamic tools or all tools',
     })
     .option('no-tools', {
       type: 'string',
       array: true,
-      choices: ['dynamic', 'all'],
+      choices: ['dynamic', 'all', 'code', 'docs'],
       description: 'Do not use any dynamic or all tools',
     })
     .option('tool', {
@@ -141,7 +112,7 @@ export function parseOptions(): ParsedOptions {
     })
     .option('client', {
       type: 'string',
-      choices: Object.keys(CLIENT_PRESETS),
+      choices: Object.keys(knownClients),
       description: 'Specify the MCP client being used',
     })
     .option('capability', {
@@ -164,6 +135,20 @@ export function parseOptions(): ParsedOptions {
     .option('describe-capabilities', {
       type: 'boolean',
       description: 'Print detailed explanation of client capabilities and exit',
+    })
+    .option('transport', {
+      type: 'string',
+      choices: ['stdio', 'http'],
+      default: 'stdio',
+      description: 'What transport to use; stdio for local servers or http for remote servers',
+    })
+    .option('port', {
+      type: 'number',
+      description: 'Port to serve on if using http transport',
+    })
+    .option('socket', {
+      type: 'string',
+      description: 'Unix socket to serve on if using http transport',
     })
     .help();
 
@@ -220,22 +205,7 @@ export function parseOptions(): ParsedOptions {
   }
 
   // Parse client capabilities
-  const clientCapabilities: ClientCapabilities = {
-    topLevelUnions: true,
-    validJson: true,
-    refs: true,
-    unions: true,
-    formats: true,
-    toolNameLength: undefined,
-  };
-
-  // Apply client preset if specified
-  if (typeof argv.client === 'string') {
-    const clientKey = argv.client as ClientType;
-    if (CLIENT_PRESETS[clientKey]) {
-      Object.assign(clientCapabilities, CLIENT_PRESETS[clientKey]);
-    }
-  }
+  const clientCapabilities: Partial<ClientCapabilities> = {};
 
   // Apply individual capability overrides
   if (Array.isArray(argv.capability)) {
@@ -276,18 +246,153 @@ export function parseOptions(): ParsedOptions {
     }
   }
 
-  const explicitTools = Boolean(argv.tools || argv.noTools);
-  const includeDynamicTools =
-    explicitTools ? argv.tools?.includes('dynamic') && !argv.noTools?.includes('dynamic') : undefined;
-  const includeAllTools =
-    explicitTools ? argv.tools?.includes('all') && !argv.noTools?.includes('all') : undefined;
+  const shouldIncludeToolType = (toolType: 'dynamic' | 'all' | 'code' | 'docs') =>
+    argv.noTools?.includes(toolType) ? false
+    : argv.tools?.includes(toolType) ? true
+    : undefined;
 
+  const includeDynamicTools = shouldIncludeToolType('dynamic');
+  const includeAllTools = shouldIncludeToolType('all');
+  const includeCodeTools = shouldIncludeToolType('code');
+  const includeDocsTools = shouldIncludeToolType('docs');
+
+  const transport = argv.transport as 'stdio' | 'http';
+
+  const client = argv.client as ClientType;
   return {
+    client: client && client !== 'infer' && knownClients[client] ? client : undefined,
     includeDynamicTools,
     includeAllTools,
+    includeCodeTools,
+    includeDocsTools,
     filters,
     capabilities: clientCapabilities,
     list: argv.list || false,
+    transport,
+    port: argv.port,
+    socket: argv.socket,
+  };
+}
+
+const coerceArray = <T extends z.ZodTypeAny>(zodType: T) =>
+  z.preprocess(
+    (val) =>
+      Array.isArray(val) ? val
+      : val ? [val]
+      : val,
+    z.array(zodType).optional(),
+  );
+
+const QueryOptions = z.object({
+  tools: coerceArray(z.enum(['dynamic', 'all', 'docs'])).describe('Use dynamic tools or all tools'),
+  no_tools: coerceArray(z.enum(['dynamic', 'all', 'docs'])).describe('Do not use dynamic tools or all tools'),
+  tool: coerceArray(z.string()).describe('Include tools matching the specified names'),
+  resource: coerceArray(z.string()).describe('Include tools matching the specified resources'),
+  operation: coerceArray(z.enum(['read', 'write'])).describe(
+    'Include tools matching the specified operations',
+  ),
+  tag: coerceArray(z.string()).describe('Include tools with the specified tags'),
+  no_tool: coerceArray(z.string()).describe('Exclude tools matching the specified names'),
+  no_resource: coerceArray(z.string()).describe('Exclude tools matching the specified resources'),
+  no_operation: coerceArray(z.enum(['read', 'write'])).describe(
+    'Exclude tools matching the specified operations',
+  ),
+  no_tag: coerceArray(z.string()).describe('Exclude tools with the specified tags'),
+  client: ClientType.optional().describe('Specify the MCP client being used'),
+  capability: coerceArray(z.string()).describe('Specify client capabilities'),
+  no_capability: coerceArray(z.enum(CAPABILITY_CHOICES)).describe('Unset client capabilities'),
+});
+
+export function parseQueryOptions(defaultOptions: McpOptions, query: unknown): McpOptions {
+  const queryObject = typeof query === 'string' ? qs.parse(query) : query;
+  const queryOptions = QueryOptions.parse(queryObject);
+
+  const filters: Filter[] = [...(defaultOptions.filters ?? [])];
+
+  for (const resource of queryOptions.resource || []) {
+    filters.push({ type: 'resource', op: 'include', value: resource });
+  }
+  for (const operation of queryOptions.operation || []) {
+    filters.push({ type: 'operation', op: 'include', value: operation });
+  }
+  for (const tag of queryOptions.tag || []) {
+    filters.push({ type: 'tag', op: 'include', value: tag });
+  }
+  for (const tool of queryOptions.tool || []) {
+    filters.push({ type: 'tool', op: 'include', value: tool });
+  }
+  for (const resource of queryOptions.no_resource || []) {
+    filters.push({ type: 'resource', op: 'exclude', value: resource });
+  }
+  for (const operation of queryOptions.no_operation || []) {
+    filters.push({ type: 'operation', op: 'exclude', value: operation });
+  }
+  for (const tag of queryOptions.no_tag || []) {
+    filters.push({ type: 'tag', op: 'exclude', value: tag });
+  }
+  for (const tool of queryOptions.no_tool || []) {
+    filters.push({ type: 'tool', op: 'exclude', value: tool });
+  }
+
+  // Parse client capabilities
+  const clientCapabilities: Partial<ClientCapabilities> = { ...defaultOptions.capabilities };
+
+  for (const cap of queryOptions.capability || []) {
+    const parsed = parseCapabilityValue(cap);
+    if (parsed.name === 'top-level-unions') {
+      clientCapabilities.topLevelUnions = true;
+    } else if (parsed.name === 'valid-json') {
+      clientCapabilities.validJson = true;
+    } else if (parsed.name === 'refs') {
+      clientCapabilities.refs = true;
+    } else if (parsed.name === 'unions') {
+      clientCapabilities.unions = true;
+    } else if (parsed.name === 'formats') {
+      clientCapabilities.formats = true;
+    } else if (parsed.name === 'tool-name-length') {
+      clientCapabilities.toolNameLength = parsed.value;
+    }
+  }
+
+  for (const cap of queryOptions.no_capability || []) {
+    if (cap === 'top-level-unions') {
+      clientCapabilities.topLevelUnions = false;
+    } else if (cap === 'valid-json') {
+      clientCapabilities.validJson = false;
+    } else if (cap === 'refs') {
+      clientCapabilities.refs = false;
+    } else if (cap === 'unions') {
+      clientCapabilities.unions = false;
+    } else if (cap === 'formats') {
+      clientCapabilities.formats = false;
+    } else if (cap === 'tool-name-length') {
+      clientCapabilities.toolNameLength = undefined;
+    }
+  }
+
+  let dynamicTools: boolean | undefined =
+    queryOptions.no_tools && queryOptions.no_tools?.includes('dynamic') ? false
+    : queryOptions.tools?.includes('dynamic') ? true
+    : defaultOptions.includeDynamicTools;
+
+  let allTools: boolean | undefined =
+    queryOptions.no_tools && queryOptions.no_tools?.includes('all') ? false
+    : queryOptions.tools?.includes('all') ? true
+    : defaultOptions.includeAllTools;
+
+  let docsTools: boolean | undefined =
+    queryOptions.no_tools && queryOptions.no_tools?.includes('docs') ? false
+    : queryOptions.tools?.includes('docs') ? true
+    : defaultOptions.includeDocsTools;
+
+  return {
+    client: queryOptions.client ?? defaultOptions.client,
+    includeDynamicTools: dynamicTools,
+    includeAllTools: allTools,
+    includeCodeTools: undefined,
+    includeDocsTools: docsTools,
+    filters,
+    capabilities: clientCapabilities,
   };
 }
 
@@ -323,7 +428,7 @@ Client Presets (--client):
 Presets like '--client=openai-agents' or '--client=cursor' automatically configure these capabilities based on current known limitations of those clients, simplifying setup.
 
 Current presets:
-${JSON.stringify(CLIENT_PRESETS, null, 2)}
+${JSON.stringify(knownClients, null, 2)}
   `;
 }
 

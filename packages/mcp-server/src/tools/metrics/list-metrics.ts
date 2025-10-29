@@ -1,23 +1,27 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { Metadata, asTextContentResult } from 'scorecard-ai-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import type { Metadata } from '../';
 import Scorecard from 'scorecard-ai';
 
 export const metadata: Metadata = {
-  resource: 'system_configs',
+  resource: 'metrics',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/projects/{projectId}/metrics',
+  operationId: 'listMetrics',
 };
 
 export const tool: Tool = {
-  name: 'list_system_configs',
+  name: 'list_metrics',
   description:
-    'Retrieve a paginated list of configurations for a specific system.\n\nSystem configurations provide concrete parameter values for a System Under Test, defining exactly how the system should be configured during an evaluation run.',
+    'List Metrics configured for the specified Project. Metrics are returned in reverse chronological order.',
   inputSchema: {
     type: 'object',
     properties: {
-      systemId: {
+      projectId: {
         type: 'string',
       },
       cursor: {
@@ -31,12 +35,17 @@ export const tool: Tool = {
           'Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.',
       },
     },
+    required: ['projectId'],
+  },
+  annotations: {
+    readOnlyHint: true,
   },
 };
 
-export const handler = (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { systemId, ...body } = args as any;
-  return client.systemConfigs.list(systemId, body);
+export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
+  const { projectId, ...body } = args as any;
+  const response = await client.metrics.list(projectId, body).asResponse();
+  return asTextContentResult(await response.json());
 };
 
 export default { metadata, tool, handler };
