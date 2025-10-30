@@ -3,6 +3,9 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { defaultResource, resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 import { Tracer } from '@opentelemetry/api';
+import { readEnv } from '../internal/utils';
+import { ScorecardError } from '../error';
+import { Scorecard } from '../client';
 
 /**
  * Configuration for the Scorecard AI SDK wrapper
@@ -15,7 +18,10 @@ interface ScorecardConfig {
   projectId?: string;
 
   /**
-   * Metrics to track
+   * Metrics to score the traces against
+   * It can be a list of metric IDs, descriptions of what you want the metric to do, or a mix of both
+   * For example: ['123', 'Check if the response is concise']
+   * If it's a description, the metric will be created if it doesn't exist
    * Defaults to empty array
    */
   metrics?: string[];
@@ -27,22 +33,16 @@ interface ScorecardConfig {
   apiKey?: string;
 
   /**
-   * Scorecard tracing endpoint
-   * Defaults to https://tracing.scorecard.io/otel/v1/traces
-   */
-  endpoint?: string;
-
-  /**
-   * Scorecard API base URL
-   * Defaults to https://api2.scorecard.io
-   */
-  apiBaseUrl?: string;
-
-  /**
    * Service name for telemetry
    * Defaults to "ai-sdk-app"
    */
   serviceName?: string;
+
+  /**
+   * Service version for telemetry
+   * Defaults to "1.0.0"
+   */
+  serviceVersion?: string;
 
   /**
    * Max export batch size for the batch span processor
@@ -53,9 +53,6 @@ interface ScorecardConfig {
 
 let tracerProvider: NodeTracerProvider | null = null;
 let tracer: Tracer | null = null;
-const SCORECARD_API_KEY = process.env['SCORECARD_API_KEY'];
-const SCORECARD_PROJECT_ID = process.env['SCORECARD_PROJECT_ID'];
-
 /**
  * Initialize the OpenTelemetry tracer with Scorecard configuration
  */
@@ -66,10 +63,10 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   }
 
   const {
-    projectId = SCORECARD_PROJECT_ID,
-    apiKey = SCORECARD_API_KEY,
-    endpoint = 'https://tracing.scorecard.io/otel/v1/traces',
+    projectId = readEnv('SCORECARD_PROJECT_ID'),
+    apiKey = readEnv('SCORECARD_API_KEY'),
     serviceName = 'ai-sdk-app',
+    serviceVersion = '1.0.0',
     maxExportBatchSize = 1,
   } = config;
 
@@ -77,8 +74,8 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   const resource = defaultResource().merge(
     resourceFromAttributes({
       [ATTR_SERVICE_NAME]: serviceName,
-      [ATTR_SERVICE_VERSION]: '1.0.0',
-      'scorecard.project_id': projectId,
+      [ATTR_SERVICE_VERSION]: serviceVersion,
+      ...(projectId != null ? { 'scorecard.project_id': projectId } : null),
     }),
   );
 
@@ -86,9 +83,10 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   const spanProcessors = [];
 
   try {
+    const tracingUrl = readEnv('SCORECARD_TRACING_URL') || 'https://tracing.scorecard.io/otel/v1/traces';
     // Create OTLP exporter for Scorecard
     const otlpExporter = new OTLPTraceExporter({
-      url: endpoint,
+      url: tracingUrl,
       headers:
         apiKey ?
           {
@@ -140,36 +138,46 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
  * // Now all AI SDK calls will automatically send traces to Scorecard
  * const { text } = await aiSDK.generateText({
  *   model: openai('gpt-4o-mini'),
- *   prompt: 'Hello!',
+ *   prompt: 'What is the capital of France? Answer in one sentence.',
  * });
  * ```
  */
-export async function wrapAISDK<T extends Record<string, any>>(
+export async function wrapAISDK<T extends Record<string, unknown>>(
   aiSDKModule: T,
   config: ScorecardConfig = {},
 ): Promise<T> {
-  const apiKey = config.apiKey || SCORECARD_API_KEY;
+  const projectId = config.projectId || readEnv('SCORECARD_PROJECT_ID');
+  const apiKey = config.apiKey || readEnv('SCORECARD_API_KEY');
   if (!apiKey) {
     throw new Error('SCORECARD_API_KEY environment variable is not set');
   }
+  const client = new Scorecard({ apiKey });
 
-  const baseUrl = new URL(config.apiBaseUrl || 'https://api2.scorecard.io');
+  if (config.metrics && config.metrics.length > 0 && !projectId) {
+    throw new ScorecardError(
+      "The SCORECARD_PROJECT_ID environment variable is missing or empty; either provide it, or instantiate the AI SDK wrapper with a projectId option, like ScorecardAIWrapper({ projectId: '123' }).",
+    );
+  }
+
   // Create metrics and monitor if needed
-  if (config.metrics && config.metrics.length > 0 && config.projectId) {
-    fetch(`${baseUrl.origin}/api/v2/projects/${config.projectId}/monitoring/create-if-needed`, {
-      method: 'POST',
-      body: JSON.stringify({
-        description: config.serviceName,
-        metrics: config.metrics,
-        filter: {
-          serviceName: config.serviceName,
-        },
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+  if (config.metrics && config.metrics.length > 0 && projectId) {
+    try {
+      client.put(`/projects/${projectId}/monitors`, {
+        body: JSON.stringify({
+          description: config.serviceName,
+          metrics: config.metrics,
+          filter: {
+            serviceName: config.serviceName,
+          },
+        }),
+      });
+    } catch (error) {
+      if (error instanceof Scorecard.APIError && error.status >= 400 && error.status < 500) {
+        throw new ScorecardError(
+          `Failed to create a monitor for your traces (most common cause is your project ID or API key are incorrect): ${error.message}`,
+        );
+      }
+    }
   }
   // Initialize tracer
   const tracerInstance = initializeTracer(config);
@@ -184,12 +192,12 @@ export async function wrapAISDK<T extends Record<string, any>>(
 
   // List of AI SDK functions that accept experimental_telemetry
   const telemetryEnabledFunctions = new Set([
-    'generateText',
-    'streamText',
-    'generateObject',
-    'streamObject',
     'embed',
     'embedMany',
+    'generateObject',
+    'generateText',
+    'streamObject',
+    'streamText',
   ]);
 
   // Create a proxy to intercept function calls
@@ -206,7 +214,7 @@ export async function wrapAISDK<T extends Record<string, any>>(
         return function (this: any, ...args: any[]) {
           try {
             // The first argument is typically the options object
-            if (args.length > 0 && typeof args[0] === 'object') {
+            if (args.length > 0 && args[0] && typeof args[0] === 'object') {
               // Inject experimental_telemetry if not already present
               if (!args[0].experimental_telemetry) {
                 args[0].experimental_telemetry = telemetryConfig;
