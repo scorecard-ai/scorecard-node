@@ -10,6 +10,10 @@
     "@ai-sdk/openai": "^2.0.58",
     "ai": "^5.0.82",
     "openai": "^4.96.0",
-    "scorecard-ai": "file:.."
+    "scorecard-ai": "file:..",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3"
   }
 }
