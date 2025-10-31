@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import * as ai from 'ai';
-import { wrapAISDK } from 'scorecard-ai/lib/wrapAISDK';
+import { wrapAISDK } from 'scorecard-ai';
 import { z } from 'zod';
 
 const aiSDK = wrapAISDK(ai, {

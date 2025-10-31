@@ -12,57 +12,58 @@ import { Scorecard } from '../client';
  */
 interface ScorecardConfig {
   /**
-   * Scorecard project ID
-   * Defaults to SCORECARD_PROJECT_ID environment variable
+   * ID of the Scorecard project that traces should be associated with.
+   * Defaults to SCORECARD_PROJECT_ID environment variable.
    */
   projectId?: string;
 
   /**
-   * Metrics to score the traces against
-   * It can be a list of metric IDs, descriptions of what you want the metric to do, or a mix of both
-   * For example: ['123', 'Check if the response is concise']
-   * If it's a description, the metric will be created if it doesn't exist
-   * Defaults to empty array
+   * Metrics to score the traces against.
+   * It can be a list of metric IDs, descriptions of what you want the metric to do, or a mix of both.
+   * For example: ['123', 'Check if the response is concise'].
+   * If it's a description, the metric will be created if it doesn't exist.
+   * Defaults to empty array.
    */
   metrics?: string[];
 
   /**
-   * Scorecard API key for authentication
-   * Defaults to SCORECARD_API_KEY environment variable
+   * Scorecard API key for authentication.
+   * Defaults to SCORECARD_API_KEY environment variable.
    */
   apiKey?: string;
 
   /**
-   * Service name for telemetry
-   * Defaults to "ai-sdk-app"
+   * Service name for telemetry.
+   * Defaults to "ai-sdk-app".
    */
   serviceName?: string;
 
   /**
-   * Service version for telemetry
-   * Defaults to "1.0.0"
+   * Service version for telemetry.
+   * Defaults to "1.0.0".
    */
   serviceVersion?: string;
 
   /**
-   * Max export batch size for the batch span processor
-   * Defaults to 1 so the traces are exported immediately
+   * Max export batch size for the batch span processor.
+   * Defaults to 1 so the traces are exported immediately.
    */
   maxExportBatchSize?: number;
 }
 
-let tracerProvider: NodeTracerProvider | null = null;
-let tracer: Tracer | null = null;
 const DEFAULT_SERVICE_NAME = 'ai-sdk-app';
+const AI_SDK_FUNCTIONS_WITH_TELEMETRY = new Set([
+  'embed',
+  'embedMany',
+  'generateObject',
+  'generateText',
+  'streamObject',
+  'streamText',
+]);
 /**
- * Initialize the OpenTelemetry tracer with Scorecard configuration
+ * Initialize the OpenTelemetry tracer with Scorecard configuration.
  */
 function initializeTracer(config: ScorecardConfig = {}): Tracer {
-  // Return existing tracer if already initialized
-  if (tracer && tracerProvider) {
-    return tracer;
-  }
-
   const {
     projectId = readEnv('SCORECARD_PROJECT_ID'),
     apiKey = readEnv('SCORECARD_API_KEY'),
@@ -108,7 +109,7 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   }
 
   // Create tracer provider with span processors
-  tracerProvider = new NodeTracerProvider({
+  const tracerProvider = new NodeTracerProvider({
     resource,
     spanProcessors,
   });
@@ -116,14 +117,12 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   // Register the provider
   tracerProvider.register();
 
-  // Get tracer instance
-  tracer = tracerProvider.getTracer('ai-sdk-wrapper');
-
-  return tracer;
+  // Return the tracer instance
+  return tracerProvider.getTracer('ai-sdk-wrapper');
 }
 
 /**
- * Wraps the AI SDK module to automatically inject telemetry configuration
+ * Wraps the AI SDK module to automatically inject telemetry configuration.
  *
  * @param aiSDKModule - The AI SDK module (e.g., import('ai'))
  * @param config - Optional Scorecard configuration
@@ -132,11 +131,11 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
  * @example
  * ```typescript
  * import ai from 'ai';
- * import { wrapAISDK } from 'scorecard-ai/lib/wrapAISDK';
+ * import { wrapAISDK } from 'scorecard-ai';
  *
  * const aiSDK = await wrapAISDK(ai);
  *
- * // Now all AI SDK calls will automatically send traces to Scorecard
+ * // Now all AI SDK calls will automatically send traces to Scorecard.
  * const { text } = await aiSDK.generateText({
  *   model: openai('gpt-4o-mini'),
  *   prompt: 'What is the capital of France? Answer in one sentence.',
@@ -151,13 +150,15 @@ export function wrapAISDK<T extends Record<string, unknown>>(
   const apiKey = config.apiKey || readEnv('SCORECARD_API_KEY');
   const serviceName = config.serviceName || DEFAULT_SERVICE_NAME;
   if (!apiKey) {
-    throw new Error('SCORECARD_API_KEY environment variable is not set');
+    throw new Error(
+      'The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the AI SDK wrapper client with an apiKey option, like wrapAISDK(ai, { apiKey: "My API Key" }).',
+    );
   }
   const client = new Scorecard({ apiKey });
 
   if (config.metrics && config.metrics.length > 0 && !projectId) {
     throw new ScorecardError(
-      "The SCORECARD_PROJECT_ID environment variable is missing or empty; either provide it, or instantiate the AI SDK wrapper with a projectId option, like ScorecardAIWrapper({ projectId: '123' }).",
+      "The SCORECARD_PROJECT_ID environment variable is missing or empty; either provide it, or instantiate the AI SDK wrapper with a projectId option, like wrapAISDK(ai, { projectId: '123' }).",
     );
   }
 
@@ -177,7 +178,7 @@ export function wrapAISDK<T extends Record<string, unknown>>(
       // otherwise the code would await here before giving back the wrapped AI SDK module
       .catch((error) => {
         console.error(
-          `Failed to create a monitor for your traces. The most common case is your projectId is incorrect.`,
+          'Failed to create a Scorecard monitor for your AI SDK traces. The most common case is that the projectId is incorrect.',
           error,
         );
       });
@@ -193,16 +194,6 @@ export function wrapAISDK<T extends Record<string, unknown>>(
     tracer: tracerInstance,
   };
 
-  // List of AI SDK functions that accept experimental_telemetry
-  const telemetryEnabledFunctions = new Set([
-    'embed',
-    'embedMany',
-    'generateObject',
-    'generateText',
-    'streamObject',
-    'streamText',
-  ]);
-
   // Create a proxy to intercept function calls
   return new Proxy(aiSDKModule, {
     get(target, prop: string | symbol) {
@@ -211,17 +202,17 @@ export function wrapAISDK<T extends Record<string, unknown>>(
       // Only wrap functions that support telemetry
       if (
         typeof prop === 'string' &&
-        telemetryEnabledFunctions.has(prop) &&
+        AI_SDK_FUNCTIONS_WITH_TELEMETRY.has(prop) &&
         typeof originalValue === 'function'
       ) {
         return function (this: any, ...args: any[]) {
           try {
             // The first argument is typically the options object
             if (args.length > 0 && args[0] && typeof args[0] === 'object') {
-              // Inject experimental_telemetry if not already present
-              if (!args[0].experimental_telemetry) {
-                args[0].experimental_telemetry = telemetryConfig;
-              }
+              args[0].experimental_telemetry = {
+                ...telemetryConfig,
+                ...(args[0].experimental_telemetry || {}),
+              };
             }
           } catch (error) {
             // Silently handle any errors during injection
