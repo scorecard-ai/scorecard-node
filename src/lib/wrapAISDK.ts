@@ -40,7 +40,7 @@ interface ScorecardConfig {
 
   /**
    * Service version for telemetry.
-   * Defaults to "1.0.0".
+   * Defaults to undefined.
    */
   serviceVersion?: string;
 
@@ -68,7 +68,7 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
     projectId = readEnv('SCORECARD_PROJECT_ID'),
     apiKey = readEnv('SCORECARD_API_KEY'),
     serviceName = DEFAULT_SERVICE_NAME,
-    serviceVersion = '1.0.0',
+    serviceVersion,
     maxExportBatchSize = 1,
   } = config;
 
@@ -76,7 +76,7 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   const resource = defaultResource().merge(
     resourceFromAttributes({
       [ATTR_SERVICE_NAME]: serviceName,
-      [ATTR_SERVICE_VERSION]: serviceVersion,
+      ...(serviceVersion != null ? { [ATTR_SERVICE_VERSION]: serviceVersion } : null),
       ...(projectId != null ? { 'scorecard.project_id': projectId } : null),
     }),
   );
@@ -105,7 +105,8 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
     );
   } catch (error) {
     // Handle initialization errors
-    console.error('Failed to initialize Scorecard telemetry:', error);
+    console.error(error);
+    throw new ScorecardError('Failed to initialize Scorecard telemetry');
   }
 
   // Create tracer provider with span processors
@@ -150,7 +151,7 @@ export function wrapAISDK<T extends Record<string, unknown>>(
   const apiKey = config.apiKey || readEnv('SCORECARD_API_KEY');
   const serviceName = config.serviceName || DEFAULT_SERVICE_NAME;
   if (!apiKey) {
-    throw new Error(
+    throw new ScorecardError(
       'The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the AI SDK wrapper client with an apiKey option, like wrapAISDK(ai, { apiKey: "My API Key" }).',
     );
   }

@@ -2,10 +2,10 @@ import { openai } from '@ai-sdk/openai';
 import * as ai from 'ai';
 import { wrapAISDK } from 'scorecard-ai';
 
-async function main() {
-  const { embedMany } = await wrapAISDK(ai);
+const aiSDK = wrapAISDK(ai);
 
-  const { embeddings } = await embedMany({
+async function main() {
+  const { embeddings } = await aiSDK.embedMany({
     model: openai.textEmbeddingModel('text-embedding-3-small'),
     values: ['sunny day at the beach', 'rainy afternoon in the city', 'snowy night in the mountains'],
   });
