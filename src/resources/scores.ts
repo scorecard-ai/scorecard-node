@@ -81,7 +81,7 @@ export namespace Score {
 
 export interface ScoreUpsertParams {
   /**
-   * Path param: The ID of the Record.
+   * Path param: The ID of the Record to upsert the Score for.
    */
   recordId: string;
 
