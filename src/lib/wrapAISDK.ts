@@ -166,7 +166,7 @@ export function wrapAISDK<T extends Record<string, unknown>>(
   // Create metrics and monitor if needed
   if (config.metrics && config.metrics.length > 0 && projectId) {
     client
-      .put(`/api/v2/projects/${projectId}/monitors`, {
+      .put(`/projects/${projectId}/monitors`, {
         body: {
           description: serviceName,
           metrics: config.metrics,

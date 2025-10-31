@@ -4,7 +4,7 @@ import { wrapAISDK } from 'scorecard-ai';
 import { z } from 'zod';
 
 const aiSDK = wrapAISDK(ai, {
-  projectId: '37604', // use your own project id
+  projectId: '891', // use your own project id
   metrics: ['Check if the response object contains the key "capital"'], // use either metric ids, metric descriptions, or a mix of both
 });
 
