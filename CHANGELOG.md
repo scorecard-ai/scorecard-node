@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.1 (2025-10-31)
+
+Full Changelog: [v2.4.0...v2.4.1](https://github.com/scorecard-ai/scorecard-node/compare/v2.4.0...v2.4.1)
+
 ## 2.4.0 (2025-10-31)
 
 Full Changelog: [v2.3.0...v2.4.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.3.0...v2.4.0)
