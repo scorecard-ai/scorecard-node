@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.3.0 (2025-10-31)
+
+Full Changelog: [v2.2.0...v2.3.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.2.0...v2.3.0)
+
+### Features
+
+* **api:** api update ([516fbf7](https://github.com/scorecard-ai/scorecard-node/commit/516fbf7eafdadd9b1b9b05f07ef6d910b9891dfd))
+
+
+### Bug Fixes
+
+* **mcpb:** pin @anthropic-ai/mcpb version ([df5c711](https://github.com/scorecard-ai/scorecard-node/commit/df5c711562f4d4379c95c6348d6407ca9ae057b1))
+
 ## 2.2.0 (2025-10-10)
 
 Full Changelog: [v2.1.1...v2.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.1.1...v2.2.0)
