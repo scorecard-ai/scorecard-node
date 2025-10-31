@@ -173,7 +173,7 @@ export function wrapAISDK<T extends Record<string, unknown>>(
           },
         },
       })
-      // we use catch instead of try/catch to avoid needing async/await in the wrapper
+      // we use .catch instead of try/catch to avoid needing async/await in the wrapper
       // otherwise the code would await here before giving back the wrapped AI SDK module
       .catch((error) => {
         console.error(
