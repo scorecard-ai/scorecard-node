@@ -53,6 +53,7 @@ interface ScorecardConfig {
 
 let tracerProvider: NodeTracerProvider | null = null;
 let tracer: Tracer | null = null;
+const DEFAULT_SERVICE_NAME = 'ai-sdk-app';
 /**
  * Initialize the OpenTelemetry tracer with Scorecard configuration
  */
@@ -65,7 +66,7 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
   const {
     projectId = readEnv('SCORECARD_PROJECT_ID'),
     apiKey = readEnv('SCORECARD_API_KEY'),
-    serviceName = 'ai-sdk-app',
+    serviceName = DEFAULT_SERVICE_NAME,
     serviceVersion = '1.0.0',
     maxExportBatchSize = 1,
   } = config;
@@ -142,12 +143,13 @@ function initializeTracer(config: ScorecardConfig = {}): Tracer {
  * });
  * ```
  */
-export async function wrapAISDK<T extends Record<string, unknown>>(
+export function wrapAISDK<T extends Record<string, unknown>>(
   aiSDKModule: T,
   config: ScorecardConfig = {},
-): Promise<T> {
+): T {
   const projectId = config.projectId || readEnv('SCORECARD_PROJECT_ID');
   const apiKey = config.apiKey || readEnv('SCORECARD_API_KEY');
+  const serviceName = config.serviceName || DEFAULT_SERVICE_NAME;
   if (!apiKey) {
     throw new Error('SCORECARD_API_KEY environment variable is not set');
   }
@@ -161,23 +163,24 @@ export async function wrapAISDK<T extends Record<string, unknown>>(
 
   // Create metrics and monitor if needed
   if (config.metrics && config.metrics.length > 0 && projectId) {
-    try {
-      client.put(`/projects/${projectId}/monitors`, {
-        body: JSON.stringify({
-          description: config.serviceName,
+    client
+      .put(`/api/v2/projects/${projectId}/monitors`, {
+        body: {
+          description: serviceName,
           metrics: config.metrics,
           filter: {
-            serviceName: config.serviceName,
+            serviceName,
           },
-        }),
-      });
-    } catch (error) {
-      if (error instanceof Scorecard.APIError && error.status >= 400 && error.status < 500) {
-        throw new ScorecardError(
-          `Failed to create a monitor for your traces (most common cause is your project ID or API key are incorrect): ${error.message}`,
+        },
+      })
+      // we use catch instead of try/catch to avoid needing async/await in the wrapper
+      // otherwise the code would await here before giving back the wrapped AI SDK module
+      .catch((error) => {
+        console.error(
+          `Failed to create a monitor for your traces. The most common case is your projectId is incorrect.`,
+          error,
         );
-      }
-    }
+      });
   }
   // Initialize tracer
   const tracerInstance = initializeTracer(config);

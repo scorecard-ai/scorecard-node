@@ -2,10 +2,10 @@ import { openai } from '@ai-sdk/openai';
 import * as ai from 'ai';
 import { wrapAISDK } from 'scorecard-ai/lib/wrapAISDK';
 
-async function main() {
-  const { generateText } = await wrapAISDK(ai);
+const aiSDK = wrapAISDK(ai);
 
-  const { text } = await generateText({
+async function main() {
+  const { text } = await aiSDK.generateText({
     model: openai('gpt-4o-mini'),
     prompt: 'What is the capital of France? Answer in one sentence.',
   });
