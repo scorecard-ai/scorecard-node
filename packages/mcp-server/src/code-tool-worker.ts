@@ -58,6 +58,7 @@ const fuse = new Fuse(
     'client.runs.get',
     'client.runs.list',
     'client.metrics.create',
+    'client.metrics.delete',
     'client.metrics.get',
     'client.metrics.list',
     'client.metrics.update',

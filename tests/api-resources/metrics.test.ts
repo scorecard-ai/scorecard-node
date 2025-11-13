@@ -81,6 +81,17 @@ describe('resource metrics', () => {
     ).rejects.toThrow(Scorecard.NotFoundError);
   });
 
+  test('delete', async () => {
+    const responsePromise = client.metrics.delete('321');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
   test('get', async () => {
     const responsePromise = client.metrics.get('321');
     const rawResponse = await responsePromise.asResponse();

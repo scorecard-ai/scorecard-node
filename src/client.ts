@@ -21,6 +21,7 @@ import { APIPromise } from './core/api-promise';
 import {
   Metric,
   MetricCreateParams,
+  MetricDeleteResponse,
   MetricListParams,
   MetricUpdateParams,
   Metrics,
@@ -898,6 +899,7 @@ export declare namespace Scorecard {
   export {
     Metrics as Metrics,
     type Metric as Metric,
+    type MetricDeleteResponse as MetricDeleteResponse,
     type MetricsPaginatedResponse as MetricsPaginatedResponse,
     type MetricCreateParams as MetricCreateParams,
     type MetricUpdateParams as MetricUpdateParams,
