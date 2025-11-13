@@ -75,6 +75,19 @@ export class Metrics extends APIResource {
   }
 
   /**
+   * Delete a specific Metric by ID. The metric will be removed from metric groups
+   * and monitors.
+   *
+   * @example
+   * ```ts
+   * const metric = await client.metrics.delete('321');
+   * ```
+   */
+  delete(metricID: string, options?: RequestOptions): APIPromise<MetricDeleteResponse> {
+    return this._client.delete(path`/metrics/${metricID}`, options);
+  }
+
+  /**
    * Retrieve a specific Metric by ID.
    *
    * @example
@@ -496,6 +509,13 @@ export namespace Metric {
      */
     outputType: 'boolean';
   }
+}
+
+export interface MetricDeleteResponse {
+  /**
+   * Whether the deletion was successful.
+   */
+  success: boolean;
 }
 
 export type MetricCreateParams =
@@ -1171,6 +1191,7 @@ export interface MetricListParams extends PaginatedResponseParams {}
 export declare namespace Metrics {
   export {
     type Metric as Metric,
+    type MetricDeleteResponse as MetricDeleteResponse,
     type MetricsPaginatedResponse as MetricsPaginatedResponse,
     type MetricCreateParams as MetricCreateParams,
     type MetricUpdateParams as MetricUpdateParams,

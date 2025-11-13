@@ -4,6 +4,7 @@ export * from './shared';
 export {
   Metrics,
   type Metric,
+  type MetricDeleteResponse,
   type MetricCreateParams,
   type MetricUpdateParams,
   type MetricListParams,
