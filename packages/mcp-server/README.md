@@ -283,6 +283,7 @@ The following tools are available in this MCP server.
 - `create_metrics` (`write`): Create a new Metric for evaluating system outputs. The structure of a metric depends on the evalType and outputType of the metric.
 - `update_metrics` (`write`): Update an existing Metric. You must specify the evalType and outputType of the metric. The structure of a metric depends on the evalType and outputType of the metric.
 - `list_metrics` (`read`): List Metrics configured for the specified Project. Metrics are returned in reverse chronological order.
+- `delete_metrics` (`write`): Delete a specific Metric by ID. The metric will be removed from metric groups and monitors.
 - `get_metrics` (`read`): Retrieve a specific Metric by ID.
 
 ### Resource `records`:
