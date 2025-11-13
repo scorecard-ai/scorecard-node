@@ -63,12 +63,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/metrics.ts">Metric</a></code>
+- <code><a href="./src/resources/metrics.ts">MetricDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">create</a>(projectID, { ...params }) -> Metric</code>
 - <code title="patch /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">update</a>(metricID, { ...params }) -> Metric</code>
 - <code title="get /projects/{projectId}/metrics">client.metrics.<a href="./src/resources/metrics.ts">list</a>(projectID, { ...params }) -> MetricsPaginatedResponse</code>
+- <code title="delete /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">delete</a>(metricID) -> MetricDeleteResponse</code>
 - <code title="get /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">get</a>(metricID) -> Metric</code>
 
 # Records

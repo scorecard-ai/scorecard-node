@@ -1,5 +1,38 @@
 # Changelog
 
+## 2.5.0 (2025-11-13)
+
+Full Changelog: [v2.4.1...v2.5.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.4.1...v2.5.0)
+
+### Features
+
+* **api:** api update ([360c099](https://github.com/scorecard-ai/scorecard-node/commit/360c0991f7ce2404c66b779015e733a5965d558e))
+* **mcp:** enable optional code execution tool on http mcp servers ([c247909](https://github.com/scorecard-ai/scorecard-node/commit/c247909eb924952ae8be1ec172ef377a440e1734))
+
+
+### Bug Fixes
+
+* **mcp:** return tool execution error on jq failure ([cc71c76](https://github.com/scorecard-ai/scorecard-node/commit/cc71c76e5030a9218f824a8e3018034154660eee))
+
+
+### Chores
+
+* **internal:** codegen related update ([168e874](https://github.com/scorecard-ai/scorecard-node/commit/168e874af7d9d6fefff58ed07734c16eafcb6cc1))
+* **internal:** codegen related update ([ed4964a](https://github.com/scorecard-ai/scorecard-node/commit/ed4964aba6ec909afe9ee0af7695d8c022e18da1))
+* **internal:** grammar fix (it's -&gt; its) ([a17b423](https://github.com/scorecard-ai/scorecard-node/commit/a17b4234cd0c6feee1d0a1646da300d96d6b57d9))
+* mcp code tool explicit error message when missing a run function ([3e8d4d4](https://github.com/scorecard-ai/scorecard-node/commit/3e8d4d4ebfa614a357caf2f643cecd306c1a7aea))
+* **mcp:** add friendlier MCP code tool errors on incorrect method invocations ([c19f365](https://github.com/scorecard-ai/scorecard-node/commit/c19f3653af522bf49a90f0599372f544cb762052))
+* **mcp:** add line numbers to code tool errors ([297cd6b](https://github.com/scorecard-ai/scorecard-node/commit/297cd6b8e2467ee79951eea52807d8e20ea05026))
+* **mcp:** clarify http auth error ([80fc277](https://github.com/scorecard-ai/scorecard-node/commit/80fc277659876afbd91bf54860e49a24bcdc78c5))
+* **mcp:** upgrade jq-web ([981de33](https://github.com/scorecard-ai/scorecard-node/commit/981de33536af6c7e31b1bf4def1465574f31b08f))
+* use structured error when code execution tool errors ([84753e6](https://github.com/scorecard-ai/scorecard-node/commit/84753e6c2d4324479aeeb4dd85cec33a6802e995))
+
+
+### Documentation
+
+* **mcp:** add a README button for one-click add to Cursor ([7bfc26c](https://github.com/scorecard-ai/scorecard-node/commit/7bfc26c0d50662664c9ba5094981bd604e8afd81))
+* **mcp:** add a README link to add server to VS Code or Claude Code ([e2b9a59](https://github.com/scorecard-ai/scorecard-node/commit/e2b9a59797ac0257a3ae33040809ba6d38b78037))
+
 ## 2.4.1 (2025-10-31)
 
 Full Changelog: [v2.4.0...v2.4.1](https://github.com/scorecard-ai/scorecard-node/compare/v2.4.0...v2.4.1)

@@ -7,22 +7,22 @@ import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import Scorecard from 'scorecard-ai';
 
 export const metadata: Metadata = {
-  resource: 'systems',
+  resource: 'metrics',
   operation: 'write',
   tags: [],
   httpMethod: 'delete',
-  httpPath: '/systems/{systemId}',
-  operationId: 'deleteSystem',
+  httpPath: '/metrics/{metricId}',
+  operationId: 'deleteMetric',
 };
 
 export const tool: Tool = {
-  name: 'delete_systems',
+  name: 'delete_metrics',
   description:
-    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nDelete a system definition by ID. This will not delete associated system versions.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/system_delete_response',\n  $defs: {\n    system_delete_response: {\n      type: 'object',\n      properties: {\n        success: {\n          type: 'boolean',\n          description: 'Whether the deletion was successful.'\n        }\n      },\n      required: [        'success'\n      ]\n    }\n  }\n}\n```",
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nDelete a specific Metric by ID. The metric will be removed from metric groups and monitors.\n\n# Response Schema\n```json\n{\n  $ref: '#/$defs/metric_delete_response',\n  $defs: {\n    metric_delete_response: {\n      type: 'object',\n      properties: {\n        success: {\n          type: 'boolean',\n          description: 'Whether the deletion was successful.'\n        }\n      },\n      required: [        'success'\n      ]\n    }\n  }\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {
-      systemId: {
+      metricId: {
         type: 'string',
       },
       jq_filter: {
@@ -32,7 +32,7 @@ export const tool: Tool = {
           'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
       },
     },
-    required: ['systemId'],
+    required: ['metricId'],
   },
   annotations: {
     idempotentHint: true,
@@ -40,9 +40,9 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Scorecard, args: Record<string, unknown> | undefined) => {
-  const { systemId, jq_filter, ...body } = args as any;
+  const { metricId, jq_filter, ...body } = args as any;
   try {
-    return asTextContentResult(await maybeFilter(jq_filter, await client.systems.delete(systemId)));
+    return asTextContentResult(await maybeFilter(jq_filter, await client.metrics.delete(metricId)));
   } catch (error) {
     if (isJqError(error)) {
       return asErrorResult(error.message);
