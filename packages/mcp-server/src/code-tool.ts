@@ -39,6 +39,7 @@ export async function codeTool() {
       },
       body: JSON.stringify({
         project_name: 'scorecard',
+        client_opts: { environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any },
         code,
       }),
     });
