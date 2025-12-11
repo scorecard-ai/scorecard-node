@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.6.0 (2025-12-11)
+
+Full Changelog: [v2.5.0...v2.6.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.5.0...v2.6.0)
+
+### Features
+
+* **mcp:** add detail field to docs search tool ([afc8771](https://github.com/scorecard-ai/scorecard-node/commit/afc87715efc8c2d9a0f1036a14bcd45dc08caa6a))
+* **mcp:** add typescript check to code execution tool ([66ce58c](https://github.com/scorecard-ai/scorecard-node/commit/66ce58cfa2aaa3181d0fb140115d70b3af9884b7))
+* **mcp:** handle code mode calls in the Stainless API ([4be5747](https://github.com/scorecard-ai/scorecard-node/commit/4be5747af5aba794699aff2da666a73b889075e8))
+* **mcp:** return logs on code tool errors ([128a9ef](https://github.com/scorecard-ai/scorecard-node/commit/128a9efb7130a6a4b13ff873bce99854de0c0dd9))
+
+
+### Bug Fixes
+
+* **mcp:** add client instantiation options to code tool ([77a3376](https://github.com/scorecard-ai/scorecard-node/commit/77a33762a7a0e36366fe6f1024e6da3b8f977573))
+* **mcp:** correct code tool API endpoint ([f0f5f1f](https://github.com/scorecard-ai/scorecard-node/commit/f0f5f1fb76c2b355a135708473079a9f1990451f))
+* **mcp:** return correct lines on typescript errors ([fad6845](https://github.com/scorecard-ai/scorecard-node/commit/fad6845202c0dd139f11c448cde61776dfd43136))
+* **mcp:** return tool execution error on api error ([d4b4401](https://github.com/scorecard-ai/scorecard-node/commit/d4b4401fab207d1a451b83c3cd6fe77e71ad6d58))
+
+
+### Chores
+
+* **client:** fix logger property type ([d43bcfe](https://github.com/scorecard-ai/scorecard-node/commit/d43bcfe0a71cfbb1d768ec6d49e7bb53a23538c2))
+* **internal:** codegen related update ([fe5405e](https://github.com/scorecard-ai/scorecard-node/commit/fe5405e02ce59b3e444c3c01cdb2ea7935108acf))
+* **internal:** codegen related update ([00036fd](https://github.com/scorecard-ai/scorecard-node/commit/00036fd4572de210c5070dd41632baa051c09b33))
+* **internal:** upgrade eslint ([f06e917](https://github.com/scorecard-ai/scorecard-node/commit/f06e91729edfd67a6848516c4933c627babb7fb9))
+* **mcp:** update lockfile ([d0a7a1c](https://github.com/scorecard-ai/scorecard-node/commit/d0a7a1cbd8945f00f3087da6c2011196cdadf03b))
+* use latest @modelcontextprotocol/sdk ([77092e8](https://github.com/scorecard-ai/scorecard-node/commit/77092e83375aee411d49bd65a9807eb232673731))
+
 ## 2.5.0 (2025-11-13)
 
 Full Changelog: [v2.4.1...v2.5.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.4.1...v2.5.0)
