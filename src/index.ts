@@ -24,3 +24,4 @@ export {
 
 export { runAndEvaluate } from './lib/runAndEvaluate';
 export { wrapAISDK } from './lib/wrapAISDK';
+export { wrap, wrapOpenAI, wrapAnthropic } from './lib/wrapLLMSDKs';

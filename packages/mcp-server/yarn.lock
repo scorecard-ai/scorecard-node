@@ -3402,6 +3402,18 @@ safe-buffer@5.2.1, safe-buffer@~5.2.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
+<<<<<<< HEAD
+=======
+"scorecard-ai@file:../../dist":
+  version "2.5.0"
+  dependencies:
+    "@opentelemetry/api" "^1.9.0"
+    "@opentelemetry/exporter-trace-otlp-http" "^0.207.0"
+    "@opentelemetry/resources" "^2.2.0"
+    "@opentelemetry/sdk-trace-node" "^2.2.0"
+    "@opentelemetry/semantic-conventions" "^1.37.0"
+
+>>>>>>> fbe0da4 (add new wrap helper)
 semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
@@ -3944,11 +3956,14 @@ zod-to-json-schema@^3.24.5:
   resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.24.5.tgz#d1095440b147fb7c2093812a53c54df8d5df50a3"
   integrity sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==
 
+<<<<<<< HEAD
 zod-to-json-schema@^3.25.0:
   version "3.25.0"
   resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.25.0.tgz#df504c957c4fb0feff467c74d03e6aab0b013e1c"
   integrity sha512-HvWtU2UG41LALjajJrML6uQejQhNJx+JBO9IflpSja4R03iNWfKXrj6W2h7ljuLyc1nKS+9yDyL/9tD1U/yBnQ==
 
+=======
+>>>>>>> fbe0da4 (add new wrap helper)
 zod-validation-error@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-4.0.1.tgz#a105723eb40299578a6a38cb86647068f6d005b1"
