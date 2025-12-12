@@ -213,11 +213,15 @@ function handleAnthropicResponse(span: Span, result: any, params: any) {
     'gen_ai.usage.total_tokens': (result.usage?.input_tokens || 0) + (result.usage?.output_tokens || 0),
   });
 
-  if (result.content?.[0]?.text) {
-    span.setAttribute(
-      'gen_ai.completion.choices',
-      JSON.stringify([{ message: { role: 'assistant', content: result.content[0].text } }]),
-    );
+  // Collect text from all text blocks (Anthropic can return multiple content blocks)
+  if (result.content) {
+    const completionTexts = result.content.filter((c: any) => c.text).map((c: any) => c.text);
+    if (completionTexts.length > 0) {
+      span.setAttribute(
+        'gen_ai.completion.choices',
+        JSON.stringify([{ message: { role: 'assistant', content: completionTexts.join('\n') } }]),
+      );
+    }
   }
 }
 
