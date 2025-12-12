@@ -8,20 +8,13 @@ const openai = wrap(
   new OpenAI({
     apiKey: process.env['OPENAI_API_KEY'],
   }),
-  {
-    apiKey: process.env['SCORECARD_API_KEY'],
-    projectId: '987',
-  },
 );
 
 const claude = wrap(
   new Anthropic({
     apiKey: process.env['ANTHROPIC_API_KEY'],
   }),
-  {
-    apiKey: process.env['SCORECARD_API_KEY'],
-    projectId: '987',
-  },
+  {}, // Config is optional; apiKey and projectId read from env vars
 );
 
 // Example: Complex workflow with nested traces
@@ -35,48 +28,53 @@ async function analyzeWithMultipleLLMs(userQuery: string) {
 
       // First LLM call (will be nested under workflow span)
       const gptResponse = await tracer.startActiveSpan('get-gpt-analysis', async (gptSpan) => {
-        gptSpan.setAttribute('llm.provider', 'openai');
+        try {
+          gptSpan.setAttribute('llm.provider', 'openai');
 
-        const response = await openai.chat.completions.create({
-          model: 'gpt-4',
-          messages: [
-            { role: 'system', content: 'Analyze this query and provide initial thoughts.' },
-            { role: 'user', content: userQuery },
-          ],
-          max_tokens: 200,
-        });
+          const response = await openai.chat.completions.create({
+            model: 'gpt-4',
+            messages: [
+              { role: 'system', content: 'Analyze this query and provide initial thoughts.' },
+              { role: 'user', content: userQuery },
+            ],
+            max_tokens: 200,
+          });
 
-        gptSpan.end();
-        return response.choices[0]?.message?.content || '';
+          return response.choices[0]?.message?.content || '';
+        } finally {
+          gptSpan.end();
+        }
       });
 
       console.log('GPT Analysis:', gptResponse);
 
       // Second LLM call (will also be nested under workflow span)
       const claudeResponse = await tracer.startActiveSpan('get-claude-analysis', async (claudeSpan) => {
-        claudeSpan.setAttribute('llm.provider', 'anthropic');
+        try {
+          claudeSpan.setAttribute('llm.provider', 'anthropic');
 
-        const response = await claude.messages.create({
-          model: 'claude-3-haiku-20240307',
-          max_tokens: 200,
-          messages: [
-            {
-              role: 'user',
-              content: `Here's an analysis from another model: "${gptResponse}"\n\nNow provide your own analysis of: ${userQuery}`,
-            },
-          ],
-        });
+          const response = await claude.messages.create({
+            model: 'claude-3-haiku-20240307',
+            max_tokens: 200,
+            messages: [
+              {
+                role: 'user',
+                content: `Here's an analysis from another model: "${gptResponse}"\n\nNow provide your own analysis of: ${userQuery}`,
+              },
+            ],
+          });
 
-        claudeSpan.end();
-        const textContent = response.content.find((block) => block.type === 'text');
-        return textContent && 'text' in textContent ? textContent.text : '';
+          const textContent = response.content.find((block) => block.type === 'text');
+          return textContent && 'text' in textContent ? textContent.text : '';
+        } finally {
+          claudeSpan.end();
+        }
       });
 
       console.log('Claude Analysis:', claudeResponse);
 
       // Final synthesis (could call another LLM here)
       workflowSpan.setAttribute('workflow.status', 'completed');
-      workflowSpan.end();
 
       return {
         gptAnalysis: gptResponse,
@@ -84,8 +82,9 @@ async function analyzeWithMultipleLLMs(userQuery: string) {
       };
     } catch (error: any) {
       workflowSpan.recordException(error);
-      workflowSpan.end();
       throw error;
+    } finally {
+      workflowSpan.end();
     }
   });
 }

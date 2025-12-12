@@ -1,4 +1,4 @@
-import { trace, context } from '@opentelemetry/api';
+import { trace, context, Span } from '@opentelemetry/api';
 import { NodeTracerProvider, BatchSpanProcessor } from '@opentelemetry/sdk-trace-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { resourceFromAttributes } from '@opentelemetry/resources';
@@ -107,7 +107,7 @@ function detectProvider(client: any): LLMProvider {
 /**
  * Handle OpenAI-specific response parsing
  */
-function handleOpenAIResponse(span: any, result: any, params: any) {
+function handleOpenAIResponse(span: Span, result: any, params: any) {
   span.setAttributes({
     'gen_ai.response.id': result.id || 'unknown',
     'gen_ai.response.model': result.model || params.model || 'unknown',
@@ -125,7 +125,7 @@ function handleOpenAIResponse(span: any, result: any, params: any) {
 /**
  * Handle Anthropic-specific response parsing
  */
-function handleAnthropicResponse(span: any, result: any, params: any) {
+function handleAnthropicResponse(span: Span, result: any, params: any) {
   span.setAttributes({
     'gen_ai.response.id': result.id || 'unknown',
     'gen_ai.response.model': result.model || params.model || 'unknown',
@@ -179,7 +179,7 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
   const tracer = globalTracer;
   const provider = detectProvider(client);
 
-  const createHandler = (target: any, path: string[] = []): ProxyHandler<any> => ({
+  const createHandler = (target: any): ProxyHandler<any> => ({
     get(target, prop: string | symbol) {
       const value = target[prop];
 
@@ -217,12 +217,12 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
                 handleAnthropicResponse(span, result, params);
               }
 
-              span.end();
               return result;
             } catch (error: any) {
               span.recordException(error);
-              span.end();
               throw error;
+            } finally {
+              span.end();
             }
           });
         };
@@ -230,7 +230,7 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
 
       // Recursively proxy nested objects
       if (value && typeof value === 'object') {
-        return new Proxy(value, createHandler(value, [...path, String(prop)]));
+        return new Proxy(value, createHandler(value));
       }
 
       // Return functions and primitives as-is

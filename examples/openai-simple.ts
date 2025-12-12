@@ -5,10 +5,6 @@ const openai = wrap(
   new OpenAI({
     apiKey: process.env['OPENAI_API_KEY'],
   }),
-  {
-    apiKey: process.env['SCORECARD_API_KEY'],
-    projectId: '987',
-  },
 );
 
 async function main() {

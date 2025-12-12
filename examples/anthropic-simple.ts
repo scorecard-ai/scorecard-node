@@ -5,10 +5,6 @@ const claude = wrap(
   new Anthropic({
     apiKey: process.env['ANTHROPIC_API_KEY'],
   }),
-  {
-    apiKey: process.env['SCORECARD_API_KEY'],
-    projectId: '987',
-  },
 );
 
 async function main() {

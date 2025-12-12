@@ -6,10 +6,6 @@ const openai = wrap(
   new OpenAI({
     apiKey: process.env['OPENAI_API_KEY'],
   }),
-  {
-    apiKey: process.env['SCORECARD_API_KEY'],
-    projectId: '987',
-  },
 );
 
 // Example: LLM call nested within a custom span
@@ -28,15 +24,15 @@ async function processUserRequest(userId: string, question: string) {
         max_tokens: 100,
       });
 
-      const answer = response.choices[0].message.content;
+      const answer = response.choices[0]?.message?.content;
       span.setAttribute('answer.length', answer?.length || 0);
-      span.end();
 
       return answer;
     } catch (error: any) {
       span.recordException(error);
-      span.end();
       throw error;
+    } finally {
+      span.end();
     }
   });
 }
