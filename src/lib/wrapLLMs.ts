@@ -1,5 +1,5 @@
 import { trace, context, Span } from '@opentelemetry/api';
-import { NodeTracerProvider, BatchSpanProcessor } from '@opentelemetry/sdk-trace-node';
+import { NodeTracerProvider, BatchSpanProcessor, ReadableSpan } from '@opentelemetry/sdk-trace-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
@@ -33,19 +33,101 @@ interface WrapConfig {
    * Defaults to "https://tracing.scorecard.io/otel/v1/traces".
    */
   endpoint?: string | undefined;
+
+  /**
+   * Maximum batch size of spans to be exported in a single request.
+   * Lower values provide faster feedback but more network requests.
+   * Higher values are more efficient but delay span visibility.
+   * @default 1
+   */
+  maxExportBatchSize?: number | undefined;
 }
 
 type LLMProvider = 'openai' | 'anthropic';
 
-let globalProvider: NodeTracerProvider | null = null;
-let globalTracer: ReturnType<typeof trace.getTracer> | null = null;
+/**
+ * Custom exporter that wraps OTLP exporter and injects projectId from span attributes
+ * into the resource before export. This allows per-span projectId while keeping
+ * ResourceAttributes where the backend expects them.
+ */
+class ScorecardExporter extends OTLPTraceExporter {
+  override export(spans: ReadableSpan[], resultCallback: (result: any) => void): void {
+    // For each span, if it has a projectId in attributes, inject it into the resource
+    spans.forEach((span) => {
+      const projectId = span.attributes['scorecard.project_id'];
+
+      if (projectId && typeof projectId === 'string') {
+        // Merge projectId into the resource and overwrite
+        const newResource = span.resource.merge(
+          resourceFromAttributes({
+            'scorecard.project_id': projectId,
+          }),
+        );
+
+        // Directly assign the new resource (cast to any to bypass readonly)
+        (span as any).resource = newResource;
+      }
+    });
+
+    // Call the parent exporter with modified spans
+    super.export(spans, resultCallback);
+  }
+}
 
 /**
- * Initialize OpenTelemetry provider for LLM SDK wrappers
+ * Composite processor that forwards span events to all registered processors.
+ * Allows dynamic addition of exporters after provider registration.
  */
-function initProvider(config: WrapConfig) {
-  if (globalProvider) return;
+class CompositeProcessor {
+  private processors = new Map<string, BatchSpanProcessor>();
 
+  addProcessor(apiKey: string, endpoint: string, maxExportBatchSize: number): void {
+    const key = `${apiKey}:${endpoint}`;
+    if (this.processors.has(key)) return;
+
+    const exporter = new ScorecardExporter({
+      url: endpoint,
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+
+    const processor = new BatchSpanProcessor(exporter, {
+      maxExportBatchSize,
+    });
+
+    this.processors.set(key, processor);
+  }
+
+  onStart(span: Span, parentContext: any): void {
+    for (const processor of this.processors.values()) {
+      processor.onStart(span as any, parentContext);
+    }
+  }
+
+  onEnd(span: ReadableSpan): void {
+    for (const processor of this.processors.values()) {
+      processor.onEnd(span);
+    }
+  }
+
+  async forceFlush(): Promise<void> {
+    await Promise.all(Array.from(this.processors.values()).map((p) => p.forceFlush()));
+  }
+
+  async shutdown(): Promise<void> {
+    await Promise.all(Array.from(this.processors.values()).map((p) => p.shutdown()));
+  }
+}
+
+let globalProvider: NodeTracerProvider | null = null;
+let globalTracer: ReturnType<typeof trace.getTracer> | null = null;
+let compositeProcessor: CompositeProcessor | null = null;
+
+/**
+ * Initialize OpenTelemetry provider for LLM SDK wrappers.
+ * Creates a single global provider for nesting support, with exporters
+ * added dynamically for each unique apiKey+endpoint combination.
+ */
+function initProvider(config: WrapConfig): string | undefined {
   const apiKey = config.apiKey || readEnv('SCORECARD_API_KEY');
   if (!apiKey) {
     throw new ScorecardError(
@@ -56,33 +138,29 @@ function initProvider(config: WrapConfig) {
   const endpoint = config.endpoint || 'https://tracing.scorecard.io/otel/v1/traces';
   const serviceName = config.serviceName || 'llm-app';
   const projectId = config.projectId || readEnv('SCORECARD_PROJECT_ID');
+  const maxExportBatchSize = config.maxExportBatchSize ?? 1;
 
-  const exporter = new OTLPTraceExporter({
-    url: endpoint,
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-    },
-  });
+  // Create the global provider once (enables span nesting)
+  if (!globalProvider) {
+    compositeProcessor = new CompositeProcessor();
 
-  const resourceAttrs: Record<string, string> = {
-    [ATTR_SERVICE_NAME]: serviceName,
-  };
+    const resource = resourceFromAttributes({
+      [ATTR_SERVICE_NAME]: serviceName,
+    });
 
-  if (projectId) {
-    resourceAttrs['scorecard.project_id'] = projectId;
+    globalProvider = new NodeTracerProvider({
+      resource,
+      spanProcessors: [compositeProcessor as any],
+    });
+
+    globalProvider.register();
+    globalTracer = trace.getTracer('scorecard-llm');
   }
 
-  const spanProcessor = new BatchSpanProcessor(exporter, {
-    maxExportBatchSize: 1, // Export immediately
-  });
+  // Add an exporter for this specific apiKey+endpoint (if not already added)
+  compositeProcessor?.addProcessor(apiKey, endpoint, maxExportBatchSize);
 
-  globalProvider = new NodeTracerProvider({
-    resource: resourceFromAttributes(resourceAttrs),
-    spanProcessors: [spanProcessor],
-  });
-
-  globalProvider.register();
-  globalTracer = trace.getTracer('scorecard-llm');
+  return projectId;
 }
 
 /**
@@ -170,7 +248,7 @@ function handleAnthropicResponse(span: Span, result: any, params: any) {
  * ```
  */
 export function wrap<T>(client: T, config: WrapConfig = {}): T {
-  initProvider(config);
+  const projectId = initProvider(config);
 
   if (!globalTracer) {
     throw new ScorecardError('Failed to initialize tracer');
@@ -199,6 +277,12 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
             ...(params.max_tokens !== undefined && { 'gen_ai.request.max_tokens': params.max_tokens }),
             ...(params.top_p !== undefined && { 'gen_ai.request.top_p': params.top_p }),
           });
+
+          // Store projectId as span attribute - our custom exporter will inject it
+          // into ResourceAttributes before export (where the backend expects it)
+          if (projectId) {
+            span.setAttribute('scorecard.project_id', projectId);
+          }
 
           // Set prompt messages
           if (params.messages) {

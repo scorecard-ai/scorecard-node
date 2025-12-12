@@ -15,7 +15,7 @@ async function main() {
   });
 
   const textContent = response.content.find((block) => block.type === 'text');
-  console.log('Response:', textContent && 'text' in textContent ? textContent.text : 'No response');
+  console.log('Response:', textContent?.text ?? 'No response');
 }
 
 main().catch((error) => {

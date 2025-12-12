@@ -65,7 +65,7 @@ async function analyzeWithMultipleLLMs(userQuery: string) {
           });
 
           const textContent = response.content.find((block) => block.type === 'text');
-          return textContent && 'text' in textContent ? textContent.text : '';
+          return textContent?.text ?? '';
         } finally {
           claudeSpan.end();
         }
