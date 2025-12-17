@@ -1,5 +1,11 @@
-import { trace, context, Span } from '@opentelemetry/api';
-import { NodeTracerProvider, BatchSpanProcessor, ReadableSpan } from '@opentelemetry/sdk-trace-node';
+import { trace, context, Span, Context } from '@opentelemetry/api';
+import {
+  NodeTracerProvider,
+  BatchSpanProcessor,
+  ReadableSpan,
+  Span as SdkSpan,
+  SpanProcessor,
+} from '@opentelemetry/sdk-trace-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
@@ -83,7 +89,7 @@ class ScorecardExporter extends OTLPTraceExporter {
  * Composite processor that forwards span events to all registered processors.
  * Allows dynamic addition of exporters after provider registration.
  */
-class CompositeProcessor {
+class CompositeProcessor implements SpanProcessor {
   private processors = new Map<string, BatchSpanProcessor>();
 
   addProcessor(apiKey: string, endpoint: string, maxExportBatchSize: number): void {
@@ -102,9 +108,9 @@ class CompositeProcessor {
     this.processors.set(key, processor);
   }
 
-  onStart(span: Span, parentContext: any): void {
+  onStart(span: SdkSpan, parentContext: Context): void {
     for (const processor of this.processors.values()) {
-      processor.onStart(span as any, parentContext);
+      processor.onStart(span, parentContext);
     }
   }
 
@@ -384,12 +390,20 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
   const tracer = globalTracer;
   const provider = detectProvider(client);
 
-  const createHandler = (target: any): ProxyHandler<any> => ({
+  // Track the path to determine if we should wrap this method
+  const createHandler = (target: any, path: string[] = []): ProxyHandler<any> => ({
     get(target, prop: string | symbol) {
       const value = target[prop];
 
-      // Intercept the 'create' and 'stream' methods
-      if ((prop === 'create' || prop === 'stream') && typeof value === 'function') {
+      // Check if this is a method we should wrap based on the path
+      const currentPath = [...path, prop.toString()];
+      const shouldWrap =
+        (provider === 'openai' && currentPath.join('.') === 'chat.completions.create') ||
+        (provider === 'anthropic' &&
+          (currentPath.join('.') === 'messages.create' || currentPath.join('.') === 'messages.stream'));
+
+      // Intercept specific LLM methods
+      if (shouldWrap && typeof value === 'function') {
         return async function (this: any, ...args: any[]) {
           const params = args[0] || {};
           // Streaming if: 1) stream param is true, or 2) using the 'stream' method
@@ -449,9 +463,9 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
         };
       }
 
-      // Recursively proxy nested objects
+      // Recursively proxy nested objects, passing the path along
       if (value && typeof value === 'object') {
-        return new Proxy(value, createHandler(value));
+        return new Proxy(value, createHandler(value, currentPath));
       }
 
       // Return functions and primitives as-is
@@ -463,7 +477,7 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
     },
   });
 
-  return new Proxy(client, createHandler(client)) as T;
+  return new Proxy(client, createHandler(client, [])) as T;
 }
 
 // Backwards compatibility aliases

@@ -110,7 +110,7 @@ yarn tsx openai-simple.ts
 
 ## Troubleshooting
 
-**Error: Cannot find module '@scorecard/node'**
+**Error: Cannot find module 'scorecard-ai'**
 
 - Make sure you ran `yarn build` in the parent directory first
 - The examples reference `"scorecard-ai": "file:.."` in package.json
