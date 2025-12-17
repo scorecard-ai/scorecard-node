@@ -52,17 +52,22 @@ type LLMProvider = 'openai' | 'anthropic';
  */
 class ScorecardExporter extends OTLPTraceExporter {
   override export(spans: ReadableSpan[], resultCallback: (result: any) => void): void {
-    // For each span, if it has a projectId in attributes, inject it into the resource
+    // For each span, inject all scorecard.* attributes into the resource
     spans.forEach((span) => {
-      const projectId = span.attributes['scorecard.project_id'];
+      // Collect all scorecard.* attributes from span attributes
+      const scorecardAttrs = Object.entries(span.attributes).reduce(
+        (acc, [key, value]) => {
+          if (key.startsWith('scorecard.')) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, any>,
+      );
 
-      if (projectId && typeof projectId === 'string') {
-        // Merge projectId into the resource and overwrite
-        const newResource = span.resource.merge(
-          resourceFromAttributes({
-            'scorecard.project_id': projectId,
-          }),
-        );
+      if (Object.keys(scorecardAttrs).length > 0) {
+        // Merge all scorecard.* attributes into the resource
+        const newResource = span.resource.merge(resourceFromAttributes(scorecardAttrs));
 
         // Directly assign the new resource (cast to any to bypass readonly)
         (span as any).resource = newResource;
@@ -226,6 +231,124 @@ function handleAnthropicResponse(span: Span, result: any, params: any) {
 }
 
 /**
+ * Wrapper for async streams that collects metadata and ends span when consumed
+ */
+class StreamWrapper {
+  private contentParts: string[] = [];
+  private finishReason: string | null = null;
+  private usageData: Record<string, number> = {};
+  private responseId: string | null = null;
+  private model: string | null = null;
+
+  constructor(
+    private stream: AsyncIterable<any>,
+    private span: Span,
+    private provider: LLMProvider,
+    private params: any,
+  ) {}
+
+  async *[Symbol.asyncIterator](): AsyncIterator<any> {
+    try {
+      for await (const chunk of this.stream) {
+        this.processChunk(chunk);
+        yield chunk;
+      }
+    } finally {
+      this.finalizeSpan();
+    }
+  }
+
+  private processChunk(chunk: any): void {
+    // OpenAI streaming format
+    if (this.provider === 'openai') {
+      if (!this.responseId && chunk.id) {
+        this.responseId = chunk.id;
+      }
+      if (!this.model && chunk.model) {
+        this.model = chunk.model;
+      }
+
+      if (chunk.choices?.[0]) {
+        const choice = chunk.choices[0];
+        if (choice.delta?.content) {
+          this.contentParts.push(choice.delta.content);
+        }
+        if (choice.finish_reason) {
+          this.finishReason = choice.finish_reason;
+        }
+      }
+
+      // OpenAI includes usage in the last chunk with stream_options
+      if (chunk.usage) {
+        this.usageData = {
+          prompt_tokens: chunk.usage.prompt_tokens || 0,
+          completion_tokens: chunk.usage.completion_tokens || 0,
+          total_tokens: chunk.usage.total_tokens || 0,
+        };
+      }
+    }
+    // Anthropic streaming format
+    else if (this.provider === 'anthropic') {
+      if (chunk.type === 'message_start' && chunk.message) {
+        this.responseId = chunk.message.id;
+        this.model = chunk.message.model;
+        if (chunk.message.usage) {
+          this.usageData['input_tokens'] = chunk.message.usage.input_tokens || 0;
+        }
+      } else if (chunk.type === 'content_block_delta' && chunk.delta?.text) {
+        this.contentParts.push(chunk.delta.text);
+      } else if (chunk.type === 'message_delta') {
+        if (chunk.delta?.stop_reason) {
+          this.finishReason = chunk.delta.stop_reason;
+        }
+        if (chunk.usage?.output_tokens) {
+          this.usageData['output_tokens'] = chunk.usage.output_tokens;
+        }
+      }
+    }
+  }
+
+  private finalizeSpan(): void {
+    // Set response attributes
+    this.span.setAttributes({
+      'gen_ai.response.id': this.responseId || 'unknown',
+      'gen_ai.response.model': this.model || this.params.model || 'unknown',
+      'gen_ai.response.finish_reason': this.finishReason || 'unknown',
+    });
+
+    // Set usage data
+    if (Object.keys(this.usageData).length > 0) {
+      if (this.provider === 'openai') {
+        this.span.setAttributes({
+          'gen_ai.usage.prompt_tokens': this.usageData['prompt_tokens'] || 0,
+          'gen_ai.usage.completion_tokens': this.usageData['completion_tokens'] || 0,
+          'gen_ai.usage.total_tokens': this.usageData['total_tokens'] || 0,
+        });
+      } else if (this.provider === 'anthropic') {
+        const inputTokens = this.usageData['input_tokens'] || 0;
+        const outputTokens = this.usageData['output_tokens'] || 0;
+        this.span.setAttributes({
+          'gen_ai.usage.prompt_tokens': inputTokens,
+          'gen_ai.usage.completion_tokens': outputTokens,
+          'gen_ai.usage.total_tokens': inputTokens + outputTokens,
+        });
+      }
+    }
+
+    // Set completion content if any was collected
+    if (this.contentParts.length > 0) {
+      const content = this.contentParts.join('');
+      this.span.setAttribute(
+        'gen_ai.completion.choices',
+        JSON.stringify([{ message: { role: 'assistant', content } }]),
+      );
+    }
+
+    this.span.end();
+  }
+}
+
+/**
  * Wrap any LLM SDK (OpenAI or Anthropic) to automatically trace all API calls
  *
  * @example
@@ -265,12 +388,15 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
     get(target, prop: string | symbol) {
       const value = target[prop];
 
-      // Intercept the 'create' method
-      if (prop === 'create' && typeof value === 'function') {
+      // Intercept the 'create' and 'stream' methods
+      if ((prop === 'create' || prop === 'stream') && typeof value === 'function') {
         return async function (this: any, ...args: any[]) {
+          const params = args[0] || {};
+          // Streaming if: 1) stream param is true, or 2) using the 'stream' method
+          const isStreaming = params.stream === true || prop === 'stream';
+
           // Start span in the current active context (enables nesting)
           const span = tracer.startSpan(`${provider}.request`, {}, context.active());
-          const params = args[0] || {};
 
           // Set request attributes (common to both providers)
           span.setAttributes({
@@ -298,19 +424,26 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
             try {
               const result = await value.apply(target, args);
 
-              // Set response attributes (provider-specific)
-              if (provider === 'openai') {
-                handleOpenAIResponse(span, result, params);
-              } else if (provider === 'anthropic') {
-                handleAnthropicResponse(span, result, params);
+              if (isStreaming) {
+                // For streaming, wrap the stream to collect metadata and end span when consumed
+                return new StreamWrapper(result, span, provider, params);
+              } else {
+                // For non-streaming, set response attributes immediately
+                if (provider === 'openai') {
+                  handleOpenAIResponse(span, result, params);
+                } else if (provider === 'anthropic') {
+                  handleAnthropicResponse(span, result, params);
+                }
+                return result;
               }
-
-              return result;
             } catch (error: any) {
               span.recordException(error);
               throw error;
             } finally {
-              span.end();
+              // Only end span for non-streaming (streaming ends in StreamWrapper)
+              if (!isStreaming) {
+                span.end();
+              }
             }
           });
         };

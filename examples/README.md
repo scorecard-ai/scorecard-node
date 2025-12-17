@@ -45,11 +45,17 @@ yarn tsx openai-simple.ts
 # Simple Anthropic example
 yarn tsx anthropic-simple.ts
 
-# Basic nesting example (custom span + OpenAI)
-yarn tsx basic-nesting.ts
+# OpenAI streaming example
+yarn tsx openai-streaming.ts
 
-# Complex nested workflow (multiple LLMs)
-yarn tsx nested-traces.ts
+# Anthropic streaming example
+yarn tsx anthropic-streaming.ts
+
+# Simple nesting example (custom span + OpenAI)
+yarn tsx nested-simple.ts
+
+# Advanced nested workflow (multiple LLMs)
+yarn tsx nested-advanced.ts
 ```
 
 ### AI SDK Examples
