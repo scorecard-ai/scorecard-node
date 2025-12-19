@@ -1,5 +1,28 @@
 # Changelog
 
+## 3.0.0 (2025-12-19)
+
+Full Changelog: [v2.6.0...v3.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.6.0...v3.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **mcp:** remove deprecated tool schemes
+* **mcp:** **Migration:** To migrate, simply modify the command used to invoke the MCP server. Currently, the only supported tool scheme is code mode. Now, starting the server with just `node /path/to/mcp/server` or `npx package-name` will invoke code tools: changing your command to one of these is likely all you will need to do.
+
+### Features
+
+* Add telemetry wrappers around Anthropic and OpenAI SDKs ([#31](https://github.com/scorecard-ai/scorecard-node/issues/31)) ([bb4dfe5](https://github.com/scorecard-ai/scorecard-node/commit/bb4dfe590993bfb07d28a1db96622f86654366d6))
+
+
+### Bug Fixes
+
+* **mcp:** pass base url to code tool ([2a855d6](https://github.com/scorecard-ai/scorecard-node/commit/2a855d651ec9260455d9b1172cf543f9a334c6b8))
+
+
+### Chores
+
+* **mcp:** remove deprecated tool schemes ([7175afa](https://github.com/scorecard-ai/scorecard-node/commit/7175afa508ca459c54ade311ecb970b316c1cc87))
+
 ## 2.6.0 (2025-12-11)
 
 Full Changelog: [v2.5.0...v2.6.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.5.0...v2.6.0)
