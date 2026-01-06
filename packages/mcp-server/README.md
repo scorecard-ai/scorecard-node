@@ -56,7 +56,7 @@ If you use Claude Code, you can install the MCP server by running the command be
 environment variables in Claude Code's `.claude.json`, which can be found in your home directory.
 
 ```
-claude mcp add --transport stdio scorecard_ai_api --env SCORECARD_API_KEY="Your SCORECARD_API_KEY here." -- npx -y scorecard-ai-mcp
+claude mcp add scorecard_ai_mcp_api --env SCORECARD_API_KEY="Your SCORECARD_API_KEY here." -- npx -y scorecard-ai-mcp
 ```
 
 ## Code Mode
