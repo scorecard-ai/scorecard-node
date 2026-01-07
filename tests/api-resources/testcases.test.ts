@@ -11,9 +11,27 @@ describe('resource testcases', () => {
   test('create: only required params', async () => {
     const responsePromise = client.testcases.create('246', {
       items: [
-        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        {
+          jsonData: {
+            question: 'bar',
+            idealAnswer: 'bar',
+            provenance: 'bar',
+          },
+        },
+        {
+          jsonData: {
+            question: 'bar',
+            idealAnswer: 'bar',
+            provenance: 'bar',
+          },
+        },
+        {
+          jsonData: {
+            question: 'bar',
+            idealAnswer: 'bar',
+            provenance: 'bar',
+          },
+        },
       ],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -28,16 +46,38 @@ describe('resource testcases', () => {
   test('create: required and optional params', async () => {
     const response = await client.testcases.create('246', {
       items: [
-        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
-        { jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' } },
+        {
+          jsonData: {
+            question: 'bar',
+            idealAnswer: 'bar',
+            provenance: 'bar',
+          },
+        },
+        {
+          jsonData: {
+            question: 'bar',
+            idealAnswer: 'bar',
+            provenance: 'bar',
+          },
+        },
+        {
+          jsonData: {
+            question: 'bar',
+            idealAnswer: 'bar',
+            provenance: 'bar',
+          },
+        },
       ],
     });
   });
 
   test('update: only required params', async () => {
     const responsePromise = client.testcases.update('248', {
-      jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
+      jsonData: {
+        question: 'bar',
+        idealAnswer: 'bar',
+        provenance: 'bar',
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -50,7 +90,11 @@ describe('resource testcases', () => {
 
   test('update: required and optional params', async () => {
     const response = await client.testcases.update('248', {
-      jsonData: { question: 'bar', idealAnswer: 'bar', provenance: 'bar' },
+      jsonData: {
+        question: 'bar',
+        idealAnswer: 'bar',
+        provenance: 'bar',
+      },
     });
   });
 
