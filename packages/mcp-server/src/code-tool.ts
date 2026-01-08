@@ -4,6 +4,7 @@ import { McpTool, Metadata, ToolCallResult, asErrorResult, asTextContentResult }
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { readEnv, readEnvOrError } from './server';
 import { WorkerInput, WorkerOutput } from './code-tool-types';
+import Scorecard from 'scorecard-ai';
 /**
  * A tool that runs code against a copy of the SDK.
  *
@@ -21,7 +22,7 @@ export function codeTool(): McpTool {
       'Runs JavaScript code to interact with the API.\n\nYou are a skilled programmer writing code to interface with the service.\nDefine an async function named "run" that takes a single parameter of an initialized SDK client and it will be run.\nWrite code within this template:\n\n```\nasync function run(client) {\n  // Fill this out\n}\n```\n\nYou will be returned anything that your function returns, plus the results of any console.log statements.\nIf any code triggers an error, the tool will return an error response, so you do not need to add error handling unless you want to output something more helpful than the raw error.\nIt is not necessary to add comments to code, unless by adding those comments you believe that you can generate better code.\nThis code will run in a container, and you will not be able to use fetch or otherwise interact with the network calls other than through the client you are given.\nAny variables you define won\'t live between successive uses of this call, so make sure to return or log any data you might need later.',
     inputSchema: { type: 'object', properties: { code: { type: 'string' } } },
   };
-  const handler = async (_: unknown, args: any): Promise<ToolCallResult> => {
+  const handler = async (client: Scorecard, args: any): Promise<ToolCallResult> => {
     const code = args.code as string;
 
     // this is not required, but passing a Stainless API key for the matching project_name
@@ -36,8 +37,8 @@ export function codeTool(): McpTool {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
         client_envs: JSON.stringify({
-          SCORECARD_API_KEY: readEnvOrError('SCORECARD_API_KEY'),
-          SCORECARD_BASE_URL: readEnv('SCORECARD_BASE_URL'),
+          SCORECARD_API_KEY: client.apiKey || readEnvOrError('SCORECARD_API_KEY'),
+          SCORECARD_BASE_URL: client.baseURL || readEnv('SCORECARD_BASE_URL'),
         }),
       },
       body: JSON.stringify({
