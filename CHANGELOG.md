@@ -1,5 +1,39 @@
 # Changelog
 
+## 3.0.0 (2026-01-09)
+
+Full Changelog: [v2.6.0...v3.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.6.0...v3.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **mcp:** remove deprecated tool schemes
+* **mcp:** **Migration:** To migrate, simply modify the command used to invoke the MCP server. Currently, the only supported tool scheme is code mode. Now, starting the server with just `node /path/to/mcp/server` or `npx package-name` will invoke code tools: changing your command to one of these is likely all you will need to do.
+
+### Features
+
+* Add telemetry wrappers around Anthropic and OpenAI SDKs ([#31](https://github.com/scorecard-ai/scorecard-node/issues/31)) ([bb4dfe5](https://github.com/scorecard-ai/scorecard-node/commit/bb4dfe590993bfb07d28a1db96622f86654366d6))
+
+
+### Bug Fixes
+
+* **mcp:** correct code tool api output types ([c3983d7](https://github.com/scorecard-ai/scorecard-node/commit/c3983d734ccbe019061105f99ba6b2b8727e8b0f))
+* **mcp:** fix env parsing ([22c7368](https://github.com/scorecard-ai/scorecard-node/commit/22c73681d18660d972a9836fe20926b5d402b534))
+* **mcp:** fix options parsing ([c19c6e3](https://github.com/scorecard-ai/scorecard-node/commit/c19c6e3a2da944a83b55419acb2c72ae9a1e1f9d))
+* **mcp:** pass base url to code tool ([2a855d6](https://github.com/scorecard-ai/scorecard-node/commit/2a855d651ec9260455d9b1172cf543f9a334c6b8))
+* **mcp:** update code tool prompt ([cec30f5](https://github.com/scorecard-ai/scorecard-node/commit/cec30f5761b9af71a10bdbe0a5aacff277c4a04b))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([6eb4de7](https://github.com/scorecard-ai/scorecard-node/commit/6eb4de7c08e0f14041714c8fb93aba4b1ab8de1a))
+* **internal:** codegen related update ([32953e6](https://github.com/scorecard-ai/scorecard-node/commit/32953e6cf9066fb0952863950cd63575bf52435c))
+* **mcp:** remove deprecated tool schemes ([7175afa](https://github.com/scorecard-ai/scorecard-node/commit/7175afa508ca459c54ade311ecb970b316c1cc87))
+
+
+### Documentation
+
+* prominently feature MCP server setup in root SDK readmes ([2c59b3f](https://github.com/scorecard-ai/scorecard-node/commit/2c59b3f39f3d14b27b2f13f6183437446c25bb54))
+
 ## 2.6.0 (2025-12-11)
 
 Full Changelog: [v2.5.0...v2.6.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.5.0...v2.6.0)

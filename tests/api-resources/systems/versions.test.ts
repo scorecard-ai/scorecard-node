@@ -21,7 +21,11 @@ describe('resource versions', () => {
 
   test('upsert: only required params', async () => {
     const responsePromise = client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
-      config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
+      config: {
+        temperature: 'bar',
+        maxTokens: 'bar',
+        model: 'bar',
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -34,7 +38,11 @@ describe('resource versions', () => {
 
   test('upsert: required and optional params', async () => {
     const response = await client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {
-      config: { temperature: 'bar', maxTokens: 'bar', model: 'bar' },
+      config: {
+        temperature: 'bar',
+        maxTokens: 'bar',
+        model: 'bar',
+      },
       name: 'Test model: Gemini',
     });
   });

@@ -11,7 +11,11 @@ describe('resource testsets', () => {
   test('create: only required params', async () => {
     const responsePromise = client.testsets.create('314', {
       description: 'Testset for long context Q&A chatbot.',
-      fieldMapping: { expected: ['idealAnswer'], inputs: ['question'], metadata: ['string'] },
+      fieldMapping: {
+        expected: ['idealAnswer'],
+        inputs: ['question'],
+        metadata: ['string'],
+      },
       jsonSchema: { type: 'bar', properties: 'bar' },
       name: 'Long Context Q&A',
     });
@@ -27,7 +31,11 @@ describe('resource testsets', () => {
   test('create: required and optional params', async () => {
     const response = await client.testsets.create('314', {
       description: 'Testset for long context Q&A chatbot.',
-      fieldMapping: { expected: ['idealAnswer'], inputs: ['question'], metadata: ['string'] },
+      fieldMapping: {
+        expected: ['idealAnswer'],
+        inputs: ['question'],
+        metadata: ['string'],
+      },
       jsonSchema: { type: 'bar', properties: 'bar' },
       name: 'Long Context Q&A',
     });
@@ -51,7 +59,11 @@ describe('resource testsets', () => {
         '246',
         {
           description: 'Updated description for the Q&A Testset.',
-          fieldMapping: { expected: ['string'], inputs: ['string'], metadata: ['string'] },
+          fieldMapping: {
+            expected: ['string'],
+            inputs: ['string'],
+            metadata: ['string'],
+          },
           jsonSchema: { foo: 'bar' },
           name: 'Updated Q&A Testset',
         },
