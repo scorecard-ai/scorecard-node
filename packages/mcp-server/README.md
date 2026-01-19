@@ -76,6 +76,68 @@ isolated sandbox. To accomplish this, the server will expose two tools to your a
 Using this scheme, agents are capable of performing very complex tasks deterministically
 and repeatably.
 
+## Usage Examples
+
+Below are examples of prompts you can give to an AI assistant with this MCP server configured.
+
+### Example 1: Search Documentation
+
+**Prompt:**
+> "How do I create a testset using the Scorecard TypeScript SDK?"
+
+**Tool Called:** `search_docs`
+```json
+{
+  "query": "create testset",
+  "language": "typescript"
+}
+```
+
+The assistant searches SDK documentation and returns relevant code examples and API references.
+
+---
+
+### Example 2: List Projects and Testsets
+
+**Prompt:**
+> "List all my Scorecard projects and their testsets."
+
+**Tool Called:** `execute`
+```javascript
+async function run(client) {
+  for await (const project of client.projects.list()) {
+    console.log(`Project: ${project.id} - ${project.name}`);
+    for await (const testset of client.testsets.list(project.id)) {
+      console.log(`  Testset: ${testset.id} - ${testset.name}`);
+    }
+  }
+}
+```
+
+---
+
+### Example 3: Create an Evaluation Run
+
+**Prompt:**
+> "Create a new evaluation run for project '314' with testset '246' and metrics '789' and '101'."
+
+**Tool Called:** `execute`
+```javascript
+async function run(client) {
+  const run = await client.runs.create('314', {
+    testsetId: '246',
+    metricIds: ['789', '101']
+  });
+  console.log('Run created:', run.id);
+  console.log('View at:', run.url);
+  return run;
+}
+```
+
+---
+
+For more SDK code examples, see the [examples directory](https://github.com/scorecard-ai/scorecard-node/tree/main/examples).
+
 ## Running remotely
 
 Launching the client with `--transport=http` launches the server as a remote server using Streamable HTTP transport. The `--port` setting can choose the port it will run on, and the `--socket` setting allows it to run on a Unix socket.
@@ -101,3 +163,34 @@ A configuration JSON for this server might look like this, assuming the server i
   }
 }
 ```
+
+## Privacy & Data Handling
+
+This MCP server transmits data to external services to provide its functionality. By using this server, you acknowledge the following:
+
+### Data Transmitted
+
+- **Code Execution (`execute` tool):** When you use the `execute` tool, the code you provide is sent to the Stainless API (`api.stainless.com`) for execution in a sandboxed environment. Your Scorecard API key is also transmitted to authenticate requests made by the executed code.
+
+- **Documentation Search (`search_docs` tool):** Search queries are sent to the Stainless API to retrieve relevant SDK documentation.
+
+### API Credentials
+
+- Your `SCORECARD_API_KEY` is transmitted to the Stainless code execution sandbox to allow the executed code to make authenticated requests to the Scorecard API.
+- API keys are sent over HTTPS and are not logged by this MCP server.
+
+### Data Retention
+
+- This MCP server does not store or log any user data, code, or API responses locally.
+- Data retention on Stainless infrastructure is governed by [Stainless's privacy policy](https://www.stainless.com/privacy).
+- Data retention for Scorecard API requests is governed by [Scorecard's privacy policy](https://www.scorecard.io/privacy).
+
+### Security Recommendations
+
+- Use environment variables to provide API keys rather than hardcoding them.
+- When running the server remotely, ensure TLS is enabled and use OAuth 2.0 or secure token-based authentication.
+- Rotate API keys periodically and revoke unused keys.
+
+### Contact
+
+For security concerns, contact [security@stainless.com](mailto:security@stainless.com) or [team@scorecard.io](mailto:team@scorecard.io).

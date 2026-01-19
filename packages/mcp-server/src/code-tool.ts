@@ -41,6 +41,11 @@ export function codeTool(): McpTool {
     name: 'execute',
     description: prompt,
     inputSchema: { type: 'object', properties: { code: { type: 'string' } } },
+    annotations: {
+      title: 'Execute Code Against Scorecard API',
+      readOnlyHint: false,
+      destructiveHint: true,
+    },
   };
   const handler = async (client: Scorecard, args: any): Promise<ToolCallResult> => {
     const code = args.code as string;

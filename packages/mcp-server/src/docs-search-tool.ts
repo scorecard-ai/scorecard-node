@@ -35,6 +35,7 @@ export const tool: Tool = {
     required: ['query', 'language'],
   },
   annotations: {
+    title: 'Search Scorecard API Documentation',
     readOnlyHint: true,
   },
 };
