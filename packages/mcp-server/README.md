@@ -182,8 +182,8 @@ This MCP server transmits data to external services to provide its functionality
 ### Data Retention
 
 - This MCP server does not store or log any user data, code, or API responses locally.
-- Data retention on Stainless infrastructure is governed by [Stainless's privacy policy](https://www.stainless.com/privacy).
-- Data retention for Scorecard API requests is governed by [Scorecard's privacy policy](https://www.scorecard.io/privacy).
+- Data retention on Stainless infrastructure is governed by [Stainless's terms and conditions](https://www.stainless.com/legal/terms-conditions).
+- Data retention for Scorecard API requests is governed by [Scorecard's privacy policy](https://www.scorecard.io/privacy-policy).
 
 ### Security Recommendations
 
