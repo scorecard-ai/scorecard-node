@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.0.0 (2026-01-22)
+
+Full Changelog: [v3.0.0-beta.0...v3.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.0-beta.0...v3.0.0)
+
+### Features
+
+* **mcp:** Add Anthropic Software Directory compliance updates ([#35](https://github.com/scorecard-ai/scorecard-node/issues/35)) ([6e48fc1](https://github.com/scorecard-ai/scorecard-node/commit/6e48fc112460d9f97311c5d5b0bdd711963f2011))
+
+
+### Bug Fixes
+
+* **mcp:** Update privacy policy links in README ([#36](https://github.com/scorecard-ai/scorecard-node/issues/36)) ([8203d63](https://github.com/scorecard-ai/scorecard-node/commit/8203d63164a726fdb4313d1bc6999018ae4b980e))
+
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([a32eb88](https://github.com/scorecard-ai/scorecard-node/commit/a32eb88d056a05bb45705ed5b6661df2e073355e))
+* **internal:** upgrade babel, qs, js-yaml ([56c3381](https://github.com/scorecard-ai/scorecard-node/commit/56c338198655a49884ae0ff6059c41d841bbc732))
+* **mcp:** add intent param to execute tool ([5a013b7](https://github.com/scorecard-ai/scorecard-node/commit/5a013b7a15fa4c8c9beba0bb6e597d2d57b83bdf))
+* **mcp:** pass intent param to execute handler ([de0f20a](https://github.com/scorecard-ai/scorecard-node/commit/de0f20ad861d56f07b40994225db1086848a657e))
+* **mcp:** upgrade dependencies ([c330ff5](https://github.com/scorecard-ai/scorecard-node/commit/c330ff546bcc5ab978b56d98eefa592c0d915a6e))
+
 ## 3.0.0-beta.0 (2026-01-14)
 
 Full Changelog: [v2.6.0...v3.0.0-beta.0](https://github.com/scorecard-ai/scorecard-node/compare/v2.6.0...v3.0.0-beta.0)
