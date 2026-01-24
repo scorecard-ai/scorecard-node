@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.1 (2026-01-24)
+
+Full Changelog: [v3.0.0...v3.0.1](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.0...v3.0.1)
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([741289a](https://github.com/scorecard-ai/scorecard-node/commit/741289ac00976f8a09703588122885aaaffe4a08))
+* **internal:** update lock file ([17d37b5](https://github.com/scorecard-ai/scorecard-node/commit/17d37b531394091731bf6af56545e5573addfa0c))
+
 ## 3.0.0 (2026-01-22)
 
 Full Changelog: [v3.0.0-beta.0...v3.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.0-beta.0...v3.0.0)
