@@ -4,6 +4,7 @@ import { McpTool, Metadata, ToolCallResult, asErrorResult, asTextContentResult }
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { readEnv, readEnvOrError } from './server';
 import { WorkerInput, WorkerOutput } from './code-tool-types';
+import { Scorecard } from 'scorecard-ai';
 
 const prompt = `Runs JavaScript code to interact with the Scorecard API.
 
@@ -54,7 +55,7 @@ export function codeTool(): McpTool {
       required: ['code'],
     },
   };
-  const handler = async (_: unknown, args: any): Promise<ToolCallResult> => {
+  const handler = async (client: Scorecard, args: any): Promise<ToolCallResult> => {
     const code = args.code as string;
     const intent = args.intent as string | undefined;
 
@@ -70,8 +71,8 @@ export function codeTool(): McpTool {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
         client_envs: JSON.stringify({
-          SCORECARD_API_KEY: readEnvOrError('SCORECARD_API_KEY'),
-          SCORECARD_BASE_URL: readEnv('SCORECARD_BASE_URL'),
+          SCORECARD_API_KEY: readEnvOrError('SCORECARD_API_KEY') ?? client.apiKey ?? undefined,
+          SCORECARD_BASE_URL: readEnv('SCORECARD_BASE_URL') ?? client.baseURL ?? undefined,
         }),
       },
       body: JSON.stringify({
