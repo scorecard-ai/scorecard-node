@@ -80,7 +80,10 @@ export function codeTool(): McpTool {
             readEnv('SCORECARD_API_KEY') ?? client.apiKey,
             'set SCORECARD_API_KEY environment variable or provide apiKey client option',
           ),
-          SCORECARD_BASE_URL: readEnv('SCORECARD_BASE_URL') ?? client.baseURL ?? undefined,
+          SCORECARD_BASE_URL:
+            readEnv('SCORECARD_BASE_URL') ?? readEnv('SCORECARD_ENVIRONMENT') ?
+              undefined
+            : client.baseURL ?? undefined,
         }),
       },
       body: JSON.stringify({
