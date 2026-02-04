@@ -1,5 +1,26 @@
 # Changelog
 
+## 3.0.1 (2026-02-04)
+
+Full Changelog: [v3.0.0...v3.0.1](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.0...v3.0.1)
+
+### Bug Fixes
+
+* **client:** avoid memory leak with abort signals ([647748b](https://github.com/scorecard-ai/scorecard-node/commit/647748b0e4ffe1798212d32ec804be372819443b))
+* **docs:** fix mcp installation instructions for remote servers ([9fa9c97](https://github.com/scorecard-ai/scorecard-node/commit/9fa9c97bb263b0146698b883599d7aea10c47d91))
+* **mcp:** allow falling back for required env variables ([ca19994](https://github.com/scorecard-ai/scorecard-node/commit/ca1999481153c8d07e2180f0144ea696d6fe3057))
+* **mcp:** do not fallback on baseUrl if environment env variable is set ([c7335b7](https://github.com/scorecard-ai/scorecard-node/commit/c7335b7fdc8f53d9d2714f80baa4a58a8de37c8e))
+
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([741289a](https://github.com/scorecard-ai/scorecard-node/commit/741289ac00976f8a09703588122885aaaffe4a08))
+* **client:** do not parse responses with empty content-length ([3ff76f7](https://github.com/scorecard-ai/scorecard-node/commit/3ff76f7ac16a626ddeef227a6da7482105bcfdce))
+* **internal:** codegen related update ([eaec110](https://github.com/scorecard-ai/scorecard-node/commit/eaec110fbd89a714e75055a13a16db5b428234bd))
+* **internal:** support oauth authorization code flow for MCP servers ([425060f](https://github.com/scorecard-ai/scorecard-node/commit/425060f5bb5a1e48c198bbddc550864c632ba45c))
+* **internal:** update lock file ([17d37b5](https://github.com/scorecard-ai/scorecard-node/commit/17d37b531394091731bf6af56545e5573addfa0c))
+* **mcp:** up tsconfig lib version to es2022 ([7828193](https://github.com/scorecard-ai/scorecard-node/commit/782819307c34be57ea73725459bfb533d8cd123c))
+
 ## 3.0.0 (2026-01-22)
 
 Full Changelog: [v3.0.0-beta.0...v3.0.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.0-beta.0...v3.0.0)
