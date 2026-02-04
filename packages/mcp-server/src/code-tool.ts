@@ -4,7 +4,7 @@ import { McpTool, Metadata, ToolCallResult, asErrorResult, asTextContentResult }
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { readEnv, readEnvOrError } from './server';
 import { WorkerInput, WorkerOutput } from './code-tool-types';
-import Scorecard from 'scorecard-ai';
+import { Scorecard } from 'scorecard-ai';
 
 const prompt = `Runs JavaScript code to interact with the Scorecard API.
 
