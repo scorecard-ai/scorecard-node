@@ -60,7 +60,7 @@ $ yarn link scorecard-ai
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global scorecard-ai
+$ pnpm link --global scorecard-ai
 ```
 
 ## Running tests
