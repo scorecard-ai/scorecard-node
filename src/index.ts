@@ -22,6 +22,6 @@ export {
   UnprocessableEntityError,
 } from './core/error';
 
-export { runAndEvaluate } from './lib/runAndEvaluate';
+export { runAndEvaluate, type SystemOptions } from './lib/runAndEvaluate';
 export { wrapAISDK } from './lib/wrapAISDK';
 export { wrap, wrapOpenAI, wrapAnthropic } from './lib/wrapLLMs';

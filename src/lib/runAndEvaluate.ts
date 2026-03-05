@@ -1,7 +1,20 @@
+import { randomUUID } from 'node:crypto';
 import { Scorecard } from '../client';
 import { Testcase } from '../resources';
 import { ScorecardError } from '../error';
 import { SystemVersion } from '../resources/systems';
+
+/**
+ * Options passed to the system function for each testcase execution.
+ */
+export interface SystemOptions {
+  /**
+   * A unique ID for linking this execution with its OpenTelemetry trace.
+   * Set this as an attribute on your OTel span (e.g. `scorecard.otel_link_id`)
+   * to deduplicate SDK records with trace-created records.
+   */
+  otelLinkId: string;
+}
 
 type RunAndEvaluateArgs<SystemInput extends Record<string, any>, SystemOutput extends Record<string, any>> =
   // Project and metrics are always required
@@ -26,14 +39,18 @@ type RunAndEvaluateArgs<SystemInput extends Record<string, any>, SystemOutput ex
         /**
          * The system function to run on the Testset.
          */
-        system: (testcaseInput: SystemInput, systemVersion: SystemVersion) => Promise<SystemOutput>;
+        system: (
+          testcaseInput: SystemInput,
+          systemVersion: SystemVersion,
+          options: SystemOptions,
+        ) => Promise<SystemOutput>;
       }
     // Otherwise, the system function receives only the testcase input
     | {
         /**
          * The system function to run on the Testset.
          */
-        system: (testcaseInput: SystemInput) => Promise<SystemOutput>;
+        system: (testcaseInput: SystemInput, options: SystemOptions) => Promise<SystemOutput>;
       }
   ) &
     // If testset is not provided, you must pass in all the testcases manually
@@ -149,14 +166,19 @@ export async function runAndEvaluate<
 
   for await (const { testcaseId, inputs, expected } of testcaseIterator(scorecard, args)) {
     for (let i = 0; i < trials; i++) {
-      const modelResponsePromise =
-        hasSystemVersion ? args.system(inputs, systemVersion!) : args.system(inputs);
+      const otelLinkId = randomUUID();
+      const systemOptions: SystemOptions = { otelLinkId };
+
+      const modelResponsePromise = hasSystemVersion
+        ? args.system(inputs, systemVersion!, systemOptions)
+        : args.system(inputs, systemOptions);
 
       function createRecord(outputs: SystemOutput): Promise<unknown> {
         return scorecard.records.create(run.id, {
           inputs,
           expected,
           outputs,
+          otelLinkId,
           ...(testcaseId != null ? { testcaseId } : null),
         });
       }
