@@ -176,13 +176,16 @@ export async function runAndEvaluate<
       const otelLinkId = randomUUID();
       const systemOptions: SystemOptions = { otelLinkId };
 
-      const modelResponsePromise = hasSystemVersion
-        ? acceptsOptions
+      let modelResponsePromise: Promise<SystemOutput>;
+      if (hasSystemVersion) {
+        modelResponsePromise = acceptsOptions
           ? args.system(inputs, systemVersion!, systemOptions)
-          : args.system(inputs, systemVersion!)
-        : acceptsOptions
+          : args.system(inputs, systemVersion!);
+      } else {
+        modelResponsePromise = acceptsOptions
           ? args.system(inputs, systemOptions)
           : args.system(inputs);
+      }
 
       function createRecord(outputs: SystemOutput): Promise<unknown> {
         return scorecard.records.create(run.id, {
