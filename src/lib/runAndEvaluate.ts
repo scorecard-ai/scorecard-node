@@ -177,14 +177,14 @@ export async function runAndEvaluate<
       const systemOptions: SystemOptions = { otelLinkId };
 
       let modelResponsePromise: Promise<SystemOutput>;
-      if (hasSystemVersion) {
-        modelResponsePromise = acceptsOptions
-          ? args.system(inputs, systemVersion!, systemOptions)
-          : args.system(inputs, systemVersion!);
+      if (hasSystemVersion && acceptsOptions) {
+        modelResponsePromise = args.system(inputs, systemVersion!, systemOptions);
+      } else if (hasSystemVersion) {
+        modelResponsePromise = args.system(inputs, systemVersion!);
+      } else if (acceptsOptions) {
+        modelResponsePromise = args.system(inputs, systemOptions);
       } else {
-        modelResponsePromise = acceptsOptions
-          ? args.system(inputs, systemOptions)
-          : args.system(inputs);
+        modelResponsePromise = args.system(inputs);
       }
 
       function createRecord(outputs: SystemOutput): Promise<unknown> {
