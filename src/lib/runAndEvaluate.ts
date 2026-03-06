@@ -38,19 +38,21 @@ type RunAndEvaluateArgs<SystemInput extends Record<string, any>, SystemOutput ex
 
         /**
          * The system function to run on the Testset.
+         * Optionally accepts a SystemOptions argument containing `otelLinkId` for trace deduplication.
          */
         system: (
           testcaseInput: SystemInput,
           systemVersion: SystemVersion,
-          options: SystemOptions,
+          options?: SystemOptions,
         ) => Promise<SystemOutput>;
       }
     // Otherwise, the system function receives only the testcase input
     | {
         /**
          * The system function to run on the Testset.
+         * Optionally accepts a SystemOptions argument containing `otelLinkId` for trace deduplication.
          */
-        system: (testcaseInput: SystemInput, options: SystemOptions) => Promise<SystemOutput>;
+        system: (testcaseInput: SystemInput, options?: SystemOptions) => Promise<SystemOutput>;
       }
   ) &
     // If testset is not provided, you must pass in all the testcases manually
@@ -164,14 +166,23 @@ export async function runAndEvaluate<
 
   const recordPromises: Array<Promise<unknown>> = [];
 
+  // Detect whether the system function accepts the options argument.
+  // With systemVersion: (input, systemVersion, options?) — 3 args means it accepts options
+  // Without systemVersion: (input, options?) — 2 args means it accepts options
+  const acceptsOptions = hasSystemVersion ? args.system.length >= 3 : args.system.length >= 2;
+
   for await (const { testcaseId, inputs, expected } of testcaseIterator(scorecard, args)) {
     for (let i = 0; i < trials; i++) {
       const otelLinkId = randomUUID();
       const systemOptions: SystemOptions = { otelLinkId };
 
       const modelResponsePromise = hasSystemVersion
-        ? args.system(inputs, systemVersion!, systemOptions)
-        : args.system(inputs, systemOptions);
+        ? acceptsOptions
+          ? args.system(inputs, systemVersion!, systemOptions)
+          : args.system(inputs, systemVersion!)
+        : acceptsOptions
+          ? args.system(inputs, systemOptions)
+          : args.system(inputs);
 
       function createRecord(outputs: SystemOutput): Promise<unknown> {
         return scorecard.records.create(run.id, {
