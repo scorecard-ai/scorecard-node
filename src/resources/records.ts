@@ -138,6 +138,12 @@ export interface RecordCreateParams {
   outputs: { [key: string]: unknown };
 
   /**
+   * Optional ID for linking this record with an OpenTelemetry trace. Used for
+   * deduplication.
+   */
+  otelLinkId?: string;
+
+  /**
    * The ID of the Testcase.
    */
   testcaseId?: string;
