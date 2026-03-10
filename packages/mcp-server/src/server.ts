@@ -11,32 +11,33 @@ import { ClientOptions } from 'scorecard-ai';
 import Scorecard from 'scorecard-ai';
 import { codeTool } from './code-tool';
 import docsSearchTool from './docs-search-tool';
+import { getInstructions } from './instructions';
 import { McpOptions } from './options';
-import { HandlerFunction, McpTool } from './types';
+import { blockedMethodsForCodeTool } from './methods';
+import { HandlerFunction, McpRequestContext, ToolCallResult, McpTool } from './types';
+import { readEnv } from './util';
 
-export { McpOptions } from './options';
-export { ClientOptions } from 'scorecard-ai';
-
-export const newMcpServer = () =>
+export const newMcpServer = async (stainlessApiKey: string | undefined) =>
   new McpServer(
     {
       name: 'scorecard_ai_api',
-      version: '3.0.1',
+      version: '3.1.0',
     },
-    { capabilities: { tools: {}, logging: {} } },
+    {
+      instructions: await getInstructions(stainlessApiKey),
+      capabilities: { tools: {}, logging: {} },
+    },
   );
-
-// Create server instance
-export const server = newMcpServer();
 
 /**
  * Initializes the provided MCP Server with the given tools and handlers.
  * If not provided, the default client, tools and handlers will be used.
  */
-export function initMcpServer(params: {
+export async function initMcpServer(params: {
   server: Server | McpServer;
   clientOptions?: ClientOptions;
   mcpOptions?: McpOptions;
+  stainlessApiKey?: string | undefined;
 }) {
   const server = params.server instanceof McpServer ? params.server.server : params.server;
 
@@ -55,15 +56,33 @@ export function initMcpServer(params: {
     error: logAtLevel('error'),
   };
 
-  let client = new Scorecard({
-    ...{ environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any },
-    logger,
-    ...params.clientOptions,
-    defaultHeaders: {
-      ...params.clientOptions?.defaultHeaders,
-      'X-Stainless-MCP': 'true',
-    },
-  });
+  let _client: Scorecard | undefined;
+  let _clientError: Error | undefined;
+  let _logLevel: 'debug' | 'info' | 'warn' | 'error' | 'off' | undefined;
+
+  const getClient = (): Scorecard => {
+    if (_clientError) throw _clientError;
+    if (!_client) {
+      try {
+        _client = new Scorecard({
+          ...{ environment: (readEnv('SCORECARD_ENVIRONMENT') || undefined) as any },
+          logger,
+          ...params.clientOptions,
+          defaultHeaders: {
+            ...params.clientOptions?.defaultHeaders,
+            'X-Stainless-MCP': 'true',
+          },
+        });
+        if (_logLevel) {
+          _client = _client.withOptions({ logLevel: _logLevel });
+        }
+      } catch (e) {
+        _clientError = e instanceof Error ? e : new Error(String(e));
+        throw _clientError;
+      }
+    }
+    return _client;
+  };
 
   const providedTools = selectTools(params.mcpOptions);
   const toolMap = Object.fromEntries(providedTools.map((mcpTool) => [mcpTool.tool.name, mcpTool]));
@@ -81,28 +100,55 @@ export function initMcpServer(params: {
       throw new Error(`Unknown tool: ${name}`);
     }
 
-    return executeHandler(mcpTool.handler, client, args);
+    let client: Scorecard;
+    try {
+      client = getClient();
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: 'text' as const,
+            text: `Failed to initialize client: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    return executeHandler({
+      handler: mcpTool.handler,
+      reqContext: {
+        client,
+        stainlessApiKey: params.stainlessApiKey ?? params.mcpOptions?.stainlessApiKey,
+      },
+      args,
+    });
   });
 
   server.setRequestHandler(SetLevelRequestSchema, async (request) => {
     const { level } = request.params;
+    let logLevel: 'debug' | 'info' | 'warn' | 'error' | 'off';
     switch (level) {
       case 'debug':
-        client = client.withOptions({ logLevel: 'debug' });
+        logLevel = 'debug';
         break;
       case 'info':
-        client = client.withOptions({ logLevel: 'info' });
+        logLevel = 'info';
         break;
       case 'notice':
       case 'warning':
-        client = client.withOptions({ logLevel: 'warn' });
+        logLevel = 'warn';
         break;
       case 'error':
-        client = client.withOptions({ logLevel: 'error' });
+        logLevel = 'error';
         break;
       default:
-        client = client.withOptions({ logLevel: 'off' });
+        logLevel = 'off';
         break;
+    }
+    _logLevel = logLevel;
+    if (_client) {
+      _client = _client.withOptions({ logLevel });
     }
     return {};
   });
@@ -112,7 +158,16 @@ export function initMcpServer(params: {
  * Selects the tools to include in the MCP Server based on the provided options.
  */
 export function selectTools(options?: McpOptions): McpTool[] {
-  const includedTools = [codeTool()];
+  const includedTools = [];
+
+  if (options?.includeCodeTool ?? true) {
+    includedTools.push(
+      codeTool({
+        blockedMethods: blockedMethodsForCodeTool(options),
+        codeExecutionMode: options?.codeExecutionMode ?? 'stainless-sandbox',
+      }),
+    );
+  }
   if (options?.includeDocsTools ?? true) {
     includedTools.push(docsSearchTool);
   }
@@ -122,34 +177,14 @@ export function selectTools(options?: McpOptions): McpTool[] {
 /**
  * Runs the provided handler with the given client and arguments.
  */
-export async function executeHandler(
-  handler: HandlerFunction,
-  client: Scorecard,
-  args: Record<string, unknown> | undefined,
-) {
-  return await handler(client, args || {});
+export async function executeHandler({
+  handler,
+  reqContext,
+  args,
+}: {
+  handler: HandlerFunction;
+  reqContext: McpRequestContext;
+  args: Record<string, unknown> | undefined;
+}): Promise<ToolCallResult> {
+  return await handler({ reqContext, args: args || {} });
 }
-
-export const readEnv = (env: string): string | undefined => {
-  if (typeof (globalThis as any).process !== 'undefined') {
-    return (globalThis as any).process.env?.[env]?.trim();
-  } else if (typeof (globalThis as any).Deno !== 'undefined') {
-    return (globalThis as any).Deno.env?.get?.(env)?.trim();
-  }
-  return;
-};
-
-export const readEnvOrError = (env: string): string => {
-  let envValue = readEnv(env);
-  if (envValue === undefined) {
-    throw new Error(`Environment variable ${env} is not set`);
-  }
-  return envValue;
-};
-
-export const requireValue = <T>(value: T | undefined, description: string): T => {
-  if (value === undefined) {
-    throw new Error(`Missing required value: ${description}`);
-  }
-  return value;
-};
