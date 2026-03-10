@@ -127,6 +127,7 @@ const fuse = new Fuse(
     'client.records.create',
     'client.records.delete',
     'client.records.list',
+    'client.records.annotations.list',
     'client.scores.upsert',
     'client.systems.delete',
     'client.systems.get',

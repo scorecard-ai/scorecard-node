@@ -77,15 +77,26 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/records.ts">Record</a></code>
-- <code><a href="./src/resources/records.ts">RecordListResponse</a></code>
-- <code><a href="./src/resources/records.ts">RecordDeleteResponse</a></code>
+- <code><a href="./src/resources/records/records.ts">Record</a></code>
+- <code><a href="./src/resources/records/records.ts">RecordListResponse</a></code>
+- <code><a href="./src/resources/records/records.ts">RecordDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /runs/{runId}/records">client.records.<a href="./src/resources/records.ts">create</a>(runID, { ...params }) -> Record</code>
-- <code title="get /runs/{runId}/records">client.records.<a href="./src/resources/records.ts">list</a>(runID, { ...params }) -> RecordListResponsesPaginatedResponse</code>
-- <code title="delete /records/{recordId}">client.records.<a href="./src/resources/records.ts">delete</a>(recordID) -> RecordDeleteResponse</code>
+- <code title="post /runs/{runId}/records">client.records.<a href="./src/resources/records/records.ts">create</a>(runID, { ...params }) -> Record</code>
+- <code title="get /runs/{runId}/records">client.records.<a href="./src/resources/records/records.ts">list</a>(runID, { ...params }) -> RecordListResponsesPaginatedResponse</code>
+- <code title="delete /records/{recordId}">client.records.<a href="./src/resources/records/records.ts">delete</a>(recordID) -> RecordDeleteResponse</code>
+
+## Annotations
+
+Types:
+
+- <code><a href="./src/resources/records/annotations.ts">Annotation</a></code>
+- <code><a href="./src/resources/records/annotations.ts">AnnotationListResponse</a></code>
+
+Methods:
+
+- <code title="get /records/{recordId}/annotations">client.records.annotations.<a href="./src/resources/records/annotations.ts">list</a>(recordID) -> AnnotationListResponse</code>
 
 # Scores
 

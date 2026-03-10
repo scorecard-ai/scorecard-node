@@ -25,7 +25,7 @@ export {
   type RecordCreateParams,
   type RecordListParams,
   type RecordListResponsesPaginatedResponse,
-} from './records';
+} from './records/records';
 export { Runs, type Run, type RunCreateParams, type RunListParams, type RunsPaginatedResponse } from './runs';
 export { Scores, type Score, type ScoreUpsertParams } from './scores';
 export {
