@@ -149,6 +149,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/records/{recordId}',
   },
   {
+    clientCallName: 'client.records.annotations.list',
+    fullyQualifiedName: 'records.annotations.list',
+    httpMethod: 'get',
+    httpPath: '/records/{recordId}/annotations',
+  },
+  {
     clientCallName: 'client.scores.upsert',
     fullyQualifiedName: 'scores.upsert',
     httpMethod: 'put',
