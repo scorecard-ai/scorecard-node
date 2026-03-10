@@ -1,5 +1,56 @@
 # Changelog
 
+## 3.1.0 (2026-03-10)
+
+Full Changelog: [v3.0.1...v3.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.1...v3.1.0)
+
+### Features
+
+* add otel_link_id for SDK/trace record deduplication ([#39](https://github.com/scorecard-ai/scorecard-node/issues/39)) ([3054459](https://github.com/scorecard-ai/scorecard-node/commit/30544595cef82114d0e5d26b355ab533bf84449f))
+* **api:** api update ([c5c6006](https://github.com/scorecard-ai/scorecard-node/commit/c5c60064b5f8b81a3bc03eff0447397036f7914d))
+* **mcp:** add an option to disable code tool ([863c2bd](https://github.com/scorecard-ai/scorecard-node/commit/863c2bd97426d904c339ffc4064217135659acf5))
+* **mcp:** add initial server instructions ([520473d](https://github.com/scorecard-ai/scorecard-node/commit/520473d61d9823f3b02b5c2d25595fbc75ec89bd))
+
+
+### Bug Fixes
+
+* **client:** avoid removing abort listener too early ([33693d0](https://github.com/scorecard-ai/scorecard-node/commit/33693d0e582be21c2eef8c910ec534c9f9e86b7e))
+* **client:** preserve URL params already embedded in path ([3772609](https://github.com/scorecard-ai/scorecard-node/commit/3772609274036789aae02daa4996ddba1bf70674))
+* **docs/contributing:** correct pnpm link command ([23ecf7d](https://github.com/scorecard-ai/scorecard-node/commit/23ecf7d1a47542819fe6cdd479af5f055cc5390d))
+* **mcp:** initialize SDK lazily to avoid failing the connection on init errors ([7475f72](https://github.com/scorecard-ai/scorecard-node/commit/7475f72e8e973b7f28e0b4a22fe9e21c3feed41d))
+* **mcp:** update prompt ([b9eecbe](https://github.com/scorecard-ai/scorecard-node/commit/b9eecbe32259ffa895c00168fdcf83bad76e1784))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([246c53b](https://github.com/scorecard-ai/scorecard-node/commit/246c53b32f1f21daf6dfb69a7caafddba5d01939))
+* **client:** restructure abort controller binding ([80154d0](https://github.com/scorecard-ai/scorecard-node/commit/80154d05adcb658b90592fada92e933dea2c1b09))
+* **internal/client:** fix form-urlencoded requests ([8b3981c](https://github.com/scorecard-ai/scorecard-node/commit/8b3981c26c2a7c078743f3d1cf220dc7627e4ad1))
+* **internal:** add health check to MCP server when running in HTTP mode ([3983e26](https://github.com/scorecard-ai/scorecard-node/commit/3983e261687b2dbb9fbc3de6420fb2d24f5391b9))
+* **internal:** allow basic filtering of methods allowed for MCP code mode ([5990662](https://github.com/scorecard-ai/scorecard-node/commit/59906629bb20d43fb3b1f52488452150e217f9ae))
+* **internal:** allow setting x-stainless-api-key header on mcp server requests ([70de047](https://github.com/scorecard-ai/scorecard-node/commit/70de047cd6c3343b2e0dcc9aa2958862de69e0fc))
+* **internal:** always generate MCP server dockerfiles and upgrade associated dependencies ([ce33b87](https://github.com/scorecard-ai/scorecard-node/commit/ce33b87b9bc9777ef448fe50d1b08e09a598650b))
+* **internal:** avoid type checking errors with ts-reset ([c8608e1](https://github.com/scorecard-ai/scorecard-node/commit/c8608e17a0cd5a4747e9409b6caef2951c48b28e))
+* **internal:** cache fetch instruction calls in MCP server ([a1cab32](https://github.com/scorecard-ai/scorecard-node/commit/a1cab32aec79e02301012c2a867e8fc2c65dd89d))
+* **internal:** codegen related update ([04fa892](https://github.com/scorecard-ai/scorecard-node/commit/04fa892dc5d34d7281dccb47d6675d9229cbf8dd))
+* **internal:** codegen related update ([f0578ee](https://github.com/scorecard-ai/scorecard-node/commit/f0578ee7ac13614e65107f6fbca8b465d8439446))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([e3e5edd](https://github.com/scorecard-ai/scorecard-node/commit/e3e5eddd9bffac262f8ff15fec8d179ad309cd4b))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([4ab6efd](https://github.com/scorecard-ai/scorecard-node/commit/4ab6efd759596f3d69ca3b87767648480d6074ab))
+* **internal:** fix pagination internals not accepting option promises ([2de5641](https://github.com/scorecard-ai/scorecard-node/commit/2de5641bde479b511b2008a64e0aedc005a44973))
+* **internal:** improve layout of generated MCP server files ([4ba9826](https://github.com/scorecard-ai/scorecard-node/commit/4ba982613986bf28f4446d06343ac86670b86bc0))
+* **internal:** make MCP code execution location configurable via a flag ([a8b5409](https://github.com/scorecard-ai/scorecard-node/commit/a8b5409a42a11d4603e97da1b7b84e6114f93cb6))
+* **internal:** move stringifyQuery implementation to internal function ([4dd7f38](https://github.com/scorecard-ai/scorecard-node/commit/4dd7f389b74da95e3622b3dc97da92dd1ce3f3f2))
+* **internal:** refactor flag parsing for MCP servers and add debug flag ([beaa5dd](https://github.com/scorecard-ai/scorecard-node/commit/beaa5dd6864af8fd34226dff5eb3372d6990fa9d))
+* **internal:** update dependencies to address dependabot vulnerabilities ([54c6e15](https://github.com/scorecard-ai/scorecard-node/commit/54c6e15c0fd2c379c49173826c579d3e8aa14eb1))
+* **internal:** upgrade @modelcontextprotocol/sdk and hono ([8c48e26](https://github.com/scorecard-ai/scorecard-node/commit/8c48e2667febc9dfcc817ed8cd6b23b6a837a334))
+* **internal:** use x-stainless-mcp-client-envs header for MCP remote code tool calls ([37f2e91](https://github.com/scorecard-ai/scorecard-node/commit/37f2e91092e07d5c31aba83db1d13c0573b445f1))
+* **mcp-server:** improve instructions ([ff7482d](https://github.com/scorecard-ai/scorecard-node/commit/ff7482dc841e053f2eebee52a1529eb3c15806ad))
+* **mcp-server:** return access instructions for 404 without API key ([d89280f](https://github.com/scorecard-ai/scorecard-node/commit/d89280f823509d4fba3c90efe6796793f8b45620))
+* **mcp:** correctly update version in sync with sdk ([fe13bb3](https://github.com/scorecard-ai/scorecard-node/commit/fe13bb3e6b9d4fdfc9eaa52b7f4b664b9d86d032))
+* **mcp:** forward STAINLESS_API_KEY to docs search endpoint ([440717c](https://github.com/scorecard-ai/scorecard-node/commit/440717c59aa865b652b9c00e6d895514f74bb1a9))
+* **test:** do not count install time for mock server timeout ([14c8de6](https://github.com/scorecard-ai/scorecard-node/commit/14c8de63ea242073bc0dc9fb8a384baa88ccf029))
+* update mock server docs ([3469689](https://github.com/scorecard-ai/scorecard-node/commit/3469689aa1bd818176bc2585bce9834e58b4869b))
+
 ## 3.0.1 (2026-02-04)
 
 Full Changelog: [v3.0.0...v3.0.1](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.0...v3.0.1)
