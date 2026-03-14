@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.2.0 (2026-03-14)
+
+Full Changelog: [v3.1.0...v3.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.1.0...v3.2.0)
+
+### Features
+
+* **api:** api update ([4776163](https://github.com/scorecard-ai/scorecard-node/commit/47761630e57a3df5c646723a6d31f34a0756f477))
+
+
+### Chores
+
+* **internal:** bump @modelcontextprotocol/sdk, @hono/node-server, and minimatch ([d3e8622](https://github.com/scorecard-ai/scorecard-node/commit/d3e8622f46d101676fb4fd3e58b4c46cfde58955))
+* **internal:** make generated MCP servers compatible with Cloudflare worker environments ([00e4d6b](https://github.com/scorecard-ai/scorecard-node/commit/00e4d6bbae6e6521076ed028904dcdc35de8af0f))
+* **internal:** support x-stainless-mcp-client-envs header in MCP servers ([49ffb5e](https://github.com/scorecard-ai/scorecard-node/commit/49ffb5e1097ff42772f6b6467837fad6bd658843))
+
 ## 3.1.0 (2026-03-10)
 
 Full Changelog: [v3.0.1...v3.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.1...v3.1.0)
