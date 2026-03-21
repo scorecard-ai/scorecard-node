@@ -35,15 +35,6 @@ import {
   Projects,
   ProjectsPaginatedResponse,
 } from './resources/projects';
-import {
-  Record,
-  RecordCreateParams,
-  RecordDeleteResponse,
-  RecordListParams,
-  RecordListResponse,
-  RecordListResponsesPaginatedResponse,
-  Records,
-} from './resources/records';
 import { Run, RunCreateParams, RunListParams, Runs, RunsPaginatedResponse } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
 import {
@@ -66,6 +57,15 @@ import {
   Testsets,
   TestsetsPaginatedResponse,
 } from './resources/testsets';
+import {
+  Record,
+  RecordCreateParams,
+  RecordDeleteResponse,
+  RecordListParams,
+  RecordListResponse,
+  RecordListResponsesPaginatedResponse,
+  Records,
+} from './resources/records/records';
 import {
   System,
   SystemDeleteResponse,
