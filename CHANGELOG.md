@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.2.0 (2026-03-21)
+
+Full Changelog: [v3.1.0...v3.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.1.0...v3.2.0)
+
+### Features
+
+* **api:** api update ([4776163](https://github.com/scorecard-ai/scorecard-node/commit/47761630e57a3df5c646723a6d31f34a0756f477))
+
+
+### Chores
+
+* **internal:** bump @modelcontextprotocol/sdk, @hono/node-server, and minimatch ([d3e8622](https://github.com/scorecard-ai/scorecard-node/commit/d3e8622f46d101676fb4fd3e58b4c46cfde58955))
+* **internal:** make generated MCP servers compatible with Cloudflare worker environments ([00e4d6b](https://github.com/scorecard-ai/scorecard-node/commit/00e4d6bbae6e6521076ed028904dcdc35de8af0f))
+* **internal:** support x-stainless-mcp-client-envs header in MCP servers ([49ffb5e](https://github.com/scorecard-ai/scorecard-node/commit/49ffb5e1097ff42772f6b6467837fad6bd658843))
+* **internal:** support x-stainless-mcp-client-permissions headers in MCP servers ([bf756bc](https://github.com/scorecard-ai/scorecard-node/commit/bf756bcc5308d6b66251bcbdf202de171a69c97c))
+* **internal:** tweak CI branches ([2abb150](https://github.com/scorecard-ai/scorecard-node/commit/2abb1505eec73c936fd40940bca71e55436ea237))
+* **tests:** bump steady to v0.19.4 ([e407db7](https://github.com/scorecard-ai/scorecard-node/commit/e407db7d27e578b698b0256afaec0568d3a2862e))
+* **tests:** bump steady to v0.19.5 ([83a698a](https://github.com/scorecard-ai/scorecard-node/commit/83a698ac3625ecdb6f5a148eb32f80347d062dd2))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([d8e82e3](https://github.com/scorecard-ai/scorecard-node/commit/d8e82e34a85d5dd66823dd37fd6987379ef3b54a))
+
 ## 3.1.0 (2026-03-10)
 
 Full Changelog: [v3.0.1...v3.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.1...v3.1.0)
