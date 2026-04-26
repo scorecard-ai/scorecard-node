@@ -63,19 +63,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.projects.create(description: string, name: string): { id: string; description: string; name: string; }`\n\n**post** `/projects`\n\nCreate a new Project.\n\n### Parameters\n\n- `description: string`\n  The description of the Project.\n\n- `name: string`\n  The name of the Project.\n\n### Returns\n\n- `{ id: string; description: string; name: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst project = await client.projects.create({ description: 'This is a test project', name: 'My Project' });\n\nconsole.log(project);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.projects.create',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "This is a test project",\n          "name": "My Project"\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst project = await client.projects.create({\n  description: 'This is a test project',\n  name: 'My Project',\n});\n\nconsole.log(project.id);",
       },
       python: {
         method: 'projects.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nproject = client.projects.create(\n    description="This is a test project",\n    name="My Project",\n)\nprint(project.id)',
       },
-      typescript: {
-        method: 'client.projects.create',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst project = await client.projects.create({\n  description: 'This is a test project',\n  name: 'My Project',\n});\n\nconsole.log(project.id);",
+          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "This is a test project",\n          "name": "My Project"\n        }\'',
       },
     },
   },
@@ -93,19 +93,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.projects.list(cursor?: string, limit?: number): { id: string; description: string; name: string; }`\n\n**get** `/projects`\n\nRetrieve a paginated list of all Projects. Projects are ordered by creation date, with oldest Projects first.\n\n### Parameters\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; description: string; name: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const project of client.projects.list()) {\n  console.log(project);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.projects.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const project of client.projects.list()) {\n  console.log(project.id);\n}",
       },
       python: {
         method: 'projects.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.projects.list()\npage = page.data[0]\nprint(page.id)',
       },
-      typescript: {
-        method: 'client.projects.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const project of client.projects.list()) {\n  console.log(project.id);\n}",
+          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -123,19 +123,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.testsets.list(projectId: string, cursor?: string, limit?: number): { id: string; description: string; fieldMapping: object; jsonSchema: object; name: string; }`\n\n**get** `/projects/{projectId}/testsets`\n\nRetrieve a paginated list of Testsets belonging to a Project.\n\n### Parameters\n\n- `projectId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; description: string; fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }; jsonSchema: object; name: string; }`\n  A collection of Testcases that share the same schema.\nEach Testset defines the structure of its Testcases through a JSON schema.\nThe `fieldMapping` object maps top-level keys of the Testcase schema to their roles (input/expected output).\nFields not mentioned in the `fieldMapping` during creation or update are treated as metadata.\n\n## JSON Schema validation constraints supported:\n\n- **Required fields** - Fields listed in the schema's `required` array must be present in Testcases.\n- **Type validation** - Values must match the specified type (string, number, boolean, null, integer, object, array).\n- **Enum validation** - Values must be one of the options specified in the `enum` array.\n- **Object property validation** - Properties of objects must conform to their defined schemas.\n- **Array item validation** - Items in arrays must conform to the `items` schema.\n- **Logical composition** - Values must conform to at least one schema in the `anyOf` array.\n\nTestcases that fail validation will still be stored, but will include `validationErrors` detailing the issues.\nExtra fields in the Testcase data that are not in the schema will be stored but are ignored during validation.\n\n  - `id: string`\n  - `description: string`\n  - `fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }`\n  - `jsonSchema: object`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const testset of client.testsets.list('314')) {\n  console.log(testset);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testsets.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const testset of client.testsets.list('314')) {\n  console.log(testset.id);\n}",
       },
       python: {
         method: 'testsets.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.testsets.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
       },
-      typescript: {
-        method: 'client.testsets.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const testset of client.testsets.list('314')) {\n  console.log(testset.id);\n}",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -160,19 +160,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.testsets.create(projectId: string, description: string, fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }, jsonSchema: object, name: string): { id: string; description: string; fieldMapping: object; jsonSchema: object; name: string; }`\n\n**post** `/projects/{projectId}/testsets`\n\nCreate a new Testset for a Project. The Testset will be created in the Project specified in the path.\n\n### Parameters\n\n- `projectId: string`\n\n- `description: string`\n  The description of the Testset.\n\n- `fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }`\n  Maps top-level keys of the Testcase schema to their roles (input/expected output). Unmapped fields are treated as metadata.\n  - `expected: string[]`\n    Fields that represent expected outputs.\n  - `inputs: string[]`\n    Fields that represent inputs to the AI system.\n  - `metadata: string[]`\n    Fields that are not inputs or expected outputs.\n\n- `jsonSchema: object`\n  The JSON schema for each Testcase in the Testset.\n\n- `name: string`\n  The name of the Testset.\n\n### Returns\n\n- `{ id: string; description: string; fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }; jsonSchema: object; name: string; }`\n  A collection of Testcases that share the same schema.\nEach Testset defines the structure of its Testcases through a JSON schema.\nThe `fieldMapping` object maps top-level keys of the Testcase schema to their roles (input/expected output).\nFields not mentioned in the `fieldMapping` during creation or update are treated as metadata.\n\n## JSON Schema validation constraints supported:\n\n- **Required fields** - Fields listed in the schema's `required` array must be present in Testcases.\n- **Type validation** - Values must match the specified type (string, number, boolean, null, integer, object, array).\n- **Enum validation** - Values must be one of the options specified in the `enum` array.\n- **Object property validation** - Properties of objects must conform to their defined schemas.\n- **Array item validation** - Items in arrays must conform to the `items` schema.\n- **Logical composition** - Values must conform to at least one schema in the `anyOf` array.\n\nTestcases that fail validation will still be stored, but will include `validationErrors` detailing the issues.\nExtra fields in the Testcase data that are not in the schema will be stored but are ignored during validation.\n\n  - `id: string`\n  - `description: string`\n  - `fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }`\n  - `jsonSchema: object`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testset = await client.testsets.create('314', {\n  description: 'Testset for long context Q&A chatbot.',\n  fieldMapping: {\n  expected: ['idealAnswer'],\n  inputs: ['question'],\n  metadata: ['string'],\n},\n  jsonSchema: { type: 'bar', properties: 'bar' },\n  name: 'Long Context Q&A',\n});\n\nconsole.log(testset);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testsets.create',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "Testset for long context Q&A chatbot.",\n          "fieldMapping": {\n            "expected": [\n              "idealAnswer"\n            ],\n            "inputs": [\n              "question"\n            ],\n            "metadata": [\n              "string"\n            ]\n          },\n          "jsonSchema": {\n            "type": "bar",\n            "properties": "bar"\n          },\n          "name": "Long Context Q&A"\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.create('314', {\n  description: 'Testset for long context Q&A chatbot.',\n  fieldMapping: {\n    inputs: ['question'],\n    expected: ['idealAnswer'],\n    metadata: [],\n  },\n  jsonSchema: {\n    type: 'object',\n    properties: {\n      question: { type: 'string' },\n      idealAnswer: { type: 'string' },\n      provenance: { type: 'string' },\n      geo: { type: 'string' },\n    },\n  },\n  name: 'Long Context Q&A',\n});\n\nconsole.log(testset.id);",
       },
       python: {
         method: 'testsets.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.create(\n    project_id="314",\n    description="Testset for long context Q&A chatbot.",\n    field_mapping={\n        "inputs": ["question"],\n        "expected": ["idealAnswer"],\n        "metadata": [],\n    },\n    json_schema={\n        "type": "object",\n        "properties": {\n            "question": {\n                "type": "string"\n            },\n            "idealAnswer": {\n                "type": "string"\n            },\n            "provenance": {\n                "type": "string"\n            },\n            "geo": {\n                "type": "string"\n            },\n        },\n    },\n    name="Long Context Q&A",\n)\nprint(testset.id)',
       },
-      typescript: {
-        method: 'client.testsets.create',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.create('314', {\n  description: 'Testset for long context Q&A chatbot.',\n  fieldMapping: {\n    inputs: ['question'],\n    expected: ['idealAnswer'],\n    metadata: [],\n  },\n  jsonSchema: {\n    type: 'object',\n    properties: {\n      question: { type: 'string' },\n      idealAnswer: { type: 'string' },\n      provenance: { type: 'string' },\n      geo: { type: 'string' },\n    },\n  },\n  name: 'Long Context Q&A',\n});\n\nconsole.log(testset.id);",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "Testset for long context Q&A chatbot.",\n          "fieldMapping": {\n            "expected": [\n              "idealAnswer"\n            ],\n            "inputs": [\n              "question"\n            ],\n            "metadata": [\n              "string"\n            ]\n          },\n          "jsonSchema": {\n            "type": "bar",\n            "properties": "bar"\n          },\n          "name": "Long Context Q&A"\n        }\'',
       },
     },
   },
@@ -190,19 +190,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.testsets.get(testsetId: string): { id: string; description: string; fieldMapping: object; jsonSchema: object; name: string; }`\n\n**get** `/testsets/{testsetId}`\n\nGet Testset\n\n### Parameters\n\n- `testsetId: string`\n\n### Returns\n\n- `{ id: string; description: string; fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }; jsonSchema: object; name: string; }`\n  A collection of Testcases that share the same schema.\nEach Testset defines the structure of its Testcases through a JSON schema.\nThe `fieldMapping` object maps top-level keys of the Testcase schema to their roles (input/expected output).\nFields not mentioned in the `fieldMapping` during creation or update are treated as metadata.\n\n## JSON Schema validation constraints supported:\n\n- **Required fields** - Fields listed in the schema's `required` array must be present in Testcases.\n- **Type validation** - Values must match the specified type (string, number, boolean, null, integer, object, array).\n- **Enum validation** - Values must be one of the options specified in the `enum` array.\n- **Object property validation** - Properties of objects must conform to their defined schemas.\n- **Array item validation** - Items in arrays must conform to the `items` schema.\n- **Logical composition** - Values must conform to at least one schema in the `anyOf` array.\n\nTestcases that fail validation will still be stored, but will include `validationErrors` detailing the issues.\nExtra fields in the Testcase data that are not in the schema will be stored but are ignored during validation.\n\n  - `id: string`\n  - `description: string`\n  - `fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }`\n  - `jsonSchema: object`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testset = await client.testsets.get('246');\n\nconsole.log(testset);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testsets.get',
         example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.get('246');\n\nconsole.log(testset.id);",
       },
       python: {
         method: 'testsets.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.get(\n    "246",\n)\nprint(testset.id)',
       },
-      typescript: {
-        method: 'client.testsets.get',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.get('246');\n\nconsole.log(testset.id);",
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -227,19 +227,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.testsets.update(testsetId: string, description?: string, fieldMapping?: { expected: string[]; inputs: string[]; metadata: string[]; }, jsonSchema?: object, name?: string): { id: string; description: string; fieldMapping: object; jsonSchema: object; name: string; }`\n\n**patch** `/testsets/{testsetId}`\n\nUpdate a Testset. Only the fields provided in the request body will be updated.\nIf a field is provided, the new content will replace the existing content.\nIf a field is not provided, the existing content will remain unchanged.\n\nWhen updating the schema:\n- If field mappings are not provided and existing mappings reference fields that no longer exist, those mappings will be automatically removed\n- To preserve all existing mappings, ensure all referenced fields remain in the updated schema\n- For complete control, provide both schema and fieldMapping when updating the schema\n\n### Parameters\n\n- `testsetId: string`\n\n- `description?: string`\n  The description of the Testset.\n\n- `fieldMapping?: { expected: string[]; inputs: string[]; metadata: string[]; }`\n  Maps top-level keys of the Testcase schema to their roles (input/expected output). Unmapped fields are treated as metadata.\n  - `expected: string[]`\n    Fields that represent expected outputs.\n  - `inputs: string[]`\n    Fields that represent inputs to the AI system.\n  - `metadata: string[]`\n    Fields that are not inputs or expected outputs.\n\n- `jsonSchema?: object`\n  The JSON schema for each Testcase in the Testset.\n\n- `name?: string`\n  The name of the Testset.\n\n### Returns\n\n- `{ id: string; description: string; fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }; jsonSchema: object; name: string; }`\n  A collection of Testcases that share the same schema.\nEach Testset defines the structure of its Testcases through a JSON schema.\nThe `fieldMapping` object maps top-level keys of the Testcase schema to their roles (input/expected output).\nFields not mentioned in the `fieldMapping` during creation or update are treated as metadata.\n\n## JSON Schema validation constraints supported:\n\n- **Required fields** - Fields listed in the schema's `required` array must be present in Testcases.\n- **Type validation** - Values must match the specified type (string, number, boolean, null, integer, object, array).\n- **Enum validation** - Values must be one of the options specified in the `enum` array.\n- **Object property validation** - Properties of objects must conform to their defined schemas.\n- **Array item validation** - Items in arrays must conform to the `items` schema.\n- **Logical composition** - Values must conform to at least one schema in the `anyOf` array.\n\nTestcases that fail validation will still be stored, but will include `validationErrors` detailing the issues.\nExtra fields in the Testcase data that are not in the schema will be stored but are ignored during validation.\n\n  - `id: string`\n  - `description: string`\n  - `fieldMapping: { expected: string[]; inputs: string[]; metadata: string[]; }`\n  - `jsonSchema: object`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testset = await client.testsets.update('246');\n\nconsole.log(testset);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testsets.update',
         example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.update('246', {\n  description: 'Updated description for the Q&A Testset.',\n  name: 'Updated Q&A Testset',\n});\n\nconsole.log(testset.id);",
       },
       python: {
         method: 'testsets.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.update(\n    testset_id="246",\n    description="Updated description for the Q&A Testset.",\n    name="Updated Q&A Testset",\n)\nprint(testset.id)',
       },
-      typescript: {
-        method: 'client.testsets.update',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.update('246', {\n  description: 'Updated description for the Q&A Testset.',\n  name: 'Updated Q&A Testset',\n});\n\nconsole.log(testset.id);",
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -256,19 +256,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.testsets.delete(testsetId: string): { success: boolean; }`\n\n**delete** `/testsets/{testsetId}`\n\nDelete Testset\n\n### Parameters\n\n- `testsetId: string`\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testset = await client.testsets.delete('246');\n\nconsole.log(testset);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testsets.delete',
         example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.delete('246');\n\nconsole.log(testset.success);",
       },
       python: {
         method: 'testsets.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.delete(\n    "246",\n)\nprint(testset.success)',
       },
-      typescript: {
-        method: 'client.testsets.delete',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.delete('246');\n\nconsole.log(testset.success);",
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -286,19 +286,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.testcases.get(testcaseId: string): { id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: object[]; }`\n\n**get** `/testcases/{testcaseId}`\n\nRetrieve a specific Testcase by ID.\n\n### Parameters\n\n- `testcaseId: string`\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: { message: string; path: string; }[]; }`\n  A test case in the Scorecard system. Contains JSON data that is validated against the schema defined by its Testset.\nThe `inputs` and `expected` fields are derived from the `data` field based on the Testset's `fieldMapping`, and include all mapped fields, including those with validation errors.\nTestcases are stored regardless of validation results, with any validation errors included in the `validationErrors` field.\n\n  - `id: string`\n  - `expected: object`\n  - `inputs: object`\n  - `jsonData: object`\n  - `testsetId: string`\n  - `validationErrors?: { message: string; path: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testcase = await client.testcases.get('248');\n\nconsole.log(testcase);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testcases.get',
         example:
-          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.get('248');\n\nconsole.log(testcase.id);",
       },
       python: {
         method: 'testcases.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.get(\n    "248",\n)\nprint(testcase.id)',
       },
-      typescript: {
-        method: 'client.testcases.get',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.get('248');\n\nconsole.log(testcase.id);",
+          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -316,19 +316,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.testcases.update(testcaseId: string, jsonData: object): { id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: object[]; }`\n\n**put** `/testcases/{testcaseId}`\n\nReplace the data of an existing Testcase while keeping its ID.\n\n### Parameters\n\n- `testcaseId: string`\n\n- `jsonData: object`\n  The JSON data of the Testcase, which is validated against the Testset's schema.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: { message: string; path: string; }[]; }`\n  A test case in the Scorecard system. Contains JSON data that is validated against the schema defined by its Testset.\nThe `inputs` and `expected` fields are derived from the `data` field based on the Testset's `fieldMapping`, and include all mapped fields, including those with validation errors.\nTestcases are stored regardless of validation results, with any validation errors included in the `validationErrors` field.\n\n  - `id: string`\n  - `expected: object`\n  - `inputs: object`\n  - `jsonData: object`\n  - `testsetId: string`\n  - `validationErrors?: { message: string; path: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testcase = await client.testcases.update('248', { jsonData: {\n  question: 'bar',\n  idealAnswer: 'bar',\n  provenance: 'bar',\n} });\n\nconsole.log(testcase);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testcases.update',
         example:
-          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "jsonData": {\n            "question": "bar",\n            "idealAnswer": "bar",\n            "provenance": "bar"\n          }\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.update('248', {\n  jsonData: {\n    question: 'What is the capital of France?',\n    idealAnswer: 'Paris is the capital of France',\n    provenance: 'hand_curated',\n  },\n});\n\nconsole.log(testcase.id);",
       },
       python: {
         method: 'testcases.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.update(\n    testcase_id="248",\n    json_data={\n        "question": "What is the capital of France?",\n        "idealAnswer": "Paris is the capital of France",\n        "provenance": "hand_curated",\n    },\n)\nprint(testcase.id)',
       },
-      typescript: {
-        method: 'client.testcases.update',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.update('248', {\n  jsonData: {\n    question: 'What is the capital of France?',\n    idealAnswer: 'Paris is the capital of France',\n    provenance: 'hand_curated',\n  },\n});\n\nconsole.log(testcase.id);",
+          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "jsonData": {\n            "question": "bar",\n            "idealAnswer": "bar",\n            "provenance": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -346,19 +346,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.testcases.list(testsetId: string, cursor?: string, limit?: number): { id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: object[]; }`\n\n**get** `/testsets/{testsetId}/testcases`\n\nRetrieve a paginated list of Testcases belonging to a Testset.\n\n### Parameters\n\n- `testsetId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: { message: string; path: string; }[]; }`\n  A test case in the Scorecard system. Contains JSON data that is validated against the schema defined by its Testset.\nThe `inputs` and `expected` fields are derived from the `data` field based on the Testset's `fieldMapping`, and include all mapped fields, including those with validation errors.\nTestcases are stored regardless of validation results, with any validation errors included in the `validationErrors` field.\n\n  - `id: string`\n  - `expected: object`\n  - `inputs: object`\n  - `jsonData: object`\n  - `testsetId: string`\n  - `validationErrors?: { message: string; path: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const testcase of client.testcases.list('246')) {\n  console.log(testcase);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testcases.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const testcase of client.testcases.list('246')) {\n  console.log(testcase.id);\n}",
       },
       python: {
         method: 'testcases.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.testcases.list(\n    testset_id="246",\n)\npage = page.data[0]\nprint(page.id)',
       },
-      typescript: {
-        method: 'client.testcases.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const testcase of client.testcases.list('246')) {\n  console.log(testcase.id);\n}",
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -376,19 +376,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.testcases.create(testsetId: string, items: { jsonData: object; }[]): { items: testcase[]; }`\n\n**post** `/testsets/{testsetId}/testcases`\n\nCreate multiple Testcases in the specified Testset.\n\n### Parameters\n\n- `testsetId: string`\n\n- `items: { jsonData: object; }[]`\n  Testcases to create (max 100).\n\n### Returns\n\n- `{ items: { id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: object[]; }[]; }`\n\n  - `items: { id: string; expected: object; inputs: object; jsonData: object; testsetId: string; validationErrors?: { message: string; path: string; }[]; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testcase = await client.testcases.create('246', { items: [{ jsonData: {\n  question: 'bar',\n  idealAnswer: 'bar',\n  provenance: 'bar',\n} }, { jsonData: {\n  question: 'bar',\n  idealAnswer: 'bar',\n  provenance: 'bar',\n} }, { jsonData: {\n  question: 'bar',\n  idealAnswer: 'bar',\n  provenance: 'bar',\n} }] });\n\nconsole.log(testcase);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testcases.create',
         example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "items": [\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            }\n          ]\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.create('246', {\n  items: [\n    {\n      jsonData: {\n        question: 'What is the capital of France?',\n        idealAnswer: 'Paris',\n        provenance: 'hand_curated',\n      },\n    },\n    {\n      jsonData: {\n        question: 'What is the largest planet in our solar system?',\n        idealAnswer: 'Jupiter',\n        provenance: 'synthetic',\n      },\n    },\n    {\n      jsonData: {\n        question: 'How many planets are in our solar system?',\n        idealAnswer: 8,\n        provenance: 'user_feedback',\n      },\n    },\n  ],\n});\n\nconsole.log(testcase.items);",
       },
       python: {
         method: 'testcases.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.create(\n    testset_id="246",\n    items=[{\n        "json_data": {\n            "question": "What is the capital of France?",\n            "idealAnswer": "Paris",\n            "provenance": "hand_curated",\n        }\n    }, {\n        "json_data": {\n            "question": "What is the largest planet in our solar system?",\n            "idealAnswer": "Jupiter",\n            "provenance": "synthetic",\n        }\n    }, {\n        "json_data": {\n            "question": "How many planets are in our solar system?",\n            "idealAnswer": 8,\n            "provenance": "user_feedback",\n        }\n    }],\n)\nprint(testcase.items)',
       },
-      typescript: {
-        method: 'client.testcases.create',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.create('246', {\n  items: [\n    {\n      jsonData: {\n        question: 'What is the capital of France?',\n        idealAnswer: 'Paris',\n        provenance: 'hand_curated',\n      },\n    },\n    {\n      jsonData: {\n        question: 'What is the largest planet in our solar system?',\n        idealAnswer: 'Jupiter',\n        provenance: 'synthetic',\n      },\n    },\n    {\n      jsonData: {\n        question: 'How many planets are in our solar system?',\n        idealAnswer: 8,\n        provenance: 'user_feedback',\n      },\n    },\n  ],\n});\n\nconsole.log(testcase.items);",
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "items": [\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -405,19 +405,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.testcases.delete(ids: string[]): { success: boolean; }`\n\n**post** `/testcases/bulk-delete`\n\nDelete multiple Testcases by their IDs.\n\n### Parameters\n\n- `ids: string[]`\n  IDs of Testcases to delete.\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst testcase = await client.testcases.delete({ ids: ['123', '124', '125'] });\n\nconsole.log(testcase);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.testcases.delete',
         example:
-          'curl https://api2.scorecard.io/api/v2/testcases/bulk-delete \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "ids": [\n            "123",\n            "124",\n            "125"\n          ]\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.delete({ ids: ['123', '124', '125'] });\n\nconsole.log(testcase.success);",
       },
       python: {
         method: 'testcases.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.delete(\n    ids=["123", "124", "125"],\n)\nprint(testcase.success)',
       },
-      typescript: {
-        method: 'client.testcases.delete',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.delete({ ids: ['123', '124', '125'] });\n\nconsole.log(testcase.success);",
+          'curl https://api2.scorecard.io/api/v2/testcases/bulk-delete \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "ids": [\n            "123",\n            "124",\n            "125"\n          ]\n        }\'',
       },
     },
   },
@@ -435,19 +435,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.runs.get(runId: string): { id: string; metricIds: string[]; metricVersionIds: string[]; numExpectedRecords: number; numRecords: number; numScores: number; status: string; systemId: string; systemVersionId: string; testsetId: string; }`\n\n**get** `/runs/{runId}`\n\nRetrieve a specific Run by ID.\n\n### Parameters\n\n- `runId: string`\n\n### Returns\n\n- `{ id: string; metricIds: string[]; metricVersionIds: string[]; numExpectedRecords: number; numRecords: number; numScores: number; status: string; systemId: string; systemVersionId: string; testsetId: string; }`\n  A Run in the Scorecard system.\n\n  - `id: string`\n  - `metricIds: string[]`\n  - `metricVersionIds: string[]`\n  - `numExpectedRecords: number`\n  - `numRecords: number`\n  - `numScores: number`\n  - `status: string`\n  - `systemId: string`\n  - `systemVersionId: string`\n  - `testsetId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst run = await client.runs.get('135');\n\nconsole.log(run);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.runs.get',
         example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst run = await client.runs.get('135');\n\nconsole.log(run.id);",
       },
       python: {
         method: 'runs.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrun = client.runs.get(\n    "135",\n)\nprint(run.id)',
       },
-      typescript: {
-        method: 'client.runs.get',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst run = await client.runs.get('135');\n\nconsole.log(run.id);",
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -466,19 +466,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.runs.list(projectId: string, cursor?: string, limit?: number): { id: string; metricIds: string[]; metricVersionIds: string[]; numExpectedRecords: number; numRecords: number; numScores: number; status: string; systemId: string; systemVersionId: string; testsetId: string; }`\n\n**get** `/projects/{projectId}/runs`\n\nRetrieve a paginated list of all Runs for a Project. Runs are ordered by creation date, most recent first.\n\n### Parameters\n\n- `projectId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; metricIds: string[]; metricVersionIds: string[]; numExpectedRecords: number; numRecords: number; numScores: number; status: string; systemId: string; systemVersionId: string; testsetId: string; }`\n  A Run in the Scorecard system.\n\n  - `id: string`\n  - `metricIds: string[]`\n  - `metricVersionIds: string[]`\n  - `numExpectedRecords: number`\n  - `numRecords: number`\n  - `numScores: number`\n  - `status: string`\n  - `systemId: string`\n  - `systemVersionId: string`\n  - `testsetId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const run of client.runs.list('314')) {\n  console.log(run);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.runs.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const run of client.runs.list('314')) {\n  console.log(run.id);\n}",
       },
       python: {
         method: 'runs.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.runs.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
       },
-      typescript: {
-        method: 'client.runs.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const run of client.runs.list('314')) {\n  console.log(run.id);\n}",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -501,19 +501,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.runs.create(projectId: string, metricIds: string[], systemVersionId?: string, testsetId?: string): { id: string; metricIds: string[]; metricVersionIds: string[]; numExpectedRecords: number; numRecords: number; numScores: number; status: string; systemId: string; systemVersionId: string; testsetId: string; }`\n\n**post** `/projects/{projectId}/runs`\n\nCreate a new Run.\n\n### Parameters\n\n- `projectId: string`\n\n- `metricIds: string[]`\n  The IDs of the metrics this Run is using.\n\n- `systemVersionId?: string`\n  The ID of the system version this Run is using.\n\n- `testsetId?: string`\n  The ID of the Testset this Run is testing.\n\n### Returns\n\n- `{ id: string; metricIds: string[]; metricVersionIds: string[]; numExpectedRecords: number; numRecords: number; numScores: number; status: string; systemId: string; systemVersionId: string; testsetId: string; }`\n  A Run in the Scorecard system.\n\n  - `id: string`\n  - `metricIds: string[]`\n  - `metricVersionIds: string[]`\n  - `numExpectedRecords: number`\n  - `numRecords: number`\n  - `numScores: number`\n  - `status: string`\n  - `systemId: string`\n  - `systemVersionId: string`\n  - `testsetId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst run = await client.runs.create('314', { metricIds: ['789', '101'] });\n\nconsole.log(run);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.runs.create',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "789",\n            "101"\n          ]\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst run = await client.runs.create('314', {\n  metricIds: ['789', '101'],\n  systemVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',\n  testsetId: '246',\n});\n\nconsole.log(run.id);",
       },
       python: {
         method: 'runs.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrun = client.runs.create(\n    project_id="314",\n    metric_ids=["789", "101"],\n    system_version_id="87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n    testset_id="246",\n)\nprint(run.id)',
       },
-      typescript: {
-        method: 'client.runs.create',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst run = await client.runs.create('314', {\n  metricIds: ['789', '101'],\n  systemVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',\n  testsetId: '246',\n});\n\nconsole.log(run.id);",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "789",\n            "101"\n          ]\n        }\'',
       },
     },
   },
@@ -530,19 +530,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.metrics.get(metricId: string): { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n\n**get** `/metrics/{metricId}`\n\nRetrieve a specific Metric by ID.\n\n### Parameters\n\n- `metricId: string`\n\n### Returns\n\n- `{ id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n  A Metric defines how to evaluate system outputs against expected results.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metric = await client.metrics.get('321');\n\nconsole.log(metric);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metrics.get',
         example:
-          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.get('321');\n\nconsole.log(metric);",
       },
       python: {
         method: 'metrics.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.get(\n    "321",\n)\nprint(metric)',
       },
-      typescript: {
-        method: 'client.metrics.get',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.get('321');\n\nconsole.log(metric);",
+          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -560,19 +560,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.metrics.list(projectId: string, cursor?: string, limit?: number): { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n\n**get** `/projects/{projectId}/metrics`\n\nList Metrics configured for the specified Project. Metrics are returned in reverse chronological order.\n\n### Parameters\n\n- `projectId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n  A Metric defines how to evaluate system outputs against expected results.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const metric of client.metrics.list('314')) {\n  console.log(metric);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metrics.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const metric of client.metrics.list('314')) {\n  console.log(metric);\n}",
       },
       python: {
         method: 'metrics.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.metrics.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page)',
       },
-      typescript: {
-        method: 'client.metrics.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const metric of client.metrics.list('314')) {\n  console.log(metric);\n}",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -593,19 +593,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.metrics.create(projectId: string, body?: { evalType: 'ai'; name: string; outputType: 'int'; promptTemplate: string; description?: string; evalModelName?: string; guidelines?: string; passingThreshold?: number; temperature?: number; } | { evalType: 'human'; name: string; outputType: 'int'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'heuristic'; name: string; outputType: 'int'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'ai'; name: string; outputType: 'float'; promptTemplate: string; description?: string; evalModelName?: string; guidelines?: string; passingThreshold?: number; temperature?: number; } | { evalType: 'human'; name: string; outputType: 'float'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'heuristic'; name: string; outputType: 'float'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'ai'; name: string; outputType: 'boolean'; promptTemplate: string; description?: string; evalModelName?: string; guidelines?: string; temperature?: number; } | { evalType: 'human'; name: string; outputType: 'boolean'; description?: string; guidelines?: string; } | { evalType: 'heuristic'; name: string; outputType: 'boolean'; description?: string; guidelines?: string; }): { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n\n**post** `/projects/{projectId}/metrics`\n\nCreate a new Metric for evaluating system outputs. The structure of a metric depends on the evalType and outputType of the metric.\n\n### Parameters\n\n- `projectId: string`\n\n- `body?: { evalType: 'ai'; name: string; outputType: 'int'; promptTemplate: string; description?: string; evalModelName?: string; guidelines?: string; passingThreshold?: number; temperature?: number; } | { evalType: 'human'; name: string; outputType: 'int'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'heuristic'; name: string; outputType: 'int'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'ai'; name: string; outputType: 'float'; promptTemplate: string; description?: string; evalModelName?: string; guidelines?: string; passingThreshold?: number; temperature?: number; } | { evalType: 'human'; name: string; outputType: 'float'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'heuristic'; name: string; outputType: 'float'; description?: string; guidelines?: string; passingThreshold?: number; } | { evalType: 'ai'; name: string; outputType: 'boolean'; promptTemplate: string; description?: string; evalModelName?: string; guidelines?: string; temperature?: number; } | { evalType: 'human'; name: string; outputType: 'boolean'; description?: string; guidelines?: string; } | { evalType: 'heuristic'; name: string; outputType: 'boolean'; description?: string; guidelines?: string; }`\n  A Metric with AI evaluation and integer output.\n\n### Returns\n\n- `{ id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n  A Metric defines how to evaluate system outputs against expected results.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metric = await client.metrics.create('314');\n\nconsole.log(metric);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metrics.create',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.create('314', {\n  evalType: 'ai',\n  name: 'Response Accuracy',\n  outputType: 'boolean',\n  promptTemplate:\n    'Please evaluate if the following response is factually accurate: {{outputs.response}}',\n  description: 'Evaluates if the response is factually accurate',\n  evalModelName: 'gpt-4o',\n  guidelines: 'Check if the response contains factually correct information',\n  temperature: 0.1,\n});\n\nconsole.log(metric);",
       },
       python: {
         method: 'metrics.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.create(\n    project_id="314",\n    eval_type="ai",\n    name="Response Accuracy",\n    output_type="boolean",\n    prompt_template="Please evaluate if the following response is factually accurate: {{outputs.response}}",\n    description="Evaluates if the response is factually accurate",\n    eval_model_name="gpt-4o",\n    guidelines="Check if the response contains factually correct information",\n    temperature=0.1,\n)\nprint(metric)',
       },
-      typescript: {
-        method: 'client.metrics.create',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.create('314', {\n  evalType: 'ai',\n  name: 'Response Accuracy',\n  outputType: 'boolean',\n  promptTemplate:\n    'Please evaluate if the following response is factually accurate: {{outputs.response}}',\n  description: 'Evaluates if the response is factually accurate',\n  evalModelName: 'gpt-4o',\n  guidelines: 'Check if the response contains factually correct information',\n  temperature: 0.1,\n});\n\nconsole.log(metric);",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -626,19 +626,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.metrics.update(metricId: string, body?: { evalType: 'ai'; outputType: 'int'; description?: string; evalModelName?: string; guidelines?: string; name?: string; passingThreshold?: number; promptTemplate?: string; temperature?: number; } | { evalType: 'human'; outputType: 'int'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'heuristic'; outputType: 'int'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'ai'; outputType: 'float'; description?: string; evalModelName?: string; guidelines?: string; name?: string; passingThreshold?: number; promptTemplate?: string; temperature?: number; } | { evalType: 'human'; outputType: 'float'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'heuristic'; outputType: 'float'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'ai'; outputType: 'boolean'; description?: string; evalModelName?: string; guidelines?: string; name?: string; promptTemplate?: string; temperature?: number; } | { evalType: 'human'; outputType: 'boolean'; description?: string; guidelines?: string; name?: string; } | { evalType: 'heuristic'; outputType: 'boolean'; description?: string; guidelines?: string; name?: string; }): { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n\n**patch** `/metrics/{metricId}`\n\nUpdate an existing Metric. You must specify the evalType and outputType of the metric. The structure of a metric depends on the evalType and outputType of the metric.\n\n### Parameters\n\n- `metricId: string`\n\n- `body?: { evalType: 'ai'; outputType: 'int'; description?: string; evalModelName?: string; guidelines?: string; name?: string; passingThreshold?: number; promptTemplate?: string; temperature?: number; } | { evalType: 'human'; outputType: 'int'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'heuristic'; outputType: 'int'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'ai'; outputType: 'float'; description?: string; evalModelName?: string; guidelines?: string; name?: string; passingThreshold?: number; promptTemplate?: string; temperature?: number; } | { evalType: 'human'; outputType: 'float'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'heuristic'; outputType: 'float'; description?: string; guidelines?: string; name?: string; passingThreshold?: number; } | { evalType: 'ai'; outputType: 'boolean'; description?: string; evalModelName?: string; guidelines?: string; name?: string; promptTemplate?: string; temperature?: number; } | { evalType: 'human'; outputType: 'boolean'; description?: string; guidelines?: string; name?: string; } | { evalType: 'heuristic'; outputType: 'boolean'; description?: string; guidelines?: string; name?: string; }`\n  A Metric with AI evaluation and integer output.\n\n### Returns\n\n- `{ id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'int'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'float'; passingThreshold: number; } | { id: string; description: string; evalModelName: string; evalType: 'ai'; guidelines: string; name: string; outputType: 'boolean'; promptTemplate: string; temperature: number; } | { id: string; description: string; evalType: 'human'; guidelines: string; name: string; outputType: 'boolean'; } | { id: string; description: string; evalType: 'heuristic'; guidelines: string; name: string; outputType: 'boolean'; }`\n  A Metric defines how to evaluate system outputs against expected results.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metric = await client.metrics.update('321');\n\nconsole.log(metric);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metrics.update',
         example:
-          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.update('321', {\n  evalType: 'ai',\n  outputType: 'boolean',\n  promptTemplate:\n    'Using the following guidelines, evaluate the response: {{ guidelines }}\\n\\nResponse: {{ outputs.response }}\\n\\nIdeal answer: {{ expected.idealResponse }}',\n});\n\nconsole.log(metric);",
       },
       python: {
         method: 'metrics.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.update(\n    metric_id="321",\n    eval_type="ai",\n    output_type="boolean",\n    prompt_template="Using the following guidelines, evaluate the response: {{ guidelines }}\\n\\nResponse: {{ outputs.response }}\\n\\nIdeal answer: {{ expected.idealResponse }}",\n)\nprint(metric)',
       },
-      typescript: {
-        method: 'client.metrics.update',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.update('321', {\n  evalType: 'ai',\n  outputType: 'boolean',\n  promptTemplate:\n    'Using the following guidelines, evaluate the response: {{ guidelines }}\\n\\nResponse: {{ outputs.response }}\\n\\nIdeal answer: {{ expected.idealResponse }}',\n});\n\nconsole.log(metric);",
+          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -656,19 +656,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.metrics.delete(metricId: string): { success: boolean; }`\n\n**delete** `/metrics/{metricId}`\n\nDelete a specific Metric by ID. The metric will be removed from metric groups and monitors.\n\n### Parameters\n\n- `metricId: string`\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metric = await client.metrics.delete('321');\n\nconsole.log(metric);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metrics.delete',
         example:
-          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.delete('321');\n\nconsole.log(metric.success);",
       },
       python: {
         method: 'metrics.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.delete(\n    "321",\n)\nprint(metric.success)',
       },
-      typescript: {
-        method: 'client.metrics.delete',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.delete('321');\n\nconsole.log(metric.success);",
+          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -693,19 +693,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.records.create(runId: string, expected: object, inputs: object, outputs: object, otelLinkId?: string, testcaseId?: string): { id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n\n**post** `/runs/{runId}/records`\n\nCreate a new Record in a Run.\n\n### Parameters\n\n- `runId: string`\n\n- `expected: object`\n  The expected outputs for the Testcase.\n\n- `inputs: object`\n  The actual inputs sent to the system, which should match the system's input schema.\n\n- `outputs: object`\n  The actual outputs from the system.\n\n- `otelLinkId?: string`\n  Optional ID for linking this record with an OpenTelemetry trace. Used for deduplication.\n\n- `testcaseId?: string`\n  The ID of the Testcase.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n  A record of a system execution in the Scorecard system.\n\n  - `id: string`\n  - `expected: object`\n  - `inputs: object`\n  - `outputs: object`\n  - `runId: string`\n  - `testcaseId?: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst record = await client.records.create('135', {\n  expected: { idealAnswer: 'bar' },\n  inputs: { question: 'bar' },\n  outputs: { response: 'bar' },\n});\n\nconsole.log(record);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.records.create',
         example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          }\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst record = await client.records.create('135', {\n  expected: { idealAnswer: 'Paris is the capital of France' },\n  inputs: { question: 'What is the capital of France?' },\n  outputs: { response: 'The capital of France is Paris.' },\n  testcaseId: '248',\n});\n\nconsole.log(record.id);",
       },
       python: {
         method: 'records.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord = client.records.create(\n    run_id="135",\n    expected={\n        "idealAnswer": "Paris is the capital of France"\n    },\n    inputs={\n        "question": "What is the capital of France?"\n    },\n    outputs={\n        "response": "The capital of France is Paris."\n    },\n    testcase_id="248",\n)\nprint(record.id)',
       },
-      typescript: {
-        method: 'client.records.create',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst record = await client.records.create('135', {\n  expected: { idealAnswer: 'Paris is the capital of France' },\n  inputs: { question: 'What is the capital of France?' },\n  outputs: { response: 'The capital of France is Paris.' },\n  testcaseId: '248',\n});\n\nconsole.log(record.id);",
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -723,19 +723,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.records.list(runId: string, cursor?: string, limit?: number): object`\n\n**get** `/runs/{runId}/records`\n\nRetrieve a paginated list of Records for a Run, including all scores for each record.\n\n### Parameters\n\n- `runId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n  A record with all its associated scores.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const recordListResponse of client.records.list('135')) {\n  console.log(recordListResponse);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.records.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const recordListResponse of client.records.list('135')) {\n  console.log(recordListResponse);\n}",
       },
       python: {
         method: 'records.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.records.list(\n    run_id="135",\n)\npage = page.data[0]\nprint(page)',
       },
-      typescript: {
-        method: 'client.records.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const recordListResponse of client.records.list('135')) {\n  console.log(recordListResponse);\n}",
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -752,19 +752,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.records.delete(recordId: string): { success: boolean; }`\n\n**delete** `/records/{recordId}`\n\nDelete a specific Record by ID.\n\n### Parameters\n\n- `recordId: string`\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst record = await client.records.delete('777');\n\nconsole.log(record);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.records.delete',
         example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst record = await client.records.delete('777');\n\nconsole.log(record.success);",
       },
       python: {
         method: 'records.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord = client.records.delete(\n    "777",\n)\nprint(record.success)',
       },
-      typescript: {
-        method: 'client.records.delete',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst record = await client.records.delete('777');\n\nconsole.log(record.success);",
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -782,19 +782,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.records.annotations.list(recordId: string): { data: annotation[]; }`\n\n**get** `/records/{recordId}/annotations`\n\nList all annotations (ratings and comments) for a specific Record.\n\n### Parameters\n\n- `recordId: string`\n\n### Returns\n\n- `{ data: { id: string; comment: string; createdAt: string; rating: boolean; recordId: string; spanId: string; userId: string; }[]; }`\n\n  - `data: { id: string; comment: string; createdAt: string; rating: boolean; recordId: string; spanId: string; userId: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst annotations = await client.records.annotations.list('777');\n\nconsole.log(annotations);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.records.annotations.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/annotations \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst annotations = await client.records.annotations.list('777');\n\nconsole.log(annotations.data);",
       },
       python: {
         method: 'records.annotations.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nannotations = client.records.annotations.list(\n    "777",\n)\nprint(annotations.data)',
       },
-      typescript: {
-        method: 'client.records.annotations.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst annotations = await client.records.annotations.list('777');\n\nconsole.log(annotations.data);",
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/annotations \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -813,19 +813,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## upsert\n\n`client.scores.upsert(recordId: string, metricConfigId: string, score: object): { metricConfigId: string; recordId: string; score: object; validationErrors?: object[]; }`\n\n**put** `/records/{recordId}/scores/{metricConfigId}`\n\nCreate or update a Score for a given Record and MetricConfig. If a Score with the specified Record ID and MetricConfig ID already exists, it will be updated. Otherwise, a new Score will be created. The score provided should conform to the schema defined by the MetricConfig; otherwise, validation errors will be reported.\n\n### Parameters\n\n- `recordId: string`\n\n- `metricConfigId: string`\n\n- `score: object`\n  The score of the Record, as arbitrary JSON. This data should ideally conform to the output schema defined by the associated MetricConfig. If it doesn't, validation errors will be captured in the `validationErrors` field.\n\n### Returns\n\n- `{ metricConfigId: string; recordId: string; score: object; validationErrors?: { message: string; path: string; }[]; }`\n  A Score represents the evaluation of a Record against a specific MetricConfig. The actual `score` is stored as flexible JSON. While any JSON is accepted, it is expected to conform to the output schema defined by the MetricConfig. Any discrepancies will be noted in the `validationErrors` field, but the Score will still be stored.\n\n  - `metricConfigId: string`\n  - `recordId: string`\n  - `score: object`\n  - `validationErrors?: { message: string; path: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst score = await client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', {\n  recordId: '777',\n  score: { value: 'bar', reasoning: 'bar' },\n});\n\nconsole.log(score);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.scores.upsert',
         example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/scores/$METRIC_CONFIG_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "score": {\n            "value": "bar",\n            "reasoning": "bar"\n          }\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst score = await client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', {\n  recordId: '777',\n  score: { value: true, reasoning: 'The response is correct' },\n});\n\nconsole.log(score.validationErrors);",
       },
       python: {
         method: 'scores.upsert',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nscore = client.scores.upsert(\n    metric_config_id="a1b2c3d4-e5f6-7890-1234-567890abcdef",\n    record_id="777",\n    score={\n        "value": True,\n        "reasoning": "The response is correct",\n    },\n)\nprint(score.validation_errors)',
       },
-      typescript: {
-        method: 'client.scores.upsert',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst score = await client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', {\n  recordId: '777',\n  score: { value: true, reasoning: 'The response is correct' },\n});\n\nconsole.log(score.validationErrors);",
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/scores/$METRIC_CONFIG_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "score": {\n            "value": "bar",\n            "reasoning": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -843,19 +843,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.systems.list(projectId: string, cursor?: string, limit?: number): { id: string; description: string; name: string; productionVersion: system_version; versions: object[]; }`\n\n**get** `/projects/{projectId}/systems`\n\nRetrieve a paginated list of all systems. Systems are ordered by creation date.\n\n### Parameters\n\n- `projectId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; description: string; name: string; productionVersion: { id: string; config: object; name: string; systemId: string; }; versions: { id: string; name: string; }[]; }`\n  A System Under Test (SUT).\n\nSystems are templates - to run evaluations, pair them with a SystemVersion that provides specific\nparameter values.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `productionVersion: { id: string; config: object; name: string; systemId: string; }`\n  - `versions: { id: string; name: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const system of client.systems.list('314')) {\n  console.log(system);\n}\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.list',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const system of client.systems.list('314')) {\n  console.log(system.id);\n}",
       },
       python: {
         method: 'systems.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.systems.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
       },
-      typescript: {
-        method: 'client.systems.list',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const system of client.systems.list('314')) {\n  console.log(system.id);\n}",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -873,19 +873,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.systems.get(systemId: string): { id: string; description: string; name: string; productionVersion: system_version; versions: object[]; }`\n\n**get** `/systems/{systemId}`\n\nRetrieve a specific system by ID.\n\n### Parameters\n\n- `systemId: string`\n\n### Returns\n\n- `{ id: string; description: string; name: string; productionVersion: { id: string; config: object; name: string; systemId: string; }; versions: { id: string; name: string; }[]; }`\n  A System Under Test (SUT).\n\nSystems are templates - to run evaluations, pair them with a SystemVersion that provides specific\nparameter values.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `productionVersion: { id: string; config: object; name: string; systemId: string; }`\n  - `versions: { id: string; name: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst system = await client.systems.get('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.get',
         example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.get('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system.id);",
       },
       python: {
         method: 'systems.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.get(\n    "12345678-0a8b-4f66-b6f3-2ddcfa097257",\n)\nprint(system.id)',
       },
-      typescript: {
-        method: 'client.systems.get',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.get('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system.id);",
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -904,19 +904,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## upsert\n\n`client.systems.upsert(projectId: string, config: object, description?: string, name?: string): { id: string; description: string; name: string; productionVersion: system_version; versions: object[]; }`\n\n**post** `/projects/{projectId}/systems`\n\nCreate a new system. If one with the same name in the project exists, it updates it instead.\n\n### Parameters\n\n- `projectId: string`\n\n- `config: object`\n  The configuration of the system.\n\n- `description?: string`\n  The description of the system.\n\n- `name?: string`\n  The name of the system. Should be unique within the project. Default is \"Default system\"\n\n### Returns\n\n- `{ id: string; description: string; name: string; productionVersion: { id: string; config: object; name: string; systemId: string; }; versions: { id: string; name: string; }[]; }`\n  A System Under Test (SUT).\n\nSystems are templates - to run evaluations, pair them with a SystemVersion that provides specific\nparameter values.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `productionVersion: { id: string; config: object; name: string; systemId: string; }`\n  - `versions: { id: string; name: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst system = await client.systems.upsert('314', { config: { temperature: 'bar', maxTokens: 'bar' } });\n\nconsole.log(system);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.upsert',
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar"\n          }\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.upsert('314', {\n  config: { temperature: 0.1, maxTokens: 1024 },\n  description: 'Production chatbot powered by GPT-4',\n  name: 'GPT-4 Chatbot',\n});\n\nconsole.log(system.id);",
       },
       python: {
         method: 'systems.upsert',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.upsert(\n    project_id="314",\n    config={\n        "temperature": 0.1,\n        "maxTokens": 1024,\n    },\n    description="Production chatbot powered by GPT-4",\n    name="GPT-4 Chatbot",\n)\nprint(system.id)',
       },
-      typescript: {
-        method: 'client.systems.upsert',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.upsert('314', {\n  config: { temperature: 0.1, maxTokens: 1024 },\n  description: 'Production chatbot powered by GPT-4',\n  name: 'GPT-4 Chatbot',\n});\n\nconsole.log(system.id);",
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -935,19 +935,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.systems.update(systemId: string, description?: string, name?: string, productionVersionId?: string): { id: string; description: string; name: string; productionVersion: system_version; versions: object[]; }`\n\n**patch** `/systems/{systemId}`\n\nUpdate an existing system. Only the fields provided in the request body will be updated.\nIf a field is provided, the new content will replace the existing content.\nIf a field is not provided, the existing content will remain unchanged.\n\n### Parameters\n\n- `systemId: string`\n\n- `description?: string`\n  The description of the system.\n\n- `name?: string`\n  The name of the system. Unique within the project.\n\n- `productionVersionId?: string`\n  The ID of the production version of the system.\n\n### Returns\n\n- `{ id: string; description: string; name: string; productionVersion: { id: string; config: object; name: string; systemId: string; }; versions: { id: string; name: string; }[]; }`\n  A System Under Test (SUT).\n\nSystems are templates - to run evaluations, pair them with a SystemVersion that provides specific\nparameter values.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `productionVersion: { id: string; config: object; name: string; systemId: string; }`\n  - `versions: { id: string; name: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst system = await client.systems.update('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.update',
         example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.update('12345678-0a8b-4f66-b6f3-2ddcfa097257', {\n  productionVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3',\n});\n\nconsole.log(system.id);",
       },
       python: {
         method: 'systems.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.update(\n    system_id="12345678-0a8b-4f66-b6f3-2ddcfa097257",\n    production_version_id="87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3",\n)\nprint(system.id)',
       },
-      typescript: {
-        method: 'client.systems.update',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.update('12345678-0a8b-4f66-b6f3-2ddcfa097257', {\n  productionVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3',\n});\n\nconsole.log(system.id);",
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -964,19 +964,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.systems.delete(systemId: string): { success: boolean; }`\n\n**delete** `/systems/{systemId}`\n\nDelete a system definition by ID. This will not delete associated system versions.\n\n### Parameters\n\n- `systemId: string`\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst system = await client.systems.delete('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.delete',
         example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.delete('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system.success);",
       },
       python: {
         method: 'systems.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.delete(\n    "12345678-0a8b-4f66-b6f3-2ddcfa097257",\n)\nprint(system.success)',
       },
-      typescript: {
-        method: 'client.systems.delete',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.delete('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system.success);",
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -993,19 +993,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.systems.versions.get(systemVersionId: string): { id: string; config: object; name: string; systemId: string; }`\n\n**get** `/systems/versions/{systemVersionId}`\n\nRetrieve a specific system version by ID.\n\n### Parameters\n\n- `systemVersionId: string`\n\n### Returns\n\n- `{ id: string; config: object; name: string; systemId: string; }`\n  A SystemVersion defines the specific settings for a System Under Test.\n\nSystem versions contain parameter values that determine system behavior during evaluation.\nThey are immutable snapshots - once created, they never change.\n\nWhen running evaluations, you reference a specific systemVersionId to establish which system version to test.\n\n  - `id: string`\n  - `config: object`\n  - `name: string`\n  - `systemId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst systemVersion = await client.systems.versions.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0');\n\nconsole.log(systemVersion);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.versions.get',
         example:
-          'curl https://api2.scorecard.io/api/v2/systems/versions/$SYSTEM_VERSION_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst systemVersion = await client.systems.versions.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0');\n\nconsole.log(systemVersion.id);",
       },
       python: {
         method: 'systems.versions.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem_version = client.systems.versions.get(\n    "87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n)\nprint(system_version.id)',
       },
-      typescript: {
-        method: 'client.systems.versions.get',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst systemVersion = await client.systems.versions.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0');\n\nconsole.log(systemVersion.id);",
+          'curl https://api2.scorecard.io/api/v2/systems/versions/$SYSTEM_VERSION_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1023,19 +1023,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## upsert\n\n`client.systems.versions.upsert(systemId: string, config: object, name?: string): { id: string; config: object; name: string; systemId: string; }`\n\n**post** `/systems/{systemId}/versions`\n\nCreate a new system version if it does not already exist. Does **not** set the created version to be the system's production version.\n\nIf there is already a system version with the same config, its name will be updated.\n\n### Parameters\n\n- `systemId: string`\n\n- `config: object`\n  The configuration of the system version.\n\n- `name?: string`\n  The name of the system version. If creating a new system version and the name isn't provided, it will be autogenerated.\n\n### Returns\n\n- `{ id: string; config: object; name: string; systemId: string; }`\n  A SystemVersion defines the specific settings for a System Under Test.\n\nSystem versions contain parameter values that determine system behavior during evaluation.\nThey are immutable snapshots - once created, they never change.\n\nWhen running evaluations, you reference a specific systemVersionId to establish which system version to test.\n\n  - `id: string`\n  - `config: object`\n  - `name: string`\n  - `systemId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst systemVersion = await client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', { config: {\n  temperature: 'bar',\n  maxTokens: 'bar',\n  model: 'bar',\n} });\n\nconsole.log(systemVersion);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.systems.versions.upsert',
         example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID/versions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar",\n            "model": "bar"\n          }\n        }\'',
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst systemVersion = await client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {\n  config: {\n    temperature: 0.5,\n    maxTokens: 1024,\n    model: 'gemini-2.0-flash',\n  },\n  name: 'Test model: Gemini',\n});\n\nconsole.log(systemVersion.id);",
       },
       python: {
         method: 'systems.versions.upsert',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem_version = client.systems.versions.upsert(\n    system_id="12345678-0a8b-4f66-b6f3-2ddcfa097257",\n    config={\n        "temperature": 0.5,\n        "maxTokens": 1024,\n        "model": "gemini-2.0-flash",\n    },\n    name="Test model: Gemini",\n)\nprint(system_version.id)',
       },
-      typescript: {
-        method: 'client.systems.versions.upsert',
+      http: {
         example:
-          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst systemVersion = await client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {\n  config: {\n    temperature: 0.5,\n    maxTokens: 1024,\n    model: 'gemini-2.0-flash',\n  },\n  name: 'Test model: Gemini',\n});\n\nconsole.log(systemVersion.id);",
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID/versions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar",\n            "model": "bar"\n          }\n        }\'',
       },
     },
   },
