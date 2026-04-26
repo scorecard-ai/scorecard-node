@@ -35,15 +35,8 @@ export class Runs extends APIResource {
    * }
    * ```
    */
-  list(
-    projectID: string,
-    query: RunListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<RunsPaginatedResponse, Run> {
-    return this._client.getAPIList(path`/projects/${projectID}/runs`, PaginatedResponse<Run>, {
-      query,
-      ...options,
-    });
+  list(projectID: string, query: RunListParams | null | undefined = {}, options?: RequestOptions): PagePromise<RunsPaginatedResponse, Run> {
+    return this._client.getAPIList(path`/projects/${projectID}/runs`, PaginatedResponse<Run>, { query, ...options });
   }
 
   /**
@@ -59,7 +52,7 @@ export class Runs extends APIResource {
   }
 }
 
-export type RunsPaginatedResponse = PaginatedResponse<Run>;
+export type RunsPaginatedResponse = PaginatedResponse<Run>
 
 /**
  * A Run in the Scorecard system.
@@ -99,14 +92,7 @@ export interface Run {
   /**
    * The status of the Run.
    */
-  status:
-    | 'pending'
-    | 'awaiting_execution'
-    | 'running_execution'
-    | 'awaiting_scoring'
-    | 'running_scoring'
-    | 'awaiting_human_scoring'
-    | 'completed';
+  status: 'pending' | 'awaiting_execution' | 'running_execution' | 'awaiting_scoring' | 'running_scoring' | 'awaiting_human_scoring' | 'completed';
 
   /**
    * The ID of the system this Run is using.
@@ -141,13 +127,14 @@ export interface RunCreateParams {
   testsetId?: string | null;
 }
 
-export interface RunListParams extends PaginatedResponseParams {}
+export interface RunListParams extends PaginatedResponseParams {
+}
 
 export declare namespace Runs {
   export {
     type Run as Run,
     type RunsPaginatedResponse as RunsPaginatedResponse,
     type RunCreateParams as RunCreateParams,
-    type RunListParams as RunListParams,
+    type RunListParams as RunListParams
   };
 }

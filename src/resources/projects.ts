@@ -33,15 +33,12 @@ export class Projects extends APIResource {
    * }
    * ```
    */
-  list(
-    query: ProjectListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<ProjectsPaginatedResponse, Project> {
+  list(query: ProjectListParams | null | undefined = {}, options?: RequestOptions): PagePromise<ProjectsPaginatedResponse, Project> {
     return this._client.getAPIList('/projects', PaginatedResponse<Project>, { query, ...options });
   }
 }
 
-export type ProjectsPaginatedResponse = PaginatedResponse<Project>;
+export type ProjectsPaginatedResponse = PaginatedResponse<Project>
 
 /**
  * A Project in the Scorecard system.
@@ -75,13 +72,14 @@ export interface ProjectCreateParams {
   name: string;
 }
 
-export interface ProjectListParams extends PaginatedResponseParams {}
+export interface ProjectListParams extends PaginatedResponseParams {
+}
 
 export declare namespace Projects {
   export {
     type Project as Project,
     type ProjectsPaginatedResponse as ProjectsPaginatedResponse,
     type ProjectCreateParams as ProjectCreateParams,
-    type ProjectListParams as ProjectListParams,
+    type ProjectListParams as ProjectListParams
   };
 }
