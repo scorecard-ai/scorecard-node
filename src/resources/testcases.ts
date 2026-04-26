@@ -41,11 +41,7 @@ export class Testcases extends APIResource {
    * });
    * ```
    */
-  create(
-    testsetID: string,
-    body: TestcaseCreateParams,
-    options?: RequestOptions,
-  ): APIPromise<TestcaseCreateResponse> {
+  create(testsetID: string, body: TestcaseCreateParams, options?: RequestOptions): APIPromise<TestcaseCreateResponse> {
     return this._client.post(path`/testsets/${testsetID}/testcases`, { body, ...options });
   }
 
@@ -78,15 +74,8 @@ export class Testcases extends APIResource {
    * }
    * ```
    */
-  list(
-    testsetID: string,
-    query: TestcaseListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<TestcasesPaginatedResponse, Testcase> {
-    return this._client.getAPIList(path`/testsets/${testsetID}/testcases`, PaginatedResponse<Testcase>, {
-      query,
-      ...options,
-    });
+  list(testsetID: string, query: TestcaseListParams | null | undefined = {}, options?: RequestOptions): PagePromise<TestcasesPaginatedResponse, Testcase> {
+    return this._client.getAPIList(path`/testsets/${testsetID}/testcases`, PaginatedResponse<Testcase>, { query, ...options });
   }
 
   /**
@@ -116,7 +105,7 @@ export class Testcases extends APIResource {
   }
 }
 
-export type TestcasesPaginatedResponse = PaginatedResponse<Testcase>;
+export type TestcasesPaginatedResponse = PaginatedResponse<Testcase>
 
 /**
  * A test case in the Scorecard system. Contains JSON data that is validated
@@ -209,7 +198,8 @@ export interface TestcaseUpdateParams {
   jsonData: { [key: string]: unknown };
 }
 
-export interface TestcaseListParams extends PaginatedResponseParams {}
+export interface TestcaseListParams extends PaginatedResponseParams {
+}
 
 export interface TestcaseDeleteParams {
   /**
@@ -227,6 +217,6 @@ export declare namespace Testcases {
     type TestcaseCreateParams as TestcaseCreateParams,
     type TestcaseUpdateParams as TestcaseUpdateParams,
     type TestcaseListParams as TestcaseListParams,
-    type TestcaseDeleteParams as TestcaseDeleteParams,
+    type TestcaseDeleteParams as TestcaseDeleteParams
   };
 }
