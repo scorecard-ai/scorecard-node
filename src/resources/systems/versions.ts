@@ -92,5 +92,8 @@ export interface VersionUpsertParams {
 }
 
 export declare namespace Versions {
-  export { type SystemVersion as SystemVersion, type VersionUpsertParams as VersionUpsertParams };
+  export {
+    type SystemVersion as SystemVersion,
+    type VersionUpsertParams as VersionUpsertParams
+  };
 }

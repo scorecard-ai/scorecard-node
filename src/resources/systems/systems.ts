@@ -27,11 +27,7 @@ export class Systems extends APIResource {
    * );
    * ```
    */
-  update(
-    systemID: string,
-    body: SystemUpdateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<System> {
+  update(systemID: string, body: SystemUpdateParams | null | undefined = {}, options?: RequestOptions): APIPromise<System> {
     return this._client.patch(path`/systems/${systemID}`, { body, ...options });
   }
 
@@ -46,15 +42,8 @@ export class Systems extends APIResource {
    * }
    * ```
    */
-  list(
-    projectID: string,
-    query: SystemListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): PagePromise<SystemsPaginatedResponse, System> {
-    return this._client.getAPIList(path`/projects/${projectID}/systems`, PaginatedResponse<System>, {
-      query,
-      ...options,
-    });
+  list(projectID: string, query: SystemListParams | null | undefined = {}, options?: RequestOptions): PagePromise<SystemsPaginatedResponse, System> {
+    return this._client.getAPIList(path`/projects/${projectID}/systems`, PaginatedResponse<System>, { query, ...options });
   }
 
   /**
@@ -104,7 +93,7 @@ export class Systems extends APIResource {
   }
 }
 
-export type SystemsPaginatedResponse = PaginatedResponse<System>;
+export type SystemsPaginatedResponse = PaginatedResponse<System>
 
 /**
  * A System Under Test (SUT).
@@ -186,7 +175,8 @@ export interface SystemUpdateParams {
   productionVersionId?: string;
 }
 
-export interface SystemListParams extends PaginatedResponseParams {}
+export interface SystemListParams extends PaginatedResponseParams {
+}
 
 export interface SystemUpsertParams {
   /**
@@ -215,12 +205,12 @@ export declare namespace Systems {
     type SystemsPaginatedResponse as SystemsPaginatedResponse,
     type SystemUpdateParams as SystemUpdateParams,
     type SystemListParams as SystemListParams,
-    type SystemUpsertParams as SystemUpsertParams,
+    type SystemUpsertParams as SystemUpsertParams
   };
 
   export {
     Versions as Versions,
     type SystemVersion as SystemVersion,
-    type VersionUpsertParams as VersionUpsertParams,
+    type VersionUpsertParams as VersionUpsertParams
   };
 }

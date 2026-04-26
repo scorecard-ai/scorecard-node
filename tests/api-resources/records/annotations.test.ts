@@ -2,10 +2,7 @@
 
 import Scorecard from 'scorecard-ai';
 
-const client = new Scorecard({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Scorecard({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
 
 describe('resource annotations', () => {
   test('list', async () => {

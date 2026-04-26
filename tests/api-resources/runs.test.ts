@@ -2,10 +2,7 @@
 
 import Scorecard from 'scorecard-ai';
 
-const client = new Scorecard({
-  apiKey: 'My API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Scorecard({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
 
 describe('resource runs', () => {
   test('create: only required params', async () => {
@@ -21,10 +18,10 @@ describe('resource runs', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.runs.create('314', {
-      metricIds: ['789', '101'],
-      systemVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
-      testsetId: '246',
-    });
+    metricIds: ['789', '101'],
+    systemVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',
+    testsetId: '246',
+  });
   });
 
   test('list', async () => {
@@ -40,9 +37,9 @@ describe('resource runs', () => {
 
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.runs.list('314', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Scorecard.NotFoundError);
+    await expect(client.runs.list('314', { cursor: '123', limit: 20 }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Scorecard.NotFoundError);
   });
 
   test('get', async () => {

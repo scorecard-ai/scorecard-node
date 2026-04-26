@@ -68,5 +68,8 @@ export interface AnnotationListResponse {
 }
 
 export declare namespace Annotations {
-  export { type Annotation as Annotation, type AnnotationListResponse as AnnotationListResponse };
+  export {
+    type Annotation as Annotation,
+    type AnnotationListResponse as AnnotationListResponse
+  };
 }
