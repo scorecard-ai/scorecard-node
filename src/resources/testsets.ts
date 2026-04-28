@@ -59,7 +59,11 @@ export class Testsets extends APIResource {
    * });
    * ```
    */
-  update(testsetID: string, body: TestsetUpdateParams | null | undefined = {}, options?: RequestOptions): APIPromise<Testset> {
+  update(
+    testsetID: string,
+    body: TestsetUpdateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Testset> {
     return this._client.patch(path`/testsets/${testsetID}`, { body, ...options });
   }
 
@@ -74,8 +78,15 @@ export class Testsets extends APIResource {
    * }
    * ```
    */
-  list(projectID: string, query: TestsetListParams | null | undefined = {}, options?: RequestOptions): PagePromise<TestsetsPaginatedResponse, Testset> {
-    return this._client.getAPIList(path`/projects/${projectID}/testsets`, PaginatedResponse<Testset>, { query, ...options });
+  list(
+    projectID: string,
+    query: TestsetListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<TestsetsPaginatedResponse, Testset> {
+    return this._client.getAPIList(path`/projects/${projectID}/testsets`, PaginatedResponse<Testset>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -103,7 +114,7 @@ export class Testsets extends APIResource {
   }
 }
 
-export type TestsetsPaginatedResponse = PaginatedResponse<Testset>
+export type TestsetsPaginatedResponse = PaginatedResponse<Testset>;
 
 /**
  * A collection of Testcases that share the same schema. Each Testset defines the
@@ -281,8 +292,7 @@ export namespace TestsetUpdateParams {
   }
 }
 
-export interface TestsetListParams extends PaginatedResponseParams {
-}
+export interface TestsetListParams extends PaginatedResponseParams {}
 
 export declare namespace Testsets {
   export {
@@ -291,6 +301,6 @@ export declare namespace Testsets {
     type TestsetsPaginatedResponse as TestsetsPaginatedResponse,
     type TestsetCreateParams as TestsetCreateParams,
     type TestsetUpdateParams as TestsetUpdateParams,
-    type TestsetListParams as TestsetListParams
+    type TestsetListParams as TestsetListParams,
   };
 }
