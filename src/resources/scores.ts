@@ -28,7 +28,7 @@ export class Scores extends APIResource {
    * ```
    */
   upsert(metricConfigID: string, params: ScoreUpsertParams, options?: RequestOptions): APIPromise<Score> {
-    const { recordId, ...body } = params
+    const { recordId, ...body } = params;
     return this._client.put(path`/records/${recordId}/scores/${metricConfigID}`, { body, ...options });
   }
 }
@@ -94,8 +94,5 @@ export interface ScoreUpsertParams {
 }
 
 export declare namespace Scores {
-  export {
-    type Score as Score,
-    type ScoreUpsertParams as ScoreUpsertParams
-  };
+  export { type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
 }

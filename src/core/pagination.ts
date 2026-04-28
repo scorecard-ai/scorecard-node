@@ -87,7 +87,8 @@ export class PagePromise<
     super(
       client,
       request,
-      async (client, props) => new Page(client, props.response, await defaultParseResponse(client, props), props.options)
+      async (client, props) =>
+        new Page(client, props.response, await defaultParseResponse(client, props), props.options),
     );
   }
 
@@ -131,7 +132,12 @@ export class PaginatedResponse<Item> extends AbstractPage<Item> implements Pagin
 
   total: number;
 
-  constructor(client: Scorecard, response: Response, body: PaginatedResponseResponse<Item>, options: FinalRequestOptions) {
+  constructor(
+    client: Scorecard,
+    response: Response,
+    body: PaginatedResponseResponse<Item>,
+    options: FinalRequestOptions,
+  ) {
     super(client, response, body, options);
 
     this.data = body.data || [];
@@ -153,7 +159,7 @@ export class PaginatedResponse<Item> extends AbstractPage<Item> implements Pagin
   }
 
   nextPageRequestOptions(): PageRequestOptions | null {
-    const cursor = this.nextCursor
+    const cursor = this.nextCursor;
     if (!cursor) {
       return null;
     }

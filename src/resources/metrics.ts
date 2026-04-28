@@ -63,8 +63,15 @@ export class Metrics extends APIResource {
    * }
    * ```
    */
-  list(projectID: string, query: MetricListParams | null | undefined = {}, options?: RequestOptions): PagePromise<MetricsPaginatedResponse, Metric> {
-    return this._client.getAPIList(path`/projects/${projectID}/metrics`, PaginatedResponse<Metric>, { query, ...options });
+  list(
+    projectID: string,
+    query: MetricListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<MetricsPaginatedResponse, Metric> {
+    return this._client.getAPIList(path`/projects/${projectID}/metrics`, PaginatedResponse<Metric>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -93,12 +100,21 @@ export class Metrics extends APIResource {
   }
 }
 
-export type MetricsPaginatedResponse = PaginatedResponse<Metric>
+export type MetricsPaginatedResponse = PaginatedResponse<Metric>;
 
 /**
  * A Metric defines how to evaluate system outputs against expected results.
  */
-export type Metric = Metric.AIIntMetric | Metric.HumanIntMetric | Metric.HeuristicIntMetric | Metric.AIFloatMetric | Metric.HumanFloatMetric | Metric.HeuristicFloatMetric | Metric.AIBooleanMetric | Metric.HumanBooleanMetric | Metric.HeuristicBooleanMetric
+export type Metric =
+  | Metric.AIIntMetric
+  | Metric.HumanIntMetric
+  | Metric.HeuristicIntMetric
+  | Metric.AIFloatMetric
+  | Metric.HumanFloatMetric
+  | Metric.HeuristicFloatMetric
+  | Metric.AIBooleanMetric
+  | Metric.HumanBooleanMetric
+  | Metric.HeuristicBooleanMetric;
 
 export namespace Metric {
   /**
@@ -502,7 +518,16 @@ export interface MetricDeleteResponse {
   success: boolean;
 }
 
-export type MetricCreateParams = MetricCreateParams.AIIntMetric | MetricCreateParams.HumanIntMetric | MetricCreateParams.HeuristicIntMetric | MetricCreateParams.AIFloatMetric | MetricCreateParams.HumanFloatMetric | MetricCreateParams.HeuristicFloatMetric | MetricCreateParams.AIBooleanMetric | MetricCreateParams.HumanBooleanMetric | MetricCreateParams.HeuristicBooleanMetric
+export type MetricCreateParams =
+  | MetricCreateParams.AIIntMetric
+  | MetricCreateParams.HumanIntMetric
+  | MetricCreateParams.HeuristicIntMetric
+  | MetricCreateParams.AIFloatMetric
+  | MetricCreateParams.HumanFloatMetric
+  | MetricCreateParams.HeuristicFloatMetric
+  | MetricCreateParams.AIBooleanMetric
+  | MetricCreateParams.HumanBooleanMetric
+  | MetricCreateParams.HeuristicBooleanMetric;
 
 export declare namespace MetricCreateParams {
   export interface AIIntMetric {
@@ -827,7 +852,16 @@ export declare namespace MetricCreateParams {
   }
 }
 
-export type MetricUpdateParams = MetricUpdateParams.AIIntMetric | MetricUpdateParams.HumanIntMetric | MetricUpdateParams.HeuristicIntMetric | MetricUpdateParams.AIFloatMetric | MetricUpdateParams.HumanFloatMetric | MetricUpdateParams.HeuristicFloatMetric | MetricUpdateParams.AIBooleanMetric | MetricUpdateParams.HumanBooleanMetric | MetricUpdateParams.HeuristicBooleanMetric
+export type MetricUpdateParams =
+  | MetricUpdateParams.AIIntMetric
+  | MetricUpdateParams.HumanIntMetric
+  | MetricUpdateParams.HeuristicIntMetric
+  | MetricUpdateParams.AIFloatMetric
+  | MetricUpdateParams.HumanFloatMetric
+  | MetricUpdateParams.HeuristicFloatMetric
+  | MetricUpdateParams.AIBooleanMetric
+  | MetricUpdateParams.HumanBooleanMetric
+  | MetricUpdateParams.HeuristicBooleanMetric;
 
 export declare namespace MetricUpdateParams {
   export interface AIIntMetric {
@@ -1152,8 +1186,7 @@ export declare namespace MetricUpdateParams {
   }
 }
 
-export interface MetricListParams extends PaginatedResponseParams {
-}
+export interface MetricListParams extends PaginatedResponseParams {}
 
 export declare namespace Metrics {
   export {
@@ -1162,6 +1195,6 @@ export declare namespace Metrics {
     type MetricsPaginatedResponse as MetricsPaginatedResponse,
     type MetricCreateParams as MetricCreateParams,
     type MetricUpdateParams as MetricUpdateParams,
-    type MetricListParams as MetricListParams
+    type MetricListParams as MetricListParams,
   };
 }
