@@ -19,19 +19,73 @@ import { AbstractPage, type PaginatedResponseParams, PaginatedResponseResponse }
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Metric, MetricCreateParams, MetricDeleteResponse, MetricListParams, MetricUpdateParams, Metrics, MetricsPaginatedResponse } from './resources/metrics';
-import { Project, ProjectCreateParams, ProjectListParams, Projects, ProjectsPaginatedResponse } from './resources/projects';
+import {
+  Metric,
+  MetricCreateParams,
+  MetricDeleteResponse,
+  MetricListParams,
+  MetricUpdateParams,
+  Metrics,
+  MetricsPaginatedResponse,
+} from './resources/metrics';
+import {
+  Project,
+  ProjectCreateParams,
+  ProjectListParams,
+  Projects,
+  ProjectsPaginatedResponse,
+} from './resources/projects';
 import { Run, RunCreateParams, RunListParams, Runs, RunsPaginatedResponse } from './resources/runs';
 import { Score, ScoreUpsertParams, Scores } from './resources/scores';
-import { Testcase, TestcaseCreateParams, TestcaseCreateResponse, TestcaseDeleteParams, TestcaseDeleteResponse, TestcaseListParams, TestcaseUpdateParams, Testcases, TestcasesPaginatedResponse } from './resources/testcases';
-import { Testset, TestsetCreateParams, TestsetDeleteResponse, TestsetListParams, TestsetUpdateParams, Testsets, TestsetsPaginatedResponse } from './resources/testsets';
-import { Record, RecordCreateParams, RecordDeleteResponse, RecordListParams, RecordListResponse, RecordListResponsesPaginatedResponse, Records } from './resources/records/records';
-import { System, SystemDeleteResponse, SystemListParams, SystemUpdateParams, SystemUpsertParams, Systems, SystemsPaginatedResponse } from './resources/systems/systems';
+import {
+  Testcase,
+  TestcaseCreateParams,
+  TestcaseCreateResponse,
+  TestcaseDeleteParams,
+  TestcaseDeleteResponse,
+  TestcaseListParams,
+  TestcaseUpdateParams,
+  Testcases,
+  TestcasesPaginatedResponse,
+} from './resources/testcases';
+import {
+  Testset,
+  TestsetCreateParams,
+  TestsetDeleteResponse,
+  TestsetListParams,
+  TestsetUpdateParams,
+  Testsets,
+  TestsetsPaginatedResponse,
+} from './resources/testsets';
+import {
+  Record,
+  RecordCreateParams,
+  RecordDeleteResponse,
+  RecordListParams,
+  RecordListResponse,
+  RecordListResponsesPaginatedResponse,
+  Records,
+} from './resources/records/records';
+import {
+  System,
+  SystemDeleteResponse,
+  SystemListParams,
+  SystemUpdateParams,
+  SystemUpsertParams,
+  Systems,
+  SystemsPaginatedResponse,
+} from './resources/systems/systems';
 import { type Fetch, type Record as BuiltinRecord } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
-import { type LogLevel, type Logger, formatRequestDetails, loggerFor, parseLogLevel } from './internal/utils/log';
+import {
+  type LogLevel,
+  type Logger,
+  formatRequestDetails,
+  loggerFor,
+  parseLogLevel,
+} from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
@@ -127,7 +181,7 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Scorecard API. 
+ * API Client for interfacing with the Scorecard API.
  */
 export class Scorecard {
   apiKey: string;
@@ -164,7 +218,7 @@ export class Scorecard {
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
       throw new Errors.ScorecardError(
-        'The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the Scorecard client with an apiKey option, like new Scorecard({ apiKey: \'My API Key\' }).'
+        "The SCORECARD_API_KEY environment variable is missing or empty; either provide it, or instantiate the Scorecard client with an apiKey option, like new Scorecard({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -177,8 +231,8 @@ export class Scorecard {
 
     if (baseURL && opts.environment) {
       throw new Errors.ScorecardError(
-        'Ambiguous URL; The `baseURL` option (or SCORECARD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null'
-      )
+        'Ambiguous URL; The `baseURL` option (or SCORECARD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      );
     }
 
     this.baseURL = options.baseURL || environments[options.environment || 'production'];
@@ -187,7 +241,10 @@ export class Scorecard {
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
-    this.logLevel = parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ?? parseLogLevel(readEnv('SCORECARD_LOG'), 'process.env[\'SCORECARD_LOG\']', this) ?? defaultLogLevel;
+    this.logLevel =
+      parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
+      parseLogLevel(readEnv('SCORECARD_LOG'), "process.env['SCORECARD_LOG']", this) ??
+      defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
@@ -213,7 +270,7 @@ export class Scorecard {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
-      ...options
+      ...options,
     });
     return client;
   }
@@ -226,7 +283,7 @@ export class Scorecard {
   }
 
   protected defaultQuery(): BuiltinRecord<string, string | undefined> | undefined {
-    return this._options.defaultQuery
+    return this._options.defaultQuery;
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
@@ -261,7 +318,11 @@ export class Scorecard {
     return Errors.APIError.generate(status, error, message, headers);
   }
 
-  buildURL(path: string, query: BuiltinRecord<string, unknown> | null | undefined, defaultBaseURL?: string | undefined): string {
+  buildURL(
+    path: string,
+    query: BuiltinRecord<string, unknown> | null | undefined,
+    defaultBaseURL?: string | undefined,
+  ): string {
     const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
     const url =
       isAbsoluteURL(path) ?
@@ -349,7 +410,9 @@ export class Scorecard {
 
     await this.prepareOptions(options);
 
-    const { req, url, timeout } = await this.buildRequest(options, { retryCount: maxRetries - retriesRemaining });
+    const { req, url, timeout } = await this.buildRequest(options, {
+      retryCount: maxRetries - retriesRemaining,
+    });
 
     await this.prepareRequest(req, { url, options });
 
@@ -358,7 +421,16 @@ export class Scorecard {
     const retryLogStr = retryOfRequestLogID === undefined ? '' : `, retryOf: ${retryOfRequestLogID}`;
     const startTime = Date.now();
 
-    loggerFor(this).debug(`[${requestLogID}] sending request`, formatRequestDetails({ retryOfRequestLogID, method: options.method, url, options, headers: req.headers }));
+    loggerFor(this).debug(
+      `[${requestLogID}] sending request`,
+      formatRequestDetails({
+        retryOfRequestLogID,
+        method: options.method,
+        url,
+        options,
+        headers: req.headers,
+      }),
+    );
 
     if (options.signal?.aborted) {
       throw new Errors.APIUserAbortError();
@@ -377,21 +449,45 @@ export class Scorecard {
       // deno throws "TypeError: error sending request for url (https://example/): client error (Connect): tcp connect error: Operation timed out (os error 60): Operation timed out (os error 60)"
       // undici throws "TypeError: fetch failed" with cause "ConnectTimeoutError: Connect Timeout Error (attempted address: example:443, timeout: 1ms)"
       // others do not provide enough information to distinguish timeouts from other connection errors
-      const isTimeout = isAbortError(response) || /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''))
+      const isTimeout =
+        isAbortError(response) ||
+        /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''));
       if (retriesRemaining) {
-        loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`)
-        loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url, durationMs: headersTime - startTime, message: response.message }));
+        loggerFor(this).info(
+          `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`,
+        );
+        loggerFor(this).debug(
+          `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`,
+          formatRequestDetails({
+            retryOfRequestLogID,
+            url,
+            durationMs: headersTime - startTime,
+            message: response.message,
+          }),
+        );
         return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID);
       }
-      loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`)
-      loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`, formatRequestDetails({ retryOfRequestLogID, url, durationMs: headersTime - startTime, message: response.message }));
+      loggerFor(this).info(
+        `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`,
+      );
+      loggerFor(this).debug(
+        `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`,
+        formatRequestDetails({
+          retryOfRequestLogID,
+          url,
+          durationMs: headersTime - startTime,
+          message: response.message,
+        }),
+      );
       if (isTimeout) {
         throw new Errors.APIConnectionTimeoutError();
       }
       throw new Errors.APIConnectionError({ cause: response });
     }
 
-    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${response.ok ? 'succeeded' : 'failed'} with status ${response.status} in ${headersTime - startTime}ms`;
+    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${
+      response.ok ? 'succeeded' : 'failed'
+    } with status ${response.status} in ${headersTime - startTime}ms`;
 
     if (!response.ok) {
       const shouldRetry = await this.shouldRetry(response);
@@ -400,27 +496,60 @@ export class Scorecard {
 
         // We don't need the body of this response.
         await Shims.CancelReadableStream(response.body);
-        loggerFor(this).info(`${responseInfo} - ${retryMessage}`)
-        loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, durationMs: headersTime - startTime }));
-        return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID, response.headers);
+        loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
+        loggerFor(this).debug(
+          `[${requestLogID}] response error (${retryMessage})`,
+          formatRequestDetails({
+            retryOfRequestLogID,
+            url: response.url,
+            status: response.status,
+            headers: response.headers,
+            durationMs: headersTime - startTime,
+          }),
+        );
+        return this.retryRequest(
+          options,
+          retriesRemaining,
+          retryOfRequestLogID ?? requestLogID,
+          response.headers,
+        );
       }
 
       const retryMessage = shouldRetry ? `error; no more retries left` : `error; not retryable`;
 
-      loggerFor(this).info(`${responseInfo} - ${retryMessage}`)
+      loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
 
       const errText = await response.text().catch((err: any) => castToError(err).message);
       const errJSON = safeJSON(errText) as any;
       const errMessage = errJSON ? undefined : errText;
 
-      loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, message: errMessage, durationMs: Date.now() - startTime }));
+      loggerFor(this).debug(
+        `[${requestLogID}] response error (${retryMessage})`,
+        formatRequestDetails({
+          retryOfRequestLogID,
+          url: response.url,
+          status: response.status,
+          headers: response.headers,
+          message: errMessage,
+          durationMs: Date.now() - startTime,
+        }),
+      );
 
       const err = this.makeStatusError(response.status, errJSON, errMessage, response.headers);
       throw err;
     }
 
-    loggerFor(this).info(responseInfo)
-    loggerFor(this).debug(`[${requestLogID}] response start`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, durationMs: headersTime - startTime }));
+    loggerFor(this).info(responseInfo);
+    loggerFor(this).debug(
+      `[${requestLogID}] response start`,
+      formatRequestDetails({
+        retryOfRequestLogID,
+        url: response.url,
+        status: response.status,
+        headers: response.headers,
+        durationMs: headersTime - startTime,
+      }),
+    );
 
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
@@ -438,7 +567,10 @@ export class Scorecard {
     );
   }
 
-  requestAPIList<Item = unknown, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
     Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
     options: PromiseOrValue<FinalRequestOptions>,
   ): Pagination.PagePromise<PageClass, Item> {
@@ -458,7 +590,9 @@ export class Scorecard {
 
     const timeout = setTimeout(abort, ms);
 
-    const isReadableBody = ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) || (typeof options.body === "object" && options.body !== null && Symbol.asyncIterator in options.body);
+    const isReadableBody =
+      ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
+      (typeof options.body === 'object' && options.body !== null && Symbol.asyncIterator in options.body);
 
     const fetchOptions: RequestInit = {
       signal: controller.signal as any,
@@ -473,7 +607,6 @@ export class Scorecard {
     }
 
     try {
-
       // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
       return await this.fetch.call(undefined, url, fetchOptions);
     } finally {
@@ -574,11 +707,12 @@ export class Scorecard {
     const req: FinalizedRequestInit = {
       method,
       headers: reqHeaders,
-      ...(options.signal && { signal: options.signal}),
-      ...((globalThis as any).ReadableStream && body instanceof (globalThis as any).ReadableStream && { duplex: "half" }),
+      ...(options.signal && { signal: options.signal }),
+      ...((globalThis as any).ReadableStream &&
+        body instanceof (globalThis as any).ReadableStream && { duplex: 'half' }),
       ...(body && { body }),
-      ...(this.fetchOptions as any ?? {}),
-      ...(options.fetchOptions as any ?? {}),
+      ...((this.fetchOptions as any) ?? {}),
+      ...((options.fetchOptions as any) ?? {}),
     };
 
     return { req, url, timeout: options.timeout };
@@ -603,15 +737,17 @@ export class Scorecard {
 
     const headers = buildHeaders([
       idempotencyHeaders,
-      {Accept: 'application/json',
-      'User-Agent': this.getUserAgent(),
-      'X-Stainless-Retry-Count': String(retryCount),
-      ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
-      ...getPlatformHeaders()},
+      {
+        Accept: 'application/json',
+        'User-Agent': this.getUserAgent(),
+        'X-Stainless-Retry-Count': String(retryCount),
+        ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
+        ...getPlatformHeaders(),
+      },
       await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
-      options.headers
+      options.headers,
     ]);
 
     this.validateHeaders(headers);
@@ -638,11 +774,9 @@ export class Scorecard {
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      (
-        typeof body === 'string' &&
+      (typeof body === 'string' &&
         // Preserve legacy string encoding behavior for now
-        headers.values.has('content-type')
-      ) ||
+        headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -673,7 +807,7 @@ export class Scorecard {
   }
 
   static Scorecard = this;
-  static DEFAULT_TIMEOUT = 60000 // 1 minute
+  static DEFAULT_TIMEOUT = 60000; // 1 minute
 
   static ScorecardError = Errors.ScorecardError;
   static APIError = Errors.APIError;
@@ -711,87 +845,83 @@ Scorecard.Scores = Scores;
 Scorecard.Systems = Systems;
 
 export declare namespace Scorecard {
-      export type RequestOptions = Opts.RequestOptions;
+  export type RequestOptions = Opts.RequestOptions;
 
-      export import PaginatedResponse = Pagination.PaginatedResponse;
-export {
-  type PaginatedResponseParams as PaginatedResponseParams,
-  type PaginatedResponseResponse as PaginatedResponseResponse
-};
+  export import PaginatedResponse = Pagination.PaginatedResponse;
+  export {
+    type PaginatedResponseParams as PaginatedResponseParams,
+    type PaginatedResponseResponse as PaginatedResponseResponse,
+  };
 
-export {
-  Projects as Projects,
-  type Project as Project,
-  type ProjectsPaginatedResponse as ProjectsPaginatedResponse,
-  type ProjectCreateParams as ProjectCreateParams,
-  type ProjectListParams as ProjectListParams
-};
+  export {
+    Projects as Projects,
+    type Project as Project,
+    type ProjectsPaginatedResponse as ProjectsPaginatedResponse,
+    type ProjectCreateParams as ProjectCreateParams,
+    type ProjectListParams as ProjectListParams,
+  };
 
-export {
-  Testsets as Testsets,
-  type Testset as Testset,
-  type TestsetDeleteResponse as TestsetDeleteResponse,
-  type TestsetsPaginatedResponse as TestsetsPaginatedResponse,
-  type TestsetCreateParams as TestsetCreateParams,
-  type TestsetUpdateParams as TestsetUpdateParams,
-  type TestsetListParams as TestsetListParams
-};
+  export {
+    Testsets as Testsets,
+    type Testset as Testset,
+    type TestsetDeleteResponse as TestsetDeleteResponse,
+    type TestsetsPaginatedResponse as TestsetsPaginatedResponse,
+    type TestsetCreateParams as TestsetCreateParams,
+    type TestsetUpdateParams as TestsetUpdateParams,
+    type TestsetListParams as TestsetListParams,
+  };
 
-export {
-  Testcases as Testcases,
-  type Testcase as Testcase,
-  type TestcaseCreateResponse as TestcaseCreateResponse,
-  type TestcaseDeleteResponse as TestcaseDeleteResponse,
-  type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
-  type TestcaseCreateParams as TestcaseCreateParams,
-  type TestcaseUpdateParams as TestcaseUpdateParams,
-  type TestcaseListParams as TestcaseListParams,
-  type TestcaseDeleteParams as TestcaseDeleteParams
-};
+  export {
+    Testcases as Testcases,
+    type Testcase as Testcase,
+    type TestcaseCreateResponse as TestcaseCreateResponse,
+    type TestcaseDeleteResponse as TestcaseDeleteResponse,
+    type TestcasesPaginatedResponse as TestcasesPaginatedResponse,
+    type TestcaseCreateParams as TestcaseCreateParams,
+    type TestcaseUpdateParams as TestcaseUpdateParams,
+    type TestcaseListParams as TestcaseListParams,
+    type TestcaseDeleteParams as TestcaseDeleteParams,
+  };
 
-export {
-  Runs as Runs,
-  type Run as Run,
-  type RunsPaginatedResponse as RunsPaginatedResponse,
-  type RunCreateParams as RunCreateParams,
-  type RunListParams as RunListParams
-};
+  export {
+    Runs as Runs,
+    type Run as Run,
+    type RunsPaginatedResponse as RunsPaginatedResponse,
+    type RunCreateParams as RunCreateParams,
+    type RunListParams as RunListParams,
+  };
 
-export {
-  Metrics as Metrics,
-  type Metric as Metric,
-  type MetricDeleteResponse as MetricDeleteResponse,
-  type MetricsPaginatedResponse as MetricsPaginatedResponse,
-  type MetricCreateParams as MetricCreateParams,
-  type MetricUpdateParams as MetricUpdateParams,
-  type MetricListParams as MetricListParams
-};
+  export {
+    Metrics as Metrics,
+    type Metric as Metric,
+    type MetricDeleteResponse as MetricDeleteResponse,
+    type MetricsPaginatedResponse as MetricsPaginatedResponse,
+    type MetricCreateParams as MetricCreateParams,
+    type MetricUpdateParams as MetricUpdateParams,
+    type MetricListParams as MetricListParams,
+  };
 
-export {
-  Records as Records,
-  type Record as Record,
-  type RecordListResponse as RecordListResponse,
-  type RecordDeleteResponse as RecordDeleteResponse,
-  type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
-  type RecordCreateParams as RecordCreateParams,
-  type RecordListParams as RecordListParams
-};
+  export {
+    Records as Records,
+    type Record as Record,
+    type RecordListResponse as RecordListResponse,
+    type RecordDeleteResponse as RecordDeleteResponse,
+    type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
+    type RecordCreateParams as RecordCreateParams,
+    type RecordListParams as RecordListParams,
+  };
 
-export {
-  Scores as Scores,
-  type Score as Score,
-  type ScoreUpsertParams as ScoreUpsertParams
-};
+  export { Scores as Scores, type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
 
-export {
-  Systems as Systems,
-  type System as System,
-  type SystemDeleteResponse as SystemDeleteResponse,
-  type SystemsPaginatedResponse as SystemsPaginatedResponse,
-  type SystemUpdateParams as SystemUpdateParams,
-  type SystemListParams as SystemListParams,
-  type SystemUpsertParams as SystemUpsertParams
-};
+  export {
+    Systems as Systems,
+    type System as System,
+    type SystemDeleteResponse as SystemDeleteResponse,
+    type SystemsPaginatedResponse as SystemsPaginatedResponse,
+    type SystemUpdateParams as SystemUpdateParams,
+    type SystemListParams as SystemListParams,
+    type SystemUpsertParams as SystemUpsertParams,
+  };
 
-export type APIError = API.APIError;
-    }
+  export type APIError = API.APIError;
+}

@@ -45,8 +45,15 @@ export class Records extends APIResource {
    * }
    * ```
    */
-  list(runID: string, query: RecordListParams | null | undefined = {}, options?: RequestOptions): PagePromise<RecordListResponsesPaginatedResponse, RecordListResponse> {
-    return this._client.getAPIList(path`/runs/${runID}/records`, PaginatedResponse<RecordListResponse>, { query, ...options });
+  list(
+    runID: string,
+    query: RecordListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<RecordListResponsesPaginatedResponse, RecordListResponse> {
+    return this._client.getAPIList(path`/runs/${runID}/records`, PaginatedResponse<RecordListResponse>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -62,7 +69,7 @@ export class Records extends APIResource {
   }
 }
 
-export type RecordListResponsesPaginatedResponse = PaginatedResponse<RecordListResponse>
+export type RecordListResponsesPaginatedResponse = PaginatedResponse<RecordListResponse>;
 
 /**
  * A record of a system execution in the Scorecard system.
@@ -146,8 +153,7 @@ export interface RecordCreateParams {
   testcaseId?: string;
 }
 
-export interface RecordListParams extends PaginatedResponseParams {
-}
+export interface RecordListParams extends PaginatedResponseParams {}
 
 Records.Annotations = Annotations;
 
@@ -158,12 +164,12 @@ export declare namespace Records {
     type RecordDeleteResponse as RecordDeleteResponse,
     type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
     type RecordCreateParams as RecordCreateParams,
-    type RecordListParams as RecordListParams
+    type RecordListParams as RecordListParams,
   };
 
   export {
     Annotations as Annotations,
     type Annotation as Annotation,
-    type AnnotationListResponse as AnnotationListResponse
+    type AnnotationListResponse as AnnotationListResponse,
   };
 }
