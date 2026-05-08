@@ -513,7 +513,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "789",\n            "101"\n          ]\n        }\'',
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "789",\n            "101"\n          ],\n          "systemVersionId": "87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n          "testsetId": "246"\n        }\'',
       },
     },
   },
@@ -705,7 +705,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          }\n        }\'',
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          },\n          "testcaseId": "248"\n        }\'',
       },
     },
   },
@@ -916,7 +916,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar"\n          }\n        }\'',
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar"\n          },\n          "description": "Production chatbot powered by GPT-4",\n          "name": "GPT-4 Chatbot"\n        }\'',
       },
     },
   },
@@ -1035,7 +1035,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID/versions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar",\n            "model": "bar"\n          }\n        }\'',
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID/versions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar",\n            "model": "bar"\n          },\n          "name": "Test model: Gemini"\n        }\'',
       },
     },
   },
