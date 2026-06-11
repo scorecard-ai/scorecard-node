@@ -717,11 +717,11 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     description: 'Retrieve a paginated list of Records for a Run, including all scores for each record.',
     stainlessPath: '(resource) records > (method) list',
     qualified: 'client.records.list',
-    params: ['runId: string;', 'cursor?: string;', 'limit?: number;'],
+    params: ['runId: string;', 'cursor?: string;', 'limit?: number;', 'tags?: string[];'],
     response:
       '{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }',
     markdown:
-      "## list\n\n`client.records.list(runId: string, cursor?: string, limit?: number): object`\n\n**get** `/runs/{runId}/records`\n\nRetrieve a paginated list of Records for a Run, including all scores for each record.\n\n### Parameters\n\n- `runId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n  A record with all its associated scores.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const recordListResponse of client.records.list('135')) {\n  console.log(recordListResponse);\n}\n```",
+      "## list\n\n`client.records.list(runId: string, cursor?: string, limit?: number, tags?: string[]): object`\n\n**get** `/runs/{runId}/records`\n\nRetrieve a paginated list of Records for a Run, including all scores for each record.\n\n### Parameters\n\n- `runId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n- `tags?: string[]`\n  Filter to records carrying every listed tag (repeatable, AND semantics). E.g. `?tags=urgent&tags=regression`.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n  A record with all its associated scores.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const recordListResponse of client.records.list('135')) {\n  console.log(recordListResponse);\n}\n```",
     perLanguage: {
       typescript: {
         method: 'client.records.list',
@@ -795,6 +795,95 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/annotations \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/records/{recordId}/tags',
+    httpMethod: 'get',
+    summary: 'List Record Tags',
+    description: 'List all tags applied to a specific Record.',
+    stainlessPath: '(resource) records.tags > (method) list',
+    qualified: 'client.records.tags.list',
+    params: ['recordId: string;'],
+    response:
+      "{ data: { id: string; createdAt: string; recordId: string; source: 'user' | 'otel'; text: string; userId: string; }[]; }",
+    markdown:
+      "## list\n\n`client.records.tags.list(recordId: string): { data: record_tag[]; }`\n\n**get** `/records/{recordId}/tags`\n\nList all tags applied to a specific Record.\n\n### Parameters\n\n- `recordId: string`\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; recordId: string; source: 'user' | 'otel'; text: string; userId: string; }[]; }`\n\n  - `data: { id: string; createdAt: string; recordId: string; source: 'user' | 'otel'; text: string; userId: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst tags = await client.records.tags.list('777');\n\nconsole.log(tags);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.records.tags.list',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst tags = await client.records.tags.list('777');\n\nconsole.log(tags.data);",
+      },
+      python: {
+        method: 'records.tags.list',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntags = client.records.tags.list(\n    "777",\n)\nprint(tags.data)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/records/{recordId}/tags',
+    httpMethod: 'post',
+    summary: 'Create Record Tag',
+    description: 'Apply a tag to a Record. Idempotent: re-applying an existing tag returns the existing tag.',
+    stainlessPath: '(resource) records.tags > (method) create',
+    qualified: 'client.records.tags.create',
+    params: ['recordId: string;', 'text: string;'],
+    response:
+      "{ id: string; createdAt: string; recordId: string; source: 'user' | 'otel'; text: string; userId: string; }",
+    markdown:
+      "## create\n\n`client.records.tags.create(recordId: string, text: string): { id: string; createdAt: string; recordId: string; source: 'user' | 'otel'; text: string; userId: string; }`\n\n**post** `/records/{recordId}/tags`\n\nApply a tag to a Record. Idempotent: re-applying an existing tag returns the existing tag.\n\n### Parameters\n\n- `recordId: string`\n\n- `text: string`\n  The tag text to apply. Idempotent: re-applying an existing tag is a no-op.\n\n### Returns\n\n- `{ id: string; createdAt: string; recordId: string; source: 'user' | 'otel'; text: string; userId: string; }`\n  An arbitrary tag applied to a Record (e.g. `urgent`, `regression`, `env:prod`), either by a user or lifted from OTel span attributes at ingest.\n\n  - `id: string`\n  - `createdAt: string`\n  - `recordId: string`\n  - `source: 'user' | 'otel'`\n  - `text: string`\n  - `userId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst recordTag = await client.records.tags.create('777', { text: 'urgent' });\n\nconsole.log(recordTag);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.records.tags.create',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst recordTag = await client.records.tags.create('777', { text: 'urgent' });\n\nconsole.log(recordTag.id);",
+      },
+      python: {
+        method: 'records.tags.create',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord_tag = client.records.tags.create(\n    record_id="777",\n    text="urgent",\n)\nprint(record_tag.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "text": "urgent"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/records/{recordId}/tags/{text}',
+    httpMethod: 'delete',
+    summary: 'Delete Record Tag',
+    description: 'Remove a tag from a Record by its text.',
+    stainlessPath: '(resource) records.tags > (method) delete',
+    qualified: 'client.records.tags.delete',
+    params: ['recordId: string;', 'text: string;'],
+    response: '{ deleted: number; }',
+    markdown:
+      "## delete\n\n`client.records.tags.delete(recordId: string, text: string): { deleted: number; }`\n\n**delete** `/records/{recordId}/tags/{text}`\n\nRemove a tag from a Record by its text.\n\n### Parameters\n\n- `recordId: string`\n\n- `text: string`\n\n### Returns\n\n- `{ deleted: number; }`\n\n  - `deleted: number`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst tag = await client.records.tags.delete('urgent', { recordId: '777' });\n\nconsole.log(tag);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.records.tags.delete',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst tag = await client.records.tags.delete('urgent', { recordId: '777' });\n\nconsole.log(tag.deleted);",
+      },
+      python: {
+        method: 'records.tags.delete',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntag = client.records.tags.delete(\n    text="urgent",\n    record_id="777",\n)\nprint(tag.deleted)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags/$TEXT \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },

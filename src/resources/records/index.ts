@@ -10,3 +10,11 @@ export {
   type RecordListParams,
   type RecordListResponsesPaginatedResponse,
 } from './records';
+export {
+  Tags,
+  type RecordTag,
+  type TagListResponse,
+  type TagDeleteResponse,
+  type TagCreateParams,
+  type TagDeleteParams,
+} from './tags';

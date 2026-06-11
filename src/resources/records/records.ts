@@ -4,6 +4,15 @@ import { APIResource } from '../../core/resource';
 import * as ScoresAPI from '../scores';
 import * as AnnotationsAPI from './annotations';
 import { Annotation, AnnotationListResponse, Annotations } from './annotations';
+import * as TagsAPI from './tags';
+import {
+  RecordTag,
+  TagCreateParams,
+  TagDeleteParams,
+  TagDeleteResponse,
+  TagListResponse,
+  Tags,
+} from './tags';
 import { APIPromise } from '../../core/api-promise';
 import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../../core/pagination';
 import { RequestOptions } from '../../internal/request-options';
@@ -11,6 +20,7 @@ import { path } from '../../internal/utils/path';
 
 export class Records extends APIResource {
   annotations: AnnotationsAPI.Annotations = new AnnotationsAPI.Annotations(this._client);
+  tags: TagsAPI.Tags = new TagsAPI.Tags(this._client);
 
   /**
    * Create a new Record in a Run.
@@ -153,9 +163,16 @@ export interface RecordCreateParams {
   testcaseId?: string;
 }
 
-export interface RecordListParams extends PaginatedResponseParams {}
+export interface RecordListParams extends PaginatedResponseParams {
+  /**
+   * Filter to records carrying every listed tag (repeatable, AND semantics). E.g.
+   * `?tags=urgent&tags=regression`.
+   */
+  tags?: Array<string>;
+}
 
 Records.Annotations = Annotations;
+Records.Tags = Tags;
 
 export declare namespace Records {
   export {
@@ -171,5 +188,14 @@ export declare namespace Records {
     Annotations as Annotations,
     type Annotation as Annotation,
     type AnnotationListResponse as AnnotationListResponse,
+  };
+
+  export {
+    Tags as Tags,
+    type RecordTag as RecordTag,
+    type TagListResponse as TagListResponse,
+    type TagDeleteResponse as TagDeleteResponse,
+    type TagCreateParams as TagCreateParams,
+    type TagDeleteParams as TagDeleteParams,
   };
 }
