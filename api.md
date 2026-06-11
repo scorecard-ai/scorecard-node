@@ -98,6 +98,20 @@ Methods:
 
 - <code title="get /records/{recordId}/annotations">client.records.annotations.<a href="./src/resources/records/annotations.ts">list</a>(recordID) -> AnnotationListResponse</code>
 
+## Tags
+
+Types:
+
+- <code><a href="./src/resources/records/tags.ts">RecordTag</a></code>
+- <code><a href="./src/resources/records/tags.ts">TagListResponse</a></code>
+- <code><a href="./src/resources/records/tags.ts">TagDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /records/{recordId}/tags">client.records.tags.<a href="./src/resources/records/tags.ts">create</a>(recordID, { ...params }) -> RecordTag</code>
+- <code title="get /records/{recordId}/tags">client.records.tags.<a href="./src/resources/records/tags.ts">list</a>(recordID) -> TagListResponse</code>
+- <code title="delete /records/{recordId}/tags/{text}">client.records.tags.<a href="./src/resources/records/tags.ts">delete</a>(text, { ...params }) -> TagDeleteResponse</code>
+
 # Scores
 
 Types:

@@ -7,13 +7,9 @@ const client = new Scorecard({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource records', () => {
+describe('resource tags', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.records.create('135', {
-      expected: { idealAnswer: 'bar' },
-      inputs: { question: 'bar' },
-      outputs: { response: 'bar' },
-    });
+    const responsePromise = client.records.tags.create('777', { text: 'urgent' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -24,17 +20,11 @@ describe('resource records', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.records.create('135', {
-      expected: { idealAnswer: 'bar' },
-      inputs: { question: 'bar' },
-      outputs: { response: 'bar' },
-      otelLinkId: 'otelLinkId',
-      testcaseId: '248',
-    });
+    const response = await client.records.tags.create('777', { text: 'urgent' });
   });
 
   test('list', async () => {
-    const responsePromise = client.records.list('135');
+    const responsePromise = client.records.tags.list('777');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -44,23 +34,8 @@ describe('resource records', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.records.list(
-        '135',
-        {
-          cursor: '123',
-          limit: 20,
-          tags: ['x'],
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Scorecard.NotFoundError);
-  });
-
-  test('delete', async () => {
-    const responsePromise = client.records.delete('777');
+  test('delete: only required params', async () => {
+    const responsePromise = client.records.tags.delete('urgent', { recordId: '777' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -68,5 +43,9 @@ describe('resource records', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('delete: required and optional params', async () => {
+    const response = await client.records.tags.delete('urgent', { recordId: '777' });
   });
 });

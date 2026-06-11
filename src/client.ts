@@ -306,9 +306,6 @@ export class Scorecard {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
-  /**
-   * Basic re-implementation of `qs.stringify` for primitive types.
-   */
   protected stringifyQuery(query: object | BuiltinRecord<string, unknown>): string {
     return stringifyQuery(query);
   }

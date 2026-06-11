@@ -155,6 +155,24 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/records/{recordId}/annotations',
   },
   {
+    clientCallName: 'client.records.tags.create',
+    fullyQualifiedName: 'records.tags.create',
+    httpMethod: 'post',
+    httpPath: '/records/{recordId}/tags',
+  },
+  {
+    clientCallName: 'client.records.tags.list',
+    fullyQualifiedName: 'records.tags.list',
+    httpMethod: 'get',
+    httpPath: '/records/{recordId}/tags',
+  },
+  {
+    clientCallName: 'client.records.tags.delete',
+    fullyQualifiedName: 'records.tags.delete',
+    httpMethod: 'delete',
+    httpPath: '/records/{recordId}/tags/{text}',
+  },
+  {
     clientCallName: 'client.scores.upsert',
     fullyQualifiedName: 'scores.upsert',
     httpMethod: 'put',
