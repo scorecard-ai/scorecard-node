@@ -27,11 +27,11 @@
     "fix": "./scripts/format"
   },
   "dependencies": {
-    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api": "^1.9.1",
     "@opentelemetry/exporter-trace-otlp-http": "^0.219.0",
-    "@opentelemetry/resources": "^2.2.0",
-    "@opentelemetry/sdk-trace-node": "^2.2.0",
-    "@opentelemetry/semantic-conventions": "^1.37.0"
+    "@opentelemetry/resources": "^2.8.0",
+    "@opentelemetry/sdk-trace-node": "^2.8.0",
+    "@opentelemetry/semantic-conventions": "^1.41.1"
   },
   "devDependencies": {
     "@ai-sdk/openai": "^3.0.72",
