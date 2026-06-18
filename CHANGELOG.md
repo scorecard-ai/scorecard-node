@@ -1,5 +1,75 @@
 # Changelog
 
+## 3.2.0 (2026-06-18)
+
+Full Changelog: [v3.1.0...v3.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.1.0...v3.2.0)
+
+### Features
+
+* **api:** api update ([39393e8](https://github.com/scorecard-ai/scorecard-node/commit/39393e842fe085840395336bfe81bca6925273d8))
+* **api:** api update ([7f84d35](https://github.com/scorecard-ai/scorecard-node/commit/7f84d35c12dcf2043020d82580d9c518dc77caec))
+* **api:** api update ([4776163](https://github.com/scorecard-ai/scorecard-node/commit/47761630e57a3df5c646723a6d31f34a0756f477))
+* support setting headers via env ([0741606](https://github.com/scorecard-ai/scorecard-node/commit/0741606597f384b3a54e85d2ee8fdffc571a0c21))
+
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([abb616d](https://github.com/scorecard-ai/scorecard-node/commit/abb616d93fb4e0599e1a304d8a1beec95790df2a))
+* **examples:** update retired claude-3-haiku model ([#43](https://github.com/scorecard-ai/scorecard-node/issues/43)) ([59926e9](https://github.com/scorecard-ai/scorecard-node/commit/59926e9f10acc80bd21e82a5f991a3ab4c78031d))
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([91201f1](https://github.com/scorecard-ai/scorecard-node/commit/91201f134c47f7459314391d6e130b0f52ad3c0f))
+* unblock CI and clear npm audit advisories ([#42](https://github.com/scorecard-ai/scorecard-node/issues/42)) ([1e5a1cc](https://github.com/scorecard-ai/scorecard-node/commit/1e5a1cc764479fa6285d1e74dfe89756c921217b))
+
+
+### Chores
+
+* avoid formatting file that gets changed during releases ([9b23236](https://github.com/scorecard-ai/scorecard-node/commit/9b23236afdcadf618aa1f8a0188a0945b5996d73))
+* **ci:** escape input path in publish-npm workflow ([d7a6bad](https://github.com/scorecard-ai/scorecard-node/commit/d7a6bad31f12dd1783352e1f362d9d5efe5fd33a))
+* **ci:** skip lint on metadata-only changes ([0d712a3](https://github.com/scorecard-ai/scorecard-node/commit/0d712a32a7d8281d88893e9e44adcbc28359bd01))
+* **format:** run eslint and prettier separately ([81de22f](https://github.com/scorecard-ai/scorecard-node/commit/81de22f231f5bdd8f502dea5a068f06248791c78))
+* **formatter:** run prettier and eslint separately ([3bf8fc4](https://github.com/scorecard-ai/scorecard-node/commit/3bf8fc453113741dff5fac3c4f75d0b0beace20a))
+* **internal:** bump @modelcontextprotocol/sdk, @hono/node-server, and minimatch ([d3e8622](https://github.com/scorecard-ai/scorecard-node/commit/d3e8622f46d101676fb4fd3e58b4c46cfde58955))
+* **internal:** codegen related update ([ddc0eb0](https://github.com/scorecard-ai/scorecard-node/commit/ddc0eb03ea2559f7f01a498cc8e5814b75d780fb))
+* **internal:** codegen related update ([13c44e6](https://github.com/scorecard-ai/scorecard-node/commit/13c44e64802d63f5ceec8039c6c7db3164bfc6de))
+* **internal:** fix MCP server import ordering ([4c30c35](https://github.com/scorecard-ai/scorecard-node/commit/4c30c35da3748f854e31223926da8260a9466cd1))
+* **internal:** fix MCP server TS errors that occur with required client options ([27043dd](https://github.com/scorecard-ai/scorecard-node/commit/27043dd350dba1fda158fcf5e491f492255002e9))
+* **internal:** improve local docs search for MCP servers ([172e3c1](https://github.com/scorecard-ai/scorecard-node/commit/172e3c17af6997bf2458728aa20afacaeef93d60))
+* **internal:** improve local docs search for MCP servers ([c4fa6f9](https://github.com/scorecard-ai/scorecard-node/commit/c4fa6f9a59ada89a0a29be46a3986d15fe3f01af))
+* **internal:** make generated MCP servers compatible with Cloudflare worker environments ([00e4d6b](https://github.com/scorecard-ai/scorecard-node/commit/00e4d6bbae6e6521076ed028904dcdc35de8af0f))
+* **internal:** more robust bootstrap script ([60cf1a6](https://github.com/scorecard-ai/scorecard-node/commit/60cf1a6e9a031bb91516c83c94740a2cb766ddfe))
+* **internal:** show error causes in MCP servers when running in local mode ([136ae80](https://github.com/scorecard-ai/scorecard-node/commit/136ae809accf9eeaacef4c7f36d873f75435df23))
+* **internal:** support custom-instructions-path flag in MCP servers ([00057ae](https://github.com/scorecard-ai/scorecard-node/commit/00057ae877704e2f5ae7180e0c3f7680e89f0e32))
+* **internal:** support local docs search in MCP servers ([11acfd1](https://github.com/scorecard-ai/scorecard-node/commit/11acfd1157aa99c115a5d1a708acb0595fde4829))
+* **internal:** support type annotations when running MCP in local execution mode ([f4d4ad0](https://github.com/scorecard-ai/scorecard-node/commit/f4d4ad0b1ad3290cd474e24d9c8c41d42b80db13))
+* **internal:** support x-stainless-mcp-client-envs header in MCP servers ([49ffb5e](https://github.com/scorecard-ai/scorecard-node/commit/49ffb5e1097ff42772f6b6467837fad6bd658843))
+* **internal:** support x-stainless-mcp-client-permissions headers in MCP servers ([bf756bc](https://github.com/scorecard-ai/scorecard-node/commit/bf756bcc5308d6b66251bcbdf202de171a69c97c))
+* **internal:** tweak CI branches ([2abb150](https://github.com/scorecard-ai/scorecard-node/commit/2abb1505eec73c936fd40940bca71e55436ea237))
+* **internal:** update gitignore ([9900391](https://github.com/scorecard-ai/scorecard-node/commit/9900391b5083288e3163914ce9e9a1c35021913f))
+* **internal:** update multipart form array serialization ([c6257d3](https://github.com/scorecard-ai/scorecard-node/commit/c6257d351e659783d55abaccb0b327244bff0987))
+* **mcp-server:** add support for session id, forward client info ([d08ca8d](https://github.com/scorecard-ai/scorecard-node/commit/d08ca8d735ebe1fec246e47b32ab67dc2d89502c))
+* **mcp-server:** increase local docs search result count from 5 to 10 ([2f8aa9a](https://github.com/scorecard-ai/scorecard-node/commit/2f8aa9a1f67bd49340935b34ba8c5d430c8918fa))
+* **mcp-server:** log client info ([1eb0b6b](https://github.com/scorecard-ai/scorecard-node/commit/1eb0b6b81acf000725f21db28b94585f305e15fe))
+* redact api-key headers in debug logs ([7ecc463](https://github.com/scorecard-ai/scorecard-node/commit/7ecc463232f859b0b5b567d0c7d68426d1228c4a))
+* restructure docs search code ([aa87235](https://github.com/scorecard-ai/scorecard-node/commit/aa87235565e291f143315c77da4485a449166276))
+* **tests:** bump steady to v0.19.4 ([e407db7](https://github.com/scorecard-ai/scorecard-node/commit/e407db7d27e578b698b0256afaec0568d3a2862e))
+* **tests:** bump steady to v0.19.5 ([83a698a](https://github.com/scorecard-ai/scorecard-node/commit/83a698ac3625ecdb6f5a148eb32f80347d062dd2))
+* **tests:** bump steady to v0.19.6 ([362a420](https://github.com/scorecard-ai/scorecard-node/commit/362a420d827ba7c84b0ea43b39df39210debfbbc))
+* **tests:** bump steady to v0.19.7 ([58881af](https://github.com/scorecard-ai/scorecard-node/commit/58881afcdddb7d4d7d6d885686ef3a0481f6c3bb))
+* **tests:** bump steady to v0.20.1 ([30f2535](https://github.com/scorecard-ai/scorecard-node/commit/30f25357dfb1110091ac2c0bbe0df9c920d187fc))
+* **tests:** bump steady to v0.20.2 ([7f1e23a](https://github.com/scorecard-ai/scorecard-node/commit/7f1e23adb6023c29a3c66654ec9d78ee557ace18))
+* **tests:** bump steady to v0.22.1 ([4699a94](https://github.com/scorecard-ai/scorecard-node/commit/4699a942596aef1703d78f9e5b5e7f84ac32ffea))
+* **tests:** remove redundant File import ([4d8df7a](https://github.com/scorecard-ai/scorecard-node/commit/4d8df7af5c0fd66407be8064e4ebc55a0b01ccfe))
+* update pnpm-lock.yaml with otel dependencies ([7470415](https://github.com/scorecard-ai/scorecard-node/commit/7470415de598edc8ff5a82ad30ab927a90190782))
+
+
+### Documentation
+
+* update http mcp docs ([3035999](https://github.com/scorecard-ai/scorecard-node/commit/303599990fa26264b4b6def2b60c6cb8fd67be27))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([d8e82e3](https://github.com/scorecard-ai/scorecard-node/commit/d8e82e34a85d5dd66823dd37fd6987379ef3b54a))
+
 ## 3.1.0 (2026-03-10)
 
 Full Changelog: [v3.0.1...v3.1.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.0.1...v3.1.0)
