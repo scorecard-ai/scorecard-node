@@ -12,7 +12,7 @@ async function main() {
 
   // Create a streaming request
   const stream = await claude.messages.stream({
-    model: 'claude-3-haiku-20240307',
+    model: 'claude-haiku-4-5-20251001',
     messages: [{ role: 'user', content: 'Write a short poem about TypeScript programming.' }],
     temperature: 0.7,
     max_tokens: 200,
