@@ -83,9 +83,11 @@ Below are examples of prompts you can give to an AI assistant with this MCP serv
 ### Example 1: Search Documentation
 
 **Prompt:**
+
 > "How do I create a testset using the Scorecard TypeScript SDK?"
 
 **Tool Called:** `search_docs`
+
 ```json
 {
   "query": "create testset",
@@ -100,9 +102,11 @@ The assistant searches SDK documentation and returns relevant code examples and 
 ### Example 2: List Projects and Testsets
 
 **Prompt:**
+
 > "List all my Scorecard projects and their testsets."
 
 **Tool Called:** `execute`
+
 ```javascript
 async function run(client) {
   for await (const project of client.projects.list()) {
@@ -119,14 +123,16 @@ async function run(client) {
 ### Example 3: Create an Evaluation Run
 
 **Prompt:**
+
 > "Create a new evaluation run for project '314' with testset '246' and metrics '789' and '101'."
 
 **Tool Called:** `execute`
+
 ```javascript
 async function run(client) {
   const run = await client.runs.create('314', {
     testsetId: '246',
-    metricIds: ['789', '101']
+    metricIds: ['789', '101'],
   });
   console.log('Run created:', run.id);
   console.log('View at:', run.url);
