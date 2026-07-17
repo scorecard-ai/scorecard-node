@@ -122,6 +122,23 @@ Methods:
 
 - <code title="put /records/{recordId}/scores/{metricConfigId}">client.scores.<a href="./src/resources/scores.ts">upsert</a>(metricConfigID, { ...params }) -> Score</code>
 
+# Attachments
+
+Types:
+
+- <code><a href="./src/resources/attachments.ts">Attachment</a></code>
+- <code><a href="./src/resources/attachments.ts">AttachmentDeleteResponse</a></code>
+- <code><a href="./src/resources/attachments.ts">AttachmentGetResponse</a></code>
+- <code><a href="./src/resources/attachments.ts">AttachmentInitiateResponse</a></code>
+
+Methods:
+
+- <code title="get /sessions/{sessionId}/attachments">client.attachments.<a href="./src/resources/attachments.ts">list</a>(sessionID, { ...params }) -> AttachmentsPaginatedResponse</code>
+- <code title="delete /attachments/{attachmentId}">client.attachments.<a href="./src/resources/attachments.ts">delete</a>(attachmentID) -> AttachmentDeleteResponse</code>
+- <code title="post /attachments/{attachmentId}/commit">client.attachments.<a href="./src/resources/attachments.ts">commit</a>(attachmentID) -> Attachment</code>
+- <code title="get /attachments/{attachmentId}">client.attachments.<a href="./src/resources/attachments.ts">get</a>(attachmentID) -> AttachmentGetResponse</code>
+- <code title="post /attachments">client.attachments.<a href="./src/resources/attachments.ts">initiate</a>({ ...params }) -> AttachmentInitiateResponse</code>
+
 # Systems
 
 Types:

@@ -919,6 +919,165 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'initiate',
+    endpoint: '/attachments',
+    httpMethod: 'post',
+    summary: 'Initiate Attachment Upload',
+    description:
+      'Initiates (or deduplicates) an upload of a file attached to a session. If the exact content is already stored for this (session ID, file path), the response has `alreadyExists: true` and no upload is needed. Otherwise, PUT the file bytes to the returned `uploadUrl`, then call the commit endpoint. Re-initiating an existing (session ID, file path) with new content updates the attachment in place on commit.',
+    stainlessPath: '(resource) attachments > (method) initiate',
+    qualified: 'client.attachments.initiate',
+    params: [
+      'contentType: string;',
+      'filePath: string;',
+      'sessionId: string;',
+      'sha256: string;',
+      'sizeBytes: number;',
+      'filename?: string;',
+      'metadata?: object;',
+    ],
+    response:
+      "{ id: string; alreadyExists: boolean; expiresAt: string; uploadMethod: 'PUT'; uploadUrl: string; }",
+    markdown:
+      "## initiate\n\n`client.attachments.initiate(contentType: string, filePath: string, sessionId: string, sha256: string, sizeBytes: number, filename?: string, metadata?: object): { id: string; alreadyExists: boolean; expiresAt: string; uploadMethod: 'PUT'; uploadUrl: string; }`\n\n**post** `/attachments`\n\nInitiates (or deduplicates) an upload of a file attached to a session. If the exact content is already stored for this (session ID, file path), the response has `alreadyExists: true` and no upload is needed. Otherwise, PUT the file bytes to the returned `uploadUrl`, then call the commit endpoint. Re-initiating an existing (session ID, file path) with new content updates the attachment in place on commit.\n\n### Parameters\n\n- `contentType: string`\n  MIME type of the file.\n\n- `filePath: string`\n  The logical file path of the attachment (e.g. the path the agent wrote on disk). Together with the session ID it identifies the attachment: re-uploading the same path in the same session updates the existing attachment in place.\n\n- `sessionId: string`\n  The session ID the attachment belongs to. Matches the `session.id` emitted on OTel spans, which is how attachments are joined to traces and records.\n\n- `sha256: string`\n  Lowercase hex SHA-256 of the file content.\n\n- `sizeBytes: number`\n  Size of the file in bytes.\n\n- `filename?: string`\n  Display filename. Defaults to none.\n\n- `metadata?: object`\n  Arbitrary metadata to store with the attachment.\n\n### Returns\n\n- `{ id: string; alreadyExists: boolean; expiresAt: string; uploadMethod: 'PUT'; uploadUrl: string; }`\n\n  - `id: string`\n  - `alreadyExists: boolean`\n  - `expiresAt: string`\n  - `uploadMethod: 'PUT'`\n  - `uploadUrl: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst response = await client.attachments.initiate({\n  contentType: 'application/pdf',\n  filePath: '/tmp/report.pdf',\n  sessionId: 'c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7',\n  sha256: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',\n  sizeBytes: 482133,\n});\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.initiate',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.attachments.initiate({\n  contentType: 'application/pdf',\n  filePath: '/tmp/report.pdf',\n  sessionId: 'c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7',\n  sha256: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',\n  sizeBytes: 482133,\n  filename: 'report.pdf',\n});\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'attachments.initiate',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.attachments.initiate(\n    content_type="application/pdf",\n    file_path="/tmp/report.pdf",\n    session_id="c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n    sha256="9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",\n    size_bytes=482133,\n    filename="report.pdf",\n)\nprint(response.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "contentType": "application/pdf",\n          "filePath": "/tmp/report.pdf",\n          "sessionId": "c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n          "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",\n          "sizeBytes": 482133,\n          "filename": "report.pdf"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'commit',
+    endpoint: '/attachments/{attachmentId}/commit',
+    httpMethod: 'post',
+    summary: 'Commit Attachment Upload',
+    description:
+      'Finalizes an upload after the file bytes have been PUT to the signed upload URL. Verifies the object landed in storage before the attachment starts describing the new content. Committing an already-committed attachment is a no-op.',
+    stainlessPath: '(resource) attachments > (method) commit',
+    qualified: 'client.attachments.commit',
+    params: ['attachmentId: string;'],
+    response:
+      "{ id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }",
+    markdown:
+      "## commit\n\n`client.attachments.commit(attachmentId: string): { id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }`\n\n**post** `/attachments/{attachmentId}/commit`\n\nFinalizes an upload after the file bytes have been PUT to the signed upload URL. Verifies the object landed in storage before the attachment starts describing the new content. Committing an already-committed attachment is a no-op.\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }`\n  A file attached to a session. Bytes live in object storage; this describes the last committed content.\n\n  - `id: string`\n  - `contentType: string`\n  - `filename: string`\n  - `filePath: string`\n  - `metadata: object`\n  - `sessionId: string`\n  - `sha256: string`\n  - `sizeBytes: number`\n  - `status: 'pending' | 'uploaded'`\n  - `uploadedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst attachment = await client.attachments.commit('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.commit',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.commit('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment.id);",
+      },
+      python: {
+        method: 'attachments.commit',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.commit(\n    "3fa85f64-5717-4562-b3fc-2c963f66afa6",\n)\nprint(attachment.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID/commit \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/attachments/{attachmentId}',
+    httpMethod: 'get',
+    summary: 'Get Attachment',
+    description: "Retrieves an attachment's metadata and a short-lived signed download URL for its content.",
+    stainlessPath: '(resource) attachments > (method) get',
+    qualified: 'client.attachments.get',
+    params: ['attachmentId: string;'],
+    response:
+      "{ id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }",
+    markdown:
+      "## get\n\n`client.attachments.get(attachmentId: string): object`\n\n**get** `/attachments/{attachmentId}`\n\nRetrieves an attachment's metadata and a short-lived signed download URL for its content.\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }`\n  A file attached to a session. Bytes live in object storage; this describes the last committed content.\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst attachment = await client.attachments.get('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.get',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.get('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment);",
+      },
+      python: {
+        method: 'attachments.get',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.get(\n    "3fa85f64-5717-4562-b3fc-2c963f66afa6",\n)\nprint(attachment)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/sessions/{sessionId}/attachments',
+    httpMethod: 'get',
+    summary: 'List Session Attachments',
+    description: 'Lists the uploaded attachments for a session. Only committed attachments are returned.',
+    stainlessPath: '(resource) attachments > (method) list',
+    qualified: 'client.attachments.list',
+    params: ['sessionId: string;', 'cursor?: string;', 'limit?: number;'],
+    response:
+      "{ id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }",
+    markdown:
+      "## list\n\n`client.attachments.list(sessionId: string, cursor?: string, limit?: number): { id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }`\n\n**get** `/sessions/{sessionId}/attachments`\n\nLists the uploaded attachments for a session. Only committed attachments are returned.\n\n### Parameters\n\n- `sessionId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; contentType: string; filename: string; filePath: string; metadata: object; sessionId: string; sha256: string; sizeBytes: number; status: 'pending' | 'uploaded'; uploadedAt: string; }`\n  A file attached to a session. Bytes live in object storage; this describes the last committed content.\n\n  - `id: string`\n  - `contentType: string`\n  - `filename: string`\n  - `filePath: string`\n  - `metadata: object`\n  - `sessionId: string`\n  - `sha256: string`\n  - `sizeBytes: number`\n  - `status: 'pending' | 'uploaded'`\n  - `uploadedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const attachment of client.attachments.list('c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7')) {\n  console.log(attachment);\n}\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.list',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const attachment of client.attachments.list('c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7')) {\n  console.log(attachment.id);\n}",
+      },
+      python: {
+        method: 'attachments.list',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.attachments.list(\n    session_id="c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n)\npage = page.data[0]\nprint(page.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/sessions/$SESSION_ID/attachments \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/attachments/{attachmentId}',
+    httpMethod: 'delete',
+    summary: 'Delete Attachment',
+    description: 'Deletes an attachment: both the stored file and its metadata.',
+    stainlessPath: '(resource) attachments > (method) delete',
+    qualified: 'client.attachments.delete',
+    params: ['attachmentId: string;'],
+    response: '{ success: boolean; }',
+    markdown:
+      "## delete\n\n`client.attachments.delete(attachmentId: string): { success: boolean; }`\n\n**delete** `/attachments/{attachmentId}`\n\nDeletes an attachment: both the stored file and its metadata.\n\n### Parameters\n\n- `attachmentId: string`\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst attachment = await client.attachments.delete('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.attachments.delete',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.delete('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment.success);",
+      },
+      python: {
+        method: 'attachments.delete',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.delete(\n    "3fa85f64-5717-4562-b3fc-2c963f66afa6",\n)\nprint(attachment.success)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'list',
     endpoint: '/projects/{projectId}/systems',
     httpMethod: 'get',
