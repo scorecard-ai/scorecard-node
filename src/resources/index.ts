@@ -2,6 +2,16 @@
 
 export * from './shared';
 export {
+  Attachments,
+  type Attachment,
+  type AttachmentDeleteResponse,
+  type AttachmentGetResponse,
+  type AttachmentInitiateResponse,
+  type AttachmentListParams,
+  type AttachmentInitiateParams,
+  type AttachmentsPaginatedResponse,
+} from './attachments';
+export {
   Metrics,
   type Metric,
   type MetricDeleteResponse,
