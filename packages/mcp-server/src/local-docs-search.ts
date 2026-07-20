@@ -686,12 +686,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'inputs: object;',
       'outputs: object;',
       'otelLinkId?: string;',
+      'sessionId?: string;',
       'testcaseId?: string;',
     ],
     response:
       '{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }',
     markdown:
-      "## create\n\n`client.records.create(runId: string, expected: object, inputs: object, outputs: object, otelLinkId?: string, testcaseId?: string): { id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n\n**post** `/runs/{runId}/records`\n\nCreate a new Record in a Run.\n\n### Parameters\n\n- `runId: string`\n\n- `expected: object`\n  The expected outputs for the Testcase.\n\n- `inputs: object`\n  The actual inputs sent to the system, which should match the system's input schema.\n\n- `outputs: object`\n  The actual outputs from the system.\n\n- `otelLinkId?: string`\n  Optional ID for linking this record with an OpenTelemetry trace. Used for deduplication.\n\n- `testcaseId?: string`\n  The ID of the Testcase.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n  A record of a system execution in the Scorecard system.\n\n  - `id: string`\n  - `expected: object`\n  - `inputs: object`\n  - `outputs: object`\n  - `runId: string`\n  - `testcaseId?: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst record = await client.records.create('135', {\n  expected: { idealAnswer: 'bar' },\n  inputs: { question: 'bar' },\n  outputs: { response: 'bar' },\n});\n\nconsole.log(record);\n```",
+      "## create\n\n`client.records.create(runId: string, expected: object, inputs: object, outputs: object, otelLinkId?: string, sessionId?: string, testcaseId?: string): { id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n\n**post** `/runs/{runId}/records`\n\nCreate a new Record in a Run.\n\n### Parameters\n\n- `runId: string`\n\n- `expected: object`\n  The expected outputs for the Testcase.\n\n- `inputs: object`\n  The actual inputs sent to the system, which should match the system's input schema.\n\n- `outputs: object`\n  The actual outputs from the system.\n\n- `otelLinkId?: string`\n  Optional ID for linking this record with an OpenTelemetry trace. Used for deduplication.\n\n- `sessionId?: string`\n  Optional session ID for this record. Matches the `session.id` emitted on OTel spans, joining the record to its session's traces and attachments.\n\n- `testcaseId?: string`\n  The ID of the Testcase.\n\n### Returns\n\n- `{ id: string; expected: object; inputs: object; outputs: object; runId: string; testcaseId?: string; }`\n  A record of a system execution in the Scorecard system.\n\n  - `id: string`\n  - `expected: object`\n  - `inputs: object`\n  - `outputs: object`\n  - `runId: string`\n  - `testcaseId?: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst record = await client.records.create('135', {\n  expected: { idealAnswer: 'bar' },\n  inputs: { question: 'bar' },\n  outputs: { response: 'bar' },\n});\n\nconsole.log(record);\n```",
     perLanguage: {
       typescript: {
         method: 'client.records.create',
@@ -705,7 +706,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          },\n          "testcaseId": "248"\n        }\'',
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          },\n          "sessionId": "c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n          "testcaseId": "248"\n        }\'',
       },
     },
   },

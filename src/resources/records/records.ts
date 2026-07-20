@@ -158,6 +158,12 @@ export interface RecordCreateParams {
   otelLinkId?: string;
 
   /**
+   * Optional session ID for this record. Matches the `session.id` emitted on OTel
+   * spans, joining the record to its session's traces and attachments.
+   */
+  sessionId?: string;
+
+  /**
    * The ID of the Testcase.
    */
   testcaseId?: string;
