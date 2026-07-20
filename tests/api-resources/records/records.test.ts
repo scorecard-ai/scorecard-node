@@ -29,6 +29,7 @@ describe('resource records', () => {
       inputs: { question: 'bar' },
       outputs: { response: 'bar' },
       otelLinkId: 'otelLinkId',
+      sessionId: 'c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7',
       testcaseId: '248',
     });
   });
