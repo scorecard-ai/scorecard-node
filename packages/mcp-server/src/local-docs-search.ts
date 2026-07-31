@@ -889,6 +889,96 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'list',
+    endpoint: '/records/{recordId}/assignees',
+    httpMethod: 'get',
+    summary: 'List Record Assignees',
+    description: 'List the organization members assigned to a Record.',
+    stainlessPath: '(resource) records.assignees > (method) list',
+    qualified: 'client.records.assignees.list',
+    params: ['recordId: string;'],
+    response:
+      '{ data: { id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }[]; }',
+    markdown:
+      "## list\n\n`client.records.assignees.list(recordId: string): { data: record_assignment[]; }`\n\n**get** `/records/{recordId}/assignees`\n\nList the organization members assigned to a Record.\n\n### Parameters\n\n- `recordId: string`\n\n### Returns\n\n- `{ data: { id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }[]; }`\n\n  - `data: { id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }[]`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst assignees = await client.records.assignees.list('777');\n\nconsole.log(assignees);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.records.assignees.list',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst assignees = await client.records.assignees.list('777');\n\nconsole.log(assignees.data);",
+      },
+      python: {
+        method: 'records.assignees.list',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nassignees = client.records.assignees.list(\n    "777",\n)\nprint(assignees.data)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/records/{recordId}/assignees',
+    httpMethod: 'post',
+    summary: 'Assign Record User',
+    description:
+      'Assign an organization member to a Record. Idempotent: re-assigning an existing member returns the existing assignment.',
+    stainlessPath: '(resource) records.assignees > (method) create',
+    qualified: 'client.records.assignees.create',
+    params: ['recordId: string;', 'assigneeUserId: string;'],
+    response:
+      '{ id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }',
+    markdown:
+      "## create\n\n`client.records.assignees.create(recordId: string, assigneeUserId: string): { id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }`\n\n**post** `/records/{recordId}/assignees`\n\nAssign an organization member to a Record. Idempotent: re-assigning an existing member returns the existing assignment.\n\n### Parameters\n\n- `recordId: string`\n\n- `assigneeUserId: string`\n  The ID of the organization member to assign. Idempotent: re-assigning an existing member returns the existing assignment.\n\n### Returns\n\n- `{ id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }`\n  An assignment of an organization member to a Record.\n\n  - `id: string`\n  - `assignedByUserId: string`\n  - `assigneeUserId: string`\n  - `createdAt: string`\n  - `recordId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst recordAssignment = await client.records.assignees.create('777', { assigneeUserId: 'user_2abc123' });\n\nconsole.log(recordAssignment);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.records.assignees.create',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst recordAssignment = await client.records.assignees.create('777', {\n  assigneeUserId: 'user_2abc123',\n});\n\nconsole.log(recordAssignment.id);",
+      },
+      python: {
+        method: 'records.assignees.create',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord_assignment = client.records.assignees.create(\n    record_id="777",\n    assignee_user_id="user_2abc123",\n)\nprint(record_assignment.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "assigneeUserId": "user_2abc123"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/records/{recordId}/assignees/{assigneeUserId}',
+    httpMethod: 'delete',
+    summary: 'Unassign Record User',
+    description: 'Remove an assignee from a Record.',
+    stainlessPath: '(resource) records.assignees > (method) delete',
+    qualified: 'client.records.assignees.delete',
+    params: ['recordId: string;', 'assigneeUserId: string;'],
+    response: '{ deleted: number; }',
+    markdown:
+      "## delete\n\n`client.records.assignees.delete(recordId: string, assigneeUserId: string): { deleted: number; }`\n\n**delete** `/records/{recordId}/assignees/{assigneeUserId}`\n\nRemove an assignee from a Record.\n\n### Parameters\n\n- `recordId: string`\n\n- `assigneeUserId: string`\n\n### Returns\n\n- `{ deleted: number; }`\n\n  - `deleted: number`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst assignee = await client.records.assignees.delete('user_2abc123', { recordId: '777' });\n\nconsole.log(assignee);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.records.assignees.delete',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst assignee = await client.records.assignees.delete('user_2abc123', { recordId: '777' });\n\nconsole.log(assignee.deleted);",
+      },
+      python: {
+        method: 'records.assignees.delete',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nassignee = client.records.assignees.delete(\n    assignee_user_id="user_2abc123",\n    record_id="777",\n)\nprint(assignee.deleted)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees/$ASSIGNEE_USER_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'upsert',
     endpoint: '/records/{recordId}/scores/{metricConfigId}',
     httpMethod: 'put',

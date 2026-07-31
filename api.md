@@ -112,6 +112,20 @@ Methods:
 - <code title="get /records/{recordId}/tags">client.records.tags.<a href="./src/resources/records/tags.ts">list</a>(recordID) -> TagListResponse</code>
 - <code title="delete /records/{recordId}/tags/{text}">client.records.tags.<a href="./src/resources/records/tags.ts">delete</a>(text, { ...params }) -> TagDeleteResponse</code>
 
+## Assignees
+
+Types:
+
+- <code><a href="./src/resources/records/assignees.ts">RecordAssignment</a></code>
+- <code><a href="./src/resources/records/assignees.ts">AssigneeListResponse</a></code>
+- <code><a href="./src/resources/records/assignees.ts">AssigneeDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /records/{recordId}/assignees">client.records.assignees.<a href="./src/resources/records/assignees.ts">create</a>(recordID, { ...params }) -> RecordAssignment</code>
+- <code title="get /records/{recordId}/assignees">client.records.assignees.<a href="./src/resources/records/assignees.ts">list</a>(recordID) -> AssigneeListResponse</code>
+- <code title="delete /records/{recordId}/assignees/{assigneeUserId}">client.records.assignees.<a href="./src/resources/records/assignees.ts">delete</a>(assigneeUserID, { ...params }) -> AssigneeDeleteResponse</code>
+
 # Scores
 
 Types:
