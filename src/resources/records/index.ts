@@ -2,6 +2,14 @@
 
 export { Annotations, type Annotation, type AnnotationListResponse } from './annotations';
 export {
+  Assignees,
+  type RecordAssignment,
+  type AssigneeListResponse,
+  type AssigneeDeleteResponse,
+  type AssigneeCreateParams,
+  type AssigneeDeleteParams,
+} from './assignees';
+export {
   Records,
   type Record,
   type RecordListResponse,

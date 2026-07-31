@@ -173,6 +173,24 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/records/{recordId}/tags/{text}',
   },
   {
+    clientCallName: 'client.records.assignees.create',
+    fullyQualifiedName: 'records.assignees.create',
+    httpMethod: 'post',
+    httpPath: '/records/{recordId}/assignees',
+  },
+  {
+    clientCallName: 'client.records.assignees.list',
+    fullyQualifiedName: 'records.assignees.list',
+    httpMethod: 'get',
+    httpPath: '/records/{recordId}/assignees',
+  },
+  {
+    clientCallName: 'client.records.assignees.delete',
+    fullyQualifiedName: 'records.assignees.delete',
+    httpMethod: 'delete',
+    httpPath: '/records/{recordId}/assignees/{assigneeUserId}',
+  },
+  {
     clientCallName: 'client.scores.upsert',
     fullyQualifiedName: 'scores.upsert',
     httpMethod: 'put',
