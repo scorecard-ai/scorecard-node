@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.3.0 (2026-07-31)
+
+Full Changelog: [v3.2.0...v3.3.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.2.0...v3.3.0)
+
+### Features
+
+* **api:** api update ([3daf2d9](https://github.com/scorecard-ai/scorecard-node/commit/3daf2d93642a9890d293ae99d1508f30acd35593))
+* **api:** api update ([d65eb24](https://github.com/scorecard-ai/scorecard-node/commit/d65eb24c2c215f566234da357e33969f32fada90))
+* **api:** api update ([2dc367c](https://github.com/scorecard-ai/scorecard-node/commit/2dc367c509a0c370d94d35a92a8ff4f6f838d6fe))
+* **api:** api update ([d67a568](https://github.com/scorecard-ai/scorecard-node/commit/d67a568813c3119cf6ecc94aca098f2f6d02c584))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([4fa1e31](https://github.com/scorecard-ai/scorecard-node/commit/4fa1e31ff2239870fbbb9f3139d8431d46b37448))
+
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([7f218f6](https://github.com/scorecard-ai/scorecard-node/commit/7f218f6a075f1bac1e04bc04a796ec047b3b22e0))
+
 ## 3.2.0 (2026-06-18)
 
 Full Changelog: [v3.1.0...v3.2.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.1.0...v3.2.0)
