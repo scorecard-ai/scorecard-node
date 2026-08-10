@@ -4,6 +4,15 @@ import { APIResource } from '../../core/resource';
 import * as ScoresAPI from '../scores';
 import * as AnnotationsAPI from './annotations';
 import { Annotation, AnnotationListResponse, Annotations } from './annotations';
+import * as AssigneesAPI from './assignees';
+import {
+  AssigneeCreateParams,
+  AssigneeDeleteParams,
+  AssigneeDeleteResponse,
+  AssigneeListResponse,
+  Assignees,
+  RecordAssignment,
+} from './assignees';
 import * as TagsAPI from './tags';
 import {
   RecordTag,
@@ -21,6 +30,7 @@ import { path } from '../../internal/utils/path';
 export class Records extends APIResource {
   annotations: AnnotationsAPI.Annotations = new AnnotationsAPI.Annotations(this._client);
   tags: TagsAPI.Tags = new TagsAPI.Tags(this._client);
+  assignees: AssigneesAPI.Assignees = new AssigneesAPI.Assignees(this._client);
 
   /**
    * Create a new Record in a Run.
@@ -158,6 +168,12 @@ export interface RecordCreateParams {
   otelLinkId?: string;
 
   /**
+   * Optional session ID for this record. Matches the `session.id` emitted on OTel
+   * spans, joining the record to its session's traces and attachments.
+   */
+  sessionId?: string;
+
+  /**
    * The ID of the Testcase.
    */
   testcaseId?: string;
@@ -173,6 +189,7 @@ export interface RecordListParams extends PaginatedResponseParams {
 
 Records.Annotations = Annotations;
 Records.Tags = Tags;
+Records.Assignees = Assignees;
 
 export declare namespace Records {
   export {
@@ -197,5 +214,14 @@ export declare namespace Records {
     type TagDeleteResponse as TagDeleteResponse,
     type TagCreateParams as TagCreateParams,
     type TagDeleteParams as TagDeleteParams,
+  };
+
+  export {
+    Assignees as Assignees,
+    type RecordAssignment as RecordAssignment,
+    type AssigneeListResponse as AssigneeListResponse,
+    type AssigneeDeleteResponse as AssigneeDeleteResponse,
+    type AssigneeCreateParams as AssigneeCreateParams,
+    type AssigneeDeleteParams as AssigneeDeleteParams,
   };
 }

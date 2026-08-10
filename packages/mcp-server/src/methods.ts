@@ -173,10 +173,58 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/records/{recordId}/tags/{text}',
   },
   {
+    clientCallName: 'client.records.assignees.create',
+    fullyQualifiedName: 'records.assignees.create',
+    httpMethod: 'post',
+    httpPath: '/records/{recordId}/assignees',
+  },
+  {
+    clientCallName: 'client.records.assignees.list',
+    fullyQualifiedName: 'records.assignees.list',
+    httpMethod: 'get',
+    httpPath: '/records/{recordId}/assignees',
+  },
+  {
+    clientCallName: 'client.records.assignees.delete',
+    fullyQualifiedName: 'records.assignees.delete',
+    httpMethod: 'delete',
+    httpPath: '/records/{recordId}/assignees/{assigneeUserId}',
+  },
+  {
     clientCallName: 'client.scores.upsert',
     fullyQualifiedName: 'scores.upsert',
     httpMethod: 'put',
     httpPath: '/records/{recordId}/scores/{metricConfigId}',
+  },
+  {
+    clientCallName: 'client.attachments.list',
+    fullyQualifiedName: 'attachments.list',
+    httpMethod: 'get',
+    httpPath: '/sessions/{sessionId}/attachments',
+  },
+  {
+    clientCallName: 'client.attachments.delete',
+    fullyQualifiedName: 'attachments.delete',
+    httpMethod: 'delete',
+    httpPath: '/attachments/{attachmentId}',
+  },
+  {
+    clientCallName: 'client.attachments.commit',
+    fullyQualifiedName: 'attachments.commit',
+    httpMethod: 'post',
+    httpPath: '/attachments/{attachmentId}/commit',
+  },
+  {
+    clientCallName: 'client.attachments.get',
+    fullyQualifiedName: 'attachments.get',
+    httpMethod: 'get',
+    httpPath: '/attachments/{attachmentId}',
+  },
+  {
+    clientCallName: 'client.attachments.initiate',
+    fullyQualifiedName: 'attachments.initiate',
+    httpMethod: 'post',
+    httpPath: '/attachments',
   },
   {
     clientCallName: 'client.systems.update',

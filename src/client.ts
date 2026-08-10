@@ -20,6 +20,16 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
+  Attachment,
+  AttachmentDeleteResponse,
+  AttachmentGetResponse,
+  AttachmentInitiateParams,
+  AttachmentInitiateResponse,
+  AttachmentListParams,
+  Attachments,
+  AttachmentsPaginatedResponse,
+} from './resources/attachments';
+import {
   Metric,
   MetricCreateParams,
   MetricDeleteResponse,
@@ -863,6 +873,7 @@ export class Scorecard {
   metrics: API.Metrics = new API.Metrics(this);
   records: API.Records = new API.Records(this);
   scores: API.Scores = new API.Scores(this);
+  attachments: API.Attachments = new API.Attachments(this);
   systems: API.Systems = new API.Systems(this);
 }
 
@@ -873,6 +884,7 @@ Scorecard.Runs = Runs;
 Scorecard.Metrics = Metrics;
 Scorecard.Records = Records;
 Scorecard.Scores = Scores;
+Scorecard.Attachments = Attachments;
 Scorecard.Systems = Systems;
 
 export declare namespace Scorecard {
@@ -943,6 +955,17 @@ export declare namespace Scorecard {
   };
 
   export { Scores as Scores, type Score as Score, type ScoreUpsertParams as ScoreUpsertParams };
+
+  export {
+    Attachments as Attachments,
+    type Attachment as Attachment,
+    type AttachmentDeleteResponse as AttachmentDeleteResponse,
+    type AttachmentGetResponse as AttachmentGetResponse,
+    type AttachmentInitiateResponse as AttachmentInitiateResponse,
+    type AttachmentsPaginatedResponse as AttachmentsPaginatedResponse,
+    type AttachmentListParams as AttachmentListParams,
+    type AttachmentInitiateParams as AttachmentInitiateParams,
+  };
 
   export {
     Systems as Systems,
