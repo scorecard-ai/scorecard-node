@@ -68,6 +68,11 @@ export function codeTool({
       },
       required: ['code'],
     },
+    annotations: {
+      title: 'Execute Code Against Scorecard API',
+      readOnlyHint: false,
+      destructiveHint: true,
+    },
   };
 
   const logger = getLogger();

@@ -21,3 +21,7 @@ export {
   PermissionDeniedError,
   UnprocessableEntityError,
 } from './core/error';
+
+export { runAndEvaluate, type SystemOptions } from './lib/runAndEvaluate';
+export { wrapAISDK } from './lib/wrapAISDK';
+export { wrap, wrapOpenAI, wrapAnthropic } from './lib/wrapLLMs';

@@ -1,0 +1,21 @@
+{
+  "name": "scorecard-ai-examples",
+  "version": "1.0.0",
+  "description": "Usage examples for the Scorecard Node.js SDK",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "yarn@1.22.22",
+  "dependencies": {
+    "@ai-sdk/openai": "^2.0.58",
+    "@anthropic-ai/sdk": "^0.27.0",
+    "ai": "^5.0.82",
+    "openai": "^4.104.0",
+    "scorecard-ai": "file:..",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "tsx": "^4.7.0"
+  }
+}
