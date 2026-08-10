@@ -1,0 +1,227 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import { APIResource } from '../../core/resource';
+import * as ScoresAPI from '../scores';
+import * as AnnotationsAPI from './annotations';
+import { Annotation, AnnotationListResponse, Annotations } from './annotations';
+import * as AssigneesAPI from './assignees';
+import {
+  AssigneeCreateParams,
+  AssigneeDeleteParams,
+  AssigneeDeleteResponse,
+  AssigneeListResponse,
+  Assignees,
+  RecordAssignment,
+} from './assignees';
+import * as TagsAPI from './tags';
+import {
+  RecordTag,
+  TagCreateParams,
+  TagDeleteParams,
+  TagDeleteResponse,
+  TagListResponse,
+  Tags,
+} from './tags';
+import { APIPromise } from '../../core/api-promise';
+import { PagePromise, PaginatedResponse, type PaginatedResponseParams } from '../../core/pagination';
+import { RequestOptions } from '../../internal/request-options';
+import { path } from '../../internal/utils/path';
+
+export class Records extends APIResource {
+  annotations: AnnotationsAPI.Annotations = new AnnotationsAPI.Annotations(this._client);
+  tags: TagsAPI.Tags = new TagsAPI.Tags(this._client);
+  assignees: AssigneesAPI.Assignees = new AssigneesAPI.Assignees(this._client);
+
+  /**
+   * Create a new Record in a Run.
+   *
+   * @example
+   * ```ts
+   * const record = await client.records.create('135', {
+   *   expected: {
+   *     idealAnswer: 'Paris is the capital of France',
+   *   },
+   *   inputs: { question: 'What is the capital of France?' },
+   *   outputs: { response: 'The capital of France is Paris.' },
+   *   testcaseId: '248',
+   * });
+   * ```
+   */
+  create(runID: string, body: RecordCreateParams, options?: RequestOptions): APIPromise<Record> {
+    return this._client.post(path`/runs/${runID}/records`, { body, ...options });
+  }
+
+  /**
+   * Retrieve a paginated list of Records for a Run, including all scores for each
+   * record.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const recordListResponse of client.records.list(
+   *   '135',
+   * )) {
+   *   // ...
+   * }
+   * ```
+   */
+  list(
+    runID: string,
+    query: RecordListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): PagePromise<RecordListResponsesPaginatedResponse, RecordListResponse> {
+    return this._client.getAPIList(path`/runs/${runID}/records`, PaginatedResponse<RecordListResponse>, {
+      query,
+      ...options,
+    });
+  }
+
+  /**
+   * Delete a specific Record by ID.
+   *
+   * @example
+   * ```ts
+   * const record = await client.records.delete('777');
+   * ```
+   */
+  delete(recordID: string, options?: RequestOptions): APIPromise<RecordDeleteResponse> {
+    return this._client.delete(path`/records/${recordID}`, options);
+  }
+}
+
+export type RecordListResponsesPaginatedResponse = PaginatedResponse<RecordListResponse>;
+
+/**
+ * A record of a system execution in the Scorecard system.
+ */
+export interface Record {
+  /**
+   * The ID of the Record.
+   */
+  id: string;
+
+  /**
+   * The expected outputs for the Testcase.
+   */
+  expected: { [key: string]: unknown };
+
+  /**
+   * The actual inputs sent to the system, which should match the system's input
+   * schema.
+   */
+  inputs: { [key: string]: unknown };
+
+  /**
+   * The actual outputs from the system.
+   */
+  outputs: { [key: string]: unknown };
+
+  /**
+   * The ID of the Run containing this Record.
+   */
+  runId: string;
+
+  /**
+   * The ID of the Testcase.
+   */
+  testcaseId?: string;
+}
+
+/**
+ * A record with all its associated scores.
+ */
+export interface RecordListResponse extends Record {
+  /**
+   * All scores associated with this record.
+   */
+  scores: Array<ScoresAPI.Score>;
+}
+
+export interface RecordDeleteResponse {
+  /**
+   * Whether the deletion was successful.
+   */
+  success: boolean;
+}
+
+export interface RecordCreateParams {
+  /**
+   * The expected outputs for the Testcase.
+   */
+  expected: { [key: string]: unknown };
+
+  /**
+   * The actual inputs sent to the system, which should match the system's input
+   * schema.
+   */
+  inputs: { [key: string]: unknown };
+
+  /**
+   * The actual outputs from the system.
+   */
+  outputs: { [key: string]: unknown };
+
+  /**
+   * Optional ID for linking this record with an OpenTelemetry trace. Used for
+   * deduplication.
+   */
+  otelLinkId?: string;
+
+  /**
+   * Optional session ID for this record. Matches the `session.id` emitted on OTel
+   * spans, joining the record to its session's traces and attachments.
+   */
+  sessionId?: string;
+
+  /**
+   * The ID of the Testcase.
+   */
+  testcaseId?: string;
+}
+
+export interface RecordListParams extends PaginatedResponseParams {
+  /**
+   * Filter to records carrying every listed tag (repeatable, AND semantics). E.g.
+   * `?tags=urgent&tags=regression`.
+   */
+  tags?: Array<string>;
+}
+
+Records.Annotations = Annotations;
+Records.Tags = Tags;
+Records.Assignees = Assignees;
+
+export declare namespace Records {
+  export {
+    type Record as Record,
+    type RecordListResponse as RecordListResponse,
+    type RecordDeleteResponse as RecordDeleteResponse,
+    type RecordListResponsesPaginatedResponse as RecordListResponsesPaginatedResponse,
+    type RecordCreateParams as RecordCreateParams,
+    type RecordListParams as RecordListParams,
+  };
+
+  export {
+    Annotations as Annotations,
+    type Annotation as Annotation,
+    type AnnotationListResponse as AnnotationListResponse,
+  };
+
+  export {
+    Tags as Tags,
+    type RecordTag as RecordTag,
+    type TagListResponse as TagListResponse,
+    type TagDeleteResponse as TagDeleteResponse,
+    type TagCreateParams as TagCreateParams,
+    type TagDeleteParams as TagDeleteParams,
+  };
+
+  export {
+    Assignees as Assignees,
+    type RecordAssignment as RecordAssignment,
+    type AssigneeListResponse as AssigneeListResponse,
+    type AssigneeDeleteResponse as AssigneeDeleteResponse,
+    type AssigneeCreateParams as AssigneeCreateParams,
+    type AssigneeDeleteParams as AssigneeDeleteParams,
+  };
+}
