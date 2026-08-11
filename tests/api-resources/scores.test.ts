@@ -9,10 +9,7 @@ const client = new Scorecard({
 
 describe('resource scores', () => {
   test('upsert: only required params', async () => {
-    const responsePromise = client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', {
-      recordId: '777',
-      score: { value: 'bar', reasoning: 'bar' },
-    });
+    const responsePromise = client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', { recordId: '777' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
