@@ -8,6 +8,9 @@ on:
         description: The path to run the release in, e.g. '.' or 'packages/mcp-server'
         required: true
 
+  release:
+    types: [published]
+
 jobs:
   publish:
     name: publish
@@ -33,7 +36,7 @@ jobs:
       - name: Publish to NPM
         run: |
           if [ -n "$INPUT_PATH" ]; then
-            PATHS_RELEASED="[\"$INPUT_PATH\"]"
+            PATHS_RELEASED="[\\\"$INPUT_PATH\\\"]"
           else
             PATHS_RELEASED='[\".\", \"packages/mcp-server\"]'
           fi
@@ -43,6 +46,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.SCORECARD_NPM_TOKEN || secrets.NPM_TOKEN }}
 
       - name: Upload MCP Server DXT GitHub release asset
+        if: github.event_name == 'release'
         run: |
           gh release upload ${{ github.event.release.tag_name }} \
             packages/mcp-server/scorecard_ai_api.mcpb
