@@ -29,7 +29,7 @@ export const newMcpServer = async ({
   new McpServer(
     {
       name: 'scorecard_ai_api',
-      version: '3.3.0',
+      version: '3.4.0',
     },
     {
       instructions: await getInstructions({ stainlessApiKey, customInstructionsPath }),
