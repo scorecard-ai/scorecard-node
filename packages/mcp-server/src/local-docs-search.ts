@@ -673,6 +673,157 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'get',
+    endpoint: '/metric-groups/{metricGroupId}',
+    httpMethod: 'get',
+    summary: 'Get Metric Group',
+    description: 'Retrieve a specific Metric Group by ID.',
+    stainlessPath: '(resource) metricGroups > (method) get',
+    qualified: 'client.metricGroups.get',
+    params: ['metricGroupId: string;'],
+    response:
+      '{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }',
+    markdown:
+      "## get\n\n`client.metricGroups.get(metricGroupId: string): { id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n\n**get** `/metric-groups/{metricGroupId}`\n\nRetrieve a specific Metric Group by ID.\n\n### Parameters\n\n- `metricGroupId: string`\n\n### Returns\n\n- `{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n  A Metric Group is a named collection of Metrics within a Project, used to score or compare records with a consistent set of Metrics.\n\n  - `id: string`\n  - `createdAt: string`\n  - `description: string`\n  - `metricIds: string[]`\n  - `name: string`\n  - `projectId: string`\n  - `updatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metricGroup = await client.metricGroups.get('612');\n\nconsole.log(metricGroup);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.metricGroups.get',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.get('612');\n\nconsole.log(metricGroup.id);",
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+      python: {
+        method: 'metric_groups.get',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.get(\n    "612",\n)\nprint(metric_group.id)',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/projects/{projectId}/metric-groups',
+    httpMethod: 'get',
+    summary: 'List Metric Groups',
+    description:
+      'List Metric Groups configured for the specified Project. Metric Groups are returned in reverse chronological order.',
+    stainlessPath: '(resource) metricGroups > (method) list',
+    qualified: 'client.metricGroups.list',
+    params: ['projectId: string;', 'cursor?: string;', 'limit?: number;'],
+    response:
+      '{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }',
+    markdown:
+      "## list\n\n`client.metricGroups.list(projectId: string, cursor?: string, limit?: number): { id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n\n**get** `/projects/{projectId}/metric-groups`\n\nList Metric Groups configured for the specified Project. Metric Groups are returned in reverse chronological order.\n\n### Parameters\n\n- `projectId: string`\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n  A Metric Group is a named collection of Metrics within a Project, used to score or compare records with a consistent set of Metrics.\n\n  - `id: string`\n  - `createdAt: string`\n  - `description: string`\n  - `metricIds: string[]`\n  - `name: string`\n  - `projectId: string`\n  - `updatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const metricGroup of client.metricGroups.list('314')) {\n  console.log(metricGroup);\n}\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.metricGroups.list',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const metricGroup of client.metricGroups.list('314')) {\n  console.log(metricGroup.id);\n}",
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metric-groups \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+      python: {
+        method: 'metric_groups.list',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.metric_groups.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/projects/{projectId}/metric-groups',
+    httpMethod: 'post',
+    summary: 'Create Metric Group',
+    description: 'Create a new Metric Group referencing Metrics in the same Project.',
+    stainlessPath: '(resource) metricGroups > (method) create',
+    qualified: 'client.metricGroups.create',
+    params: ['projectId: string;', 'metricIds: string[];', 'name: string;', 'description?: string;'],
+    response:
+      '{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }',
+    markdown:
+      "## create\n\n`client.metricGroups.create(projectId: string, metricIds: string[], name: string, description?: string): { id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n\n**post** `/projects/{projectId}/metric-groups`\n\nCreate a new Metric Group referencing Metrics in the same Project.\n\n### Parameters\n\n- `projectId: string`\n\n- `metricIds: string[]`\n  The IDs of the Metrics to include in the group. Every Metric must belong to the same Project as the group.\n\n- `name: string`\n  The name of the Metric Group.\n\n- `description?: string`\n  The description of the Metric Group.\n\n### Returns\n\n- `{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n  A Metric Group is a named collection of Metrics within a Project, used to score or compare records with a consistent set of Metrics.\n\n  - `id: string`\n  - `createdAt: string`\n  - `description: string`\n  - `metricIds: string[]`\n  - `name: string`\n  - `projectId: string`\n  - `updatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metricGroup = await client.metricGroups.create('314', { metricIds: ['321', '322'], name: 'Accuracy Metrics' });\n\nconsole.log(metricGroup);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.metricGroups.create',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.create('314', {\n  metricIds: ['321', '322'],\n  name: 'Accuracy Metrics',\n  description: 'Metrics that evaluate factual accuracy',\n});\n\nconsole.log(metricGroup.id);",
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metric-groups \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "321",\n            "322"\n          ],\n          "name": "Accuracy Metrics",\n          "description": "Metrics that evaluate factual accuracy"\n        }\'',
+      },
+      python: {
+        method: 'metric_groups.create',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.create(\n    project_id="314",\n    metric_ids=["321", "322"],\n    name="Accuracy Metrics",\n    description="Metrics that evaluate factual accuracy",\n)\nprint(metric_group.id)',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/metric-groups/{metricGroupId}',
+    httpMethod: 'patch',
+    summary: 'Update Metric Group',
+    description:
+      "Update a Metric Group's name, description, or member Metrics. The `metricIds` array replaces the group's current set of Metrics.",
+    stainlessPath: '(resource) metricGroups > (method) update',
+    qualified: 'client.metricGroups.update',
+    params: ['metricGroupId: string;', 'description?: string;', 'metricIds?: string[];', 'name?: string;'],
+    response:
+      '{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }',
+    markdown:
+      "## update\n\n`client.metricGroups.update(metricGroupId: string, description?: string, metricIds?: string[], name?: string): { id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n\n**patch** `/metric-groups/{metricGroupId}`\n\nUpdate a Metric Group's name, description, or member Metrics. The `metricIds` array replaces the group's current set of Metrics.\n\n### Parameters\n\n- `metricGroupId: string`\n\n- `description?: string`\n  The new description of the Metric Group.\n\n- `metricIds?: string[]`\n  The new set of Metric IDs for the group, replacing the current set. Every Metric must belong to the same Project as the group.\n\n- `name?: string`\n  The new name of the Metric Group.\n\n### Returns\n\n- `{ id: string; createdAt: string; description: string; metricIds: string[]; name: string; projectId: string; updatedAt: string; }`\n  A Metric Group is a named collection of Metrics within a Project, used to score or compare records with a consistent set of Metrics.\n\n  - `id: string`\n  - `createdAt: string`\n  - `description: string`\n  - `metricIds: string[]`\n  - `name: string`\n  - `projectId: string`\n  - `updatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metricGroup = await client.metricGroups.update('612');\n\nconsole.log(metricGroup);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.metricGroups.update',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.update('612', {\n  metricIds: ['321'],\n  name: 'Quality Metrics',\n});\n\nconsole.log(metricGroup.id);",
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+      python: {
+        method: 'metric_groups.update',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.update(\n    metric_group_id="612",\n    metric_ids=["321"],\n    name="Quality Metrics",\n)\nprint(metric_group.id)',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/metric-groups/{metricGroupId}',
+    httpMethod: 'delete',
+    summary: 'Delete Metric Group',
+    description: 'Delete a specific Metric Group by ID. The Metrics in the group are not deleted.',
+    stainlessPath: '(resource) metricGroups > (method) delete',
+    qualified: 'client.metricGroups.delete',
+    params: ['metricGroupId: string;'],
+    response: '{ success: boolean; }',
+    markdown:
+      "## delete\n\n`client.metricGroups.delete(metricGroupId: string): { success: boolean; }`\n\n**delete** `/metric-groups/{metricGroupId}`\n\nDelete a specific Metric Group by ID. The Metrics in the group are not deleted.\n\n### Parameters\n\n- `metricGroupId: string`\n\n### Returns\n\n- `{ success: boolean; }`\n\n  - `success: boolean`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst metricGroup = await client.metricGroups.delete('612');\n\nconsole.log(metricGroup);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.metricGroups.delete',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.delete('612');\n\nconsole.log(metricGroup.success);",
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+      python: {
+        method: 'metric_groups.delete',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.delete(\n    "612",\n)\nprint(metric_group.success)',
+      },
+    },
+  },
+  {
     name: 'create',
     endpoint: '/runs/{runId}/records',
     httpMethod: 'post',

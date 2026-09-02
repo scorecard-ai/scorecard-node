@@ -73,6 +73,21 @@ Methods:
 - <code title="delete /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">delete</a>(metricID) -> MetricDeleteResponse</code>
 - <code title="get /metrics/{metricId}">client.metrics.<a href="./src/resources/metrics.ts">get</a>(metricID) -> Metric</code>
 
+# MetricGroups
+
+Types:
+
+- <code><a href="./src/resources/metric-groups.ts">MetricGroup</a></code>
+- <code><a href="./src/resources/metric-groups.ts">MetricGroupDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /projects/{projectId}/metric-groups">client.metricGroups.<a href="./src/resources/metric-groups.ts">create</a>(projectID, { ...params }) -> MetricGroup</code>
+- <code title="patch /metric-groups/{metricGroupId}">client.metricGroups.<a href="./src/resources/metric-groups.ts">update</a>(metricGroupID, { ...params }) -> MetricGroup</code>
+- <code title="get /projects/{projectId}/metric-groups">client.metricGroups.<a href="./src/resources/metric-groups.ts">list</a>(projectID, { ...params }) -> MetricGroupsPaginatedResponse</code>
+- <code title="delete /metric-groups/{metricGroupId}">client.metricGroups.<a href="./src/resources/metric-groups.ts">delete</a>(metricGroupID) -> MetricGroupDeleteResponse</code>
+- <code title="get /metric-groups/{metricGroupId}">client.metricGroups.<a href="./src/resources/metric-groups.ts">get</a>(metricGroupID) -> MetricGroup</code>
+
 # Records
 
 Types:

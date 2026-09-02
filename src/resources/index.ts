@@ -12,6 +12,15 @@ export {
   type AttachmentsPaginatedResponse,
 } from './attachments';
 export {
+  MetricGroups,
+  type MetricGroup,
+  type MetricGroupDeleteResponse,
+  type MetricGroupCreateParams,
+  type MetricGroupUpdateParams,
+  type MetricGroupListParams,
+  type MetricGroupsPaginatedResponse,
+} from './metric-groups';
+export {
   Metrics,
   type Metric,
   type MetricDeleteResponse,

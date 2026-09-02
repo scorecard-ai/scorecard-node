@@ -131,6 +131,36 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/metrics/{metricId}',
   },
   {
+    clientCallName: 'client.metricGroups.create',
+    fullyQualifiedName: 'metricGroups.create',
+    httpMethod: 'post',
+    httpPath: '/projects/{projectId}/metric-groups',
+  },
+  {
+    clientCallName: 'client.metricGroups.update',
+    fullyQualifiedName: 'metricGroups.update',
+    httpMethod: 'patch',
+    httpPath: '/metric-groups/{metricGroupId}',
+  },
+  {
+    clientCallName: 'client.metricGroups.list',
+    fullyQualifiedName: 'metricGroups.list',
+    httpMethod: 'get',
+    httpPath: '/projects/{projectId}/metric-groups',
+  },
+  {
+    clientCallName: 'client.metricGroups.delete',
+    fullyQualifiedName: 'metricGroups.delete',
+    httpMethod: 'delete',
+    httpPath: '/metric-groups/{metricGroupId}',
+  },
+  {
+    clientCallName: 'client.metricGroups.get',
+    fullyQualifiedName: 'metricGroups.get',
+    httpMethod: 'get',
+    httpPath: '/metric-groups/{metricGroupId}',
+  },
+  {
     clientCallName: 'client.records.create',
     fullyQualifiedName: 'records.create',
     httpMethod: 'post',

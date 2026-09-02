@@ -30,6 +30,15 @@ import {
   AttachmentsPaginatedResponse,
 } from './resources/attachments';
 import {
+  MetricGroup,
+  MetricGroupCreateParams,
+  MetricGroupDeleteResponse,
+  MetricGroupListParams,
+  MetricGroupUpdateParams,
+  MetricGroups,
+  MetricGroupsPaginatedResponse,
+} from './resources/metric-groups';
+import {
   Metric,
   MetricCreateParams,
   MetricDeleteResponse,
@@ -871,6 +880,7 @@ export class Scorecard {
   testcases: API.Testcases = new API.Testcases(this);
   runs: API.Runs = new API.Runs(this);
   metrics: API.Metrics = new API.Metrics(this);
+  metricGroups: API.MetricGroups = new API.MetricGroups(this);
   records: API.Records = new API.Records(this);
   scores: API.Scores = new API.Scores(this);
   attachments: API.Attachments = new API.Attachments(this);
@@ -882,6 +892,7 @@ Scorecard.Testsets = Testsets;
 Scorecard.Testcases = Testcases;
 Scorecard.Runs = Runs;
 Scorecard.Metrics = Metrics;
+Scorecard.MetricGroups = MetricGroups;
 Scorecard.Records = Records;
 Scorecard.Scores = Scores;
 Scorecard.Attachments = Attachments;
@@ -942,6 +953,16 @@ export declare namespace Scorecard {
     type MetricCreateParams as MetricCreateParams,
     type MetricUpdateParams as MetricUpdateParams,
     type MetricListParams as MetricListParams,
+  };
+
+  export {
+    MetricGroups as MetricGroups,
+    type MetricGroup as MetricGroup,
+    type MetricGroupDeleteResponse as MetricGroupDeleteResponse,
+    type MetricGroupsPaginatedResponse as MetricGroupsPaginatedResponse,
+    type MetricGroupCreateParams as MetricGroupCreateParams,
+    type MetricGroupUpdateParams as MetricGroupUpdateParams,
+    type MetricGroupListParams as MetricGroupListParams,
   };
 
   export {
