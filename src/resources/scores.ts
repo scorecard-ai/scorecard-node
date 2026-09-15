@@ -59,6 +59,12 @@ export interface Score {
   score: { [key: string]: unknown };
 
   /**
+   * Who created the Score: `background-job` for automated graders, or a user ID for
+   * human-entered scores.
+   */
+  userId: string;
+
+  /**
    * Validation errors found in the Score data. If present, the Score doesn't fully
    * conform to its MetricConfig's schema.
    */
@@ -93,6 +99,13 @@ export interface ScoreUpsertParams {
    * for human metrics, e.g. to queue a record for manual grading.
    */
   score?: { [key: string]: unknown };
+
+  /**
+   * Body param: Who created the Score, e.g. a user ID when submitting on behalf of a
+   * human grader. Must be a member of your organization. Only supported for human
+   * metrics and only together with `score`; defaults to `background-job`.
+   */
+  userId?: string;
 }
 
 export declare namespace Scores {

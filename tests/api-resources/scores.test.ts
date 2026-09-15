@@ -23,6 +23,7 @@ describe('resource scores', () => {
     const response = await client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', {
       recordId: '777',
       score: { value: 'bar', reasoning: 'bar' },
+      userId: 'x',
     });
   });
 });
