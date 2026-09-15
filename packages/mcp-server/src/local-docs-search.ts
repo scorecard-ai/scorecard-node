@@ -1075,14 +1075,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     httpMethod: 'post',
     summary: 'Assign Record User',
     description:
-      'Assign an organization member to a Record. Idempotent: re-assigning an existing member returns the existing assignment.',
+      'Assign an organization member to a Record. Idempotent: re-assigning an existing member returns the existing assignment. Requires an organization admin: an organization API key, or a token belonging to an admin. Keys and tokens scoped to an individual member receive a 403.',
     stainlessPath: '(resource) records.assignees > (method) create',
     qualified: 'client.records.assignees.create',
     params: ['recordId: string;', 'assigneeUserId: string;'],
     response:
       '{ id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }',
     markdown:
-      "## create\n\n`client.records.assignees.create(recordId: string, assigneeUserId: string): { id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }`\n\n**post** `/records/{recordId}/assignees`\n\nAssign an organization member to a Record. Idempotent: re-assigning an existing member returns the existing assignment.\n\n### Parameters\n\n- `recordId: string`\n\n- `assigneeUserId: string`\n  The ID of the organization member to assign. Idempotent: re-assigning an existing member returns the existing assignment.\n\n### Returns\n\n- `{ id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }`\n  An assignment of an organization member to a Record.\n\n  - `id: string`\n  - `assignedByUserId: string`\n  - `assigneeUserId: string`\n  - `createdAt: string`\n  - `recordId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst recordAssignment = await client.records.assignees.create('777', { assigneeUserId: 'user_2abc123' });\n\nconsole.log(recordAssignment);\n```",
+      "## create\n\n`client.records.assignees.create(recordId: string, assigneeUserId: string): { id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }`\n\n**post** `/records/{recordId}/assignees`\n\nAssign an organization member to a Record. Idempotent: re-assigning an existing member returns the existing assignment. Requires an organization admin: an organization API key, or a token belonging to an admin. Keys and tokens scoped to an individual member receive a 403.\n\n### Parameters\n\n- `recordId: string`\n\n- `assigneeUserId: string`\n  The ID of the organization member to assign. Idempotent: re-assigning an existing member returns the existing assignment.\n\n### Returns\n\n- `{ id: string; assignedByUserId: string; assigneeUserId: string; createdAt: string; recordId: string; }`\n  An assignment of an organization member to a Record.\n\n  - `id: string`\n  - `assignedByUserId: string`\n  - `assigneeUserId: string`\n  - `createdAt: string`\n  - `recordId: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst recordAssignment = await client.records.assignees.create('777', { assigneeUserId: 'user_2abc123' });\n\nconsole.log(recordAssignment);\n```",
     perLanguage: {
       typescript: {
         method: 'client.records.assignees.create',
@@ -1105,13 +1105,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     endpoint: '/records/{recordId}/assignees/{assigneeUserId}',
     httpMethod: 'delete',
     summary: 'Unassign Record User',
-    description: 'Remove an assignee from a Record.',
+    description:
+      'Remove an assignee from a Record. Requires an organization admin: an organization API key, or a token belonging to an admin. Keys and tokens scoped to an individual member receive a 403.',
     stainlessPath: '(resource) records.assignees > (method) delete',
     qualified: 'client.records.assignees.delete',
     params: ['recordId: string;', 'assigneeUserId: string;'],
     response: '{ deleted: number; }',
     markdown:
-      "## delete\n\n`client.records.assignees.delete(recordId: string, assigneeUserId: string): { deleted: number; }`\n\n**delete** `/records/{recordId}/assignees/{assigneeUserId}`\n\nRemove an assignee from a Record.\n\n### Parameters\n\n- `recordId: string`\n\n- `assigneeUserId: string`\n\n### Returns\n\n- `{ deleted: number; }`\n\n  - `deleted: number`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst assignee = await client.records.assignees.delete('user_2abc123', { recordId: '777' });\n\nconsole.log(assignee);\n```",
+      "## delete\n\n`client.records.assignees.delete(recordId: string, assigneeUserId: string): { deleted: number; }`\n\n**delete** `/records/{recordId}/assignees/{assigneeUserId}`\n\nRemove an assignee from a Record. Requires an organization admin: an organization API key, or a token belonging to an admin. Keys and tokens scoped to an individual member receive a 403.\n\n### Parameters\n\n- `recordId: string`\n\n- `assigneeUserId: string`\n\n### Returns\n\n- `{ deleted: number; }`\n\n  - `deleted: number`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst assignee = await client.records.assignees.delete('user_2abc123', { recordId: '777' });\n\nconsole.log(assignee);\n```",
     perLanguage: {
       typescript: {
         method: 'client.records.assignees.delete',

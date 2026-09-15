@@ -8,7 +8,9 @@ import { path } from '../../internal/utils/path';
 export class Assignees extends APIResource {
   /**
    * Assign an organization member to a Record. Idempotent: re-assigning an existing
-   * member returns the existing assignment.
+   * member returns the existing assignment. Requires an organization admin: an
+   * organization API key, or a token belonging to an admin. Keys and tokens scoped
+   * to an individual member receive a 403.
    *
    * @example
    * ```ts
@@ -41,7 +43,9 @@ export class Assignees extends APIResource {
   }
 
   /**
-   * Remove an assignee from a Record.
+   * Remove an assignee from a Record. Requires an organization admin: an
+   * organization API key, or a token belonging to an admin. Keys and tokens scoped
+   * to an individual member receive a 403.
    *
    * @example
    * ```ts
