@@ -68,14 +68,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst project = await client.projects.create({\n  description: 'This is a test project',\n  name: 'My Project',\n});\n\nconsole.log(project.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "This is a test project",\n          "name": "My Project"\n        }\'',
+      },
       python: {
         method: 'projects.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nproject = client.projects.create(\n    description="This is a test project",\n    name="My Project",\n)\nprint(project.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "This is a test project",\n          "name": "My Project"\n        }\'',
       },
     },
   },
@@ -98,14 +98,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const project of client.projects.list()) {\n  console.log(project.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'projects.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.projects.list()\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -128,14 +128,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const testset of client.testsets.list('314')) {\n  console.log(testset.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'testsets.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.testsets.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -165,14 +165,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.create('314', {\n  description: 'Testset for long context Q&A chatbot.',\n  fieldMapping: {\n    inputs: ['question'],\n    expected: ['idealAnswer'],\n    metadata: [],\n  },\n  jsonSchema: {\n    type: 'object',\n    properties: {\n      question: { type: 'string' },\n      idealAnswer: { type: 'string' },\n      provenance: { type: 'string' },\n      geo: { type: 'string' },\n    },\n  },\n  name: 'Long Context Q&A',\n});\n\nconsole.log(testset.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "Testset for long context Q&A chatbot.",\n          "fieldMapping": {\n            "expected": [\n              "idealAnswer"\n            ],\n            "inputs": [\n              "question"\n            ],\n            "metadata": [\n              "string"\n            ]\n          },\n          "jsonSchema": {\n            "type": "bar",\n            "properties": "bar"\n          },\n          "name": "Long Context Q&A"\n        }\'',
+      },
       python: {
         method: 'testsets.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.create(\n    project_id="314",\n    description="Testset for long context Q&A chatbot.",\n    field_mapping={\n        "inputs": ["question"],\n        "expected": ["idealAnswer"],\n        "metadata": [],\n    },\n    json_schema={\n        "type": "object",\n        "properties": {\n            "question": {\n                "type": "string"\n            },\n            "idealAnswer": {\n                "type": "string"\n            },\n            "provenance": {\n                "type": "string"\n            },\n            "geo": {\n                "type": "string"\n            },\n        },\n    },\n    name="Long Context Q&A",\n)\nprint(testset.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/testsets \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "description": "Testset for long context Q&A chatbot.",\n          "fieldMapping": {\n            "expected": [\n              "idealAnswer"\n            ],\n            "inputs": [\n              "question"\n            ],\n            "metadata": [\n              "string"\n            ]\n          },\n          "jsonSchema": {\n            "type": "bar",\n            "properties": "bar"\n          },\n          "name": "Long Context Q&A"\n        }\'',
       },
     },
   },
@@ -195,14 +195,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.get('246');\n\nconsole.log(testset.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'testsets.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.get(\n    "246",\n)\nprint(testset.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -232,14 +232,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.update('246', {\n  description: 'Updated description for the Q&A Testset.',\n  name: 'Updated Q&A Testset',\n});\n\nconsole.log(testset.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'testsets.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.update(\n    testset_id="246",\n    description="Updated description for the Q&A Testset.",\n    name="Updated Q&A Testset",\n)\nprint(testset.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -261,14 +261,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testset = await client.testsets.delete('246');\n\nconsole.log(testset.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'testsets.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestset = client.testsets.delete(\n    "246",\n)\nprint(testset.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -291,14 +291,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.get('248');\n\nconsole.log(testcase.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'testcases.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.get(\n    "248",\n)\nprint(testcase.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -321,14 +321,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.update('248', {\n  jsonData: {\n    question: 'What is the capital of France?',\n    idealAnswer: 'Paris is the capital of France',\n    provenance: 'hand_curated',\n  },\n});\n\nconsole.log(testcase.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "jsonData": {\n            "question": "bar",\n            "idealAnswer": "bar",\n            "provenance": "bar"\n          }\n        }\'',
+      },
       python: {
         method: 'testcases.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.update(\n    testcase_id="248",\n    json_data={\n        "question": "What is the capital of France?",\n        "idealAnswer": "Paris is the capital of France",\n        "provenance": "hand_curated",\n    },\n)\nprint(testcase.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testcases/$TESTCASE_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "jsonData": {\n            "question": "bar",\n            "idealAnswer": "bar",\n            "provenance": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -351,14 +351,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const testcase of client.testcases.list('246')) {\n  console.log(testcase.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'testcases.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.testcases.list(\n    testset_id="246",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -381,14 +381,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.create('246', {\n  items: [\n    {\n      jsonData: {\n        question: 'What is the capital of France?',\n        idealAnswer: 'Paris',\n        provenance: 'hand_curated',\n      },\n    },\n    {\n      jsonData: {\n        question: 'What is the largest planet in our solar system?',\n        idealAnswer: 'Jupiter',\n        provenance: 'synthetic',\n      },\n    },\n    {\n      jsonData: {\n        question: 'How many planets are in our solar system?',\n        idealAnswer: 8,\n        provenance: 'user_feedback',\n      },\n    },\n  ],\n});\n\nconsole.log(testcase.items);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "items": [\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            }\n          ]\n        }\'',
+      },
       python: {
         method: 'testcases.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.create(\n    testset_id="246",\n    items=[{\n        "json_data": {\n            "question": "What is the capital of France?",\n            "idealAnswer": "Paris",\n            "provenance": "hand_curated",\n        }\n    }, {\n        "json_data": {\n            "question": "What is the largest planet in our solar system?",\n            "idealAnswer": "Jupiter",\n            "provenance": "synthetic",\n        }\n    }, {\n        "json_data": {\n            "question": "How many planets are in our solar system?",\n            "idealAnswer": 8,\n            "provenance": "user_feedback",\n        }\n    }],\n)\nprint(testcase.items)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testsets/$TESTSET_ID/testcases \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "items": [\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            },\n            {\n              "jsonData": {\n                "question": "bar",\n                "idealAnswer": "bar",\n                "provenance": "bar"\n              }\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -410,14 +410,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst testcase = await client.testcases.delete({ ids: ['123', '124', '125'] });\n\nconsole.log(testcase.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/testcases/bulk-delete \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "ids": [\n            "123",\n            "124",\n            "125"\n          ]\n        }\'',
+      },
       python: {
         method: 'testcases.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntestcase = client.testcases.delete(\n    ids=["123", "124", "125"],\n)\nprint(testcase.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/testcases/bulk-delete \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "ids": [\n            "123",\n            "124",\n            "125"\n          ]\n        }\'',
       },
     },
   },
@@ -440,14 +440,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst run = await client.runs.get('135');\n\nconsole.log(run.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'runs.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrun = client.runs.get(\n    "135",\n)\nprint(run.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -471,14 +471,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const run of client.runs.list('314')) {\n  console.log(run.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'runs.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.runs.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -506,14 +506,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst run = await client.runs.create('314', {\n  metricIds: ['789', '101'],\n  systemVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0',\n  testsetId: '246',\n});\n\nconsole.log(run.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "789",\n            "101"\n          ],\n          "systemVersionId": "87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n          "testsetId": "246"\n        }\'',
+      },
       python: {
         method: 'runs.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrun = client.runs.create(\n    project_id="314",\n    metric_ids=["789", "101"],\n    system_version_id="87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n    testset_id="246",\n)\nprint(run.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/runs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "789",\n            "101"\n          ],\n          "systemVersionId": "87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n          "testsetId": "246"\n        }\'',
       },
     },
   },
@@ -535,14 +535,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.get('321');\n\nconsole.log(metric);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metrics.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.get(\n    "321",\n)\nprint(metric)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -565,14 +565,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const metric of client.metrics.list('314')) {\n  console.log(metric);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metrics.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.metrics.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -598,14 +598,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.create('314', {\n  evalType: 'ai',\n  name: 'Response Accuracy',\n  outputType: 'boolean',\n  promptTemplate:\n    'Please evaluate if the following response is factually accurate: {{outputs.response}}',\n  description: 'Evaluates if the response is factually accurate',\n  evalModelName: 'gpt-4o',\n  guidelines: 'Check if the response contains factually correct information',\n  temperature: 0.1,\n});\n\nconsole.log(metric);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metrics.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.create(\n    project_id="314",\n    eval_type="ai",\n    name="Response Accuracy",\n    output_type="boolean",\n    prompt_template="Please evaluate if the following response is factually accurate: {{outputs.response}}",\n    description="Evaluates if the response is factually accurate",\n    eval_model_name="gpt-4o",\n    guidelines="Check if the response contains factually correct information",\n    temperature=0.1,\n)\nprint(metric)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metrics \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -631,14 +631,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.update('321', {\n  evalType: 'ai',\n  outputType: 'boolean',\n  promptTemplate:\n    'Using the following guidelines, evaluate the response: {{ guidelines }}\\n\\nResponse: {{ outputs.response }}\\n\\nIdeal answer: {{ expected.idealResponse }}',\n});\n\nconsole.log(metric);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metrics.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.update(\n    metric_id="321",\n    eval_type="ai",\n    output_type="boolean",\n    prompt_template="Using the following guidelines, evaluate the response: {{ guidelines }}\\n\\nResponse: {{ outputs.response }}\\n\\nIdeal answer: {{ expected.idealResponse }}",\n)\nprint(metric)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -661,14 +661,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metric = await client.metrics.delete('321');\n\nconsole.log(metric.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metrics.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric = client.metrics.delete(\n    "321",\n)\nprint(metric.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/metrics/$METRIC_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -691,14 +691,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.get('612');\n\nconsole.log(metricGroup.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metric_groups.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.get(\n    "612",\n)\nprint(metric_group.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -722,14 +722,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const metricGroup of client.metricGroups.list('314')) {\n  console.log(metricGroup.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metric-groups \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metric_groups.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.metric_groups.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metric-groups \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -752,14 +752,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.create('314', {\n  metricIds: ['321', '322'],\n  name: 'Accuracy Metrics',\n  description: 'Metrics that evaluate factual accuracy',\n});\n\nconsole.log(metricGroup.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metric-groups \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "321",\n            "322"\n          ],\n          "name": "Accuracy Metrics",\n          "description": "Metrics that evaluate factual accuracy"\n        }\'',
+      },
       python: {
         method: 'metric_groups.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.create(\n    project_id="314",\n    metric_ids=["321", "322"],\n    name="Accuracy Metrics",\n    description="Metrics that evaluate factual accuracy",\n)\nprint(metric_group.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/metric-groups \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "metricIds": [\n            "321",\n            "322"\n          ],\n          "name": "Accuracy Metrics",\n          "description": "Metrics that evaluate factual accuracy"\n        }\'',
       },
     },
   },
@@ -783,14 +783,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.update('612', {\n  metricIds: ['321'],\n  name: 'Quality Metrics',\n});\n\nconsole.log(metricGroup.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metric_groups.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.update(\n    metric_group_id="612",\n    metric_ids=["321"],\n    name="Quality Metrics",\n)\nprint(metric_group.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -812,14 +812,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst metricGroup = await client.metricGroups.delete('612');\n\nconsole.log(metricGroup.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'metric_groups.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nmetric_group = client.metric_groups.delete(\n    "612",\n)\nprint(metric_group.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/metric-groups/$METRIC_GROUP_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -850,14 +850,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst record = await client.records.create('135', {\n  expected: { idealAnswer: 'Paris is the capital of France' },\n  inputs: { question: 'What is the capital of France?' },\n  outputs: { response: 'The capital of France is Paris.' },\n  testcaseId: '248',\n});\n\nconsole.log(record.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          },\n          "sessionId": "c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n          "testcaseId": "248"\n        }\'',
+      },
       python: {
         method: 'records.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord = client.records.create(\n    run_id="135",\n    expected={\n        "idealAnswer": "Paris is the capital of France"\n    },\n    inputs={\n        "question": "What is the capital of France?"\n    },\n    outputs={\n        "response": "The capital of France is Paris."\n    },\n    testcase_id="248",\n)\nprint(record.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "expected": {\n            "idealAnswer": "bar"\n          },\n          "inputs": {\n            "question": "bar"\n          },\n          "outputs": {\n            "response": "bar"\n          },\n          "sessionId": "c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n          "testcaseId": "248"\n        }\'',
       },
     },
   },
@@ -880,14 +880,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const recordListResponse of client.records.list('135')) {\n  console.log(recordListResponse);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.records.list(\n    run_id="135",\n)\npage = page.data[0]\nprint(page)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/runs/$RUN_ID/records \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -909,14 +909,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst record = await client.records.delete('777');\n\nconsole.log(record.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord = client.records.delete(\n    "777",\n)\nprint(record.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -939,14 +939,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst annotations = await client.records.annotations.list('777');\n\nconsole.log(annotations.data);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/annotations \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.annotations.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nannotations = client.records.annotations.list(\n    "777",\n)\nprint(annotations.data)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/annotations \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -969,14 +969,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst tags = await client.records.tags.list('777');\n\nconsole.log(tags.data);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.tags.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntags = client.records.tags.list(\n    "777",\n)\nprint(tags.data)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -999,14 +999,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst recordTag = await client.records.tags.create('777', { text: 'urgent' });\n\nconsole.log(recordTag.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "text": "urgent"\n        }\'',
+      },
       python: {
         method: 'records.tags.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord_tag = client.records.tags.create(\n    record_id="777",\n    text="urgent",\n)\nprint(record_tag.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "text": "urgent"\n        }\'',
       },
     },
   },
@@ -1028,14 +1028,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst tag = await client.records.tags.delete('urgent', { recordId: '777' });\n\nconsole.log(tag.deleted);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags/$TEXT \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.tags.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\ntag = client.records.tags.delete(\n    text="urgent",\n    record_id="777",\n)\nprint(tag.deleted)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/tags/$TEXT \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1058,14 +1058,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst assignees = await client.records.assignees.list('777');\n\nconsole.log(assignees.data);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.assignees.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nassignees = client.records.assignees.list(\n    "777",\n)\nprint(assignees.data)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1089,14 +1089,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst recordAssignment = await client.records.assignees.create('777', {\n  assigneeUserId: 'user_2abc123',\n});\n\nconsole.log(recordAssignment.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "assigneeUserId": "user_2abc123"\n        }\'',
+      },
       python: {
         method: 'records.assignees.create',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nrecord_assignment = client.records.assignees.create(\n    record_id="777",\n    assignee_user_id="user_2abc123",\n)\nprint(record_assignment.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "assigneeUserId": "user_2abc123"\n        }\'',
       },
     },
   },
@@ -1119,14 +1119,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst assignee = await client.records.assignees.delete('user_2abc123', { recordId: '777' });\n\nconsole.log(assignee.deleted);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees/$ASSIGNEE_USER_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'records.assignees.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nassignee = client.records.assignees.delete(\n    assignee_user_id="user_2abc123",\n    record_id="777",\n)\nprint(assignee.deleted)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/assignees/$ASSIGNEE_USER_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1150,14 +1150,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst score = await client.scores.upsert('a1b2c3d4-e5f6-7890-1234-567890abcdef', {\n  recordId: '777',\n  score: { value: true, reasoning: 'The response is correct' },\n});\n\nconsole.log(score.validationErrors);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/scores/$METRIC_CONFIG_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'scores.upsert',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nscore = client.scores.upsert(\n    metric_config_id="a1b2c3d4-e5f6-7890-1234-567890abcdef",\n    record_id="777",\n    score={\n        "value": True,\n        "reasoning": "The response is correct",\n    },\n)\nprint(score.validation_errors)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/records/$RECORD_ID/scores/$METRIC_CONFIG_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1189,14 +1189,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.attachments.initiate({\n  contentType: 'application/pdf',\n  filePath: '/tmp/report.pdf',\n  sessionId: 'c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7',\n  sha256: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',\n  sizeBytes: 482133,\n  filename: 'report.pdf',\n});\n\nconsole.log(response.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "contentType": "application/pdf",\n          "filePath": "/tmp/report.pdf",\n          "sessionId": "c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n          "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",\n          "sizeBytes": 482133,\n          "filename": "report.pdf"\n        }\'',
+      },
       python: {
         method: 'attachments.initiate',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.attachments.initiate(\n    content_type="application/pdf",\n    file_path="/tmp/report.pdf",\n    session_id="c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n    sha256="9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",\n    size_bytes=482133,\n    filename="report.pdf",\n)\nprint(response.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/attachments \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "contentType": "application/pdf",\n          "filePath": "/tmp/report.pdf",\n          "sessionId": "c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n          "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",\n          "sizeBytes": 482133,\n          "filename": "report.pdf"\n        }\'',
       },
     },
   },
@@ -1220,14 +1220,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.commit('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID/commit \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'attachments.commit',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.commit(\n    "3fa85f64-5717-4562-b3fc-2c963f66afa6",\n)\nprint(attachment.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID/commit \\\n    -X POST \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1250,14 +1250,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.get('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'attachments.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.get(\n    "3fa85f64-5717-4562-b3fc-2c963f66afa6",\n)\nprint(attachment)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1280,14 +1280,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const attachment of client.attachments.list('c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7')) {\n  console.log(attachment.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/sessions/$SESSION_ID/attachments \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'attachments.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.attachments.list(\n    session_id="c59e5bd0-e5eb-4bf0-a08a-01f7e8f712c7",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/sessions/$SESSION_ID/attachments \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1309,14 +1309,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst attachment = await client.attachments.delete('3fa85f64-5717-4562-b3fc-2c963f66afa6');\n\nconsole.log(attachment.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'attachments.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nattachment = client.attachments.delete(\n    "3fa85f64-5717-4562-b3fc-2c963f66afa6",\n)\nprint(attachment.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/attachments/$ATTACHMENT_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1339,14 +1339,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const system of client.systems.list('314')) {\n  console.log(system.id);\n}",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'systems.list',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\npage = client.systems.list(\n    project_id="314",\n)\npage = page.data[0]\nprint(page.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1369,14 +1369,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.get('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'systems.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.get(\n    "12345678-0a8b-4f66-b6f3-2ddcfa097257",\n)\nprint(system.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1400,14 +1400,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.upsert('314', {\n  config: { temperature: 0.1, maxTokens: 1024 },\n  description: 'Production chatbot powered by GPT-4',\n  name: 'GPT-4 Chatbot',\n});\n\nconsole.log(system.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar"\n          },\n          "description": "Production chatbot powered by GPT-4",\n          "name": "GPT-4 Chatbot"\n        }\'',
+      },
       python: {
         method: 'systems.upsert',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.upsert(\n    project_id="314",\n    config={\n        "temperature": 0.1,\n        "maxTokens": 1024,\n    },\n    description="Production chatbot powered by GPT-4",\n    name="GPT-4 Chatbot",\n)\nprint(system.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID/systems \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar"\n          },\n          "description": "Production chatbot powered by GPT-4",\n          "name": "GPT-4 Chatbot"\n        }\'',
       },
     },
   },
@@ -1431,14 +1431,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.update('12345678-0a8b-4f66-b6f3-2ddcfa097257', {\n  productionVersionId: '87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3',\n});\n\nconsole.log(system.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'systems.update',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.update(\n    system_id="12345678-0a8b-4f66-b6f3-2ddcfa097257",\n    production_version_id="87654321-4d3b-4ae4-8c7a-4b6e2a19ccf3",\n)\nprint(system.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1460,14 +1460,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst system = await client.systems.delete('12345678-0a8b-4f66-b6f3-2ddcfa097257');\n\nconsole.log(system.success);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'systems.delete',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem = client.systems.delete(\n    "12345678-0a8b-4f66-b6f3-2ddcfa097257",\n)\nprint(system.success)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1489,14 +1489,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst systemVersion = await client.systems.versions.get('87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0');\n\nconsole.log(systemVersion.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/systems/versions/$SYSTEM_VERSION_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
       python: {
         method: 'systems.versions.get',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem_version = client.systems.versions.get(\n    "87654321-4d3b-4ae4-8c7a-4b6e2a19ccf0",\n)\nprint(system_version.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/systems/versions/$SYSTEM_VERSION_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
@@ -1519,14 +1519,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst systemVersion = await client.systems.versions.upsert('12345678-0a8b-4f66-b6f3-2ddcfa097257', {\n  config: {\n    temperature: 0.5,\n    maxTokens: 1024,\n    model: 'gemini-2.0-flash',\n  },\n  name: 'Test model: Gemini',\n});\n\nconsole.log(systemVersion.id);",
       },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID/versions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar",\n            "model": "bar"\n          },\n          "name": "Test model: Gemini"\n        }\'',
+      },
       python: {
         method: 'systems.versions.upsert',
         example:
           'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nsystem_version = client.systems.versions.upsert(\n    system_id="12345678-0a8b-4f66-b6f3-2ddcfa097257",\n    config={\n        "temperature": 0.5,\n        "maxTokens": 1024,\n        "model": "gemini-2.0-flash",\n    },\n    name="Test model: Gemini",\n)\nprint(system_version.id)',
-      },
-      http: {
-        example:
-          'curl https://api2.scorecard.io/api/v2/systems/$SYSTEM_ID/versions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY" \\\n    -d \'{\n          "config": {\n            "temperature": "bar",\n            "maxTokens": "bar",\n            "model": "bar"\n          },\n          "name": "Test model: Gemini"\n        }\'',
       },
     },
   },
