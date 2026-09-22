@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.4.0...v3.5.0) (2026-09-22)
+
+
+### Features
+
+* admin-only record assignment and a consolidated records actions menu ([1d5d941](https://github.com/scorecard-ai/scorecard-node/commit/1d5d941ebe8164c46da26d3d57f3c900a2778e44))
+
 ## [3.4.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.3.0...v3.4.0) (2026-08-14)
 
 
