@@ -237,34 +237,118 @@ function handleAnthropicResponse(span: Span, result: any, params: any) {
 }
 
 /**
- * Wrapper for async streams that collects metadata and ends span when consumed
+ * Collect streaming metadata without replacing SDK stream objects or their helpers.
  */
-class StreamWrapper {
+class StreamTracer {
   private contentParts: string[] = [];
   private finishReason: string | null = null;
   private usageData: Record<string, number> = {};
   private responseId: string | null = null;
   private model: string | null = null;
+  private ended = false;
+  private pendingOperations = 0;
+  private aborted = false;
+  private removeAbortListener: (() => void) | undefined;
 
   constructor(
-    private stream: AsyncIterable<any>,
     private span: Span,
     private provider: LLMProvider,
     private params: any,
   ) {}
 
-  async *[Symbol.asyncIterator](): AsyncIterator<any> {
-    try {
-      for await (const chunk of this.stream) {
-        this.processChunk(chunk);
-        yield chunk;
+  instrument(stream: any): any {
+    if (this.provider === 'anthropic' && typeof stream.on === 'function') {
+      // MessageStream runs independently of iteration. Observe its lifecycle so
+      // finalMessage(), textStream and event-only consumers are all traced.
+      stream.on('streamEvent', (chunk: any) => this.processChunk(chunk));
+      stream.on('finalMessage', (message: any) => this.finish(message));
+      stream.on('end', () => this.finalizeSpan());
+      stream.on('error', (error: any) => this.fail(error));
+      stream.on('abort', (error: any) => this.fail(error));
+    } else {
+      // Both SDKs route iteration AND tee() through their iterator factory.
+      // Instrument that factory when available, falling back to the standard
+      // async iterator for other compatible streams.
+      const key = typeof stream.iterator === 'function' ? 'iterator' : Symbol.asyncIterator;
+      const iterator = stream[key].bind(stream);
+      stream[key] = () => this.observe(iterator());
+
+      const signal = stream.controller?.signal;
+      if (signal) {
+        // SDK iterators also abort their controller while unwinding errors.
+        // Let observe() record those errors before ending an active stream.
+        const onAbort = () => {
+          this.aborted = true;
+          if (!this.pendingOperations) this.finalizeSpan();
+        };
+        signal.addEventListener('abort', onAbort, { once: true });
+        this.removeAbortListener = () => signal.removeEventListener('abort', onAbort);
+        if (signal.aborted) this.finalizeSpan();
       }
-    } finally {
-      this.finalizeSpan();
     }
+    return stream;
+  }
+
+  private observe(iterator: AsyncIterator<any>): AsyncIterator<any> {
+    const observeOperation = async (
+      operation: () => Promise<IteratorResult<any>>,
+      stopping = false,
+    ): Promise<IteratorResult<any>> => {
+      this.pendingOperations++;
+      try {
+        const result = await operation();
+        if (result.done || stopping) {
+          this.finalizeSpan();
+        } else {
+          this.processChunk(result.value);
+        }
+        return result;
+      } catch (error: any) {
+        this.fail(error);
+        throw error;
+      } finally {
+        this.pendingOperations--;
+        if (this.aborted && !this.pendingOperations) this.finalizeSpan();
+      }
+    };
+    return {
+      next: (...args) => observeOperation(() => iterator.next(...args)),
+      return: (value) =>
+        observeOperation(async () => iterator.return?.(value) ?? { done: true, value }, true),
+      throw: (error) =>
+        observeOperation(async () => {
+          if (iterator.throw) return iterator.throw(error);
+          await iterator.return?.();
+          throw error;
+        }),
+    };
+  }
+
+  finish(result: any): void {
+    if (this.ended) return;
+    if (this.provider === 'openai') {
+      handleOpenAIResponse(this.span, result, this.params);
+    } else {
+      handleAnthropicResponse(this.span, result, this.params);
+    }
+    this.endSpan();
+  }
+
+  fail(error: any): void {
+    if (this.ended) return;
+    this.span.recordException(error);
+    this.finalizeSpan();
+  }
+
+  private endSpan(): void {
+    if (this.ended) return;
+    this.ended = true;
+    this.removeAbortListener?.();
+    this.span.end();
   }
 
   private processChunk(chunk: any): void {
+    if (this.ended) return;
     // OpenAI streaming format
     if (this.provider === 'openai') {
       if (!this.responseId && chunk.id) {
@@ -315,6 +399,7 @@ class StreamWrapper {
   }
 
   private finalizeSpan(): void {
+    if (this.ended) return;
     // Set response attributes
     this.span.setAttributes({
       'gen_ai.response.id': this.responseId || 'unknown',
@@ -350,7 +435,7 @@ class StreamWrapper {
       );
     }
 
-    this.span.end();
+    this.endSpan();
   }
 }
 
@@ -378,6 +463,8 @@ class StreamWrapper {
  * // Use normally - traces are automatically sent to Scorecard
  * const response = await openai.chat.completions.create({...});
  * const response2 = await claude.messages.create({...});
+ * const stream = claude.messages.stream({...});
+ * const finalMessage = await stream.finalMessage();
  * ```
  */
 export function wrap<T>(client: T, config: WrapConfig = {}): T {
@@ -404,7 +491,7 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
 
       // Intercept specific LLM methods
       if (shouldWrap && typeof value === 'function') {
-        return async function (this: any, ...args: any[]) {
+        return function (this: any, ...args: any[]) {
           const params = args[0] || {};
           // Streaming if: 1) stream param is true, or 2) using the 'stream' method
           const isStreaming = params.stream === true || prop === 'stream';
@@ -434,30 +521,28 @@ export function wrap<T>(client: T, config: WrapConfig = {}): T {
           }
 
           // Execute within the span's context (enables nested spans to be children)
-          return context.with(trace.setSpan(context.active(), span), async () => {
-            try {
-              const result = await value.apply(target, args);
-
+          return context.with(trace.setSpan(context.active(), span), () => {
+            const streamTracer = new StreamTracer(span, provider, params);
+            const onResult = (result: any) => {
               if (isStreaming) {
-                // For streaming, wrap the stream to collect metadata and end span when consumed
-                return new StreamWrapper(result, span, provider, params);
-              } else {
-                // For non-streaming, set response attributes immediately
-                if (provider === 'openai') {
-                  handleOpenAIResponse(span, result, params);
-                } else if (provider === 'anthropic') {
-                  handleAnthropicResponse(span, result, params);
-                }
+                return streamTracer.instrument(result);
+              }
+              streamTracer.finish(result);
+              return result;
+            };
+            const onError = (error: any) => streamTracer.fail(error);
+            try {
+              const result = value.apply(target, args);
+              if (typeof result?.then === 'function') {
+                // Register before returning the original request promise, retaining
+                // SDK helpers such as withResponse() while observing its result.
+                result.then(onResult, onError).catch(onError);
                 return result;
               }
+              return onResult(result);
             } catch (error: any) {
-              span.recordException(error);
+              onError(error);
               throw error;
-            } finally {
-              // Only end span for non-streaming (streaming ends in StreamWrapper)
-              if (!isStreaming) {
-                span.end();
-              }
             }
           });
         };
