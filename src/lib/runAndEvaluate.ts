@@ -3,6 +3,27 @@ import { Scorecard } from '../client';
 import { Testcase } from '../resources';
 import { ScorecardError } from '../error';
 import { SystemVersion } from '../resources/systems';
+import { readEnv } from '../internal/utils/env';
+
+/** Resolve run links independently of the generated client's app URL fallback. */
+function baseAppURL(baseURL: string): string {
+  const override = readEnv('SCORECARD_APP_URL');
+  if (override) {
+    return override.replace(/\/+$/, '');
+  }
+
+  // URL parsing normalizes scheme/host case; ignore trailing slashes for exact environment matches.
+  const normalizedURL = new URL(baseURL).toString().replace(/\/+$/, '');
+  switch (normalizedURL) {
+    case 'https://staging.api2.scorecard.io/api/v2':
+      return 'https://staging.app.getscorecard.ai';
+    case 'http://localhost:3000/api/v2':
+      return 'http://localhost:3002';
+    case 'https://api2.scorecard.io/api/v2':
+    default:
+      return 'https://app.scorecard.io';
+  }
+}
 
 /**
  * Options passed to the system function for each testcase execution.
@@ -107,6 +128,10 @@ async function* testcaseIterator<SystemInput extends Record<string, any>>(
 
 /**
  * Runs a system on a Testset and records the results in Scorecard.
+ * Run URLs use the app for the matching production, staging, or local API environment.
+ * Unrecognized API URLs default to the production app (for production proxies).
+ * Set SCORECARD_APP_URL to override the app URL for a dedicated deployment;
+ * the override is used verbatim with trailing slashes removed.
  *
  * @param scorecard The Scorecard client
  * @param args.projectId The ID of the Project to run the system on.
@@ -207,7 +232,7 @@ export async function runAndEvaluate<
   // Wait until all the Records are created
   await Promise.all(recordPromises);
 
-  const runUrl = `${scorecard.baseAppURL}/projects/${args.projectId}/runs/${run.id}`;
+  const runUrl = `${baseAppURL(scorecard.baseURL)}/projects/${args.projectId}/runs/${run.id}`;
 
   return { id: run.id, url: runUrl };
 }
