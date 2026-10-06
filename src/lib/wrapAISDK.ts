@@ -18,10 +18,11 @@ interface ScorecardConfig {
   projectId?: string;
 
   /**
-   * Metrics to score the traces against.
+   * Metrics to create in the Scorecard project. This option does not score traces.
    * It can be a list of metric IDs, descriptions of what you want the metric to do, or a mix of both.
    * For example: ['123', 'Check if the response is concise'].
    * If it's a description, the metric will be created if it doesn't exist.
+   * To score traces, see https://docs.scorecard.io/features/tracing#score-traces.
    * Defaults to empty array.
    */
   metrics?: string[];
@@ -163,7 +164,7 @@ export function wrapAISDK<T extends Record<string, unknown>>(
     );
   }
 
-  // Create metrics and monitor if needed
+  // Create project metrics through the legacy monitors endpoint; this does not score traces.
   if (config.metrics && config.metrics.length > 0 && projectId) {
     client
       .put(`/projects/${projectId}/monitors`, {
@@ -179,7 +180,7 @@ export function wrapAISDK<T extends Record<string, unknown>>(
       // otherwise the code would await here before giving back the wrapped AI SDK module
       .catch((error) => {
         console.error(
-          'Failed to create a Scorecard monitor for your AI SDK traces. The most common case is that the projectId is incorrect.',
+          'Failed to create metrics in your Scorecard project. The most common cause is an incorrect projectId.',
           error,
         );
       });
