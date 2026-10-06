@@ -5,7 +5,9 @@ import { z } from 'zod';
 
 const aiSDK = wrapAISDK(ai, {
   projectId: '891', // use your own project id
-  metrics: ['Check if the response object contains the key "capital"'], // use either metric ids, metric descriptions, or a mix of both
+  // Metric IDs, metric descriptions, or a mix. This creates the metrics in your project; it doesn't score traces.
+  // To score traces, see https://docs.scorecard.io/features/tracing#score-traces.
+  metrics: ['Check if the response object contains the key "capital"'],
 });
 
 async function main() {

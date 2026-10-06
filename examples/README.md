@@ -64,7 +64,7 @@ yarn tsx nested-advanced.ts
 # Simple AI SDK example
 yarn tsx ai-sdk-simple.ts
 
-# AI SDK with metrics
+# AI SDK with metrics (creates the metrics in your project; it doesn't score traces)
 yarn tsx ai-sdk-with-metrics.ts
 
 # AI SDK with embeddings
