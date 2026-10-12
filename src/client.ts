@@ -18,6 +18,8 @@ import * as Pagination from './core/pagination';
 import { AbstractPage, type PaginatedResponseParams, PaginatedResponseResponse } from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
+import * as TopLevelAPI from './resources/top-level';
+import { Whoami } from './resources/top-level';
 import { APIPromise } from './core/api-promise';
 import {
   Attachment,
@@ -133,6 +135,11 @@ export interface ClientOptions {
   apiKey?: string | undefined;
 
   /**
+   * Defaults to process.env['SCORECARD_ORG_ID'].
+   */
+  orgID?: string | null | undefined;
+
+  /**
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
@@ -216,6 +223,7 @@ export interface ClientOptions {
  */
 export class Scorecard {
   apiKey: string;
+  orgID: string | null;
 
   baseURL: string;
   baseAppURL: string;
@@ -234,6 +242,7 @@ export class Scorecard {
    * API Client for interfacing with the Scorecard API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['SCORECARD_API_KEY'] ?? undefined]
+   * @param {string | null | undefined} [opts.orgID=process.env['SCORECARD_ORG_ID'] ?? null]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['SCORECARD_BASE_URL'] ?? https://api2.scorecard.io/api/v2] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -246,6 +255,7 @@ export class Scorecard {
   constructor({
     baseURL = readEnv('SCORECARD_BASE_URL'),
     apiKey = readEnv('SCORECARD_API_KEY'),
+    orgID = readEnv('SCORECARD_ORG_ID') ?? null,
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
@@ -256,6 +266,7 @@ export class Scorecard {
 
     const options: ClientOptions = {
       apiKey,
+      orgID,
       ...opts,
       baseURL,
       environment: opts.environment ?? 'production',
@@ -298,6 +309,7 @@ export class Scorecard {
     this._options = options;
 
     this.apiKey = apiKey;
+    this.orgID = orgID;
   }
 
   /**
@@ -315,6 +327,7 @@ export class Scorecard {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
+      orgID: this.orgID,
       ...options,
     });
     return client;
@@ -325,6 +338,20 @@ export class Scorecard {
    */
   #baseURLOverridden(): boolean {
     return this.baseURL !== environments[this._options.environment || 'production'];
+  }
+
+  /**
+   * Returns the caller's user, organization, and the organizations the credential
+   * can act in.
+   *
+   * A request acts in one organization. For an OAuth token or a personal API key,
+   * choose it with the `X-Scorecard-Org-Id` header; the caller must be a member, or
+   * the API returns 403. Without the header, the API uses the user's most recently
+   * updated organization. A JWT or an org API key always acts in its own
+   * organization, and a different `X-Scorecard-Org-Id` returns 403.
+   */
+  whoami(options?: RequestOptions): APIPromise<TopLevelAPI.Whoami> {
+    return this.get('/whoami', options);
   }
 
   protected defaultQuery(): BuiltinRecord<string, string | undefined> | undefined {
@@ -785,6 +812,7 @@ export class Scorecard {
         'X-Stainless-Retry-Count': String(retryCount),
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
+        'X-Scorecard-Org-Id': this.orgID,
       },
       await this.authHeaders(options),
       this._options.defaultHeaders,
@@ -906,6 +934,8 @@ export declare namespace Scorecard {
     type PaginatedResponseParams as PaginatedResponseParams,
     type PaginatedResponseResponse as PaginatedResponseResponse,
   };
+
+  export { type Whoami as Whoami };
 
   export {
     Projects as Projects,

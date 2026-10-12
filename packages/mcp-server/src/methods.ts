@@ -11,6 +11,12 @@ export type SdkMethod = {
 
 export const sdkMethods: SdkMethod[] = [
   {
+    clientCallName: 'client.whoami',
+    fullyQualifiedName: 'whoami',
+    httpMethod: 'get',
+    httpPath: '/whoami',
+  },
+  {
     clientCallName: 'client.projects.create',
     fullyQualifiedName: 'projects.create',
     httpMethod: 'post',

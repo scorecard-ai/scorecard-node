@@ -76,3 +76,4 @@ export {
   type TestsetListParams,
   type TestsetsPaginatedResponse,
 } from './testsets';
+export { type Whoami } from './top-level';

@@ -108,6 +108,7 @@ function getTSDiagnostics(code: string): string[] {
 
 const fuse = new Fuse(
   [
+    'client.whoami',
     'client.projects.create',
     'client.projects.list',
     'client.testsets.create',

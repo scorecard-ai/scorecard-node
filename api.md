@@ -1,3 +1,13 @@
+# Scorecard
+
+Types:
+
+- <code><a href="./src/resources/top-level.ts">Whoami</a></code>
+
+Methods:
+
+- <code title="get /whoami">client.<a href="./src/index.ts">whoami</a>() -> Whoami</code>
+
 # Shared
 
 Types:
