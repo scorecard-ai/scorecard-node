@@ -168,8 +168,8 @@ export namespace Metric {
     promptTemplate: string;
 
     /**
-     * The temperature for AI evaluation (0-2). Omit to use the model provider's
-     * default.
+     * The temperature for AI evaluation (0-2). Omitted when the model provider's
+     * default is used.
      */
     temperature?: number;
   }
@@ -305,8 +305,8 @@ export namespace Metric {
     promptTemplate: string;
 
     /**
-     * The temperature for AI evaluation (0-2). Omit to use the model provider's
-     * default.
+     * The temperature for AI evaluation (0-2). Omitted when the model provider's
+     * default is used.
      */
     temperature?: number;
   }
@@ -437,8 +437,8 @@ export namespace Metric {
     promptTemplate: string;
 
     /**
-     * The temperature for AI evaluation (0-2). Omit to use the model provider's
-     * default.
+     * The temperature for AI evaluation (0-2). Omitted when the model provider's
+     * default is used.
      */
     temperature?: number;
   }

@@ -33,7 +33,9 @@ export class Records extends APIResource {
   assignees: AssigneesAPI.Assignees = new AssigneesAPI.Assignees(this._client);
 
   /**
-   * Create a new Record in a Run.
+   * Create a new Record in a Run. Creating a Record starts scoring it with every AI
+   * and Heuristic metric on the Run. The request body may be up to 15 MB; larger
+   * requests are rejected with a 413.
    *
    * @example
    * ```ts

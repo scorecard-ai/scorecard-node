@@ -11,7 +11,9 @@ export class Scores extends APIResource {
    * the specified Record ID and MetricConfig ID already exists, it will be updated.
    * Otherwise, a new Score will be created. The score provided should conform to the
    * schema defined by the MetricConfig; otherwise, validation errors will be
-   * reported.
+   * reported. Scorecard scores AI and Heuristic metrics itself when a Record is
+   * created, which can replace a score you push, so push scores from your own code
+   * to human metrics.
    *
    * @example
    * ```ts
