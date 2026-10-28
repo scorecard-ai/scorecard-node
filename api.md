@@ -23,7 +23,9 @@ Types:
 Methods:
 
 - <code title="post /projects">client.projects.<a href="./src/resources/projects.ts">create</a>({ ...params }) -> Project</code>
+- <code title="patch /projects/{projectId}">client.projects.<a href="./src/resources/projects.ts">update</a>(projectID, { ...params }) -> Project</code>
 - <code title="get /projects">client.projects.<a href="./src/resources/projects.ts">list</a>({ ...params }) -> ProjectsPaginatedResponse</code>
+- <code title="get /projects/{projectId}">client.projects.<a href="./src/resources/projects.ts">get</a>(projectID) -> Project</code>
 
 # Testsets
 

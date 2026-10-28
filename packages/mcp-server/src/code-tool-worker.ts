@@ -110,7 +110,9 @@ const fuse = new Fuse(
   [
     'client.whoami',
     'client.projects.create',
+    'client.projects.get',
     'client.projects.list',
+    'client.projects.update',
     'client.testsets.create',
     'client.testsets.delete',
     'client.testsets.get',

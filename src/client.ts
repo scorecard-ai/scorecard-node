@@ -53,6 +53,7 @@ import {
   Project,
   ProjectCreateParams,
   ProjectListParams,
+  ProjectUpdateParams,
   Projects,
   ProjectsPaginatedResponse,
 } from './resources/projects';
@@ -942,6 +943,7 @@ export declare namespace Scorecard {
     type Project as Project,
     type ProjectsPaginatedResponse as ProjectsPaginatedResponse,
     type ProjectCreateParams as ProjectCreateParams,
+    type ProjectUpdateParams as ProjectUpdateParams,
     type ProjectListParams as ProjectListParams,
   };
 

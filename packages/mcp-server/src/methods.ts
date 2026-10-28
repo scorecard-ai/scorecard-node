@@ -23,10 +23,22 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/projects',
   },
   {
+    clientCallName: 'client.projects.update',
+    fullyQualifiedName: 'projects.update',
+    httpMethod: 'patch',
+    httpPath: '/projects/{projectId}',
+  },
+  {
     clientCallName: 'client.projects.list',
     fullyQualifiedName: 'projects.list',
     httpMethod: 'get',
     httpPath: '/projects',
+  },
+  {
+    clientCallName: 'client.projects.get',
+    fullyQualifiedName: 'projects.get',
+    httpMethod: 'get',
+    httpPath: '/projects/{projectId}',
   },
   {
     clientCallName: 'client.testsets.create',

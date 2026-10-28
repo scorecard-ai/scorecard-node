@@ -33,6 +33,7 @@ export {
   Projects,
   type Project,
   type ProjectCreateParams,
+  type ProjectUpdateParams,
   type ProjectListParams,
   type ProjectsPaginatedResponse,
 } from './projects';

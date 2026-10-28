@@ -89,9 +89,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) projects > (method) create',
     qualified: 'client.projects.create',
     params: ['description: string;', 'name: string;'],
-    response: '{ id: string; description: string; name: string; }',
+    response:
+      "{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }",
     markdown:
-      "## create\n\n`client.projects.create(description: string, name: string): { id: string; description: string; name: string; }`\n\n**post** `/projects`\n\nCreate a new Project.\n\n### Parameters\n\n- `description: string`\n  The description of the Project.\n\n- `name: string`\n  The name of the Project.\n\n### Returns\n\n- `{ id: string; description: string; name: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst project = await client.projects.create({ description: 'This is a test project', name: 'My Project' });\n\nconsole.log(project);\n```",
+      "## create\n\n`client.projects.create(description: string, name: string): { id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n\n**post** `/projects`\n\nCreate a new Project.\n\n### Parameters\n\n- `description: string`\n  The description of the Project.\n\n- `name: string`\n  The name of the Project.\n\n### Returns\n\n- `{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `status: 'in_progress' | 'in_review' | 'completed'`\n  - `statusUpdatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst project = await client.projects.create({ description: 'This is a test project', name: 'My Project' });\n\nconsole.log(project);\n```",
     perLanguage: {
       typescript: {
         method: 'client.projects.create',
@@ -119,9 +120,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) projects > (method) list',
     qualified: 'client.projects.list',
     params: ['cursor?: string;', 'limit?: number;'],
-    response: '{ id: string; description: string; name: string; }',
+    response:
+      "{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }",
     markdown:
-      "## list\n\n`client.projects.list(cursor?: string, limit?: number): { id: string; description: string; name: string; }`\n\n**get** `/projects`\n\nRetrieve a paginated list of all Projects. Projects are ordered by creation date, with oldest Projects first.\n\n### Parameters\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; description: string; name: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const project of client.projects.list()) {\n  console.log(project);\n}\n```",
+      "## list\n\n`client.projects.list(cursor?: string, limit?: number): { id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n\n**get** `/projects`\n\nRetrieve a paginated list of all Projects. Projects are ordered by creation date, with oldest Projects first.\n\n### Parameters\n\n- `cursor?: string`\n  Cursor for pagination. Pass the `nextCursor` from the previous response to get the next page of results.\n\n- `limit?: number`\n  Maximum number of items to return (1-100). Use with `cursor` for pagination through large sets.\n\n### Returns\n\n- `{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `status: 'in_progress' | 'in_review' | 'completed'`\n  - `statusUpdatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\n// Automatically fetches more pages as needed.\nfor await (const project of client.projects.list()) {\n  console.log(project);\n}\n```",
     perLanguage: {
       typescript: {
         method: 'client.projects.list',
@@ -136,6 +138,72 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://api2.scorecard.io/api/v2/projects \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/projects/{projectId}',
+    httpMethod: 'get',
+    summary: 'Get Project',
+    description: 'Retrieve a specific Project by ID.',
+    stainlessPath: '(resource) projects > (method) get',
+    qualified: 'client.projects.get',
+    params: ['projectId: string;'],
+    response:
+      "{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }",
+    markdown:
+      "## get\n\n`client.projects.get(projectId: string): { id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n\n**get** `/projects/{projectId}`\n\nRetrieve a specific Project by ID.\n\n### Parameters\n\n- `projectId: string`\n\n### Returns\n\n- `{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `status: 'in_progress' | 'in_review' | 'completed'`\n  - `statusUpdatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst project = await client.projects.get('314');\n\nconsole.log(project);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.projects.get',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst project = await client.projects.get('314');\n\nconsole.log(project.id);",
+      },
+      python: {
+        method: 'projects.get',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nproject = client.projects.get(\n    "314",\n)\nprint(project.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/projects/{projectId}',
+    httpMethod: 'patch',
+    summary: 'Update Project',
+    description:
+      "Update a Project's name, description, or review status. Changing `status` requires an organization admin: an organization API key, or a token belonging to an admin. Keys and tokens scoped to an individual member receive a 403. `statusUpdatedAt` moves only when the status actually changes.",
+    stainlessPath: '(resource) projects > (method) update',
+    qualified: 'client.projects.update',
+    params: [
+      'projectId: string;',
+      'description?: string;',
+      'name?: string;',
+      "status?: 'in_progress' | 'in_review' | 'completed';",
+    ],
+    response:
+      "{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }",
+    markdown:
+      "## update\n\n`client.projects.update(projectId: string, description?: string, name?: string, status?: 'in_progress' | 'in_review' | 'completed'): { id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n\n**patch** `/projects/{projectId}`\n\nUpdate a Project's name, description, or review status. Changing `status` requires an organization admin: an organization API key, or a token belonging to an admin. Keys and tokens scoped to an individual member receive a 403. `statusUpdatedAt` moves only when the status actually changes.\n\n### Parameters\n\n- `projectId: string`\n\n- `description?: string`\n  The new description of the Project.\n\n- `name?: string`\n  The new name of the Project.\n\n- `status?: 'in_progress' | 'in_review' | 'completed'`\n  The new review status of the Project. Only organization admins can change it. Pass `null` to stop tracking a status.\n\n### Returns\n\n- `{ id: string; description: string; name: string; status: 'in_progress' | 'in_review' | 'completed'; statusUpdatedAt: string; }`\n  A Project in the Scorecard system.\n\n  - `id: string`\n  - `description: string`\n  - `name: string`\n  - `status: 'in_progress' | 'in_review' | 'completed'`\n  - `statusUpdatedAt: string`\n\n### Example\n\n```typescript\nimport Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard();\n\nconst project = await client.projects.update('314');\n\nconsole.log(project);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.projects.update',
+        example:
+          "import Scorecard from 'scorecard-ai';\n\nconst client = new Scorecard({\n  apiKey: process.env['SCORECARD_API_KEY'], // This is the default and can be omitted\n});\n\nconst project = await client.projects.update('314', { status: 'completed' });\n\nconsole.log(project.id);",
+      },
+      python: {
+        method: 'projects.update',
+        example:
+          'import os\nfrom scorecard_ai import Scorecard\n\nclient = Scorecard(\n    api_key=os.environ.get("SCORECARD_API_KEY"),  # This is the default and can be omitted\n)\nproject = client.projects.update(\n    project_id="314",\n    status="completed",\n)\nprint(project.id)',
+      },
+      http: {
+        example:
+          'curl https://api2.scorecard.io/api/v2/projects/$PROJECT_ID \\\n    -X PATCH \\\n    -H "Authorization: Bearer $SCORECARD_API_KEY"',
       },
     },
   },
