@@ -103,9 +103,11 @@ export interface ScoreUpsertParams {
   score?: { [key: string]: unknown };
 
   /**
-   * Body param: Who created the Score, e.g. a user ID when submitting on behalf of a
-   * human grader. Must be a member of your organization. Only supported for human
-   * metrics and only together with `score`; defaults to `background-job`.
+   * Body param: For human metrics, omit `userId` to grade as yourself. Org admins
+   * and organization API keys may set it to another org member; other callers naming
+   * another user receive 403. Organization API keys without a user creator must set
+   * `userId` to the org member whose grade this is. Only supported together with
+   * `score`. AI and heuristic scores remain system-created (`background-job`).
    */
   userId?: string;
 }
