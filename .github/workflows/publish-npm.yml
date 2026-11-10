@@ -28,8 +28,9 @@ jobs:
           node-version: '24'
 
       - name: Update npm
-        # Trusted publishing requires npm >= 11.5.1 (pnpm publish shells out to npm)
-        run: npm install -g npm@latest
+        # Trusted publishing requires npm >= 11.5.1 (pnpm publish shells out to npm).
+        # Pinned to 11.x: npm 12 refuses remote tarball deps (jq-web) used by the MCP bundle build.
+        run: npm install -g npm@11
 
       - name: Set up pnpm
         uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
