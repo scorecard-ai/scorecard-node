@@ -2,7 +2,11 @@
 
 set -eux
 
-npm config set '//registry.npmjs.org/:_authToken' "$NPM_TOKEN"
+# Authentication uses npm trusted publishing (OIDC) when run from GitHub Actions.
+# NPM_TOKEN is only used as a fallback, e.g. for manual publishes.
+if [ -n "${NPM_TOKEN:-}" ]; then
+  npm config set '//registry.npmjs.org/:_authToken' "$NPM_TOKEN"
+fi
 
 pnpm build
 cd dist
