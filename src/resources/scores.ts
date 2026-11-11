@@ -13,7 +13,9 @@ export class Scores extends APIResource {
    * schema defined by the MetricConfig; otherwise, validation errors will be
    * reported. Scorecard scores AI and Heuristic metrics itself when a Record is
    * created, which can replace a score you push, so push scores from your own code
-   * to human metrics.
+   * to human metrics. For human metrics, the Score belongs to the caller. Org admins
+   * and organization API keys can set `userId` to grade on behalf of another org
+   * member; other callers who set it to someone else receive 403.
    *
    * @example
    * ```ts
