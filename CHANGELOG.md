@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.1](https://github.com/scorecard-ai/scorecard-node/compare/v3.6.0...v3.6.1) (2026-11-11)
+
+
+### Documentation
+
+* **api:** state who can grade on another member's behalf ([a0ad0db](https://github.com/scorecard-ai/scorecard-node/commit/a0ad0db02aa6e065581194cf6176277c79c9977e))
+
 ## [3.6.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.5.0...v3.6.0) (2026-11-11)
 
 
