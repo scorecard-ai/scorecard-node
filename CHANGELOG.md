@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.6.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.5.0...v3.6.0) (2026-11-11)
+
+
+### Features
+
+* **backend:** let OAuth tokens and personal API keys pick their org ([d9ec16e](https://github.com/scorecard-ai/scorecard-node/commit/d9ec16ef76e4b3c77fe8a1936ea129a3b24193f1))
+* **projects:** let admins set a project status readable from the API ([83137af](https://github.com/scorecard-ai/scorecard-node/commit/83137af2e00d276cbb462a7b7cc50561a39b30d1))
+
+
+### Bug Fixes
+
+* **api:** only let admins and org keys grade on a member's behalf ([45206b0](https://github.com/scorecard-ai/scorecard-node/commit/45206b0d30ad4596a07ce3a94cb70c382823522f))
+* **schemas:** align OpenAPI error examples and descriptions with the API ([5851c03](https://github.com/scorecard-ai/scorecard-node/commit/5851c0327d348af7e72e34492370a8ea8fa474e0))
+
 ## [3.5.0](https://github.com/scorecard-ai/scorecard-node/compare/v3.4.0...v3.5.0) (2026-09-22)
 
 
