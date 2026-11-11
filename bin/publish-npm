@@ -15,6 +15,12 @@ cd dist
 PACKAGE_NAME="$(jq -r -e '.name' ./package.json)"
 VERSION="$(jq -r -e '.version' ./package.json)"
 
+# Skip if this exact version is already published, so re-running the workflow is safe
+if [ -n "$(npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null || true)" ]; then
+  echo "$PACKAGE_NAME@$VERSION is already published on npm; skipping"
+  exit 0
+fi
+
 # Get latest version from npm
 #
 # If the package doesn't exist, npm will return:

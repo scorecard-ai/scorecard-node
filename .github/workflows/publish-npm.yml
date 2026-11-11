@@ -5,8 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       path:
-        description: The path to run the release in, e.g. '.' or 'packages/mcp-server'
-        required: true
+        description: "Package to publish: '.' or 'packages/mcp-server'. Leave empty to publish both. Versions already on npm are skipped, so re-running is safe."
+        required: false
+        default: ''
 
   release:
     types: [published]
@@ -50,10 +51,19 @@ jobs:
         env:
           INPUT_PATH: ${{ github.event.inputs.path }}
 
-      - name: Upload MCP Server DXT GitHub release asset
-        if: github.event_name == 'release'
+      - name: Upload MCP Server bundle GitHub release asset
         run: |
-          gh release upload ${{ github.event.release.tag_name }} \
-            packages/mcp-server/scorecard_ai_api.mcpb
+          if [ -n "$RELEASE_TAG" ]; then
+            TAG="$RELEASE_TAG"
+          else
+            # Manual run: attach to the release matching the current version, if it exists
+            TAG="v$(jq -r .version package.json)"
+            if ! gh release view "$TAG" > /dev/null 2>&1; then
+              echo "No GitHub release $TAG found; skipping bundle upload"
+              exit 0
+            fi
+          fi
+          gh release upload "$TAG" packages/mcp-server/scorecard_ai_api.mcpb --clobber
         env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
